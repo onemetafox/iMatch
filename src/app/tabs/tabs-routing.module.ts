@@ -92,6 +92,10 @@ const routes: Routes = [
             path: 'about-us',
             loadChildren: () => import('../about-us/about-us.module').then( m => m.AboutUsPageModule)
           },
+          {
+            path: 'blog',
+            loadChildren: () => import('../blog/blog.module').then( m => m.BlogPageModule)
+          },
         ]
       },
       // {

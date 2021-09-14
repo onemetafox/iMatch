@@ -67,7 +67,9 @@
         <div style="display: flex; overflow-x: auto;" class="main_multiple_slide">
           <div style="margin-right: 5px;" class="sub_multiple_slide" *ngFor="let hashTag of HashTagOptions; let i = index">
             <div  class="circle_multiple_slide" style="margin: 0px 15px 0px 15px;">
-              <img [src]="hashTag.image" alt="" class="logo-img">
+              <div *ngIf="hashTag.name == 'Blog'; then imageContent else otherImageContent"></div>
+              <ng-template #imageContent><img [src]="hashTag.image" alt="" class="logo-img" (click)="goToPage('blog')"></ng-template>
+              <ng-template #otherImageContent><img [src]="hashTag.image" alt="" class="logo-img"></ng-template>
             </div>
             <p style="position: relative; left: 25px; width: 33px;"> {{hashTag.name}} </p>
           </div>
