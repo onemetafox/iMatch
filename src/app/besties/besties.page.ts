@@ -404,7 +404,7 @@ export class BestiesPage implements OnInit {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     const fileUplaodUrl =
-      "https://web.sicsglobal.com/iMatch/api/v1/MatchFileUpload";
+      "http://localhost/iMatch/api/v1/MatchFileUpload";
 
     fileTransfer.onProgress((e) => {
       let prg = e.lengthComputable
@@ -527,7 +527,7 @@ export class BestiesPage implements OnInit {
 
     this.common.presentLoading();
     return this.common.http.post(
-      `${"https://web.sicsglobal.com/iMatch/api/v1/Upload_File"}`,
+      `${"http://localhost/iMatch/api/v1/Upload_File"}`,
       formData
     );
   }

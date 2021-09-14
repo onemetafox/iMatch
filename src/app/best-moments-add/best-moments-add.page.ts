@@ -192,7 +192,7 @@ export class BestMomentsAddPage implements OnInit {
     formData.append('momentid', this.momentid);
 
     this.common.presentLoading();
-    return this.common.http.post(`${'https://web.sicsglobal.com/iMatch/api/v1/UploadBestieMomentFile'}`, formData);
+    return this.common.http.post(`${'http://localhost/iMatch/api/v1/UploadBestieMomentFile'}`, formData);
   }
 
   toShowButtons() {

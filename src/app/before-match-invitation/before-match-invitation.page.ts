@@ -541,7 +541,7 @@ export class BeforeMatchInvitationPage implements OnInit {
             this.common.showLoader();
             const fileTransfer: FileTransferObject = this.transfer.create();
 
-            const fileUplaodUrl = 'https://web.sicsglobal.com/iMatch/api/v1/MatchFileUpload';
+            const fileUplaodUrl = 'http://localhost/iMatch/api/v1/MatchFileUpload';
 
             fileTransfer.onProgress((e) =>
             {

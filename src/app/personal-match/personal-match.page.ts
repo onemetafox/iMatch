@@ -1251,7 +1251,7 @@ export class PopoverComponent {
 
     const fileTransfer: FileTransferObject = this.transfer.create();
 
-    const fileUplaodUrl = 'https://web.sicsglobal.com/iMatch/api/v1/create_closedmatch';
+    const fileUplaodUrl = 'http://localhost/iMatch/api/v1/create_closedmatch';
 
     fileTransfer.onProgress((e) =>
     {

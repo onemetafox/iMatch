@@ -277,7 +277,7 @@ export class ChatMessagePage implements OnInit {
 
     const fileTransfer: FileTransferObject = this.transfer.create();
 
-    const fileUplaodUrl = 'https://web.sicsglobal.com/iMatch/api/v1/UploadChatFile';
+    const fileUplaodUrl = 'http://localhost/iMatch/api/v1/UploadChatFile';
 
     fileTransfer.onProgress((e) =>
     {

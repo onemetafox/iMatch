@@ -226,7 +226,7 @@ export class ProfilePage implements OnInit {
       formData.append('userid', this.userDetails.userid);
 
       this.common.presentLoading();
-      return this.common.http.post(`${'https://web.sicsglobal.com/iMatch/api/v1/profile_pic'}`, formData);
+      return this.common.http.post(`${'http://localhost/iMatch/api/v1/profile_pic'}`, formData);
     }
 
       getProfileImg() {

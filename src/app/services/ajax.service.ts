@@ -13,7 +13,7 @@ const { PushNotifications, Device, Network } = Plugins;
 })
 export class AjaxService {
 
-  BaseUrl : any = 'https://web.sicsglobal.com/iMatch/api/v1/';
+  BaseUrl : any = 'http://localhost/iMatch/api/v1/';
 
   constructor(
     // private androidPermissions: AndroidPermissions,
