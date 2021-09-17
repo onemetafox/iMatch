@@ -574,7 +574,7 @@ export class InvitationPage implements OnInit {
 
       const fileTransfer: FileTransferObject = this.transfer.create();
 
-      const fileUplaodUrl = 'http://localhost/iMatch/api/v1/MatchFileUpload';
+      const fileUplaodUrl = 'http://192.168.107.183/iMatch/api/v1/MatchFileUpload';
 
       fileTransfer.onProgress((e) => 
       {

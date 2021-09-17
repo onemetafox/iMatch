@@ -10,6 +10,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPhoto, Capacitor, PhotosAlbumType, FilesystemEncoding } from '@capacitor/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import * as BaseConfig from '../services/config';
 
 const { Camera, Filesystem } = Plugins;
 @Component({
@@ -277,7 +278,7 @@ export class ChatMessagePage implements OnInit {
 
     const fileTransfer: FileTransferObject = this.transfer.create();
 
-    const fileUplaodUrl = 'http://localhost/iMatch/api/v1/UploadChatFile';
+    const fileUplaodUrl = BaseConfig.baseUrl + 'iMatch/api/v1/UploadChatFile';
 
     fileTransfer.onProgress((e) =>
     {

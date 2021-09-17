@@ -9,7 +9,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-
+import * as BaseConfig from '../services/config';
 const { Camera, Filesystem } = Plugins;
 
 @Component({
@@ -246,7 +246,6 @@ export class BeforeMatchInvitationPage implements OnInit {
     } else if (this.isMedia == true) {
 
       if (this.invitation.valid) {
-        
         let params = {
 
           rival_id : this.userDetails.userid,
@@ -255,8 +254,8 @@ export class BeforeMatchInvitationPage implements OnInit {
           time_duration : this.userData.duration,
           caption : this.userData.caption,
           category : 'Personalized',
+          // uploaded_id : 30,
           uploaded_id : this.FileTransferResponse.uploaded_id,
-
         }
 
         this.common.showLoader();
@@ -348,7 +347,6 @@ export class BeforeMatchInvitationPage implements OnInit {
               cssClass: 'my-custom-class',
               header: ' File format must be MP4, AAC, Mp3, PNG, JPG ',
               buttons: [
-
                 {
                   text: 'Share Wording',
                     icon: 'text',
@@ -366,14 +364,13 @@ export class BeforeMatchInvitationPage implements OnInit {
                   console.log('Share clicked');
                 }
               }, 
-
-                {
+              {
                   text: 'Other Files',
-                    icon: 'folder-open',
-                      handler: () => {
-                        this.pickDocuments();
-                  console.log('Folder clicked');
-                }
+                  icon: 'folder-open',
+                  handler: () => {
+                    this.pickDocuments();
+                    console.log('Folder clicked');
+                  }
               }, 
 
               {
@@ -541,7 +538,7 @@ export class BeforeMatchInvitationPage implements OnInit {
             this.common.showLoader();
             const fileTransfer: FileTransferObject = this.transfer.create();
 
-            const fileUplaodUrl = 'http://localhost/iMatch/api/v1/MatchFileUpload';
+            const fileUplaodUrl = BaseConfig.baseUrl + '/iMatch/api/v1/MatchFileUpload';
 
             fileTransfer.onProgress((e) =>
             {

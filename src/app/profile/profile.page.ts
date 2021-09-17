@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder,	FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ActionSheetController } from '@ionic/angular';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import * as BaseConfig from '../services/config';
 
 const { Camera } = Plugins;
 
@@ -226,7 +227,7 @@ export class ProfilePage implements OnInit {
       formData.append('userid', this.userDetails.userid);
 
       this.common.presentLoading();
-      return this.common.http.post(`${'http://localhost/iMatch/api/v1/profile_pic'}`, formData);
+      return this.common.http.post(`${BaseConfig.baseUrl + 'iMatch/api/v1/profile_pic'}`, formData);
     }
 
       getProfileImg() {

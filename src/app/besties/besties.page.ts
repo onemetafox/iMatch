@@ -2,6 +2,8 @@ import { CommonService } from "./../services/common.service";
 import { StorageService } from "./../services/storage.service";
 import { Component, OnInit } from "@angular/core";
 import { PopoverController } from "@ionic/angular";
+import * as BaseConfig from '../services/config';
+
 import {
   FormBuilder,
   FormGroup,
@@ -404,7 +406,7 @@ export class BestiesPage implements OnInit {
     const fileTransfer: FileTransferObject = this.transfer.create();
 
     const fileUplaodUrl =
-      "http://localhost/iMatch/api/v1/MatchFileUpload";
+      BaseConfig.baseUrl + "iMatch/api/v1/MatchFileUpload";
 
     fileTransfer.onProgress((e) => {
       let prg = e.lengthComputable
@@ -527,7 +529,7 @@ export class BestiesPage implements OnInit {
 
     this.common.presentLoading();
     return this.common.http.post(
-      `${"http://localhost/iMatch/api/v1/Upload_File"}`,
+      `${BaseConfig.baseUrl + "iMatch/api/v1/Upload_File"}`,
       formData
     );
   }

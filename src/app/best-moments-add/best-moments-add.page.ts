@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { CommonService } from './../services/common.service';
 import { StorageService } from './../services/storage.service';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+import * as BaseConfig from '../services/config';
 const { Camera } = Plugins;
 
 @Component({
@@ -192,7 +193,7 @@ export class BestMomentsAddPage implements OnInit {
     formData.append('momentid', this.momentid);
 
     this.common.presentLoading();
-    return this.common.http.post(`${'http://localhost/iMatch/api/v1/UploadBestieMomentFile'}`, formData);
+    return this.common.http.post(`${BaseConfig.baseUrl + '/iMatch/api/v1/UploadBestieMomentFile'}`, formData);
   }
 
   toShowButtons() {
