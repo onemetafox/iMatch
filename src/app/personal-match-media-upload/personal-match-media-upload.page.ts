@@ -446,10 +446,10 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           this.FolderClicked = true;
           console.log('FolderClicked:',this.FolderClicked);
 
-          if (e.target.files.length>2) {
-            this.Invitation.reset();
-            this.common.presentToast('Your are not allowed to choose more than two images');
-          } 
+          // if (e.target.files.length>2) {
+          //   this.Invitation.reset();
+          //   this.common.presentToast('Your are not allowed to choose more than two images');
+          // } 
   
           if (e.target.files === 0) {
             this.common.presentToast('You Have Selected No File !!!');
@@ -892,7 +892,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         // });
         if (this.hideImageSpace==true && this.Invitation.valid) {
 
-          if (this.myFiles.length===2) {
+          if (this.myFiles.length >= 2) {
 
           this.common.showLoader();
           this.common.presentToast('⏳ Please wait... we are uploading your file ...');
