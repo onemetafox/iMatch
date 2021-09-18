@@ -69,35 +69,35 @@ export class OpenMatchPage implements OnInit {
            this.slides.slideTo(this.personalMatchSlideIndex);
            console.log('openMatches:', this.openMatches);
 
-           if (this.OpenMatchAudio.length!==0) {
+           if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
             for (let i=0; i < this.OpenMatchAudio.length; i++) {
               this.openMatches.push(this.OpenMatchAudio[i]);
             }
             console.log('OpenMatch:', this.openMatches);
           } 
 
-          if (this.OpenMatchImage.length!==0) {
+          if (this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
             for (let i=0; i < this.OpenMatchImage.length; i++) {
               this.openMatches.push(this.OpenMatchImage[i]);
             }
             console.log('OpenMatch:', this.openMatches);
           } 
 
-          if (this.OpenMatchLink.length!==0) {
+          if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
             for (let i=0; i < this.OpenMatchLink.length; i++) {
               this.openMatches.push(this.OpenMatchLink[i]);
             }
             console.log('OpenMatch:', this.openMatches);
           } 
 
-          if (this.OpenMatchText.length!==0) {
+          if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
             for (let i=0; i < this.OpenMatchText.length; i++) {
               this.openMatches.push(this.OpenMatchText[i]);
             }
             console.log('OpenMatch:', this.openMatches);
           } 
 
-          if (this.OpenMatchVideo.length!==0) {
+          if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
             for (let i=0; i < this.OpenMatchVideo.length; i++) {
               this.openMatches.push(this.OpenMatchVideo[i]);
             }
