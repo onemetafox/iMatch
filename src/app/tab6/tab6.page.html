@@ -224,64 +224,79 @@
 
       <!-- vs images first  -->
       <p *ngIf='PersonalMatch?.length==0' class="no-game-found" style="text-align: center;background-color: #70707238;padding: 15px;border-radius: 5px;">Currently you are having no Personal Matches to display here !!!</p>
+      <div class="animate__animated animate__fadeInLeft" *ngIf="!showPersonalMatch">
+        <div class="row" style="display: flex; flex-wrap: wrap;">
+          <div *ngFor="let match of PersonalMatch; let i = index" (click)="goToPersonalMatch($event, match, i, 'personal')" style="margin-top:5px;padding: 5px; border: 1px solid #e2e2e2;margin-left:3px;">
+            <div class="col-sm-3" style="flex-grow: 1;display: flex;">
+                <div *ngFor="let item of match.compare_data; let k = index">
+                  <div *ngIf="k == 0; then temp1 else temp2"></div>
+                  <ng-template #temp1>
+                    <div class="image-div_first">
+                      <img *ngIf="item.image_type==='image'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <video style="width: 44px; height: 75px;" *ngIf="item.image_type==='video'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
+                      <img *ngIf="item.image_type==='audio'" style="object-fit: contain;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <img *ngIf="item.image_type==='text'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <img *ngIf="item.image_type==='link'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                    </div>
+                  </ng-template>
+                  <ng-template #temp2>
+                    <div class="image-div_first">
+                      <img *ngIf="item.image_type==='image'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <video style="width: 44px; height: 75px;" *ngIf="item.image_type==='video'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
+                      <img *ngIf="item.image_type==='audio'" style="object-fit: contain;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <img *ngIf="item.image_type==='text'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                      <img *ngIf="item.image_type==='link'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                    </div>
+                  </ng-template>
+                 
 
-      <div style="display: flex; flex-wrap: wrap; margin-top: 10px; margin-left: 10px;" *ngIf="!showPersonalMatch" class="animate__animated animate__fadeInLeft">
-        <div style="width: 23%; margin-right: 5px; position: relative;" *ngFor="let match of PersonalMatch; let i = index" (click)="goToPersonalMatch($event, match, i, 'personal')">
-          <div class="contest-image-div">
-            <div class="image-div_first">
-              <img *ngIf="match.receiver_image_type==='image'" [src]="match.receiver_image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <video style="width: 44px; height: 75px;" *ngIf="match.receiver_image_type==='video'" [src]="match.receiver_image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
-              <img *ngIf="match.receiver_image_type==='audio'" style="object-fit: contain;" [src]="match.receiver_image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <img *ngIf="match.receiver_image_type==='text'" style="object-fit: cover;" [src]="match.receiver_image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <img *ngIf="match.receiver_image_type==='link'" style="object-fit: cover;" [src]="match.receiver_image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-
+                </div>
+                <div style="">
+                  <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
+                </div>
             </div>
-            <div class="image-div_first">
-              <img *ngIf="match.sender_image_type==='image'" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <video style="width: 44px; height: 75px;" *ngIf="match.sender_image_type==='video'" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
-              <img *ngIf="match.sender_image_type==='audio'" style="object-fit: contain;" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <img *ngIf="match.sender_image_type==='text'" style="object-fit: cover;" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-              <img *ngIf="match.sender_image_type==='link'" style="object-fit: cover;" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
-
-            </div>
-          </div>
-          <div style="position: absolute; top: 20%; left: 35%;">
-            <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
-          </div>
-          <!-- <div style="margin-top: 8px;" class="box_m">
-            <img *ngIf="match.sender_image_closedstatus===1" style=" margin-left: 45px;" src="../../assets/icon/icon-tab2.svg" alt="">
-            <img *ngIf="match.receiver_image_closedstatus===1" style="position: absolute; margin-left: -50px;" src="../../assets/icon/icon-tab2.svg" alt="">
-          </div> -->
-          <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{match.likes}}</p>
           </div>
         </div>
-
-        <!-- <div style="width: 60%; margin-left: 3px; position: relative;">
-          <div class="contest-image-div">
-            <div class="image-div">
-              <img src="../../assets/icon/activity/grey.png" alt="">
-            </div>
-            <div class="image-div">
-              <img src="../../assets/icon/activity/grey.png" alt="">
-            </div>
-            <div class="image-div">
-              <img src="../../assets/icon/activity/grey.png" alt="">
-            </div>
-          </div>
-          <div style="position: absolute; top: 30%; left: 27%;">
-            <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
-          </div>
-          <div style="position: absolute; top: 30%; left: 60%;">
-            <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
-          </div>
-          <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>0</p>
-          </div>
-        </div> -->
       </div>
+
+
+      <!-- <div style="display: flex; margin-top: 10px; margin-left: 10px;" *ngIf="!showPersonalMatch" class="animate__animated animate__fadeInLeft">
+        <div style="width: 23%; margin-right: 5px; position: relative;" *ngFor="let match of PersonalMatch; let i = index" (click)="goToPersonalMatch($event, match, i, 'personal')">
+          <div class="contest-image-div" style="flex: 0 0 50%;">
+            <div *ngFor="let item of match.compare_data; let k = index">
+              <div *ngIf="k == 0; then temp1 else temp2"></div>
+              <ng-template #temp1>
+                <div class="image-div_first">
+                  <img *ngIf="item.image_type==='image'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <video style="width: 44px; height: 75px;" *ngIf="item.image_type==='video'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
+                  <img *ngIf="item.image_type==='audio'" style="object-fit: contain;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <img *ngIf="item.image_type==='text'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <img *ngIf="item.image_type==='link'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                </div>
+              </ng-template>
+              <ng-template #temp2>
+                <div class="image-div_first">
+                  <img *ngIf="item.image_type==='image'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <video style="width: 44px; height: 75px;" *ngIf="item.image_type==='video'" [src]="item.image" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"></video>
+                  <img *ngIf="item.image_type==='audio'" style="object-fit: contain;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <img *ngIf="item.image_type==='text'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                  <img *ngIf="item.image_type==='link'" style="object-fit: cover;" [src]="item.image" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s">
+                </div>
+              </ng-template>
+            </div>
+            <div style="position: absolute; top: 20%; left: 35%;">
+              <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          
+          
+          <div class="box_m" style="margin-bottom: 20px;">
+            
+          </div>
+        </div> 
+
+        
+      </div> -->
 
       <div style="display: flex; flex-wrap: wrap; margin-top: 10px; margin-left: 10px;" *ngIf="!showPersonalMatch && this.isDisableOtherCategory===true" class="animate__animated animate__fadeInLeft" >
         <div style="width: 23%; margin-right: 5px; position: relative;" *ngFor="let match of PersonalMatchVideo; let i = index" (click)="goToPersonalMatch($event, match, i, 'personal')">
@@ -303,8 +318,8 @@
             <img *ngIf="match.receiver_image_closedstatus===1" style="position: absolute; margin-left: -50px;" src="../../assets/icon/icon-tab2.svg" alt="">
           </div> -->
           <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{match.likes}}</p>
+            <!-- <img src="../../assets/icon/activity/shoot.png" alt="">
+            <p>{{match.likes}}</p> -->
           </div>
         </div>
       </div>
@@ -327,8 +342,8 @@
             <img *ngIf="match.receiver_image_closedstatus===1" style="position: absolute; margin-left: -50px;" src="../../assets/icon/icon-tab2.svg" alt="">
           </div> -->
           <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{match.likes}}</p>
+            <!-- <img src="../../assets/icon/activity/shoot.png" alt="">
+            <p>{{match.likes}}</p> -->
           </div>
         </div>
       </div>
@@ -351,8 +366,8 @@
             <img *ngIf="match.receiver_image_closedstatus===1" style="position: absolute; margin-left: -50px;" src="../../assets/icon/icon-tab2.svg" alt="">
           </div> -->
           <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{match.likes}}</p>
+            <!-- <img src="../../assets/icon/activity/shoot.png" alt="">
+            <p>{{match.likes}}</p> -->
           </div>
         </div>
       </div>
@@ -375,8 +390,8 @@
             <img *ngIf="match.receiver_image_closedstatus===1" style="position: absolute; margin-left: -50px;" src="../../assets/icon/icon-tab2.svg" alt="">
           </div> -->
           <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{match.likes}}</p>
+            <!-- <img src="../../assets/icon/activity/shoot.png" alt="">
+            <p>{{match.likes}}</p> -->
           </div>
         </div>
       </div>
@@ -407,8 +422,8 @@
             <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
           </div>
           <div class="box_m">
-            <img src="../../assets/icon/activity/shoot.png" alt="">
-            <p>{{open.total_likecount}}</p>
+            <!-- <img src="../../assets/icon/activity/shoot.png" alt=""> -->
+            <!-- <p>{{open.total_likecount}}</p> -->
           </div>
         </div>
       </div>

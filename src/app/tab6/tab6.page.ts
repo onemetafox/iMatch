@@ -135,6 +135,8 @@ export class Tab6Page implements OnInit {
           userid : this.userDetails.userid
         }
 
+        console.log(params);
+        
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
           console.log('PersonalMatch:',res);
           this.PersonalMatch = res.details.image;
@@ -198,35 +200,35 @@ export class Tab6Page implements OnInit {
           this.OpenMatchLink = res.details.link;
           this.OpenMatchText = res.details.text;
 
-          if (this.OpenMatchAudio.length!==0) {
+          if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
             for (let i=0; i < this.OpenMatchAudio.length; i++) {
               this.OpenMatch.push(this.OpenMatchAudio[i]);
             }
             console.log('OpenMatch:', this.OpenMatch);
           } 
 
-          if (this.OpenMatchImage.length!==0) {
+          if ( this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
             for (let i=0; i < this.OpenMatchImage.length; i++) {
               this.OpenMatch.push(this.OpenMatchImage[i]);
             }
             console.log('OpenMatch:', this.OpenMatch);
           } 
 
-          if (this.OpenMatchLink.length!==0) {
+          if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
             for (let i=0; i < this.OpenMatchLink.length; i++) {
               this.OpenMatch.push(this.OpenMatchLink[i]);
             }
             console.log('OpenMatch:', this.OpenMatch);
           } 
 
-          if (this.OpenMatchText.length!==0) {
+          if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
             for (let i=0; i < this.OpenMatchText.length; i++) {
               this.OpenMatch.push(this.OpenMatchText[i]);
             }
             console.log('OpenMatch:', this.OpenMatch);
           } 
 
-          if (this.OpenMatchVideo.length!==0) {
+          if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
             for (let i=0; i < this.OpenMatchVideo.length; i++) {
               this.OpenMatch.push(this.OpenMatchVideo[i]);
             }

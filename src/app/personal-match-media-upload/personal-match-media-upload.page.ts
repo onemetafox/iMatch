@@ -9,6 +9,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import * as BaseConfig from '../services/config';
 
 const { Camera, Filesystem } = Plugins;
 
@@ -445,10 +446,10 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           this.FolderClicked = true;
           console.log('FolderClicked:',this.FolderClicked);
 
-          if (e.target.files.length>2) {
-            this.Invitation.reset();
-            this.common.presentToast('Your are not allowed to choose more than two images');
-          } 
+          // if (e.target.files.length>2) {
+          //   this.Invitation.reset();
+          //   this.common.presentToast('Your are not allowed to choose more than two images');
+          // } 
   
           if (e.target.files === 0) {
             this.common.presentToast('You Have Selected No File !!!');
@@ -891,7 +892,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         // });
         if (this.hideImageSpace==true && this.Invitation.valid) {
 
-          if (this.myFiles.length===2) {
+          if (this.myFiles.length >= 2) {
 
           this.common.showLoader();
           this.common.presentToast('⏳ Please wait... we are uploading your file ...');
@@ -907,7 +908,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             formData.append("links", '');
             formData.append("texts", '');
               console.log('formData:', formData);
-            this.http.post('http://localhost/iMatch/api/v1/create_personalmatch',formData 
+            this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
             ).subscribe((res) => {
               console.log(res);
               if (res['message']==='Successfully uploaded') {
@@ -980,7 +981,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
             formData.append("texts", '');
               console.log('formData:', formData);
-            this.http.post('http://localhost/iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
+              this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
               console.log(res);
               if (res['message']==='Successfully uploaded') {
                 this.Invitation.reset();
@@ -1047,7 +1048,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           // formData.append("texts[]", );
           // this.userText.text1,this.userText.text2
             console.log('formData:', formData.getAll("texts"));
-          this.http.post('http://localhost/iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
+          this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
             console.log(res);
             // this.common.presentLoading();
 
@@ -1088,7 +1089,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             formData.append("texts", '');
               console.log('formData:', formData);
               // this.common.presentLoading();
-            this.http.post('http://localhost/iMatch/api/v1/create_personalmatch',formData 
+            this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
             ).subscribe((res) => {
               // this.common.presentLoading();
 
@@ -1154,7 +1155,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   
         const fileTransfer: FileTransferObject = this.transfer.create();
   
-        const fileUplaodUrl = 'http://localhost/iMatch/api/v1/create_personalmatch';
+        const fileUplaodUrl = BaseConfig.baseUrl + '/iMatch/api/v1/create_personalmatch';
 
         fileTransfer.onProgress((e) => 
         {

@@ -16,7 +16,10 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import { NavigationExtras } from '@angular/router';
+import * as BaseConfig from '../services/config';
+
 const { Camera, Filesystem } = Plugins;
+
 
 @Component({
   selector: 'app-personal-match',
@@ -1251,7 +1254,7 @@ export class PopoverComponent {
 
     const fileTransfer: FileTransferObject = this.transfer.create();
 
-    const fileUplaodUrl = 'http://localhost/iMatch/api/v1/create_closedmatch';
+    const fileUplaodUrl = BaseConfig.baseUrl + 'iMatch/api/v1/create_closedmatch';
 
     fileTransfer.onProgress((e) =>
     {
