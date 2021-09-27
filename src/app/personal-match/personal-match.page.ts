@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { StorageService } from '../services/storage.service';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { CommonService } from '../services/common.service';
 import { PopoverController } from '@ionic/angular';
 import { NavParams, IonSlides } from '@ionic/angular';
@@ -42,6 +42,7 @@ export class PersonalMatchPage implements OnInit {
   constructor(
     public storageservice: StorageService,
     public popoverController: PopoverController,
+    public modalController: ModalController,
     private common: CommonService, 
   ) { 
 
@@ -79,8 +80,8 @@ export class PersonalMatchPage implements OnInit {
 
       console.log('params:',params);
       this.common.postMethod('PersonalMatch',params).then((res:any) => {
-        console.log('res:',res);
-
+        console.log('res-------------------------------------:',res);
+        console.log('*********************', this.userDetails);
         if ( this.userDetails.fileType === "image" ) {
 
           this.PersonalMatch = res.details.image;
@@ -104,7 +105,6 @@ export class PersonalMatchPage implements OnInit {
         }
 
         this.slides.slideTo(this.personalMatchSlideIndex);
-        console.log('PersonalMatch:', this.PersonalMatch);
         this.common.hideLoader();
       }, (err) => {
         this.ionViewWillEnter();
@@ -259,7 +259,7 @@ export class PersonalMatchPage implements OnInit {
      componentProps:{key: match},
      translucent: true,
      backdropDismiss: true,
-     animated: false
+     animated: true
    });
    return await popover.present();
 
@@ -535,11 +535,11 @@ export class PersonalMatchPage implements OnInit {
   async toViewSenderMatchImage(ev:any, match) {
     console.log('Show Sender Match Image Button Clicked');
 
-    const popover = await this.popoverController.create({
+    const popover = await this.modalController.create({
       component: SenderPopoverComponent,
       cssClass: 'my-custom-class',
       componentProps:{key:match, userType: this.userDetails.userType},
-      translucent: true,
+      // translucent: true,
       backdropDismiss: true,
       animated: false
     });
@@ -548,13 +548,13 @@ export class PersonalMatchPage implements OnInit {
   }
 
   async toViewReceiverMatchImage(ev:any, match) {
-    console.log('Show Receiver Match Image Button Clicked');
+    console.log('Show Receiver Match Image Button Clicked:', this.userDetails.userType);
 
-    const popover = await this.popoverController.create({
+    const popover = await this.modalController.create({
       component: ReceiverPopoverComponent,
       cssClass: 'my-custom-class',
       componentProps:{key:match, userType: this.userDetails.userType},
-      translucent: true,
+      // translucent: true,
       backdropDismiss: true,
       animated: false
     });
@@ -822,6 +822,8 @@ export class PopoverComponent {
         
           }
 
+          
+
          ToSendMatch(e,m) {
            console.log('Send Match Button Clicked');
           console.log('Match:',m);
@@ -831,7 +833,6 @@ export class PopoverComponent {
             caption: this.userCaption.caption
           }
 
-          console.log('params:',params);
           this.common.postMethod('abc',params).then((res:any) => {
             console.log('res:',res);
           }, (err) => {
@@ -840,177 +841,285 @@ export class PopoverComponent {
             console.log('Error:',err);
           });
          }
+
+         
     
         }
 
 @Component({
   template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissButton()">
+            <img src='../../assets/icon/back.png' alt="" style="width:10px; height: 18px;">
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
     <div style=" text-align: center; ">
-      <h4 style=" font-weight: 600; "> Your First Image </h4>
+      <h4 style=" font-weight: 600; "> Match Image </h4>
       <div style=" border: 3px solid grey; padding: 2px; margin: 5px; font-size: 14px; justify-content: center;">
-      
-        <div>
-            <img [src]="Match.receiver_image" alt="" onerror="this.src='../../assets/icon/no_media.png';">
+        <div *ngIf="Match.compare_data.length == 2">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <div *ngFor="let item of Match.compare_data; let i = index">
+              <img [src]="item.image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
+            </div>
           </div>
+        </div>
 
-          <div style="display: flex; justify-content: space-between;">
+        <div *ngIf="Match.compare_data.length == 3">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
+            <div *ngFor="let item of Match.compare_data; let i = index">
+              <img [src]="item.image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="Match.compare_data.length == 4">
+          <div style="display: grid; grid-template-columns: 1fr 1fr;margin-top: 10px;">
+            <img [src]="Match.compare_data[0].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
+            <img [src]="Match.compare_data[1].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <img [src]="Match.compare_data[2].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"> 
+            <img [src]="Match.compare_data[3].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
 
           <div style="display: flex; background-color: white; width: 31px; height: 30px; margin-left: 10px; border-radius: 50%; box-shadow: 0.5px 0.5px 9px 3px grey;">
           <img src="../../assets/icon/03.png" alt=""> <span style="font-weight: 600; margin-left: 10px; position: relative; top: 3px; font-size: 16px;"> {{Match.receiver_reveal_count}} </span>
           </div>
 
           <ion-button *ngIf="userType==='visitor'" (click)="sendMatch()" shape="round" size="small" style="text-transform: none;">Match This</ion-button>
-          </div>
+        </div>
 
       </div>
     </div>
+    </ion-content>
     `
 })
         
         export class ReceiverPopoverComponent {
         
-         Match: any  = [];
-         userType: string;
-         constructor(
-          public popoverController: PopoverController,
-           private common: CommonService,
-           public navParams: NavParams,
-           ) {
-             console.log(this.navParams.get('key'));
-            this.Match = this.navParams.get('key');
-            this.userType = this.navParams.get('userType');
-            console.log('user type:',this.userType);
-
-             console.log('users in popover:',this.Match);
-           }
+          Match: any  = [];
+          userType: string;
+          selectItem: any = [];
+          constructor(
+              public popoverController: PopoverController,
+              public modalController: ModalController,
+              private common: CommonService,
+              public navParams: NavParams,
+          ) {
+              this.Match = this.navParams.get('key');
+              this.userType = this.navParams.get('userType');
+              this.selectItem = [];
+          }
         
-           ionViewWillEnter(){
-             console.log('ionViewWillEnter:',this.Match);
-             }
+          ionViewWillEnter(){
+            console.log('ionViewWillEnter:',this.Match);
+          }
 
-             async sendMatch() {
-        
-              const popover = await this.popoverController.create({
+          async sendMatch() {
+            if(this.selectItem.length > 0){
+              this.selectItem.filter((a, b) => this.selectItem.indexOf(a) === b)
+              this.selectItem.sort();
+              const popover = await this.modalController.create({
                 component: SendMatchComponent,
                 cssClass: 'my-custom-class',
-                componentProps:{key:this.Match, userType: 'receiver'},
-                translucent: true,
+                componentProps:{key:this.Match, userType: 'receiver', selectItem: this.selectItem},
+                // translucent: true,
                 backdropDismiss: true,
                 animated: false
               });
               return await popover.present();
+            }else{
+              this.common.showAlertSuccess('Please select Image');
+              return;
+            }
+            
           
-            }
-        
-            }
+          }
 
+          
+          async dismissButton(){
+            this.modalController.dismiss();
+          }
+
+          selectImage(e, index){
+            console.log(e.target);
+            if(e.target.style.border != ""){
+              this.selectItem.splice(this.selectItem.indexOf(index), 1);
+              e.target.style.border="";
+            }else{
+              this.selectItem.push(index)
+              e.target.style.border="3px solid #50c8ff";
+            }
+          }
+        
+        }
+
+      //   <div style="display: flex; margin-bottom: 10px; padding: 5px; justify-content: center;">
+      //   <img [src]="this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image" style="height: 100px; width: 100px; margin-bottom: 10px; border-radius: 10px; position: relative; left: -5px;" onerror="this.src='../../assets/icon/no_media.png';" (click)="presentActionSheet()">
+
+      //   <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
+      //   <img *ngIf="isImage==true && isCaptureImage==true" [src]="FileTransferResponse.filename" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
+      //   <video *ngIf="isVideo==true && isCaptureVideo==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></video>
+      //   <audio *ngIf="isAudio==true && isCaptureAudio==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></audio>
+      // </div>
 
 @Component({
   template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissButton()">
+            <img src='../../assets/icon/back.png' alt="" style="width:10px; height: 18px;">
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
        <div>
-              <div style="text-align: center; padding: 5px;">
-                <h4 style="font-weight: 600;">Match This</h4>
-
-                <div style="padding: 5px; border: 2px solid grey; border-radius: 5px; text-align: center;">
-
-                <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
-
-                  <div style="display: flex; margin-bottom: 10px; padding: 5px; justify-content: center;">
-                  <img [src]="this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image" style="height: 100px; width: 100px; margin-bottom: 10px; border-radius: 10px; position: relative; left: -5px;" onerror="this.src='../../assets/icon/no_media.png';" (click)="presentActionSheet()">
-
-                  <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
-                  <img *ngIf="isImage==true && isCaptureImage==true" [src]="FileTransferResponse.filename" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-                  <video *ngIf="isVideo==true && isCaptureVideo==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></video>
-                  <audio *ngIf="isAudio==true && isCaptureAudio==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></audio>
-                  </div>
-
-                  <ion-textarea *ngIf="isLink===true" [(ngModel)]="closedMatchLink" placeholder="Enter Link" autocapitalize="true" type="url" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
-
-                  <ion-textarea *ngIf="isWordings===true" [(ngModel)]="closedMatchWording" placeholder="Enter Wording" type="text" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
-
-                  <ion-row style="border: 1px solid transparent; height: 47px;">
-                    <ion-label style="position: relative; top: 8px; margin-right: 15px;">Make it Anonymous</ion-label>
-                    <ion-toggle [(ngModel)]="isAnonymous"></ion-toggle>
-                  </ion-row>
-
-                  <ion-button type="submit" shape="round" size="small" (click)="ToSendMatch($event)" style="text-transform: none;">Send Match</ion-button>
-                </div>
+        <div style="text-align: center; padding: 5px;">
+          <h4 style="font-weight: 600;">Match This</h4>
+          <div style=" margin: 10px;box-shadow: 1px 1px 10px 0px;padding: 5px 5px 30px 5px;margin-top: 0px !important;border-radius: 3px; border-top: 2px solid #80808078 ; margin-bottom: 50px;">
+            <div *ngIf="this.selectItem.length == 1">
+              <div>
+                <img [src]="this.Match.compare_data[this.selectItem[0]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
               </div>
             </div>
+            <div *ngIf="this.selectItem.length == 2">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+                <img [src]="this.Match.compare_data[this.selectItem[0]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <img [src]="this.Match.compare_data[this.selectItem[1]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+              </div>
+            </div>
+            <div *ngIf="this.selectItem.length == 3">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
+                <img [src]="this.Match.compare_data[this.selectItem[0]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <img [src]="this.Match.compare_data[this.selectItem[1]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <img [src]="this.Match.compare_data[this.selectItem[2]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px" >
+              </div>
+            </div>
+            <div *ngIf="this.selectItem.length == 4">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+                <img [src]="this.Match.compare_data[this.selectItem[0]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+                <img [src]="this.Match.compare_data[this.selectItem[1]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr;">
+                <img [src]="this.Match.compare_data[this.selectItem[2]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+                <img [src]="this.Match.compare_data[this.selectItem[3]].image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+              </div>
+            </div>
+          </div>
+          <div style="padding: 5px; border: 2px solid grey; border-radius: 5px; text-align: center;">
+
+          <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
+
+          <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
+
+            <ion-textarea *ngIf="isLink===true" [(ngModel)]="closedMatchLink" placeholder="Enter Link" autocapitalize="true" type="url" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
+
+            <ion-textarea *ngIf="isWordings===true" [(ngModel)]="closedMatchWording" placeholder="Enter Wording" type="text" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
+
+            <ion-row style="border: 1px solid transparent; height: 47px;">
+              <ion-label style="position: relative; top: 8px; margin-right: 15px;">Make it Anonymous</ion-label>
+              <ion-toggle [(ngModel)]="isAnonymous"></ion-toggle>
+            </ion-row>
+            <div style="display: flex; justify-content: space-between;">
+
+              <div style="display: flex; background-color: white; width: 31px; height: 30px; margin-left: 10px;">
+                <ion-button shape="round" size="small" (click)="dismissButton()" style="text-transform: none;">cancel</ion-button>
+              </div>
+
+              <ion-button type="submit" shape="round" size="small" (click)="ToSendMatch($event)" style="text-transform: none;">proced</ion-button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </ion-content>
   `
 })
 
   export class SendMatchComponent {
 
-  FormSubmit: boolean = false;
-  public MatchThisForm: FormGroup;
-  caption: AbstractControl;
-  isAnonymous: boolean;
+    FormSubmit: boolean = false;
+    public MatchThisForm: FormGroup;
+    caption: AbstractControl;
+    isAnonymous: boolean;
 
-  userCaption = {
-  "caption": "" ,
-  };
+    userCaption = {
+    "caption": "" ,
+    };
 
-  Match: any  = [];
-  userDetails: any;
-  userType: string;
-  closedMatchCaption: string;
-  closedMatchLink: string;
-  closedMatchWording: string;
-  isCaptureImage: boolean;
-  FileTransferResponse: any = [];
-  isLink: boolean = false;
-  hideImageSpace: boolean = true;
-  isWordings: boolean = false;
-  cameraData: MediaFile;
-  documentData: any;
-  isPickDocuments: boolean;
-  isCaptureAudio: boolean;
-  isCaptureVideo: boolean;
-  audioData: MediaFile;
-  videoData: MediaFile;
-  isVideo: boolean = false;
-  isAudio: boolean = false;
-  isImage: boolean = false;
+    Match: any  = [];
+    selectItem: any = [];
+    userDetails: any;
+    userType: string;
+    closedMatchCaption: string;
+    closedMatchLink: string;
+    closedMatchWording: string;
+    isCaptureImage: boolean;
+    FileTransferResponse: any = [];
+    isLink: boolean = false;
+    hideImageSpace: boolean = true;
+    isWordings: boolean = false;
+    cameraData: MediaFile;
+    documentData: any;
+    isPickDocuments: boolean;
+    isCaptureAudio: boolean;
+    isCaptureVideo: boolean;
+    audioData: MediaFile;
+    videoData: MediaFile;
+    isVideo: boolean = false;
+    isAudio: boolean = false;
+    isImage: boolean = false;
 
-  constructor(
-  public popoverController: PopoverController,
-  private actionSheetCtrl: ActionSheetController,
-  public storageservice: StorageService,
-  private mediaCapture: MediaCapture,
-  private fileChooser: FileChooser,
-  private filePath: FilePath,
-  private transfer: FileTransfer,
-  private common: CommonService,
-  public formbuilder: FormBuilder,
-  public navParams: NavParams,
-  ) {
+    constructor(
+      public popoverController: PopoverController,
+      public modalController: ModalController,
+      private actionSheetCtrl: ActionSheetController,
+      public storageservice: StorageService,
+      private mediaCapture: MediaCapture,
+      private fileChooser: FileChooser,
+      private filePath: FilePath,
+      private transfer: FileTransfer,
+      private common: CommonService,
+      public formbuilder: FormBuilder,
+      public navParams: NavParams,
+    ) {
 
-  this.MatchThisForm = formbuilder.group({
-  caption:['',Validators.compose([Validators.required,
-                              Validators.minLength(1),
-                            ])],
-  });
+    this.MatchThisForm = formbuilder.group({
+    caption:['',Validators.compose([Validators.required,
+                                Validators.minLength(1),
+                              ])],
+    });
 
-  this.caption = this.MatchThisForm.controls['caption'];
+    this.caption = this.MatchThisForm.controls['caption'];
 
-  console.log(this.navParams.get('key'));
-  this.Match = this.navParams.get('key');
-  this.userType = this.navParams.get('userType');
-  console.log('users in popover:',this.Match);
-  // console.log('user type:',this.userType);
+    this.Match = this.navParams.get('key');
+    this.userType = this.navParams.get('userType');
+    this.selectItem = this.navParams.get('selectItem');
 
-  this.storageservice.storage.get('userDetails').then((val) => {
-  console.log('Storage Value of userDetails:', val);
-  this.userDetails = val;
-  });
+    this.storageservice.storage.get('userDetails').then((val) => {
+      console.log('Storage Value of userDetails:', val);
+      this.userDetails = val;
+    });
 
   }
 
   ionViewWillEnter(){
-  console.log('ionViewWillEnter:',this.Match);
-  this.isCaptureImage = false;
-  this.hideImageSpace = true;
+    this.isCaptureImage = false;
+    this.hideImageSpace = true;
+  }
+
+  async dismissButton(){
+    this.modalController.dismiss();
   }
 
   async presentActionSheet() {
@@ -1370,10 +1479,12 @@ export class PopoverComponent {
             console.log('closedMatchLink',this.closedMatchLink);
   
       }
+
+      console.log(this.userType);
   
       let params = {
         rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.senderid,
+        opponent_userid: this.Match.compare_data[0].id,
         personal_matchid: this.Match.match_id,
         match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
         caption: this.closedMatchCaption,
@@ -1413,9 +1524,9 @@ export class PopoverComponent {
 
       let params = {
         rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.senderid,
+        opponent_userid: this.Match.compare_data[0].id,
         personal_matchid: this.Match.match_id,
-        match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
+        match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
         caption: this.closedMatchCaption,
         link: '',
         text: this.closedMatchWording,

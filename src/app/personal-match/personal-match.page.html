@@ -40,66 +40,227 @@
 
   <div style=" margin: 10px;box-shadow: 1px 1px 10px 0px;padding: 5px 5px 30px 5px;margin-top: 0px !important;border-radius: 3px; border-top: 2px solid #80808078 ; margin-bottom: 50px;">
 
-    <div style=" display: flex; ">
+    <div style="flex:1">
+      <div *ngIf="match.compare_data.length == 2">
+        <div style="display: grid; grid-template-columns: 1fr 1fr;">
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[0].image_type==='image' || match.compare_data[0].image_type===''" [src]="match.compare_data[0].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[0].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[0].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[0].image_type==='video'" [src]="match.compare_data[0].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[0].image_type==='audio'" [src]="match.compare_data[0].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[0].image_type==='link' || match.compare_data[0].image_type==='file'" [href]="match.compare_data[0].image">{{match.compare_data[0].image}}</a>
+            </div>
 
-      <div>
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[1].image_type==='image' || match.compare_data[1].image_type===''" [src]="match.compare_data[1].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[1].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[1].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[1].image_type==='video'" [src]="match.compare_data[1].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[1].image_type==='audio'" [src]="match.compare_data[1].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[1].image_type==='link' || match.compare_data[1].image_type==='file'" [href]="match.compare_data[1].image">{{match.compare_data[1].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="match.compare_data.length == 3">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[0].image_type==='image' || match.compare_data[0].image_type===''" [src]="match.compare_data[0].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[0].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[0].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[0].image_type==='video'" [src]="match.compare_data[0].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[0].image_type==='audio'" [src]="match.compare_data[0].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[0].image_type==='link' || match.compare_data[0].image_type==='file'" [href]="match.compare_data[0].image">{{match.compare_data[0].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[1].image_type==='image' || match.compare_data[1].image_type===''" [src]="match.compare_data[1].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[1].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[1].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[1].image_type==='video'" [src]="match.compare_data[1].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[1].image_type==='audio'" [src]="match.compare_data[1].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[1].image_type==='link' || match.compare_data[1].image_type==='file'" [href]="match.compare_data[1].image">{{match.compare_data[1].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[2].image_type==='image' || match.compare_data[2].image_type===''" [src]="match.compare_data[2].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[2].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[2].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[2].image_type==='video'" [src]="match.compare_data[2].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[2].image_type==='audio'" [src]="match.compare_data[2].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[2].image_type==='link' || match.compare_data[2].image_type==='file'" [href]="match.compare_data[2].image">{{match.compare_data[2].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="match.compare_data.length == 4">
+        <div style="display: grid; grid-template-columns: 1fr 1fr;">
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[0].image_type==='image' || match.compare_data[0].image_type===''" [src]="match.compare_data[0].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[0].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[0].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[0].image_type==='video'" [src]="match.compare_data[0].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[0].image_type==='audio'" [src]="match.compare_data[0].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[0].image_type==='link' || match.compare_data[0].image_type==='file'" [href]="match.compare_data[0].image">{{match.compare_data[0].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+
+            <div (click)="ToSendReceiverLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.receiver_likecount}}</span>
+            </div>
+          </div>
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[1].image_type==='image' || match.compare_data[1].image_type===''" [src]="match.compare_data[1].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[1].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[1].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[1].image_type==='video'" [src]="match.compare_data[1].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[1].image_type==='audio'" [src]="match.compare_data[1].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[1].image_type==='link' || match.compare_data[1].image_type==='file'" [href]="match.compare_data[1].image">{{match.compare_data[1].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 30px;">
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[2].image_type==='image' || match.compare_data[2].image_type===''" [src]="match.compare_data[2].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[2].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[2].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[2].image_type==='video'" [src]="match.compare_data[2].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[2].image_type==='audio'" [src]="match.compare_data[2].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[2].image_type==='link' || match.compare_data[2].image_type==='file'" [href]="match.compare_data[2].image">{{match.compare_data[2].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+          <div style="padding:5px">
+            <img *ngIf="match.compare_data[3].image_type==='image' || match.compare_data[3].image_type===''" [src]="match.compare_data[3].image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 150px;" (click)="toViewReceiverMatchImage($event,match)">
+            <ion-textarea *ngIf="match.compare_data[3].image_type==='text'" readonly class="text-match-style" autoGrow>{{match.compare_data[3].image}}</ion-textarea>
+            <video *ngIf="match.compare_data[3].image_type==='video'" [src]="match.compare_data[3].image" controls style="height: 255px; width: 185px;"></video>
+            <audio *ngIf="match.compare_data[3].image_type==='audio'" [src]="match.compare_data[3].image" controls style="height: 185px; width: 165px;"></audio>
+            <div style="height: auto; padding: 15px">
+            <a *ngIf="match.compare_data[3].image_type==='link' || match.compare_data[3].image_type==='file'" [href]="match.compare_data[3].image">{{match.compare_data[3].image}}</a>
+            </div>
+
+            <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
+              <img *ngIf="match.compare_data[0].image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
+            </p>
+            <div style="" (click)="ToSendSenderLike($event,match)">
+              <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
+              <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
+              <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div *ngFor="let item of match.compare_data; let k = index">
 
         <div style="background-color: #7070728f; padding: 5px; border-radius: 5px; margin-bottom: 15px;">
-          <img *ngIf="match.receiver_image_type==='image' || match.receiver_image_type===''" [src]="match.receiver_image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)">
-          <ion-textarea *ngIf="match.receiver_image_type==='text'" readonly class="text-match-style" autoGrow>{{match.receiver_image}}</ion-textarea>
-          <!-- <img *ngIf="match.receiver_image_type==='link' || match.receiver_image_type==='file'" [src]="match.receiver_image"  alt="" onerror="this.onerror=null;this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)"> -->
-          <video *ngIf="match.receiver_image_type==='video'" [src]="match.receiver_image" controls style="height: 255px; width: 185px;"></video>
-          <audio *ngIf="match.receiver_image_type==='audio'" [src]="match.receiver_image" controls style="height: 185px; width: 165px;"></audio>
+          <img *ngIf="item.image_type==='image' || item.image_type===''" [src]="item.image"  alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)">
+          <ion-textarea *ngIf="item.image_type==='text'" readonly class="text-match-style" autoGrow>{{item.image}}</ion-textarea>
+          <video *ngIf="item.image_type==='video'" [src]="item.image" controls style="height: 255px; width: 185px;"></video>
+          <audio *ngIf="item.image_type==='audio'" [src]="item.image" controls style="height: 185px; width: 165px;"></audio>
           <div style="width: 160px; height: auto; padding: 15px">
-          <a *ngIf="match.receiver_image_type==='link' || match.receiver_image_type==='file'" [href]="match.receiver_image">{{match.receiver_image}}</a>
+          <a *ngIf="item.image_type==='link' || item.image_type==='file'" [href]="item.image">{{item.image}}</a>
           </div>
-          <!-- <a *ngIf="match.receiver_image_type==='link'" [href]="match.receiver_image">{{match.receiver_image}}</a> -->
 
-          <!-- <p style="margin: 0; font-size: 14px;"> {{match.receiver_image_win}} Wins</p>
-          <p style="margin: 0; font-size: 14px;"> {{match.receiver_image_loss}} Lost</p>
-
-          <p style="margin: 0; font-size: 14px;"> {{match.receiver_anonymous_count}} Anonymous</p>
-          <p (click)="openRevealedCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> {{match.receiver_reveal_count}} Revealed</p> -->
 
           <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
             <img *ngIf="PersonalMatch[i].receiver_image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
-            <!-- {{+match.receiver_image_win + +match.receiver_image_loss}} -->
           </p>
         </div>
 
-      </div>
+      </div> -->
 
-      <div style=" padding: 3px; "></div>
+      <!-- <div style=" padding: 3px; "></div>
 
       <div style=" position: absolute; height: 30px; top: 20%; right: 46%; ">
         <img src="../../assets/icon/vs.png" alt="">
-      </div>
-
+      </div> 
+      
       <div>
 
         <div style="background-color: #7070728f; padding: 5px; border-radius: 5px; margin-bottom: 15px;">
           <img *ngIf="match.sender_image_type==='image' || match.sender_image_type===''" [src]="match.sender_image" alt="" onerror="this.src='../../assets/icon/no_media.png';" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewSenderMatchImage($event,match)">
           <ion-textarea *ngIf="match.sender_image_type==='text' || match.sender_image_type===''" readonly class="text-match-style" autoGrow>{{match.sender_image}}</ion-textarea>
-          <!-- <img *ngIf="match.sender_image_type==='link' || match.sender_image_type==='' || match.sender_image_type==='file'" [src]="match.sender_image"  alt="" onerror="this.onerror=null;this.src='../../assets/icon/no_media.png'" style=" border-radius: 7px; height: 255px; width: 195px;" (click)="toViewReceiverMatchImage($event,match)"> -->
           <video *ngIf="match.sender_image_type==='video'" [src]="match.sender_image" controls style="height: 255px; width: 185px;"></video>
           <audio *ngIf="match.sender_image_type==='audio'" [src]="match.sender_image" controls style="height: 185px; width: 165px;"></audio>
           <div style="width: 160px; height: auto; padding: 15px">
             <a *ngIf="match.sender_image_type==='link' || match.sender_image_type==='' || match.sender_image_type==='file'" [href]="match.sender_image">{{match.sender_image}}</a>
           </div>
-          <!-- <p style="margin: 0; font-size: 14px;"> {{match.sender_image_win}} Wins</p>
-          <p style="margin: 0; font-size: 14px;"> {{match.sender_image_loss}} Lost</p>
-
-          <p style="margin: 0; font-size: 14px;"> {{match.sender_anonymous_count}} Anonymous</p>
-          <p (click)="openRevealedCount(i, 'sender')" style="margin: 0; font-size: 14px;"> {{match.sender_reveal_count}} Revealed</p> -->
 
 
           <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'sender')" style="margin: 0; font-size: 14px;"> 
             <img *ngIf="PersonalMatch[i].sender_image_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
-            <!-- {{+match.sender_image_win + +match.sender_image_loss}}  -->
           </p>
         </div>
 
-      </div>
+      </div> -->
 
     </div>
 
@@ -114,21 +275,19 @@
 
     </div>
 
-    <div style="display: flex;position: relative;left: 10%;">
+    <!-- <div style="display: flex;position: relative;left: 10%;">
 
       <div (click)="ToSendReceiverLike($event,match)">
-        <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
         <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
         <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.receiver_likecount}}</span>
       </div>
 
       <div style="position: relative;left: 40%;" (click)="ToSendSenderLike($event,match)">
-        <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
         <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
         <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.sender_likecount}}</span>
       </div>
 
-    </div>
+    </div> -->
 
     <div style="display: flex; position: relative;left: 35%;top: 15px;">
 

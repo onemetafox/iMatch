@@ -474,7 +474,7 @@ export class Tab6Page implements OnInit {
     console.log('Entered into Personal Match page:',match);
     this.userDetails.userType = 'owner';
     this.userDetails.personalMatchSlideIndex = index;
-    this.userDetails.fileType = match.sender_image_type;
+    this.userDetails.fileType = match.compare_data[0].image_type;
     this.userDetails.category = cat;
     this.common.navCtrl.navigateForward(['personal-match'], {queryParams: this.userDetails});
   }

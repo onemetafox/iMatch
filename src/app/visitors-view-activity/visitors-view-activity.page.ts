@@ -185,7 +185,7 @@ export class VisitorsViewActivityPage implements OnInit {
   goToPersonalMatch(e, match, index: number, cat) {
     this.UserInfo.userType = 'visitor';
     this.UserInfo.personalMatchSlideIndex = index;
-    this.UserInfo.fileType = match.sender_image_type;
+    this.UserInfo.fileType = match.compare_data[0].image_type;
     this.UserInfo.category = cat;
     this.common.navCtrl.navigateForward(['/personal-match'], {queryParams: this.UserInfo});
     // this.common.router.navigate(['/personal-match']);
