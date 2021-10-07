@@ -71,12 +71,12 @@ export class VisitorsViewActivityPage implements OnInit {
 
     this.common.postMethod('PersonalMatch',params).then((res:any) => {
       console.log('res:',res);
-      this.PersonalMatch = res.details.image;
-      this.PersonalMatchImage = res.details.image;
-      this.PersonalMatchAudio = res.details.audio;
-      this.PersonalMatchLink = res.details.link;
-      this.PersonalMatchText = res.details.text;
-      this.PersonalMatchVideo = res.details.video;
+      this.PersonalMatch = res.details;
+      // this.PersonalMatchImage = res.details.image;
+      // this.PersonalMatchAudio = res.details.audio;
+      // this.PersonalMatchLink = res.details.link;
+      // this.PersonalMatchText = res.details.text;
+      // this.PersonalMatchVideo = res.details.video;
       console.log('PersonalMatch:',this.PersonalMatch);
     });
 

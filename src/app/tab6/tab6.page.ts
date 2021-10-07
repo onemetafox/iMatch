@@ -108,24 +108,17 @@ export class Tab6Page implements OnInit {
       this.closedMatch = [];
 
        this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails in ionViewWillEnter:', val);
 
         if (val==null) {
-          console.log('Storage Value of userDetails is empty');
         } else {
-          console.log('Storage Value of userDetails');
           this.userDetails = val;
 
           const userid = this.userDetails.userid;
           const name = 'get_profile_pic/';
           this.common.http.get(this.common.ajx.BaseUrl+name+userid).subscribe((res:any) => {
-            console.log('res:',res);
             this.userArray = res.details[0];
-            console.log('change of array');
             this.userDetails = this.userArray;
-            console.log('userDetails:',this.userDetails);
             this.storageservice.setStorage('userDetails', res.details[0]);
-            console.log('Userdetails details successfully stored');
           });
         }
 
@@ -138,57 +131,59 @@ export class Tab6Page implements OnInit {
         console.log(params);
         
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('PersonalMatch:',res);
-          this.PersonalMatch = res.details.image;
-          this.PersonalMatchImage = res.details.image;
-          this.PersonalMatchAudio = res.details.audio;
-          this.PersonalMatchVideo = res.details.video;
-          this.PersonalMatchLink = res.details.link;
-          this.PersonalMatchText = res.details.text;
+          console.log("Response------------------------", res);
+          this.PersonalMatch = res.details;
+          // this.PersonalMatchImage = res.details.image;
+          // this.PersonalMatchAudio = res.details.audio;
+          // this.PersonalMatchVideo = res.details.video;
+          // this.PersonalMatchLink = res.details.link;
+          // this.PersonalMatchText = res.details.text;
         });
 
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('ClosedMatch:',res);
-          this.closedMatchImage = res.details.image;
-          this.closedMatchAudio = res.details.audio;
-          this.closedMatchLink = res.details.link;
-          this.closedMatchText = res.details.text;
-          this.closedMatchVideo = res.details.video;
+          console.log(res.details);
+          // this.closedMatchImage = res.details.image;
+          // this.closedMatchAudio = res.details.audio;
+          // this.closedMatchLink = res.details.link;
+          // this.closedMatchText = res.details.text;
+          // this.closedMatchVideo = res.details.video;
 
-          if (this.closedMatchAudio.length!==0) {
-            for (let i=0; i < this.closedMatchAudio.length; i++) {
-              this.closedMatch.push(this.closedMatchAudio[i]);
-            }
-            console.log('closedMatch:', this.closedMatch);
-          } 
+          // if (this.closedMatchAudio.length!==0) {
+          //   for (let i=0; i < this.closedMatchAudio.length; i++) {
+          //     this.closedMatch.push(this.closedMatchAudio[i]);
+          //   }
+          //   console.log('closedMatch:', this.closedMatch);
+          // } 
 
-          if (this.closedMatchImage.length!==0) {
-            for (let i=0; i < this.closedMatchImage.length; i++) {
-              this.closedMatch.push(this.closedMatchImage[i]);
-            }
-            console.log('closedMatch:', this.closedMatch);
-          } 
+          // if (this.closedMatchImage.length!==0) {
+          //   for (let i=0; i < this.closedMatchImage.length; i++) {
+          //     this.closedMatch.push(this.closedMatchImage[i]);
+          //   }
+          //   console.log('closedMatch:', this.closedMatch);
+          // } 
 
-          if (this.closedMatchLink.length!==0) {
-            for (let i=0; i < this.closedMatchLink.length; i++) {
-              this.closedMatch.push(this.closedMatchLink[i]);
-            }
-            console.log('closedMatch:', this.closedMatch);
-          } 
+          // if (this.closedMatchLink.length!==0) {
+          //   for (let i=0; i < this.closedMatchLink.length; i++) {
+          //     this.closedMatch.push(this.closedMatchLink[i]);
+          //   }
+          //   console.log('closedMatch:', this.closedMatch);
+          // } 
 
-          if (this.closedMatchText.length!==0) {
-            for (let i=0; i < this.closedMatchText.length; i++) {
-              this.closedMatch.push(this.closedMatchText[i]);
-            }
-            console.log('closedMatch:', this.closedMatch);
-          } 
+          // if (this.closedMatchText.length!==0) {
+          //   for (let i=0; i < this.closedMatchText.length; i++) {
+          //     this.closedMatch.push(this.closedMatchText[i]);
+          //   }
+          //   console.log('closedMatch:', this.closedMatch);
+          // } 
 
-          if (this.closedMatchVideo.length!==0) {
-            for (let i=0; i < this.closedMatchVideo.length; i++) {
-              this.closedMatch.push(this.closedMatchVideo[i]);
-            }
-            console.log('closedMatch:', this.closedMatch);
-          } 
+          // if (this.closedMatchVideo.length!==0) {
+          //   for (let i=0; i < this.closedMatchVideo.length; i++) {
+          //     this.closedMatch.push(this.closedMatchVideo[i]);
+          //   }
+          //   console.log('closedMatch:', this.closedMatch);
+          // } 
+
+          this.closedMatch = res.details;
 
         });
 
@@ -475,6 +470,15 @@ export class Tab6Page implements OnInit {
     this.userDetails.userType = 'owner';
     this.userDetails.personalMatchSlideIndex = index;
     this.userDetails.fileType = match.compare_data[0].image_type;
+    this.userDetails.category = cat;
+    this.common.navCtrl.navigateForward(['personal-match'], {queryParams: this.userDetails});
+  }
+
+  goToPersonalMatch1(e, match, index: number, cat) {
+    console.log('Entered into Personal Match page:',match);
+    this.userDetails.userType = 'owner';
+    this.userDetails.personalMatchSlideIndex = index;
+    this.userDetails.fileType = 'image'
     this.userDetails.category = cat;
     this.common.navCtrl.navigateForward(['personal-match'], {queryParams: this.userDetails});
   }
