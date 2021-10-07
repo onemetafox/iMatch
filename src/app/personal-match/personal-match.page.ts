@@ -867,27 +867,65 @@ export class PopoverComponent {
         <div *ngIf="Match.compare_data.length == 2">
           <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
             <div *ngFor="let item of Match.compare_data; let i = index">
-              <img [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
+              <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
+              <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)" />
+              <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></video>
+              <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></audio>
+              <div *ngIf="item.media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
+                <a [href]="item.media">{{item.media}}</a>
+              </div>
             </div>
           </div>
         </div>
 
         <div *ngIf="Match.compare_data.length == 3">
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
-            <div *ngFor="let item of Match.compare_data; let i = index">
-              <img [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
-            </div>
+              <div *ngFor="let item of Match.compare_data; let i = index">
+                <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
+                <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
+                <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></video>
+                <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></audio>
+                <div *ngIf="item.media_type==='link'" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
+                  <a [href]="item.media">{{item.media}}</a>
+                </div>
+              </div>
           </div>
         </div>
 
         <div *ngIf="Match.compare_data.length == 4">
           <div style="display: grid; grid-template-columns: 1fr 1fr;margin-top: 10px;">
-            <img [src]="Match.compare_data[0].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
-            <img [src]="Match.compare_data[1].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+            <div *ngIf="Match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">{{Match.compare_data[0].media}}</div>
+            <img *ngIf="Match.compare_data[0].media_type==='image' || Match.compare_data[0].media_type===''" [src]="Match.compare_data[0].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
+            <video *ngIf="Match.compare_data[0].media_type==='video'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></video>
+            <audio *ngIf="Match.compare_data[0].media_type==='audio'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></audio>
+            <div *ngIf="Match.compare_data[0].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
+              <a [href]="Match.compare_data[0].media">{{Match.compare_data[0].media}}</a>
+            </div>
+
+            <div *ngIf="Match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">{{Match.compare_data[1].media}}</div>
+            <img *ngIf="Match.compare_data[1].media_type==='image' || Match.compare_data[1].media_type===''" [src]="Match.compare_data[1].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+            <video *ngIf="Match.compare_data[1].media_type==='video'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></video>
+            <audio *ngIf="Match.compare_data[1].media_type==='audio'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></audio>
+            <div *ngIf="Match.compare_data[1].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+              <a [href]="Match.compare_data[1].media">{{Match.compare_data[1].media}}</a>
+            </div>
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
-            <img [src]="Match.compare_data[2].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"> 
-            <img [src]="Match.compare_data[3].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+            <div *ngIf="Match.compare_data[2].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">{{Match.compare_data[2].media}}</div>
+            <img *ngIf="Match.compare_data[2].media_type==='image' || Match.compare_data[2].media_type===''" [src]="Match.compare_data[2].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
+            <video *ngIf="Match.compare_data[2].media_type==='video'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></video>
+            <audio *ngIf="Match.compare_data[2].media_type==='audio'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></audio>
+            <div *ngIf="Match.compare_data[2].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
+              <a [href]="Match.compare_data[2].media">{{Match.compare_data[2].media}}</a>
+            </div>
+
+            <div *ngIf="Match.compare_data[3].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">{{Match.compare_data[3].media}}</div>
+            <img *ngIf="Match.compare_data[3].media_type==='image' || Match.compare_data[3].media_type===''" [src]="Match.compare_data[3].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+            <video *ngIf="Match.compare_data[3].media_type==='video'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></video>
+            <audio *ngIf="Match.compare_data[3].media_type==='audio'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></audio>
+            <div *ngIf="Match.compare_data[3].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+              <a [href]="Match.compare_data[3].media">{{Match.compare_data[3].media}}</a>
+            </div>
           </div>
         </div>
 
@@ -992,30 +1030,90 @@ export class PopoverComponent {
           <div style=" margin: 10px;box-shadow: 1px 1px 10px 0px;padding: 5px 5px 30px 5px;margin-top: 0px !important;border-radius: 3px; border-top: 2px solid #80808078 ; margin-bottom: 50px;">
             <div *ngIf="this.selectItem.length == 1">
               <div>
-                <img [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
               </div>
             </div>
             <div *ngIf="this.selectItem.length == 2">
               <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
-                <img [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
-                <img [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
               </div>
             </div>
             <div *ngIf="this.selectItem.length == 3">
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
-                <img [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
-                <img [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
-                <img [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px" >
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[2]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='image' || this.Match.compare_data[this.selectItem[2]].media_type===''" [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[2]].media">{{this.Match.compare_data[this.selectItem[2]].media}}</a>
+                </div>
               </div>
             </div>
             <div *ngIf="this.selectItem.length == 4">
               <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
-                <img [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
-                <img [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                <img [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
-                <img [src]="this.Match.compare_data[this.selectItem[3]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" >
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[2]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='image' || this.Match.compare_data[this.selectItem[2]].media_type===''" [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[2]].media">{{this.Match.compare_data[this.selectItem[2]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[3]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='image' || this.Match.compare_data[this.selectItem[3]].media_type===''" [src]="this.Match.compare_data[this.selectItem[3]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[3]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[3]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[3]].media">{{this.Match.compare_data[this.selectItem[3]].media}}</a>
+                </div>
               </div>
             </div>
           </div>
