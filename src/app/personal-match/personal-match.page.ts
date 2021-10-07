@@ -1121,11 +1121,17 @@ export class PopoverComponent {
 
             <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
             
-            <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
-
-            <ion-textarea *ngIf="isLink===true" [(ngModel)]="closedMatchLink" placeholder="Enter Link" autocapitalize="true" type="url" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
-
-            <ion-textarea *ngIf="isWordings===true" [(ngModel)]="closedMatchWording" placeholder="Enter Wording" type="text" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
+            <div *ngFor="let att of this.anArray; let idx = index">
+              <div *ngIf="att.type=='text'">
+                <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
+              </div>
+              <div *ngIf="att.type=='link'">
+                <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
+              </div>
+              <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
+            </div>
+            
+            <img src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
 
             <ion-row style="border: 1px solid transparent; height: 47px;">
               <ion-label style="position: relative; top: 8px; margin-right: 15px;">Make it Anonymous</ion-label>
@@ -1159,6 +1165,9 @@ export class PopoverComponent {
     };
 
     selectedFiles: any = [];
+    anArray: any [] = [];
+    wordArray: any [] = [];
+    linkArray: any [] = [];
     myFiles: any = [];
     urls: any = [];
     Match: any  = [];
@@ -1233,6 +1242,31 @@ export class PopoverComponent {
     this.modalController.dismiss();
   }
 
+  Add(type){
+    if(this.anArray.length >= 2){
+      this.common.showAlert('Maximum is 2 items');
+      return;
+    }
+    if(type == 'link'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'link'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'text'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'text'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+  }
+
   async presentActionSheet() {
     console.log('Action Sheet Clicked');
     let actionSheet = await this.actionSheetCtrl.create({
@@ -1242,6 +1276,8 @@ export class PopoverComponent {
           text: 'Send Wordings',
           icon: 'text',
           handler: () => {
+            this.wordArray.push({value: ''});
+            this.Add('text');
             this.SendWordings();
             console.log('Wording clicked');
           }
@@ -1251,6 +1287,8 @@ export class PopoverComponent {
           text: 'Share Links',
           icon: 'link',
           handler: () => {
+            this.linkArray.push({value: 'http://'});
+            this.Add('link');
             this.PickLinks();
             console.log('Share clicked');
           }
@@ -1260,6 +1298,7 @@ export class PopoverComponent {
             text: 'Capture Image',
             icon: 'camera',
             handler: () => {
+              this.anArray.push({value: '', type: 'image'});
               this.CaptureImage();
               console.log('Camera clicked');
             }
@@ -1270,6 +1309,7 @@ export class PopoverComponent {
           icon: 'videocam',
 
           handler: () => {
+            this.anArray.push({value: '', type: 'video'});
             this.CaptureVideo();
             console.log("Gallery clicked");
           }
@@ -1280,6 +1320,7 @@ export class PopoverComponent {
           icon: 'mic-circle',
 
           handler: () => {
+            this.anArray.push({value: '', type: 'audio'});
             this.CaptureAudio();
             console.log("Audio clicked");
           }
@@ -1289,6 +1330,7 @@ export class PopoverComponent {
           text: 'Other Files',
           icon: 'folder-open',
           handler: () => {
+            this.anArray.push({value: '', type: 'file'});
             this.PickDocuments();
             console.log('Folder clicked');
           }
@@ -1625,147 +1667,178 @@ export class PopoverComponent {
   ToSendMatch (e) {
   console.log('Send Match Button Clicked');
 
-  if (this.isLink==true) {
-
-    if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
-
-      this.common.showLoader();
-
-      const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-      if (this.closedMatchLink.match(regex)!=null) {
-  
-        console.log('Matching link');
-          this.closedMatchLink = this.closedMatchLink;
-            console.log('closedMatchLink',this.closedMatchLink);
-  
-      } else {
-  
-        console.log('No Match');
-          this.closedMatchLink = 'https://'+this.closedMatchLink;
-            console.log('closedMatchLink',this.closedMatchLink);
-  
-      }
-
-      console.log(this.userType);
-  
-      let params = {
-        rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.compare_data[0].id,
-        personal_matchid: this.Match.match_id,
-        match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-        caption: this.closedMatchCaption,
-        link: this.closedMatchLink,
-        text: '',
-        match_link:'',
-        match_text: '',
-        seen_status: '0',
-        select_medis: JSON.stringify(this.matchIds),
-      }
-      console.log('params:',params);
-        this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
-          console.log('res:',res);
-  
-          if (res.status === true) {
-            this.common.presentToast(' Your closed match invitaion send successfully ');
-            this.popoverController.dismiss();
-          } else {
-            this.common.presentToast(' Your closed match invitaion sending failed ');
-          }
-          await this.common.hideLoader();
-      }, async err => {
-        await this.common.hideLoader();
-          console.log('err:',err);
-          this.popoverController.dismiss();  
-  
-      });
-
-    } else {
-      this.common.showAlert('All fields are mandatory');
-    }
-
-
-
-  } else if (this.isWordings==true) {
-
-    if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
-
-      let params = {
-        rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.compare_data[0].id,
-        personal_matchid: this.Match.match_id,
-        match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
-        caption: this.closedMatchCaption,
-        link: '',
-        text: this.closedMatchWording,
-        match_link:'',
-        match_text: '',
-        seen_status: '0',
-        select_medis: JSON.stringify(this.matchIds),
-      }
-      console.log('params:',params);
-        this.common.postMethod('create_closedmatch',params).then((res:any) => {
-          console.log('res:',res);
-          if (res.status === true) {
-            this.common.presentToast(' Your closed match invitaion send successfully ');
-            this.popoverController.dismiss();
-          } else {
-            this.common.presentToast(' Your closed match invitaion sending failed ');
-          }
-      }, err => {
-          console.log('err:',err);
-            console.log('headers:',err.Headers);
-            this.popoverController.dismiss();
-  
-      });
-
-    } else {
-
-      this.common.showAlert('All fields are mandatory');
-
-    }
-
-
-
-  } else if (this.hideImageSpace==true && e.type==="click") {
-
-    // if (this.FileTransferResponse.length!=0) {
-    //   console.log('FileTransferResponse:',this.FileTransferResponse);
-    //   if (this.FileTransferResponse.status === true) {
-    //     this.common.popoverController.dismiss();
-    //     this.common.presentToast(' Your closed match send successfully ');
-    //   } else {
-    //     this.common.popoverController.dismiss();
-    //     this.common.presentToast('Closed Match Send Failed!');
-    //   }
-
-    // } else {
-    //   console.log('FileTransferResponse:',this.FileTransferResponse);
-    //   this.common.popoverController.dismiss();
-    //   this.common.showAlert('You must need to upload a media');
-    // }
-
-    //---------------------------------------------------------------------------------Add multi files
-    console.log(this,this.myFiles);
-    for( let i=0; i<this.myFiles.length; i++ ) 
-    {
-      this.uploadFile2(this.myFiles[i], 'image');
-    }
-
-    //--------------------------------------------------------------------------------------------------------------------
-    
-  } else if (this.isImage) {
-      // this.uploadFile2(this.cameraData, 'image'); 
-      this.common.popoverController.dismiss();
-  } else if (this.isAudio) {
-      // this.uploadFile2(this.documentData, 'file');
-      this.common.popoverController.dismiss();
-
-  } else if (this.isVideo) {
-    // this.uploadFile2(this.videoData, 'video');
-    this.common.popoverController.dismiss();
-
+  this.common.showLoader();
+  let params = {
+    rival_userid : this.userDetails.userid,
+    opponent_userid: this.Match.compare_data[0].id,
+    personal_matchid: this.Match.match_id,
+    caption: this.closedMatchCaption,
+    link: JSON.stringify(this.linkArray),
+    text: JSON.stringify(this.wordArray),
+    sub_cations: JSON.stringify(this.anArray),
+    match_link:'',
+    match_text: '',
+    seen_status: '0',
+    select_medis: JSON.stringify(this.matchIds),
   }
+
+  this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
+    console.log('res:',res);
+
+    if (res.status === true) {
+      this.common.presentToast(' Your closed match invitaion send successfully ');
+      this.popoverController.dismiss();
+    } else {
+      this.common.presentToast(' Your closed match invitaion sending failed ');
+    }
+    await this.common.hideLoader();
+  }, async err => {
+    await this.common.hideLoader();
+    console.log('err:',err);
+    this.popoverController.dismiss();  
+  });
+  
+  // if (this.isLink==true) {
+
+  //   if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
+
+  //     this.common.showLoader();
+
+  //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
+
+  //     if (this.closedMatchLink.match(regex)!=null) {
+  
+  //       console.log('Matching link');
+  //         this.closedMatchLink = this.closedMatchLink;
+  //           console.log('closedMatchLink',this.closedMatchLink);
+  
+  //     } else {
+  
+  //       console.log('No Match');
+  //         this.closedMatchLink = 'https://'+this.closedMatchLink;
+  //           console.log('closedMatchLink',this.closedMatchLink);
+  
+  //     }
+
+  //     console.log(this.userType);
+  
+  //     let params = {
+  //       rival_userid : this.userDetails.userid,
+  //       opponent_userid: this.Match.compare_data[0].id,
+  //       personal_matchid: this.Match.match_id,
+  //       match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
+  //       caption: this.closedMatchCaption,
+  //       link: this.closedMatchLink,
+  //       text: '',
+  //       match_link:'',
+  //       match_text: '',
+  //       seen_status: '0',
+  //       select_medis: JSON.stringify(this.matchIds),
+  //     }
+  //     console.log('params:',params);
+  //       this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
+  //         console.log('res:',res);
+  
+  //         if (res.status === true) {
+  //           this.common.presentToast(' Your closed match invitaion send successfully ');
+  //           this.popoverController.dismiss();
+  //         } else {
+  //           this.common.presentToast(' Your closed match invitaion sending failed ');
+  //         }
+  //         await this.common.hideLoader();
+  //     }, async err => {
+  //       await this.common.hideLoader();
+  //         console.log('err:',err);
+  //         this.popoverController.dismiss();  
+  
+  //     });
+
+  //   } else {
+  //     this.common.showAlert('All fields are mandatory');
+  //   }
+
+
+
+  // } else if (this.isWordings==true) {
+
+  //   if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
+
+  //     let params = {
+  //       rival_userid : this.userDetails.userid,
+  //       opponent_userid: this.Match.compare_data[0].id,
+  //       personal_matchid: this.Match.match_id,
+  //       match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
+  //       caption: this.closedMatchCaption,
+  //       link: '',
+  //       text: this.closedMatchWording,
+  //       match_link:'',
+  //       match_text: '',
+  //       seen_status: '0',
+  //       select_medis: JSON.stringify(this.matchIds),
+  //     }
+  //     console.log('params:',params);
+  //       this.common.postMethod('create_closedmatch',params).then((res:any) => {
+  //         console.log('res:',res);
+  //         if (res.status === true) {
+  //           this.common.presentToast(' Your closed match invitaion send successfully ');
+  //           this.popoverController.dismiss();
+  //         } else {
+  //           this.common.presentToast(' Your closed match invitaion sending failed ');
+  //         }
+  //     }, err => {
+  //         console.log('err:',err);
+  //           console.log('headers:',err.Headers);
+  //           this.popoverController.dismiss();
+  
+  //     });
+
+  //   } else {
+
+  //     this.common.showAlert('All fields are mandatory');
+
+  //   }
+
+
+
+  // } else if (this.hideImageSpace==true && e.type==="click") {
+
+  //   // if (this.FileTransferResponse.length!=0) {
+  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
+  //   //   if (this.FileTransferResponse.status === true) {
+  //   //     this.common.popoverController.dismiss();
+  //   //     this.common.presentToast(' Your closed match send successfully ');
+  //   //   } else {
+  //   //     this.common.popoverController.dismiss();
+  //   //     this.common.presentToast('Closed Match Send Failed!');
+  //   //   }
+
+  //   // } else {
+  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
+  //   //   this.common.popoverController.dismiss();
+  //   //   this.common.showAlert('You must need to upload a media');
+  //   // }
+
+  //   //---------------------------------------------------------------------------------Add multi files
+  //   console.log(this,this.myFiles);
+  //   for( let i=0; i<this.myFiles.length; i++ ) 
+  //   {
+  //     this.uploadFile2(this.myFiles[i], 'image');
+  //   }
+
+  //   //--------------------------------------------------------------------------------------------------------------------
+    
+  // } else if (this.isImage) {
+  //     // this.uploadFile2(this.cameraData, 'image'); 
+  //     this.common.popoverController.dismiss();
+  // } else if (this.isAudio) {
+  //     // this.uploadFile2(this.documentData, 'file');
+  //     this.common.popoverController.dismiss();
+
+  // } else if (this.isVideo) {
+  //   // this.uploadFile2(this.videoData, 'video');
+  //   this.common.popoverController.dismiss();
+
+  // }
   //  else if (this.isPickDocuments) {
   //   this.uploadFile2(this.audioData, 'audio');
   // }
