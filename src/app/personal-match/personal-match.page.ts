@@ -1675,11 +1675,9 @@ export class PopoverComponent {
     caption: this.closedMatchCaption,
     link: JSON.stringify(this.linkArray),
     text: JSON.stringify(this.wordArray),
-    sub_cations: JSON.stringify(this.anArray),
-    match_link:'',
-    match_text: '',
+    sub_captions: JSON.stringify(this.anArray),
     seen_status: '0',
-    select_medis: JSON.stringify(this.matchIds),
+    select_medias: JSON.stringify(this.matchIds),
   }
 
   this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
