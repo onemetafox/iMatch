@@ -79,6 +79,10 @@ const routes: Routes = [
     loadChildren: () => import('./invitation/invitation.module').then( m => m.InvitationPageModule)
   },
   {
+    path: 'pending-open-matches',
+    loadChildren: () => import('./pending-open-matches/pending-open-matches.module').then( m => m.PendingOpenMatchesPageModule)
+  },
+  {
     path: 'group-members',
     loadChildren: () => import('./group-members/group-members.module').then( m => m.GroupMembersPageModule)
   },
@@ -238,7 +242,8 @@ const routes: Routes = [
   {
     path: 'best-moment-comment',
     loadChildren: () => import('./best-moment-comment/best-moment-comment.module').then( m => m.BestMomentCommentPageModule)
-  },  {
+  },
+  {
     path: 'settings',
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   },

@@ -26,6 +26,10 @@ export class InvitationPage implements OnInit {
   // hideImageSpace: boolean = true;
   hideImageSpace: {[key: number]: boolean} = {};
 
+  anArray: any = [];
+  wordArray: any = [];
+  linkArray: any = [];
+
   userDetails: any = [];
   invitationDetails: any = [];
   invite: any = [];
@@ -131,6 +135,41 @@ export class InvitationPage implements OnInit {
 
     });
 
+  }
+
+  Add(type){
+    if(this.anArray.length >= 4){
+      this.common.showAlert('Maximum is 4 items');
+      return;
+    }
+    if(type == 'link'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'link'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'file'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'file'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'text'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'text'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    
   }
 
   openUploadSection(e,invite) {
@@ -333,17 +372,20 @@ export class InvitationPage implements OnInit {
           text: 'Send Wordings',
           icon: 'text',
           handler: () => {
-            this.SendWordings(i);
-            console.log('Wording clicked');
+            // this.SendWordings(i);
+            // console.log('Wording clicked');
+            this.wordArray.push({value: ''});
+            this.Add('text');
           }
-          },
-
+        },
         {
           text: 'Share Links',
           icon: 'link',
           handler: () => {
-            this.pickLinks(i);
-            console.log('Folder clicked');
+            // this.pickLinks(i);
+            // console.log('Folder clicked');
+            this.linkArray.push({value: 'http://'});
+                  this.Add('link');
           }
           },
 

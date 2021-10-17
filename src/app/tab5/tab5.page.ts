@@ -126,6 +126,10 @@ export class Tab5Page implements OnInit {
     this.common.navCtrl.navigateForward(['invitation'] , {queryParams: this.userDetails});
   }
 
+  openOpenMatches() {
+    this.common.router.navigate(['/pending-open-matches']);
+  }
+
   togoBack() {
     console.log('Back Button Clicked');
     this.common.router.navigate(['tabs/tab6']);

@@ -10,15 +10,27 @@
 <ion-content>
   <div class="box">
     <div  class="inner-box">
-      <div>
+      <div style="display: flex; justify-content: space-between">
           <ion-img src="../../assets/icon/help-invitation-terms/bar.png" (click)="presentActionSheet()"></ion-img>
-          <ion-thumbnail slot="end">
-            <img *ngIf="opponentDetails" [src]="opponentDetails.profile_pic" onerror="this.onerror=null;this.src='../../assets/icon/profile/Quser.jpg';">
-          </ion-thumbnail>
-          <span *ngIf="opponentDetails">{{opponentDetails.name}}</span>
-
+          <div style="display: flex; justify-content:space-between;">
+            <div *ngFor="let opponent of opponentDetails" style="display:flex; justify-content: center; width: 80px;margin-top: 12px;">
+              <div style="padding: 5px;text-align: center;">
+                <img *ngIf="opponent" [src]="opponent.profile_pic" onerror="this.onerror=null;this.src='../../assets/icon/profile/Quser.jpg';" style="width: 80px; border-radius: 50%;">
+                <span *ngIf="opponent">{{opponent.name}}</span>
+              </div>
+              
+            </div>
+          </div>
       </div>
-
+      <div *ngFor="let att of this.anArray; let idx = index">
+        <div *ngIf="att.type=='text'">
+          <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" class="input-field"></ion-input>  
+        </div>
+        <div *ngIf="att.type=='link'">
+          <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" class="input-field"></ion-input>  
+        </div>
+        <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" class="input-field"></ion-input>
+      </div>
       <form [formGroup]="invitation">
 
       <div style="font-size: 13px; margin-left: 5%; margin-top: 10%; margin-right: 5%; color: #fcfcfc;">
@@ -75,6 +87,7 @@
           </div>
 
           <div *ngIf="hideImageSpace==true">
+            
             <img *ngIf="isDummyImage==true" style="height: 165px; width: 155px;" src="../../assets/icon/bg2new.png" alt="" (click)="presentActionSheet()">
             <img *ngIf="isImage==true" type='image/jpeg' style="height: 165px; width: 155px;" [src]="FileTransferResponse.filename" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
           <!-- <img *ngIf="FileTransferResponse?.length==0 || isImage==false" style="height: 165px; width: 155px;" src="../../assets/icon/bg2new.png" (click)="presentActionSheet()"> -->
