@@ -9,6 +9,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import * as BaseConfig from '../services/config';
 
 const { Camera, Filesystem } = Plugins;
 
@@ -29,6 +30,7 @@ export class InvitationPage implements OnInit {
   anArray: any = [];
   wordArray: any = [];
   linkArray: any = [];
+  myFiles: any = [];
 
   userDetails: any = [];
   invitationDetails: any = [];
@@ -120,7 +122,6 @@ export class InvitationPage implements OnInit {
       for (let i = 0; i < this.invitationDetails.length; i++) {
           this.hideImageSpace[i] = true;
       }
-
       await this.common.hideLoader();
 
     }, async err => {
@@ -185,8 +186,9 @@ export class InvitationPage implements OnInit {
     console.log(invite);
 
     let params = {
-      request_id : invite.match_id,
-      status : 'reject'
+      matchid : invite.match_id,
+      status : 'reject',
+      userid: this.userDetails.userid
     }
 
     console.log('params:',params);
@@ -194,11 +196,13 @@ export class InvitationPage implements OnInit {
       console.log('res:',res);
 
       if (res.status == true) {
-        this.RefreshInvitaionList(i);
-        this.common.presentToast('You had rejected ' + invite.sender_name + '`s match ');
+        // this.RefreshInvitaionList(i);
+        // this.common.presentToast('You had rejected ' + invite.sender_name + '`s match ');
         // this.common.navCtrl.navigateForward(['tabs/tab5'], {queryParams: this.userDetails});
+        this.common.router.navigate(['tabs/tab6']);
       } else {
         this.common.presentToast('You had already replied to '+ invite.sender_name + '`s invitation ');
+        this.common.router.navigate(['tabs/tab6']);
       }
 
     });
@@ -234,88 +238,116 @@ export class InvitationPage implements OnInit {
 
     console.log('Bring it on clicked');
     console.log(invite);
-
-    if (this.isLink[i]==true) {
-
-      if (this.LinkInputForm.valid) {
-
-        const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-        if (this.userLink.link.match(regex)!=null) {
-  
-          console.log('Matching link');
-            this.userLink.link = this.userLink.link;
-              console.log('link1',this.userLink.link);
-  
-        } else {
-  
-          console.log('No Match');
-            this.userLink.link = 'https://'+this.userLink.link;
-              console.log('link1',this.userLink.link);
-  
-        }
-  
-        let params = {
-          text : this.userLink.link,
-          filetype : 'link',
-          userid : this.userDetails.userid,
-          matchid : this.invite.match_id,
-        }
-        console.log('params:',params);
-        this.common.postMethod('MatchUpload',params).then((res:any) => {
-          console.log('res:',res);
-          this.statusId = res.details.uploaded_id;
-          if (res.status===true) {
-            this.BringItOn();
-            console.log('BringItOn function working ...');
-          } else {
-            console.log('Else part working ....');
-          }
-        }, err => {
-          console.log('Error:',err);
-        });
-
-      } else {
-
-        this.common.showAlert('Please enter any link for Link Match');
-
-      }
-
-    } else if (this.isWording[i]==true) {
-
-      if (this.InvitationWording!=undefined) {
-
-        let params = {
-          text : this.InvitationWording,
-          filetype : 'text',
-          userid : this.userDetails.userid,
-          matchid : this.invite.match_id,
-        }
-        console.log('params:',params);
-        this.common.postMethod('MatchUpload',params).then((res:any) => {
-          console.log('res:',res);
-          this.statusId = res.details.uploaded_id;
-          if (res.status===true) {
-            this.BringItOn();
-            console.log('BringItOn function working ...');
-          } else {
-            console.log('Else part working ....');
-          }
-        }, err => {
-          console.log('Error:',err);
-        });
-
-      } else {
-
-        this.common.showAlert('Please enter any content for Wording Match');
-
-      }
-
-    } else if (this.hideImageSpace[i]==true) {
-
-        this.BringItOn();
-
+    this.common.showLoader();
+    const formData = new FormData();
+    for( let i=0;i<this.myFiles.length; i++) 
+    {
+      formData.append("filename[]",this.myFiles[i]);
     }
+    formData.append("matchid", invite.match_id);
+    formData.append("userid", this.userDetails.userid);
+    formData.append("sub_caption", JSON.stringify(this.anArray));
+    formData.append("links", JSON.stringify(this.linkArray));
+    formData.append("texts", JSON.stringify(this.wordArray));
+    this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/acceptInvitation',formData 
+    ).subscribe((res) => {
+      console.log(res);
+      if (res['message']==='Successfully uploaded') {
+        // this.common.presentToast('File Uploaded Successful');
+        this.common.router.navigate(['tabs/tab6']);
+        this.common.hideLoader();
+      } else {
+        this.common.router.navigate(['tabs/tab6']);
+        this.common.hideLoader();
+      }
+    }, err => {
+      this.common.hideLoader();
+      this.common.router.navigate(['tabs/tab6']);
+      console.log('err',err);
+      console.log(err.headers);
+    });
+
+    // if (this.isLink[i]==true) {
+
+    //   if (this.LinkInputForm.valid) {
+
+    //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
+
+    //     if (this.userLink.link.match(regex)!=null) {
+  
+    //       console.log('Matching link');
+    //         this.userLink.link = this.userLink.link;
+    //           console.log('link1',this.userLink.link);
+  
+    //     } else {
+  
+    //       console.log('No Match');
+    //         this.userLink.link = 'https://'+this.userLink.link;
+    //           console.log('link1',this.userLink.link);
+  
+    //     }
+  
+    //     let params = {
+    //       text : this.userLink.link,
+    //       filetype : 'link',
+    //       userid : this.userDetails.userid,
+    //       matchid : this.invite.match_id,
+    //     }
+    //     console.log('params:',params);
+    //     this.common.postMethod('MatchUpload',params).then((res:any) => {
+    //       console.log('res:',res);
+    //       this.statusId = res.details.uploaded_id;
+    //       if (res.status===true) {
+    //         this.BringItOn();
+    //         console.log('BringItOn function working ...');
+    //       } else {
+    //         console.log('Else part working ....');
+    //       }
+    //     }, err => {
+    //       console.log('Error:',err);
+    //     });
+
+    //   } else {
+
+    //     this.common.showAlert('Please enter any link for Link Match');
+
+    //   }
+
+    // } else if (this.isWording[i]==true) {
+
+    //   if (this.InvitationWording!=undefined) {
+
+    //     let params = {
+    //       text : this.InvitationWording,
+    //       filetype : 'text',
+    //       userid : this.userDetails.userid,
+    //       matchid : this.invite.match_id,
+    //     }
+    //     console.log('params:',params);
+    //     this.common.postMethod('MatchUpload',params).then((res:any) => {
+    //       console.log('res:',res);
+    //       this.statusId = res.details.uploaded_id;
+    //       if (res.status===true) {
+    //         this.BringItOn();
+    //         console.log('BringItOn function working ...');
+    //       } else {
+    //         console.log('Else part working ....');
+    //       }
+    //     }, err => {
+    //       console.log('Error:',err);
+    //     });
+
+    //   } else {
+
+    //     this.common.showAlert('Please enter any content for Wording Match');
+
+    //   }
+
+    // } else if (this.hideImageSpace[i]==true) {
+
+    //     this.BringItOn();
+
+    // }
 
     // if (this.LinkInputForm.valid) {
     //   this.toSubmitLinkField();
@@ -385,20 +417,19 @@ export class InvitationPage implements OnInit {
             // this.pickLinks(i);
             // console.log('Folder clicked');
             this.linkArray.push({value: 'http://'});
-                  this.Add('link');
+            this.Add('link');
           }
-          },
+        },
+        {
+          text: 'Capture Image',
+          icon: 'camera',
+          handler: () => {
+            this.CaptureImage(i);
+            console.log('Camera clicked');
+          }
+        }, 
 
-          {
-            text: 'Capture Image',
-            icon: 'camera',
-            handler: () => {
-              this.CaptureImage(i);
-              console.log('Camera clicked');
-            }
-          }, 
-
-          {
+        {
           text: 'Capture Video',
           icon: 'videocam',
 
@@ -407,7 +438,6 @@ export class InvitationPage implements OnInit {
             console.log("Gallery clicked");
           }
         },
-
         {
           text: 'Capture Audio',
           icon: 'mic-circle',
@@ -416,62 +446,62 @@ export class InvitationPage implements OnInit {
             this.CaptureAudio(i);
             console.log("Audio clicked");
           }
-          },
+        },
 
-          {
+        {
           text: 'Other Files',
           icon: 'folder-open',
           handler: () => {
             this.PickDocuments(i);
             console.log('Folder clicked');
           }
-          },
+        },
 
-      {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
+        {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
     });
     await actionSheet.present();
   }
 
-        BringItOn() {
-          console.log('Bring it on function');
+      BringItOn() {
+        console.log('Bring it on function');
 
-          if (this.FileTransferResponse?.length != 0 || this.statusId != undefined) {
+        if (this.FileTransferResponse?.length != 0 || this.statusId != undefined) {
 
-            let params = {
-              request_id : this.invite.match_id,
-              status : 'accept'
-            }
-        
-            console.log('params:',params);
-            this.common.postMethod('Match_reply',params).then((res:any) => {
-              console.log('res:',res);
-        
-              if (res.status == true) {
-                this.ionViewWillEnter();
-                this.common.router.navigate(['/tabs/tab8']);
-                this.common.presentToast('You have successfully accepted ' + this.invite.sender_name + '`s match ');
-              } else {
-                this.common.presentToast('You had already replied to '+ this.invite.sender_name + '`s invitation ');
-              }
-        
-            }, err => {
-              console.log('Error:',err);
-            });
-
-          } else {
-
-            this.common.presentToast('Please upload a media , and then click `Bring It On!` ');
-          
+          let params = {
+            request_id : this.invite.match_id,
+            status : 'accept'
           }
+      
+          console.log('params:',params);
+          this.common.postMethod('Match_reply',params).then((res:any) => {
+            console.log('res:',res);
+      
+            if (res.status == true) {
+              this.ionViewWillEnter();
+              this.common.router.navigate(['/tabs/tab8']);
+              this.common.presentToast('You have successfully accepted ' + this.invite.sender_name + '`s match ');
+            } else {
+              this.common.presentToast('You had already replied to '+ this.invite.sender_name + '`s invitation ');
+            }
+      
+          }, err => {
+            console.log('Error:',err);
+          });
 
+        } else {
+
+          this.common.presentToast('Please upload a media , and then click `Bring It On!` ');
+        
         }
+
+      }
 
       async pickLinks(i:number) {
         console.log('Pick Links Button Pressed');
