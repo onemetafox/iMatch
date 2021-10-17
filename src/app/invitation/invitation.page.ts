@@ -235,37 +235,41 @@ export class InvitationPage implements OnInit {
   }
 
   acceptInvitation(e, invite, i) {
-
-    console.log('Bring it on clicked');
-    console.log(invite);
-    this.common.showLoader();
-    const formData = new FormData();
-    for( let i=0;i<this.myFiles.length; i++) 
-    {
-      formData.append("filename[]",this.myFiles[i]);
-    }
-    formData.append("matchid", invite.match_id);
-    formData.append("userid", this.userDetails.userid);
-    formData.append("sub_caption", JSON.stringify(this.anArray));
-    formData.append("links", JSON.stringify(this.linkArray));
-    formData.append("texts", JSON.stringify(this.wordArray));
-    this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/acceptInvitation',formData 
-    ).subscribe((res) => {
-      console.log(res);
-      if (res['message']==='Successfully uploaded') {
-        // this.common.presentToast('File Uploaded Successful');
-        this.common.router.navigate(['tabs/tab6']);
-        this.common.hideLoader();
-      } else {
-        this.common.router.navigate(['tabs/tab6']);
-        this.common.hideLoader();
+    if(this.anArray.length > 0){
+      console.log('Bring it on clicked');
+      console.log(invite);
+      this.common.showLoader();
+      const formData = new FormData();
+      for( let i=0;i<this.myFiles.length; i++) 
+      {
+        formData.append("filename[]",this.myFiles[i]);
       }
-    }, err => {
-      this.common.hideLoader();
-      this.common.router.navigate(['tabs/tab6']);
-      console.log('err',err);
-      console.log(err.headers);
-    });
+      formData.append("matchid", invite.match_id);
+      formData.append("userid", this.userDetails.userid);
+      formData.append("sub_caption", JSON.stringify(this.anArray));
+      formData.append("links", JSON.stringify(this.linkArray));
+      formData.append("texts", JSON.stringify(this.wordArray));
+      this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/acceptInvitation',formData 
+      ).subscribe((res) => {
+        console.log(res);
+        if (res['message']==='Successfully uploaded') {
+          // this.common.presentToast('File Uploaded Successful');
+          this.common.router.navigate(['tabs/tab6']);
+          this.common.hideLoader();
+        } else {
+          this.common.router.navigate(['tabs/tab6']);
+          this.common.hideLoader();
+        }
+      }, err => {
+        this.common.hideLoader();
+        this.common.router.navigate(['tabs/tab6']);
+        console.log('err',err);
+        console.log(err.headers);
+      });
+    }else{
+      this.common.showAlert('You must select file or word or link');
+    }
+    
 
     // if (this.isLink[i]==true) {
 
