@@ -20,11 +20,6 @@ export class VisitorsOngoingMatchPage implements OnInit {
   interval: any;
   HoursAgo: number;
   userArray: any;
-  ongoingDetailsImage: any = [];
-  ongoingDetailsVideo: any = [];
-  ongoingDetailsAudio: any = [];
-  ongoingDetailsText: any = [];
-  ongoingDetailsLink: any = [];
   @ViewChild('slides', {static: true}) slides: IonSlides;
   personalMatchSlideIndex: any;
   RemainingDuration : number;
@@ -37,16 +32,15 @@ export class VisitorsOngoingMatchPage implements OnInit {
 
   ) {
 
-    this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
-      this.userDetails = val;
-    });
+      this.storageservice.storage.get('userDetails').then((val) => {
+        console.log('Storage Value of userDetails:', val);
+        this.userDetails = val;
+      });
 
-    this.common.route.queryParams.subscribe(resp => {
-      this.userArray = resp;
-      this.personalMatchSlideIndex = this.userArray.personalMatchSlideIndex;
-      console.log('userArray:',this.userArray);
-  });
+      this.common.route.queryParams.subscribe(resp => {
+        this.userArray = resp;
+        console.log('userArray:',this.userArray);
+      });
 
    }
 
@@ -60,188 +54,22 @@ export class VisitorsOngoingMatchPage implements OnInit {
     this.ongoingDetails = [];
     console.log('Entered into Visitors Ongoing Contest page');
 
-    if (this.userArray.userStatus!='VISITOR') {
-
-      this.slides.slideTo(this.personalMatchSlideIndex);
-
-      let params = {
-        userid : this.userArray.userid,
-        visitorid : this.userArray.visitor_id
-      }
-
-      console.log('params:',params);
-      this.common.postMethod('OngoingMatch',params).then((res:any) => {
-        console.log('res:',res);
-
-        if (res.status == true) {
-
-          this.ongoingDetailsAudio = res.details.audio;
-          console.log('ongoingDetailsAudio:', this.ongoingDetailsAudio);
-  
-          this.ongoingDetailsImage = res.details.image;
-          console.log('ongoingDetailsImage:', this.ongoingDetailsImage);
-  
-          this.ongoingDetailsLink = res.details.link;
-          console.log('ongoingDetailsLink:', this.ongoingDetailsLink);
-  
-          this.ongoingDetailsText = res.details.text;
-          console.log('ongoingDetailsText:', this.ongoingDetailsText);
-  
-          this.ongoingDetailsVideo = res.details.video;
-          console.log('ongoingDetailsVideo:', this.ongoingDetailsVideo);
-
-          if (this.ongoingDetailsAudio.length!==0) {
-            for (let i=0; i < this.ongoingDetailsAudio.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsAudio[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          } 
-          if (this.ongoingDetailsImage.length!==0) {
-            for (let i=0; i < this.ongoingDetailsImage.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsImage[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-          if (this.ongoingDetailsLink.length!==0) {
-            for (let i=0; i < this.ongoingDetailsLink.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsLink[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-          if (this.ongoingDetailsText.length!==0) {
-            for (let i=0; i < this.ongoingDetailsText.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsText[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-          if (this.ongoingDetailsVideo.length!==0) {
-            for (let i=0; i < this.ongoingDetailsVideo.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsVideo[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          } 
-
-          if (this.ongoingDetails?.length==0 || this.ongoingDetails===undefined) {
-
-            clearInterval(this.interval);
-            
-          } else {
-     
-          //  this.interval = setInterval(() => {
-          //    this.Timer();
-          //    this.ongoingDetails;
-          //    console.log('ongoingDetails:',this.ongoingDetails);
-          //  }, 1000);
-     
-          }
-
-        } else {
-          // this.ongoingDetails = res.details;
-          console.log('ongoingDetails:', this.ongoingDetails);
-          console.log('currently you are having no ongoing matches');
-
-        }
-
-        // console.log('ongoingDetails:', this.ongoingDetails);
-      }, err => {
-       console.log('Error:',err);
-       // this.common.presentLoading();
-       // this.common.presentToast(' A Network Error Occured... Please Try Once Again');
-      });
-      
-    } else if (this.userArray.userStatus==='VISITOR') {
-
-      this.slides.slideTo(this.personalMatchSlideIndex);
-
-      let params = {
-        userid : '',
-        visitorid : this.userArray.visitor_id,
-      }
-      console.log('params:',params);
-      this.common.postMethod('OngoingMatch',params).then((res:any) => {
-        console.log('res:',res);
-
-        if (res.status == true) {
-
-          this.ongoingDetailsAudio = res.details.audio;
-          console.log('ongoingDetailsAudio:', this.ongoingDetailsAudio);
-
-          this.ongoingDetailsImage = res.details.image;
-          console.log('ongoingDetailsImage:', this.ongoingDetailsImage);
-
-          this.ongoingDetailsLink = res.details.link;
-          console.log('ongoingDetailsLink:', this.ongoingDetailsLink);
-
-          this.ongoingDetailsText = res.details.text;
-          console.log('ongoingDetailsText:', this.ongoingDetailsText);
-
-          this.ongoingDetailsVideo = res.details.video;
-          console.log('ongoingDetailsVideo:', this.ongoingDetailsVideo);
-
-  
-          if (this.ongoingDetailsAudio.length!=0) {
-            for (let i=0; i < this.ongoingDetailsAudio.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsAudio[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-           if (this.ongoingDetailsImage.length!=0) {
-            for (let i=0; i < this.ongoingDetailsImage.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsImage[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          } 
-           if (this.ongoingDetailsLink.length!=0) {
-            for (let i=0; i < this.ongoingDetailsLink.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsLink[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-           if (this.ongoingDetailsText.length!=0) {
-            for (let i=0; i < this.ongoingDetailsText.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsText[i]);
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-          }
-           if (this.ongoingDetailsVideo.length!=0) {
-            for (let i=0; i < this.ongoingDetailsVideo.length; i++) {
-              this.ongoingDetails.push(this.ongoingDetailsVideo[i]);
-              // this.slides.slideTo(this.personalMatchSlideIndex);
-
-            }
-            console.log('ongoingDetails:', this.ongoingDetails);
-            // this.slides.slideTo(this.personalMatchSlideIndex);
-
-          } 
-
-          if (this.ongoingDetails?.length==0 || this.ongoingDetails===undefined) {
-
-            clearInterval(this.interval);
-            
-          } else {
-     
-          //  this.interval = setInterval(() => {
-          //    this.Timer();
-          //    this.ongoingDetails;
-          //    console.log('ongoingDetails:',this.ongoingDetails);
-
-          //  }, 1000);
-     
-          }
-
-        } else {
-          // this.ongoingDetails = res.details.image;
-          console.log('ongoingDetails:', this.ongoingDetails);
-          console.log('currently you are having no ongoing matches');
-        }
-
-
-        // this.ongoingDetails = res.details.image;
-        // console.log('ongoingDetails:', this.ongoingDetails);
-      }, err => {
-        console.log('Error:',err);
-      });
+    let params = {
+      userid : this.userArray.userid,
+      visitorid : this.userArray.visitor_id
     }
+
+    console.log('params:',params);
+    this.common.postMethod('OngoingMatch',params).then((res:any) => {
+      if (res.status == true) {
+        this.ongoingDetails = res.details;
+      } else {
+        console.log('ongoingDetails:', this.ongoingDetails);
+        console.log('currently you are having no ongoing matches');
+      }
+    }, err => {
+     console.log('Error:',err);
+    });
  
    }
 
@@ -770,4 +598,8 @@ export class VisitorsOngoingMatchPage implements OnInit {
     }
     }
 
+    goDetail(id){
+      console.log(id);
+      this.common.router.navigate(['/ongoing-match-detail'], {queryParams: {matchid:id}});
+    }
 }

@@ -118,8 +118,8 @@
                         <div style="display:flex; justify-content: center;">
                             <div>
                                 <div style="display: flex; justify-content: center; margin-right: 8px;margin-bottom: 6px;">
-                                    <img *ngIf="this.userDetails.ongoingmatch_count == '0'" src="../../assets/icon/activity/off.png" class="toggle-button" alt="" (click)="OnOffButton('Ongoing')">
-                                    <img *ngIf="this.userDetails.ongoingmatch_count != '0'" src="../../assets/icon/activity/on.png" class="toggle-button" alt="" (click)="OnOffButton('Ongoing')">
+                                    <img *ngIf="this.userDetails.ongoingmatch_count == '0' && this.userDetails.ongoingmatch_count == null" src="../../assets/icon/activity/off.png" class="toggle-button" alt="" (click)="OnOffButton('Ongoing')">
+                                    <img *ngIf="this.userDetails.ongoingmatch_count != '0' && this.userDetails.ongoingmatch_count != null" src="../../assets/icon/activity/on.png" class="toggle-button" alt="" (click)="OnOffButton('Ongoing')">
                                 </div>
                                 <div>
                                     <div class="recommended_sub_div" style="padding: 8px !important;" (click)="gotoOnGoingMatch()">

@@ -35,6 +35,8 @@ export class Tab3Page implements OnInit {
     public storageservice: StorageService,
   ) {
 
+
+
     this.searchControl = new FormControl();
 
     this.storageservice.storage.get('userDetails').then((val) => {
@@ -48,7 +50,7 @@ export class Tab3Page implements OnInit {
 
     this.listAllUsers();
     this.setFilteredItems();
-
+    
     this.searchControl.valueChanges
     .pipe(debounceTime(700),
       distinctUntilChanged()
@@ -63,7 +65,8 @@ export class Tab3Page implements OnInit {
   }
 
   ionViewWillEnter() {
-
+    this.selectUsers = [];
+    console.log(this.selectUsers);
     console.log('in ionViewWillEnter');
 
     this.storageservice.storage.get('userDetails').then((val) => {

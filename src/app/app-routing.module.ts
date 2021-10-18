@@ -83,6 +83,10 @@ const routes: Routes = [
     loadChildren: () => import('./pending-open-matches/pending-open-matches.module').then( m => m.PendingOpenMatchesPageModule)
   },
   {
+    path: 'ongoing-match-detail',
+    loadChildren: () => import('./ongoing-match-detail/ongoing-match-detail.module').then( m => m.OnGoingMatchDetailPageModule)
+  },
+  {
     path: 'group-members',
     loadChildren: () => import('./group-members/group-members.module').then( m => m.GroupMembersPageModule)
   },
