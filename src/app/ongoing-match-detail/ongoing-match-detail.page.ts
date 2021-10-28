@@ -29,7 +29,7 @@ const { Camera, Filesystem } = Plugins;
   styleUrls: ['./ongoing-match-detail.page.scss'],
 })
 export class OnGoingMatchDetailPage implements OnInit {
-
+  ongoingData: any;
   userDetails: any = [];
   PersonalMatch: any = [];
   @ViewChild('slides', {static: true}) slides: IonSlides;
@@ -49,9 +49,12 @@ export class OnGoingMatchDetailPage implements OnInit {
   ) { 
 
     this.common.route.queryParams.subscribe((resp:any) => {
-      this.userDetails = resp;
-      this.personalMatchSlideIndex = this.userDetails.personalMatchSlideIndex;
-      console.log('userArray:',this.userDetails);
+      this.common.http.get(this.common.ajx.BaseUrl+'get_ongoing_match/'+resp.matchid).subscribe((res:any) => {
+        this.ongoingData = res
+        console.log("-------------------------", this.ongoingData);
+      }, err => {
+        console.log('err:',err);
+      });
     });
 
     this.storageservice.storage.get('userDetails').then((val) => {

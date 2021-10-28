@@ -63,6 +63,7 @@ export class VisitorsOngoingMatchPage implements OnInit {
     this.common.postMethod('OngoingMatch',params).then((res:any) => {
       if (res.status == true) {
         this.ongoingDetails = res.details;
+        console.log('ongoingDetails:', this.ongoingDetails);
       } else {
         console.log('ongoingDetails:', this.ongoingDetails);
         console.log('currently you are having no ongoing matches');
@@ -599,7 +600,6 @@ export class VisitorsOngoingMatchPage implements OnInit {
     }
 
     goDetail(id){
-      console.log(id);
-      this.common.router.navigate(['/ongoing-match-detail'], {queryParams: {matchid:id}});
+      this.common.router.navigate(['/ongoing-match-detail'], {queryParams: {matchid: id}});
     }
 }
