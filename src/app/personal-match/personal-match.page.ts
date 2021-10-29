@@ -1,6 +1,7 @@
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { StorageService } from '../services/storage.service';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { CommonService } from '../services/common.service';
 import { PopoverController } from '@ionic/angular';
 import { NavParams, IonSlides } from '@ionic/angular';
@@ -14,6 +15,7 @@ import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPho
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
+import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import { NavigationExtras } from '@angular/router';
 import * as BaseConfig from '../services/config';
@@ -42,6 +44,7 @@ export class PersonalMatchPage implements OnInit {
   constructor(
     public storageservice: StorageService,
     public popoverController: PopoverController,
+    public modalController: ModalController,
     private common: CommonService, 
   ) { 
 
@@ -77,34 +80,32 @@ export class PersonalMatchPage implements OnInit {
         userid : this.userDetails.userid
       }
 
-      console.log('params:',params);
+      console.log('------------------------------params:',params);
       this.common.postMethod('PersonalMatch',params).then((res:any) => {
-        console.log('res:',res);
+        this.PersonalMatch = res.details;
+        // if ( this.userDetails.fileType === "image" ) {
 
-        if ( this.userDetails.fileType === "image" ) {
+        //   this.PersonalMatch = res.details.image;
 
-          this.PersonalMatch = res.details.image;
+        // } else if ( this.userDetails.fileType === "audio" ) {
 
-        } else if ( this.userDetails.fileType === "audio" ) {
+        //   this.PersonalMatch = res.details.audio;
 
-          this.PersonalMatch = res.details.audio;
+        // } else if ( this.userDetails.fileType === "link" ) {
 
-        } else if ( this.userDetails.fileType === "link" ) {
+        //   this.PersonalMatch = res.details.link;
 
-          this.PersonalMatch = res.details.link;
+        // } else if ( this.userDetails.fileType === "video" ) {
 
-        } else if ( this.userDetails.fileType === "video" ) {
+        //   this.PersonalMatch = res.details.video;
 
-          this.PersonalMatch = res.details.video;
+        // } else if ( this.userDetails.fileType === "text" ) {
 
-        } else if ( this.userDetails.fileType === "text" ) {
+        //   this.PersonalMatch = res.details.text;
 
-          this.PersonalMatch = res.details.text;
-
-        }
+        // }
 
         this.slides.slideTo(this.personalMatchSlideIndex);
-        console.log('PersonalMatch:', this.PersonalMatch);
         this.common.hideLoader();
       }, (err) => {
         this.ionViewWillEnter();
@@ -121,34 +122,36 @@ export class PersonalMatchPage implements OnInit {
 
       console.log('params:',params);
       this.common.postMethod('ClosedMatch',params).then((res:any) => {
-        console.log('res:',res);
+        console.log('Closed-------------------res:',res);
         // this.PersonalMatchImage = res.details.image;
         // this.PersonalMatchAudio = res.details.audio;
         // this.PersonalMatchLink = res.details.link;
         // this.PersonalMatchVideo = res.details.video;
         // this.PersonalMatchText = res.details.text;
 
-        if ( this.userDetails.fileType === "file" ) {
+        // if ( this.userDetails.fileType === "file" ) {
 
-          this.PersonalMatch = res.details.image;
+        //   this.PersonalMatch = res.details.image;
 
-        } else if ( this.userDetails.fileType === "audio" ) {
+        // } else if ( this.userDetails.fileType === "audio" ) {
 
-          this.PersonalMatch = res.details.audio;
+        //   this.PersonalMatch = res.details.audio;
 
-        } else if ( this.userDetails.filetype === "link" ) {
+        // } else if ( this.userDetails.filetype === "link" ) {
 
-          this.PersonalMatch = res.details.link;
+        //   this.PersonalMatch = res.details.link;
 
-        } else if ( this.userDetails.fileType === "video" ) {
+        // } else if ( this.userDetails.fileType === "video" ) {
 
-          this.PersonalMatch = res.details.video;
+        //   this.PersonalMatch = res.details.video;
 
-        } else if ( this.userDetails.fileType === "text" ) {
+        // } else if ( this.userDetails.fileType === "text" ) {
 
-          this.PersonalMatch = res.details.text;
+        //   this.PersonalMatch = res.details.text;
 
-        }
+        // }
+
+        this.PersonalMatch = res.details;
 
         this.slides.slideTo(this.personalMatchSlideIndex);
         console.log('closed:', this.PersonalMatch);
@@ -173,14 +176,14 @@ export class PersonalMatchPage implements OnInit {
     this.common.navCtrl.navigateForward(['/comments'], {queryParams: match});
    }
 
-   ToSendReceiverLike(e,match) {
+   ToSendReceiverLike(e,match, match_id) {
      console.log('SenderLike BUtton Clicked',match);
      if (this.userDetails.category === 'personal') {
 
       let params = {
         userid : this.userDetail.userid,
-        matchid : match.match_id,
-        image_liked : match.receiver_image_id,
+        matchid : match_id,
+        image_liked : match.image_id,
       }
 
      console.log('params:',params);
@@ -197,8 +200,8 @@ export class PersonalMatchPage implements OnInit {
 
         let params = {
           userid : this.userDetail.userid,
-          matchid : match.match_id,
-          contestentid : match.receiverid,
+          matchid : match_id,
+          contestentid : match.id,
           status : 'like'
         }
         console.log('params:',params);
@@ -212,31 +215,31 @@ export class PersonalMatchPage implements OnInit {
 
     }
 
-    ToSendSenderLike(e,match) {
+    ToSendSenderLike(e,match, match_id) {
       console.log('To Send Sender Like');
 
       if (this.userDetails.category === 'personal') {
 
-      let params = {
-        userid : this.userDetail.userid,
-        matchid : match.match_id,
-        image_liked : match.sender_image_id,
-      }
+        let params = {
+          userid : this.userDetail.userid,
+          matchid : match_id,
+          image_liked : match.image_id,
+        }
 
-      console.log('params:',params);
-      this.common.postMethod('personallike',params).then((res:any) => {
-        console.log('res:',res);
-        this.ionViewWillEnter();
-      }, (err) => {
-        console.log('Error:',err);
-        console.log(err.headers);
-      });
+        console.log('params:',params);
+        this.common.postMethod('personallike',params).then((res:any) => {
+          console.log('res:',res);
+          this.ionViewWillEnter();
+        }, (err) => {
+          console.log('Error:',err);
+          console.log(err.headers);
+        });
       } else {
 
         let params = {
           userid : this.userDetail.userid,
-          matchid : match.match_id,
-          contestentid : match.senderid,
+          matchid : match_id,
+          contestentid : match.id,
           status : 'like'
         }
         console.log('params:',params);
@@ -259,7 +262,7 @@ export class PersonalMatchPage implements OnInit {
      componentProps:{key: match},
      translucent: true,
      backdropDismiss: true,
-     animated: false
+     animated: true
    });
    return await popover.present();
 
@@ -535,11 +538,11 @@ export class PersonalMatchPage implements OnInit {
   async toViewSenderMatchImage(ev:any, match) {
     console.log('Show Sender Match Image Button Clicked');
 
-    const popover = await this.popoverController.create({
+    const popover = await this.modalController.create({
       component: SenderPopoverComponent,
       cssClass: 'my-custom-class',
       componentProps:{key:match, userType: this.userDetails.userType},
-      translucent: true,
+      // translucent: true,
       backdropDismiss: true,
       animated: false
     });
@@ -548,13 +551,13 @@ export class PersonalMatchPage implements OnInit {
   }
 
   async toViewReceiverMatchImage(ev:any, match) {
-    console.log('Show Receiver Match Image Button Clicked');
+    console.log('Show Receiver Match Image Button Clicked:', this.userDetails.userType);
 
-    const popover = await this.popoverController.create({
+    const popover = await this.modalController.create({
       component: ReceiverPopoverComponent,
       cssClass: 'my-custom-class',
       componentProps:{key:match, userType: this.userDetails.userType},
-      translucent: true,
+      // translucent: true,
       backdropDismiss: true,
       animated: false
     });
@@ -822,6 +825,8 @@ export class PopoverComponent {
         
           }
 
+          
+
          ToSendMatch(e,m) {
            console.log('Send Match Button Clicked');
           console.log('Match:',m);
@@ -831,7 +836,6 @@ export class PopoverComponent {
             caption: this.userCaption.caption
           }
 
-          console.log('params:',params);
           this.common.postMethod('abc',params).then((res:any) => {
             console.log('res:',res);
           }, (err) => {
@@ -840,177 +844,427 @@ export class PopoverComponent {
             console.log('Error:',err);
           });
          }
+
+         
     
         }
 
 @Component({
   template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissButton()">
+            <img src='../../assets/icon/back.png' alt="" style="width:10px; height: 18px;">
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
     <div style=" text-align: center; ">
-      <h4 style=" font-weight: 600; "> Your First Image </h4>
+      <h4 style=" font-weight: 600; "> This Match </h4>
       <div style=" border: 3px solid grey; padding: 2px; margin: 5px; font-size: 14px; justify-content: center;">
-      
-        <div>
-            <img [src]="Match.receiver_image" alt="" onerror="this.src='../../assets/icon/no_media.png';">
+        <div *ngIf="Match.compare_data.length == 2">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <div *ngFor="let item of Match.compare_data; let i = index">
+              <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
+              <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)" />
+              <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></video>
+              <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></audio>
+              <div *ngIf="item.media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
+                <a [href]="item.media">{{item.media}}</a>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div style="display: flex; justify-content: space-between;">
+        <div *ngIf="Match.compare_data.length == 3">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
+              <div *ngFor="let item of Match.compare_data; let i = index">
+                <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
+                <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
+                <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></video>
+                <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></audio>
+                <div *ngIf="item.media_type==='link'" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
+                  <a [href]="item.media">{{item.media}}</a>
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <div *ngIf="Match.compare_data.length == 4">
+          <div style="display: grid; grid-template-columns: 1fr 1fr;margin-top: 10px;">
+            <div *ngIf="Match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">{{Match.compare_data[0].media}}</div>
+            <img *ngIf="Match.compare_data[0].media_type==='image' || Match.compare_data[0].media_type===''" [src]="Match.compare_data[0].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
+            <video *ngIf="Match.compare_data[0].media_type==='video'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></video>
+            <audio *ngIf="Match.compare_data[0].media_type==='audio'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></audio>
+            <div *ngIf="Match.compare_data[0].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
+              <a [href]="Match.compare_data[0].media">{{Match.compare_data[0].media}}</a>
+            </div>
+
+            <div *ngIf="Match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">{{Match.compare_data[1].media}}</div>
+            <img *ngIf="Match.compare_data[1].media_type==='image' || Match.compare_data[1].media_type===''" [src]="Match.compare_data[1].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+            <video *ngIf="Match.compare_data[1].media_type==='video'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></video>
+            <audio *ngIf="Match.compare_data[1].media_type==='audio'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></audio>
+            <div *ngIf="Match.compare_data[1].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
+              <a [href]="Match.compare_data[1].media">{{Match.compare_data[1].media}}</a>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+            <div *ngIf="Match.compare_data[2].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">{{Match.compare_data[2].media}}</div>
+            <img *ngIf="Match.compare_data[2].media_type==='image' || Match.compare_data[2].media_type===''" [src]="Match.compare_data[2].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
+            <video *ngIf="Match.compare_data[2].media_type==='video'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></video>
+            <audio *ngIf="Match.compare_data[2].media_type==='audio'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></audio>
+            <div *ngIf="Match.compare_data[2].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
+              <a [href]="Match.compare_data[2].media">{{Match.compare_data[2].media}}</a>
+            </div>
+
+            <div *ngIf="Match.compare_data[3].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">{{Match.compare_data[3].media}}</div>
+            <img *ngIf="Match.compare_data[3].media_type==='image' || Match.compare_data[3].media_type===''" [src]="Match.compare_data[3].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+            <video *ngIf="Match.compare_data[3].media_type==='video'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></video>
+            <audio *ngIf="Match.compare_data[3].media_type==='audio'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></audio>
+            <div *ngIf="Match.compare_data[3].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
+              <a [href]="Match.compare_data[3].media">{{Match.compare_data[3].media}}</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between;">
 
           <div style="display: flex; background-color: white; width: 31px; height: 30px; margin-left: 10px; border-radius: 50%; box-shadow: 0.5px 0.5px 9px 3px grey;">
           <img src="../../assets/icon/03.png" alt=""> <span style="font-weight: 600; margin-left: 10px; position: relative; top: 3px; font-size: 16px;"> {{Match.receiver_reveal_count}} </span>
           </div>
 
           <ion-button *ngIf="userType==='visitor'" (click)="sendMatch()" shape="round" size="small" style="text-transform: none;">Match This</ion-button>
-          </div>
+        </div>
 
       </div>
     </div>
+    </ion-content>
     `
 })
         
         export class ReceiverPopoverComponent {
         
-         Match: any  = [];
-         userType: string;
-         constructor(
-          public popoverController: PopoverController,
-           private common: CommonService,
-           public navParams: NavParams,
-           ) {
-             console.log(this.navParams.get('key'));
-            this.Match = this.navParams.get('key');
-            this.userType = this.navParams.get('userType');
-            console.log('user type:',this.userType);
-
-             console.log('users in popover:',this.Match);
-           }
+          Match: any  = [];
+          userType: string;
+          selectItem: any = [];
+          constructor(
+              public popoverController: PopoverController,
+              public modalController: ModalController,
+              private common: CommonService,
+              public navParams: NavParams,
+          ) {
+              this.Match = this.navParams.get('key');
+              this.userType = this.navParams.get('userType');
+              this.selectItem = [];
+          }
         
-           ionViewWillEnter(){
-             console.log('ionViewWillEnter:',this.Match);
-             }
+          ionViewWillEnter(){
+            console.log('ionViewWillEnter:',this.Match);
+          }
 
-             async sendMatch() {
-        
-              const popover = await this.popoverController.create({
+          async sendMatch() {
+            if(this.selectItem.length > 0){
+              this.selectItem.filter((a, b) => this.selectItem.indexOf(a) === b)
+              this.selectItem.sort();
+              const popover = await this.modalController.create({
                 component: SendMatchComponent,
                 cssClass: 'my-custom-class',
-                componentProps:{key:this.Match, userType: 'receiver'},
-                translucent: true,
+                componentProps:{key:this.Match, userType: 'receiver', selectItem: this.selectItem},
+                // translucent: true,
                 backdropDismiss: true,
                 animated: false
               });
               return await popover.present();
+            }else{
+              this.common.showAlertSuccess('Please select Image');
+              return;
+            }
+            
           
-            }
-        
-            }
+          }
 
+          
+          async dismissButton(){
+            this.modalController.dismiss();
+          }
+
+          selectImage(e, index){
+            console.log(e.target);
+            if(e.target.style.border != ""){
+              this.selectItem.splice(this.selectItem.indexOf(index), 1);
+              e.target.style.border="";
+            }else{
+              this.selectItem.push(index)
+              e.target.style.border="3px solid #50c8ff";
+            }
+          }
+        
+        }
+
+      //   <div style="display: flex; margin-bottom: 10px; padding: 5px; justify-content: center;">
+      //   <img [src]="this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image" style="height: 100px; width: 100px; margin-bottom: 10px; border-radius: 10px; position: relative; left: -5px;" onerror="this.src='../../assets/icon/no_media.png';" (click)="presentActionSheet()">
+
+      //   <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
+      //   <img *ngIf="isImage==true && isCaptureImage==true" [src]="FileTransferResponse.filename" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
+      //   <video *ngIf="isVideo==true && isCaptureVideo==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></video>
+      //   <audio *ngIf="isAudio==true && isCaptureAudio==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></audio>
+      // </div>
 
 @Component({
   template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="dismissButton()">
+            <img src='../../assets/icon/back.png' alt="" style="width:10px; height: 18px;">
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
        <div>
-              <div style="text-align: center; padding: 5px;">
-                <h4 style="font-weight: 600;">Match This</h4>
-
-                <div style="padding: 5px; border: 2px solid grey; border-radius: 5px; text-align: center;">
-
-                <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
-
-                  <div style="display: flex; margin-bottom: 10px; padding: 5px; justify-content: center;">
-                  <img [src]="this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image" style="height: 100px; width: 100px; margin-bottom: 10px; border-radius: 10px; position: relative; left: -5px;" onerror="this.src='../../assets/icon/no_media.png';" (click)="presentActionSheet()">
-
-                  <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
-                  <img *ngIf="isImage==true && isCaptureImage==true" [src]="FileTransferResponse.filename" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-                  <video *ngIf="isVideo==true && isCaptureVideo==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></video>
-                  <audio *ngIf="isAudio==true && isCaptureAudio==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></audio>
-                  </div>
-
-                  <ion-textarea *ngIf="isLink===true" [(ngModel)]="closedMatchLink" placeholder="Enter Link" autocapitalize="true" type="url" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
-
-                  <ion-textarea *ngIf="isWordings===true" [(ngModel)]="closedMatchWording" placeholder="Enter Wording" type="text" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-textarea>
-
-                  <ion-row style="border: 1px solid transparent; height: 47px;">
-                    <ion-label style="position: relative; top: 8px; margin-right: 15px;">Make it Anonymous</ion-label>
-                    <ion-toggle [(ngModel)]="isAnonymous"></ion-toggle>
-                  </ion-row>
-
-                  <ion-button type="submit" shape="round" size="small" (click)="ToSendMatch($event)" style="text-transform: none;">Send Match</ion-button>
+        <div style="text-align: center; padding: 5px;">
+          <h4 style="font-weight: 600;">Match This</h4>
+          <div style=" margin: 10px;box-shadow: 1px 1px 10px 0px;padding: 5px 5px 30px 5px;margin-top: 0px !important;border-radius: 3px; border-top: 2px solid #80808078 ; margin-bottom: 50px;">
+            <div *ngIf="this.selectItem.length == 1">
+              <div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
                 </div>
               </div>
             </div>
+            <div *ngIf="this.selectItem.length == 2">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="this.selectItem.length == 3">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 10px;">
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:150px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[2]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='image' || this.Match.compare_data[this.selectItem[2]].media_type===''" [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:150px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:150px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:150px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='link'" style="width:150px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[2]].media">{{this.Match.compare_data[this.selectItem[2]].media}}</a>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="this.selectItem.length == 4">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[0]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='image' || this.Match.compare_data[this.selectItem[0]].media_type===''" [src]="this.Match.compare_data[this.selectItem[0]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[0]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[0]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[0]].media">{{this.Match.compare_data[this.selectItem[0]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[1]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='image' || this.Match.compare_data[this.selectItem[1]].media_type===''" [src]="this.Match.compare_data[this.selectItem[1]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[1]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[1]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[1]].media">{{this.Match.compare_data[this.selectItem[1]].media}}</a>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr;">
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[2]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='image' || this.Match.compare_data[this.selectItem[2]].media_type===''" [src]="this.Match.compare_data[this.selectItem[2]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[2]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[2]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[2]].media">{{this.Match.compare_data[this.selectItem[2]].media}}</a>
+                </div>
+                <div *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px">{{this.Match.compare_data[this.selectItem[3]].media}}</div>
+                <img *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='image' || this.Match.compare_data[this.selectItem[3]].media_type===''" [src]="this.Match.compare_data[this.selectItem[3]].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px">
+                <video *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='video'" [src]="this.Match.compare_data[this.selectItem[3]].media" controls style="width:195px; height: 255px;padding:5px"></video>
+                <audio *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='audio'" [src]="this.Match.compare_data[this.selectItem[3]].media" controls style="width:195px; height: 255px;padding:5px"></audio>
+                <div *ngIf="this.Match.compare_data[this.selectItem[3]].media_type==='link'" style="width:195px; height: 255px;padding:5px">
+                  <a [href]="this.Match.compare_data[this.selectItem[3]].media">{{this.Match.compare_data[this.selectItem[3]].media}}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 5px; border: 2px solid grey; border-radius: 5px; text-align: center;">
+
+            <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
+            
+            <div *ngFor="let att of this.anArray; let idx = index">
+              <div *ngIf="att.type=='text'">
+                <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
+              </div>
+              <div *ngIf="att.type=='link'">
+                <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
+              </div>
+              <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
+            </div>
+            
+            <img src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
+
+            <ion-row style="border: 1px solid transparent; height: 47px;">
+              <ion-label style="position: relative; top: 8px; margin-right: 15px;">Make it Anonymous</ion-label>
+              <ion-toggle [(ngModel)]="isAnonymous"></ion-toggle>
+            </ion-row>
+            <div style="display: flex; justify-content: space-between;">
+
+            <div style="display: flex; background-color: white; width: 31px; height: 30px; margin-left: 10px;">
+              <ion-button shape="round" size="small" (click)="dismissButton()" style="text-transform: none;">cancel</ion-button>
+            </div>
+
+            <ion-button type="submit" shape="round" size="small" (click)="ToSendMatch($event)" style="text-transform: none;">proceed</ion-button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </ion-content>
   `
 })
 
   export class SendMatchComponent {
 
-  FormSubmit: boolean = false;
-  public MatchThisForm: FormGroup;
-  caption: AbstractControl;
-  isAnonymous: boolean;
+    FormSubmit: boolean = false;
+    public MatchThisForm: FormGroup;
+    caption: AbstractControl;
+    isAnonymous: boolean;
 
-  userCaption = {
-  "caption": "" ,
-  };
+    userCaption = {
+    "caption": "" ,
+    };
 
-  Match: any  = [];
-  userDetails: any;
-  userType: string;
-  closedMatchCaption: string;
-  closedMatchLink: string;
-  closedMatchWording: string;
-  isCaptureImage: boolean;
-  FileTransferResponse: any = [];
-  isLink: boolean = false;
-  hideImageSpace: boolean = true;
-  isWordings: boolean = false;
-  cameraData: MediaFile;
-  documentData: any;
-  isPickDocuments: boolean;
-  isCaptureAudio: boolean;
-  isCaptureVideo: boolean;
-  audioData: MediaFile;
-  videoData: MediaFile;
-  isVideo: boolean = false;
-  isAudio: boolean = false;
-  isImage: boolean = false;
+    selectedFiles: any = [];
+    anArray: any [] = [];
+    wordArray: any [] = [];
+    linkArray: any [] = [];
+    myFiles: any = [];
+    urls: any = [];
+    Match: any  = [];
+    selectItem: any = [];
+    matchIds: any = [];
+    userDetails: any;
+    userType: string;
+    closedMatchCaption: string;
+    closedMatchLink: string;
+    closedMatchWording: string;
+    isCaptureImage: boolean;
+    FileTransferResponse: any = [];
+    isLink: boolean = false;
+    hideImageSpace: boolean = true;
+    isWordings: boolean = false;
+    cameraData: MediaFile;
+    documentData: any;
+    isPickDocuments: boolean;
+    isCaptureAudio: boolean;
+    isCaptureVideo: boolean;
+    audioData: MediaFile;
+    videoData: MediaFile;
+    isVideo: boolean = false;
+    isAudio: boolean = false;
+    isImage: boolean = false;
 
-  constructor(
-  public popoverController: PopoverController,
-  private actionSheetCtrl: ActionSheetController,
-  public storageservice: StorageService,
-  private mediaCapture: MediaCapture,
-  private fileChooser: FileChooser,
-  private filePath: FilePath,
-  private transfer: FileTransfer,
-  private common: CommonService,
-  public formbuilder: FormBuilder,
-  public navParams: NavParams,
-  ) {
+    constructor(
+      public popoverController: PopoverController,
+      public modalController: ModalController,
+      private actionSheetCtrl: ActionSheetController,
+      public storageservice: StorageService,
+      private mediaCapture: MediaCapture,
+      private fileChooser: FileChooser,
+      private filePath: FilePath,
+      private transfer: FileTransfer,
+      private common: CommonService,
+      public formbuilder: FormBuilder,
+      public navParams: NavParams,
+      private http : HttpClient,
+    ) {
 
-  this.MatchThisForm = formbuilder.group({
-  caption:['',Validators.compose([Validators.required,
-                              Validators.minLength(1),
-                            ])],
-  });
+    this.MatchThisForm = formbuilder.group({
+    caption:['',Validators.compose([Validators.required,
+                                Validators.minLength(1),
+                              ])],
+    });
 
-  this.caption = this.MatchThisForm.controls['caption'];
+    this.caption = this.MatchThisForm.controls['caption'];
 
-  console.log(this.navParams.get('key'));
-  this.Match = this.navParams.get('key');
-  this.userType = this.navParams.get('userType');
-  console.log('users in popover:',this.Match);
-  // console.log('user type:',this.userType);
+    this.Match = this.navParams.get('key');
+    this.userType = this.navParams.get('userType');
+    this.selectItem = this.navParams.get('selectItem');
 
-  this.storageservice.storage.get('userDetails').then((val) => {
-  console.log('Storage Value of userDetails:', val);
-  this.userDetails = val;
-  });
+    this.storageservice.storage.get('userDetails').then((val) => {
+      console.log('Storage Value of userDetails:', val);
+      this.userDetails = val;
+    });
 
   }
 
   ionViewWillEnter(){
-  console.log('ionViewWillEnter:',this.Match);
-  this.isCaptureImage = false;
-  this.hideImageSpace = true;
+    console.log("selecteditem--------------------------", this.Match);
+    for(var i = 0; i < this.selectItem.length; i++){
+      this.matchIds.push(this.Match.compare_data[this.selectItem[i]].media_id);
+    }
+    console.log(this.matchIds);
+    this.isCaptureImage = false;
+    this.hideImageSpace = true;
+  }
+
+  async dismissButton(){
+    this.modalController.dismiss();
+  }
+
+  Add(type){
+    if(this.anArray.length >= 2){
+      this.common.showAlert('Maximum is 2 items');
+      return;
+    }
+    if(type == 'link'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'link'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'text'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'text'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
   }
 
   async presentActionSheet() {
@@ -1018,11 +1272,12 @@ export class PopoverComponent {
     let actionSheet = await this.actionSheetCtrl.create({
       header: ' Choose A Media To Upload For Closed Match',
       buttons: [
-
         {
           text: 'Send Wordings',
           icon: 'text',
           handler: () => {
+            this.wordArray.push({value: ''});
+            this.Add('text');
             this.SendWordings();
             console.log('Wording clicked');
           }
@@ -1032,6 +1287,8 @@ export class PopoverComponent {
           text: 'Share Links',
           icon: 'link',
           handler: () => {
+            this.linkArray.push({value: 'http://'});
+            this.Add('link');
             this.PickLinks();
             console.log('Share clicked');
           }
@@ -1041,6 +1298,7 @@ export class PopoverComponent {
             text: 'Capture Image',
             icon: 'camera',
             handler: () => {
+              this.anArray.push({value: '', type: 'image'});
               this.CaptureImage();
               console.log('Camera clicked');
             }
@@ -1051,6 +1309,7 @@ export class PopoverComponent {
           icon: 'videocam',
 
           handler: () => {
+            this.anArray.push({value: '', type: 'video'});
             this.CaptureVideo();
             console.log("Gallery clicked");
           }
@@ -1061,6 +1320,7 @@ export class PopoverComponent {
           icon: 'mic-circle',
 
           handler: () => {
+            this.anArray.push({value: '', type: 'audio'});
             this.CaptureAudio();
             console.log("Audio clicked");
           }
@@ -1070,6 +1330,7 @@ export class PopoverComponent {
           text: 'Other Files',
           icon: 'folder-open',
           handler: () => {
+            this.anArray.push({value: '', type: 'file'});
             this.PickDocuments();
             console.log('Folder clicked');
           }
@@ -1180,8 +1441,8 @@ export class PopoverComponent {
     console.log('PickDocuments');
     this.isLink = false;
     this.isWordings = false;
-      this.hideImageSpace = true;
-        console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings);
+    this.hideImageSpace = true;
+    console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings);
     this.isCaptureImage = true;
     this.isPickDocuments = true;
 
@@ -1234,7 +1495,8 @@ export class PopoverComponent {
         text: '',
         match_link:'',
         match_text: '',
-        seen_status: '1'
+        seen_status: '1',
+        select_medis: JSON.stringify(this.matchIds),
       },
       headers: {
         Connection: 'close'
@@ -1246,6 +1508,7 @@ export class PopoverComponent {
     let filePath: any;
     if (type !== 'audio') {
       filePath = encodeURI(file.fullPath);
+      console.log(filePath);
     } else {
       filePath = file.fullPath;
     }
@@ -1264,6 +1527,28 @@ export class PopoverComponent {
 
     });
 
+    const formData = new FormData();
+
+    for( let i=0;i<this.myFiles.length; i++) 
+    {
+      formData.append("filename[]",this.myFiles[i]);
+    }
+
+    this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_closedmatch',formData 
+    ).subscribe((res) => {
+      console.log(res);
+      if (res['message']==='Successfully uploaded') {
+        this.common.presentToast('File Uploaded Successful');
+        this.common.router.navigate(['tabs/tab6']);
+      } else {
+        this.common.presentToast('File Upload Failed !!!');
+      }
+    }, err => {
+      console.log('err',err);
+      console.log(err.headers);
+    });
+
+    
     fileTransfer.upload(filePath, fileUplaodUrl, options)
       .then((data) => {
         console.log('File Transfer Success:', data);
@@ -1319,6 +1604,39 @@ export class PopoverComponent {
 
 }
 
+
+// fileChangeEvent(e, type) {
+//   if (type==='folder') {
+    
+//     if (e.target.files.length > 2) {
+//       this.common.showAlert('Try to choose maximum 2 media');
+//     } 
+
+//     this.selectedFiles = e.target.files;
+//     for (let i=0; i<e.target.files.length; i++) {
+//       this.myFiles.push(e.target.files[i]);
+//     }
+
+//     this.urls = [];
+//     console.log('urls:',this.urls);
+//     let files = e.target.files;
+//     console.log('files:',files);
+//     if (files) {
+//       for (let file of files) {
+//         let reader = new FileReader();
+//         var error = reader.error
+//         reader.onload = (e:any) => {
+//           console.log('Loaded:', reader.result);
+//           console.log('error:', error);
+//           this.urls.push(e.target.result);
+//           console.log('urls:',this.urls);
+//         }
+
+//         reader.readAsDataURL(file);
+//       }
+//     }
+//   } 
+// }
   // ToSendMatch() {
   // console.log('Send Match Button Clicked');
 
@@ -1349,153 +1667,176 @@ export class PopoverComponent {
   ToSendMatch (e) {
   console.log('Send Match Button Clicked');
 
-  if (this.isLink==true) {
-
-    if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
-
-      this.common.showLoader();
-
-      const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-      if (this.closedMatchLink.match(regex)!=null) {
-  
-        console.log('Matching link');
-          this.closedMatchLink = this.closedMatchLink;
-            console.log('closedMatchLink',this.closedMatchLink);
-  
-      } else {
-  
-        console.log('No Match');
-          this.closedMatchLink = 'https://'+this.closedMatchLink;
-            console.log('closedMatchLink',this.closedMatchLink);
-  
-      }
-  
-      let params = {
-        rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.senderid,
-        personal_matchid: this.Match.match_id,
-        match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-        caption: this.closedMatchCaption,
-        link: this.closedMatchLink,
-        text: '',
-        match_link:'',
-        match_text: '',
-        seen_status: '0',
-      }
-      console.log('params:',params);
-        this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
-          console.log('res:',res);
-  
-          if (res.status === true) {
-            this.common.presentToast(' Your closed match invitaion send successfully ');
-            this.popoverController.dismiss();
-          } else {
-            this.common.presentToast(' Your closed match invitaion sending failed ');
-          }
-          await this.common.hideLoader();
-      }, async err => {
-        await this.common.hideLoader();
-          console.log('err:',err);
-          this.popoverController.dismiss();  
-  
-      });
-
-    } else {
-      this.common.showAlert('All fields are mandatory');
-    }
-
-
-
-  } else if (this.isWordings==true) {
-
-    if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
-
-      let params = {
-        rival_userid : this.userDetails.userid,
-        opponent_userid: this.Match.senderid,
-        personal_matchid: this.Match.match_id,
-        match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-        caption: this.closedMatchCaption,
-        link: '',
-        text: this.closedMatchWording,
-        match_link:'',
-        match_text: '',
-        seen_status: '0',
-      }
-      console.log('params:',params);
-        this.common.postMethod('create_closedmatch',params).then((res:any) => {
-          console.log('res:',res);
-          if (res.status === true) {
-            this.common.presentToast(' Your closed match invitaion send successfully ');
-            this.popoverController.dismiss();
-          } else {
-            this.common.presentToast(' Your closed match invitaion sending failed ');
-          }
-      }, err => {
-          console.log('err:',err);
-            console.log('headers:',err.Headers);
-            this.popoverController.dismiss();
-  
-      });
-
-    } else {
-
-      this.common.showAlert('All fields are mandatory');
-
-    }
-
-
-
-  } else if (this.hideImageSpace==true && e.type==="click") {
-    // this.common.showLoader();
-    // this.common.presentLoading();
-    console.log('Clicked:',e);
-
-    if (this.FileTransferResponse.length!=0) {
-      console.log('FileTransferResponse:',this.FileTransferResponse);
-
-      if (this.FileTransferResponse.status === true) {
-
-        this.common.popoverController.dismiss();
-        this.common.presentToast(' Your closed match send successfully ');
-        // this.common.hideLoader();
-
-      } else {
-
-        this.common.popoverController.dismiss();
-        this.common.presentToast('Closed Match Send Failed!');
-        // this.common.hideLoader();
-
-      }
-
-      // this.common.presentLoading();
-    } else {
-
-      // this.common.showLoader();
-      // this.common.presentLoading();
-      console.log('FileTransferResponse:',this.FileTransferResponse);
-      this.common.popoverController.dismiss();
-      this.common.showAlert('You must need to upload a media');
-      // this.common.presentToast('Closed Match Send Failed');
-      // this.common.hideLoader();
-
-    }
-
-    // this.common.hideLoader();
-    
-  } else if (this.isImage) {
-      // this.uploadFile2(this.cameraData, 'image'); 
-      this.common.popoverController.dismiss();
-  } else if (this.isAudio) {
-      // this.uploadFile2(this.documentData, 'file');
-      this.common.popoverController.dismiss();
-
-  } else if (this.isVideo) {
-    // this.uploadFile2(this.videoData, 'video');
-    this.common.popoverController.dismiss();
-
+  this.common.showLoader();
+  let params = {
+    rival_userid : this.userDetails.userid,
+    opponent_userid: this.Match.compare_data[0].id,
+    personal_matchid: this.Match.match_id,
+    caption: this.closedMatchCaption,
+    link: JSON.stringify(this.linkArray),
+    text: JSON.stringify(this.wordArray),
+    sub_captions: JSON.stringify(this.anArray),
+    seen_status: '0',
+    select_medias: JSON.stringify(this.matchIds),
   }
+
+  this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
+    console.log('res:',res);
+
+    if (res.status === true) {
+      this.common.presentToast(' Your closed match invitaion send successfully ');
+      this.popoverController.dismiss();
+    } else {
+      this.common.presentToast(' Your closed match invitaion sending failed ');
+    }
+    await this.common.hideLoader();
+  }, async err => {
+    await this.common.hideLoader();
+    console.log('err:',err);
+    this.popoverController.dismiss();  
+  });
+  
+  // if (this.isLink==true) {
+
+  //   if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
+
+  //     this.common.showLoader();
+
+  //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
+
+  //     if (this.closedMatchLink.match(regex)!=null) {
+  
+  //       console.log('Matching link');
+  //         this.closedMatchLink = this.closedMatchLink;
+  //           console.log('closedMatchLink',this.closedMatchLink);
+  
+  //     } else {
+  
+  //       console.log('No Match');
+  //         this.closedMatchLink = 'https://'+this.closedMatchLink;
+  //           console.log('closedMatchLink',this.closedMatchLink);
+  
+  //     }
+
+  //     console.log(this.userType);
+  
+  //     let params = {
+  //       rival_userid : this.userDetails.userid,
+  //       opponent_userid: this.Match.compare_data[0].id,
+  //       personal_matchid: this.Match.match_id,
+  //       match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
+  //       caption: this.closedMatchCaption,
+  //       link: this.closedMatchLink,
+  //       text: '',
+  //       match_link:'',
+  //       match_text: '',
+  //       seen_status: '0',
+  //       select_medis: JSON.stringify(this.matchIds),
+  //     }
+  //     console.log('params:',params);
+  //       this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
+  //         console.log('res:',res);
+  
+  //         if (res.status === true) {
+  //           this.common.presentToast(' Your closed match invitaion send successfully ');
+  //           this.popoverController.dismiss();
+  //         } else {
+  //           this.common.presentToast(' Your closed match invitaion sending failed ');
+  //         }
+  //         await this.common.hideLoader();
+  //     }, async err => {
+  //       await this.common.hideLoader();
+  //         console.log('err:',err);
+  //         this.popoverController.dismiss();  
+  
+  //     });
+
+  //   } else {
+  //     this.common.showAlert('All fields are mandatory');
+  //   }
+
+
+
+  // } else if (this.isWordings==true) {
+
+  //   if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
+
+  //     let params = {
+  //       rival_userid : this.userDetails.userid,
+  //       opponent_userid: this.Match.compare_data[0].id,
+  //       personal_matchid: this.Match.match_id,
+  //       match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
+  //       caption: this.closedMatchCaption,
+  //       link: '',
+  //       text: this.closedMatchWording,
+  //       match_link:'',
+  //       match_text: '',
+  //       seen_status: '0',
+  //       select_medis: JSON.stringify(this.matchIds),
+  //     }
+  //     console.log('params:',params);
+  //       this.common.postMethod('create_closedmatch',params).then((res:any) => {
+  //         console.log('res:',res);
+  //         if (res.status === true) {
+  //           this.common.presentToast(' Your closed match invitaion send successfully ');
+  //           this.popoverController.dismiss();
+  //         } else {
+  //           this.common.presentToast(' Your closed match invitaion sending failed ');
+  //         }
+  //     }, err => {
+  //         console.log('err:',err);
+  //           console.log('headers:',err.Headers);
+  //           this.popoverController.dismiss();
+  
+  //     });
+
+  //   } else {
+
+  //     this.common.showAlert('All fields are mandatory');
+
+  //   }
+
+
+
+  // } else if (this.hideImageSpace==true && e.type==="click") {
+
+  //   // if (this.FileTransferResponse.length!=0) {
+  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
+  //   //   if (this.FileTransferResponse.status === true) {
+  //   //     this.common.popoverController.dismiss();
+  //   //     this.common.presentToast(' Your closed match send successfully ');
+  //   //   } else {
+  //   //     this.common.popoverController.dismiss();
+  //   //     this.common.presentToast('Closed Match Send Failed!');
+  //   //   }
+
+  //   // } else {
+  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
+  //   //   this.common.popoverController.dismiss();
+  //   //   this.common.showAlert('You must need to upload a media');
+  //   // }
+
+  //   //---------------------------------------------------------------------------------Add multi files
+  //   console.log(this,this.myFiles);
+  //   for( let i=0; i<this.myFiles.length; i++ ) 
+  //   {
+  //     this.uploadFile2(this.myFiles[i], 'image');
+  //   }
+
+  //   //--------------------------------------------------------------------------------------------------------------------
+    
+  // } else if (this.isImage) {
+  //     // this.uploadFile2(this.cameraData, 'image'); 
+  //     this.common.popoverController.dismiss();
+  // } else if (this.isAudio) {
+  //     // this.uploadFile2(this.documentData, 'file');
+  //     this.common.popoverController.dismiss();
+
+  // } else if (this.isVideo) {
+  //   // this.uploadFile2(this.videoData, 'video');
+  //   this.common.popoverController.dismiss();
+
+  // }
   //  else if (this.isPickDocuments) {
   //   this.uploadFile2(this.audioData, 'audio');
   // }

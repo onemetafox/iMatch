@@ -21,6 +21,7 @@ export class Tab3Page implements OnInit {
   showCategory: boolean = true;
 
   userDetails : any = [];
+  selectUsers: any = [];
   allUsers: any = [];
   BestiesList: any = [];
   SquadList: any = [];
@@ -33,6 +34,8 @@ export class Tab3Page implements OnInit {
     public popoverController: PopoverController,
     public storageservice: StorageService,
   ) {
+
+
 
     this.searchControl = new FormControl();
 
@@ -47,7 +50,7 @@ export class Tab3Page implements OnInit {
 
     this.listAllUsers();
     this.setFilteredItems();
-
+    
     this.searchControl.valueChanges
     .pipe(debounceTime(700),
       distinctUntilChanged()
@@ -62,7 +65,8 @@ export class Tab3Page implements OnInit {
   }
 
   ionViewWillEnter() {
-
+    this.selectUsers = [];
+    console.log(this.selectUsers);
     console.log('in ionViewWillEnter');
 
     this.storageservice.storage.get('userDetails').then((val) => {
@@ -80,7 +84,7 @@ export class Tab3Page implements OnInit {
 
     });
 
-      this.presentPopover();
+      // this.presentPopover();
 
   }
 
@@ -110,9 +114,12 @@ export class Tab3Page implements OnInit {
     this.allUsers = this.filterItems(this.searchTerm);
   }
 
-  addToMatch(event,user) {
-    console.log('user:',user);
-    this.common.navCtrl.navigateForward(['/before-match-invitation'], {queryParams: user});
+  addToMatch() {
+    if(this.selectUsers.length > 0){
+      this.common.navCtrl.navigateForward(['/before-match-invitation'], {queryParams: {selectUsers: JSON.stringify(this.selectUsers)}});
+    } else {
+      this.common.showAlertSuccess('Please select invitiation member');
+    }
   }
 
   filterItems(searchTerm) {
@@ -137,6 +144,14 @@ export class Tab3Page implements OnInit {
       // Error!
     });
 
+  }
+
+  setUser(e, user){
+    if(e.target.checked){
+      this.selectUsers.push(user);
+    }else{
+      this.selectUsers.splice(this.selectUsers.indexOf(user), 1);
+    }
   }
 
   toListCategory(val) {

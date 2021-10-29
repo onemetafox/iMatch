@@ -46,17 +46,25 @@
 
     <div *ngFor=" let user of allUsers">  
       <ion-item lines="none" class="item-styles , animate__animated animate__fadeIn">
-            <div>
-          <img [src]="user.profile_pic" style="height: 50px; width: 50px; border-radius: 50%;" (click)="addToMatch($event,user)">
-            </div>
+        <div>
+          <img [src]="user.profile_pic" style="height: 50px; width: 50px; border-radius: 50%;" (click)="addToMatch()">
+        </div>
     
         <ion-label style="margin-left: 15px;">{{user.name}}</ion-label>
-
-        <img src="../../assets/icon/add.png" alt="" style="height: 30px; width: 30px;" (click)="addToMatch($event,user)">
+        <ion-checkbox color="primary" (ionChange) = "setUser($event, user)"></ion-checkbox>
+        
       </ion-item>
     </div>
-
+  
   </ion-content>
+  <ion-footer class="ion-no-border">
+    <div style="display: flex; justify-content: end;">
+      <ion-chip ion-fixed style="background-color: #00bcd480;" (click)="addToMatch()">
+        <ion-icon name="caret-forward-circle"></ion-icon>
+        <ion-label style="font-size: 12px; font-weight: 600;">Call invitation</ion-label>
+      </ion-chip>
+    </div>
+  </ion-footer>
 
   <!-- <ion-footer *ngIf="ShowFooter==true" class="animate__animated animate__slideOutDown animate__delay-3s">
     <ion-toolbar>

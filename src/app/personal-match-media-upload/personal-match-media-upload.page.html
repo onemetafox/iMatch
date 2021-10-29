@@ -16,30 +16,39 @@
       </div>
 
       <div style="background-color: #444446; margin-top: -5%; padding: 20px 10px 10px 10px; border-right: 1px solid #e0e0e0; text-align: center;">
-        
-
-        <div *ngIf="this.FolderClicked===true" style="text-align: -webkit-center; margin-bottom: 20px;">
-          <!-- <div *ngFor="let url of urls" style="display: flex;"> -->
-            <!-- <img [src]="url" alt="" style="height: 180px; width: 125px;"> -->
-          <!-- <p style="font-size: 15px; color: white; background-color: #5e5e5f; border-radius: 10px; padding: 20px; width: 150px;"> {{files}} </p> -->
-          <!-- </div> -->
-
-          <div *ngFor="let files of selectedFiles" style="width: 130px;">
-          <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{files.name}} </p>
-
+        <div *ngFor="let att of this.anArray; let idx = index">
+          <div *ngIf="att.type=='file'">
+            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{selectedFiles[att.position].name}} </p>
+          </div>
+          <div *ngIf="att.type=='text'">
+            <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" class="input-field"></ion-input>  
+          </div>
+          <div *ngIf="att.type=='link'">
+            <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" class="input-field"></ion-input>  
+          </div>
+          <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" class="input-field"></ion-input>
+        </div>
+        <!-- <ion-item *ngFor="let att of this.linkArray; let idx = index">
+          <ion-input type="text" [(ngModel)]="linkArray[idx].value"></ion-input>
+        </ion-item>
+        <ion-item *ngFor="let att of this.wordArray; let idx = index">
+          <ion-input type="text"  text-right  [(ngModel)]="wordArray[idx].value"></ion-input>
+        </ion-item> -->
+        <!-- <button ion-button   (click)="Add()">Add More</button>
+        <button ion-button full  (click)="goTo()" >let's go</button> -->
+      
+        <!-- <div *ngIf="this.FolderClicked===true" style="text-align: -webkit-center; margin-bottom: 20px;">
+          <div *ngFor="let files of selectedFiles; let i = index">
+            <ion-input (ionInput)="keychage($event, i)" placeholder="Enter sub caption" type="text" class="input-field"></ion-input>
+            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{files.name}} </p>
           </div>
         </div>
-
         <div *ngIf="this.FolderClicked===false" style="text-align: -webkit-center; margin-bottom: 20px;">
-          <!-- <div *ngFor="let url of urls" style="display: flex;">
-            <img [src]="url" alt="" style="height: 180px; width: 125px;">
-          </div> -->
-
-          <div *ngFor="let files of MediaFiles" style="width: 130px;">
-          <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{files.name}} </p>
-
+          <div *ngFor="let files of MediaFiles; let i = index" style="width: 130px;">
+            <ion-input [(ngModel)]="sub_captions_data[i].caption" placeholder="Enter sub caption" type="text" class="input-field"></ion-input>
+            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{files.name}} </p>
           </div>
-        </div>
+        </div> -->
 
         <div *ngIf="hideImageSpace==true">
 
@@ -149,40 +158,28 @@
         </div>
 
 
-          <form [formGroup]="LinkInputForm">
-            <div *ngIf="isLink==true" class="animate__animated animate__fadeInUp">
-              <ion-input formControlName="caption" [(ngModel)]="userLink.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
+        <form [formGroup]="LinkInputForm">
+          <div *ngIf="isLink==true" class="animate__animated animate__fadeInUp">
+            <ion-input formControlName="caption" [(ngModel)]="userLink.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
 
-              <ion-textarea formControlName="link1" [(ngModel)]="userLink.link1" placeholder="Enter Your Link" class="input-field" auto-grow="true" type="url" value="https://"></ion-textarea>
-              <ion-textarea formControlName="link2" [(ngModel)]="userLink.link2" placeholder="Enter Your Link" class="input-field" auto-grow="true" type="url" value="https://"></ion-textarea>
-  
-              <ion-button color="warning" style="font-family: OpenSansBold;" type="submit" (click)="submit()">Launch</ion-button>
-            </div>
-          </form>
+            <ion-textarea formControlName="link1" [(ngModel)]="userLink.link1" placeholder="Enter Your Link" class="input-field" auto-grow="true" type="url" value="https://"></ion-textarea>
+            <ion-textarea formControlName="link2" [(ngModel)]="userLink.link2" placeholder="Enter Your Link" class="input-field" auto-grow="true" type="url" value="https://"></ion-textarea>
 
-          <form [formGroup]="TextInputForm">
-            <div *ngIf="isWordings==true" class="animate__animated animate__fadeInUp">
-              <ion-input formControlName="caption" [(ngModel)]="userText.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
+            <ion-button color="warning" style="font-family: OpenSansBold;" type="submit" (click)="submit()">Launch</ion-button>
+          </div>
+        </form>
 
-              <ion-textarea formControlName="text1" [(ngModel)]="userText.text1" placeholder="Enter Your Wording" class="input-field" auto-grow="true" type="text"></ion-textarea>
-              <ion-textarea formControlName="text2" [(ngModel)]="userText.text2" placeholder="Enter Your Wording" class="input-field" auto-grow="true" type="text"></ion-textarea>
-              
-              <ion-button color="warning" style="font-family: OpenSansBold;" type="submit" (click)="submit()">Launch</ion-button>
-            </div>
-          </form>
+        <form [formGroup]="TextInputForm">
+          <div *ngIf="isWordings==true" class="animate__animated animate__fadeInUp">
+            <ion-input formControlName="caption" [(ngModel)]="userText.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
 
-          <!-- <form>
-            <div>
-              <ion-input placeholder="Enter Caption"></ion-input>
+            <ion-textarea formControlName="text1" [(ngModel)]="userText.text1" placeholder="Enter Your Wording" class="input-field" auto-grow="true" type="text"></ion-textarea>
+            <ion-textarea formControlName="text2" [(ngModel)]="userText.text2" placeholder="Enter Your Wording" class="input-field" auto-grow="true" type="text"></ion-textarea>
+            
+            <ion-button color="warning" style="font-family: OpenSansBold;" type="submit" (click)="submit()">Launch</ion-button>
+          </div>
+        </form>
 
-              <ion-label>
-
-              </ion-label>
-
-              <input type="file">
-            </div>
-          </form> -->
-          
       </div>
 
     </div>

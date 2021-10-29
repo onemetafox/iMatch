@@ -24,11 +24,13 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
   myFiles:string [] = [];
-
   FormSubmit : boolean = false;
   showUploadSection = false;
   isLink: boolean = false;
   hideImageSpace: boolean = true;
+  anArray: any [] = [];
+  linkArray: any [] = [];
+  wordArray: any [] = [];
 
   LinkInputForm: FormGroup;
   TextInputForm: FormGroup;
@@ -36,7 +38,6 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
   description: AbstractControl;
   caption: AbstractControl;
-  
   link1: AbstractControl;
   link2: AbstractControl;
 
@@ -48,17 +49,32 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     // "file" : "",
     };
 
-    userLink = {
+  sub_captions_data = [
+    {
       "caption" :"",
-      "link1" : "",
-      "link2" : "",
-      };
+    },
+    {
+      "caption" :"",
+    },
+    {
+      "caption" :"",
+    },
+    {
+      "caption" :"",
+    }
+  ]
 
-      userText = {
-        "caption" :"",
-        "text1" : "",
-        "text2" : ""
-        };
+  userLink = {
+    "caption" :"",
+    "link1" : "",
+    "link2" : "",
+    };
+
+  userText = {
+    "caption" :"",
+    "text1" : "",
+    "text2" : ""
+    };
 
     userDetails: any;
     MatchDetails: any;
@@ -68,6 +84,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     zufall: number;
     isWordings: boolean = false;
     MediaFiles = [];
+    MediaCaptions = [];
     imgURL: any;
     progressInfos = [];
     selectedFiles: FileList;
@@ -134,7 +151,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
                                                                         Validators.required,
                                                                         Validators.minLength(5),
                                                                               ])],
-                                                                        });                                 
+                                        });                                 
    this.caption = this.LinkInputForm.controls['caption'];
    this.link1 = this.LinkInputForm.controls['link1'];
    this.link2 = this.LinkInputForm.controls['link2'];
@@ -146,6 +163,45 @@ export class PersonalMatchMediaUploadPage implements OnInit {
    this.caption = this.Invitation.controls['caption'];
 
    }
+
+  goTo(){
+    console.log('this.anArray',this.anArray);
+  }
+  
+  Add(type){
+    if(this.anArray.length >= 4){
+      this.common.showAlert('Maximum is 4 items');
+      return;
+    }
+    if(type == 'link'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'link'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'file'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'file'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    if(type == 'text'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'text'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
+    
+  }
 
 
   ngOnInit() {
@@ -161,17 +217,21 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   }
 
       toShowLinkInputFiled() {
-        console.log('Link Input Clicked');
-        this.isLink = true;
-        this.isWordings = false;
-        this.hideImageSpace = false;
+        // console.log('Link Input Clicked');
+        // this.isLink = true;
+        // this.isWordings = false;
+        // this.hideImageSpace = false;
+        this.linkArray.push({value: 'http://'});
+        this.Add('link');
       }
 
       toShowTextArea() {
-        console.log('Text Input Clicked');
-        this.isWordings = true;
-        this.isLink =false;
-        this.hideImageSpace = false;
+        // console.log('Text Input Clicked');
+        // this.isWordings = true;
+        // this.isLink =false;
+        // this.hideImageSpace = false;
+        this.wordArray.push({value: ''});
+        this.Add('text');
       }
 
     // toProceed() {
@@ -456,14 +516,15 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             return;
           }
   
-          if (e.target.files.length===1) {
-            this.Invitation.reset();
-            this.common.showAlert('Try to choose maximum 2 media');
-          } 
+          // if (e.target.files.length===1) {
+          //   this.Invitation.reset();
+          //   this.common.showAlert('Try to choose maximum 2 media');
+          // } 
 
           this.selectedFiles = e.target.files;
           for (let i=0; i<e.target.files.length; i++) {
             this.myFiles.push(e.target.files[i]);
+            this.Add('file');
           }
 
         this.urls = [];
@@ -486,24 +547,22 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         }
 
       } else if (type==='image') {
-
+        this.MediaCaptions = [];
         this.FolderClicked = false;
-        console.log('camera clicked:',this.FolderClicked);
 
-              if (this.MediaFiles.length===0) {
-              this.MediaFiles[0] = e.target.files[0];
-              console.log('MediaFiles:',this.MediaFiles);
-              this.common.showAlert('Try to capture maximum 2 images');
+        if (this.MediaFiles.length===0) {
+          this.MediaFiles[0] = e.target.files[0];
+          console.log('MediaFiles:',this.MediaFiles);
+          this.common.showAlert('Try to capture maximum 2 images');
+        } else {
+          this.MediaFiles[1] = e.target.files[0];
+          console.log('MediaFiles:',this.MediaFiles);
 
-            } else {
-              this.MediaFiles[1] = e.target.files[0];
-              console.log('MediaFiles:',this.MediaFiles);
-
-                for (let i=0; i<this.MediaFiles.length; i++) {
-                  this.myFiles.push(this.MediaFiles[i]);
-                  console.log('myFiles:',this.myFiles);
-                }
-            }
+          for (let i=0; i<this.MediaFiles.length; i++) {
+            this.myFiles.push(this.MediaFiles[i]);
+            this.MediaCaptions.push(this.MediaFiles[i]);
+          }
+        }
 
         } else if (type==='audio') {
 
@@ -884,236 +943,238 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 //       // Then you'll be able to handle the myimage.png file as base64
 //     });
 
+      keychage(e, i) {
+        console.log(e);
+        // this.sub_captions_data[i].caption = e.target.value;
+      }
+
       submit() {
         // this.storageservice.storage.get('FirstAudio').then((val) => {
         //   console.log('Value:',val);
         //   // console.log('');
-
         // });
-        if (this.hideImageSpace==true && this.Invitation.valid) {
-
-          if (this.myFiles.length >= 2) {
-
-          this.common.showLoader();
-          this.common.presentToast('⏳ Please wait... we are uploading your file ...');
+        if(this.anArray.length > 2) {
           const formData = new FormData();
-
           for( let i=0;i<this.myFiles.length; i++) 
           {
             formData.append("filename[]",this.myFiles[i]);
-            console.log('myFiles:',this.myFiles[i]);
           }
-            formData.append("caption", this.userData.caption);
-            formData.append("userid", this.userDetails.userid);
-            formData.append("links", '');
-            formData.append("texts", '');
-              console.log('formData:', formData);
-            this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
-            ).subscribe((res) => {
-              console.log(res);
-              if (res['message']==='Successfully uploaded') {
-                this.Invitation.reset();
-                this.common.presentToast('File Uploaded Successful');
-                this.common.router.navigate(['tabs/tab6']);
-                this.common.hideLoader();
-              } else {
-                this.common.hideLoader();
-                this.common.presentToast('File Upload Failed !!!');
-              }
-            }, err => {
-              this.common.hideLoader();
-              console.log('err',err);
-              console.log(err.headers);
-            });
-
-          } else {
-
-            this.common.showAlert('You are not allowed to submit a personal match with single media');
-
-          }
-
-        } else if (this.isLink==true) {
-          // this.common.presentLoading();
-            const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-          if (this.userLink.link1.match(regex)!=null) {
-
-            console.log('Matching link');
-              this.Links[0] = this.userLink.link1;
-                console.log('link1',this.Links[0]);
-
-          } else {
-
-            console.log('No Match');
-              this.Links[0] = 'https://'+this.userLink.link1;
-                console.log('link1',this.Links[0]);
-
-          }
-
-          if (this.userLink.link2.match(regex)!=null) {
-
-            console.log('Matching link');
-              this.Links[1] = this.userLink.link2;
-                console.log('link2',this.Links[1]);
-
-          } else {
-
-            console.log('No Match');
-              this.Links[1] = 'https://'+this.userLink.link2;
-                console.log('link2',this.Links[1]);
-
-          }
-
-          console.log('link1',this.userLink.link1);
-          console.log('link2',this.userLink.link2);
-
-          if (this.LinkInputForm.valid) {
-            this.common.presentLoading();
-            const formData = new FormData();
-
-            formData.append("filename[]",'');
-            formData.append("caption", this.userLink.caption);
-            formData.append("userid", this.userDetails.userid);
-
-            for( let i=0;i<this.Links.length; i++) {
-              formData.append("links[]", this.Links[i]);
-            }
-
-            formData.append("texts", '');
-              console.log('formData:', formData);
-              this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
-              console.log(res);
-              if (res['message']==='Successfully uploaded') {
-                this.Invitation.reset();
-                this.common.presentToast('File Uploaded Successful');
-                this.common.router.navigate(['tabs/tab6']);
-                // this.common.hideLoader();
-
-              } else {
-                // this.common.hideLoader();
-
-                this.common.presentToast('File Upload Failed !!!');
-              }
-            }, err => {
-              // this.common.hideLoader();
-
-              console.log('err',err);
-              console.log(err.headers);
-            });
-            
-          } else {
-            console.log('Link is not valid');
-            // this.common.hideLoader();
-            this.common.showAlert('The link you entered is not valid, Please enter a valid link and press launch');
-          }
-
-        } else if (this.isWordings==true && this.TextInputForm.valid) {
-
-          // this.common.presentLoading();
-          this.common.showLoader();
-
-          console.log('Text1',this.userText.text1);
-          console.log('Text2',this.userText.text2);
-          this.Text[0] = this.userText.text1;
-          this.Text[1] = this.userText.text2;
-          console.log('Text:',this.Text);
-
-          // let params = {
-          //   'filename[]' : '',
-          //   caption : this.userText.caption,
-          //   userid : this.userDetails.userid,
-          //   links : [this.userLink.link1,this.userLink.link2],
-          //   text : ''
-          // }
-          // console.log('params:',params);
-          // this.common.postMethod('create_personalmatch',params).then((res:any) => {
-          //   console.log('res:',res);
-          // }, err => {
-          //               console.log('err',err);
-          //   console.log(err.headers);
-          // });
-
-          const formData = new FormData();
-          // var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
-
-          formData.append("filename[]",'');
-          formData.append("caption", this.userText.caption);
+          formData.append("caption", this.userData.caption);
           formData.append("userid", this.userDetails.userid);
-          formData.append("links", '');
-
-          for( let i=0;i<this.Text.length; i++) {
-            formData.append("texts[]", this.Text[i]);
-          }
-
-          // formData.append("texts[]", );
-          // this.userText.text1,this.userText.text2
-            console.log('formData:', formData.getAll("texts"));
-          this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
+          formData.append("sub_caption", JSON.stringify(this.anArray));
+          formData.append("links", JSON.stringify(this.linkArray));
+          formData.append("texts", JSON.stringify(this.wordArray));
+          this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
+          ).subscribe((res) => {
             console.log(res);
-            // this.common.presentLoading();
-
             if (res['message']==='Successfully uploaded') {
               this.Invitation.reset();
               this.common.presentToast('File Uploaded Successful');
               this.common.router.navigate(['tabs/tab6']);
               this.common.hideLoader();
-
             } else {
-
-              this.common.presentToast('File Upload Failed !!!');
               this.common.hideLoader();
-
+              this.common.presentToast('File Upload Failed !!!');
             }
           }, err => {
+            this.common.hideLoader();
             console.log('err',err);
             console.log(err.headers);
-            this.common.hideLoader();
-
           });
-
-        } else if (this.isCaptureImage==true) {
-
-          // this.common.presentLoading();
-          this.common.showLoader();
-
-          const formData = new FormData();
-
-          for( let i=0;i<this.myFiles.length; i++) 
-          {
-            formData.append("filename[]",this.myFiles[i]);
-            console.log('myFiles:',this.myFiles[i]);
-          }
-            formData.append("caption", this.userData.caption);
-            formData.append("userid", this.userDetails.userid);
-            formData.append("links[]", '');
-            formData.append("texts", '');
-              console.log('formData:', formData);
-              // this.common.presentLoading();
-            this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
-            ).subscribe((res) => {
-              // this.common.presentLoading();
-
-              console.log(res);
-              if (res['message']==='Successfully uploaded') {
-                this.Invitation.reset();
-                this.common.presentToast('File Uploaded Successful');
-                this.common.router.navigate(['tabs/tab6']);
-                this.common.hideLoader();
-
-              } else {
-                this.common.presentToast('File Upload Failed !!!');
-                this.common.hideLoader();
-
-              }
-            }, err => {
-              console.log('err',err);
-              console.log(err.headers);
-              this.common.presentToast('File Upload Failed !!!');
-              this.common.hideLoader();
-
-            });
-
         }
+
+        // if (this.hideImageSpace==true && this.Invitation.valid) {
+
+        //   if (this.myFiles.length >= 2) {
+
+        //   this.common.showLoader();
+        //   this.common.presentToast('⏳ Please wait... we are uploading your file ...');
+        //   const formData = new FormData();
+        //     console.log("----------------------------", this.sub_captions_data);
+        //   for( let i=0;i<this.myFiles.length; i++) 
+        //   {
+        //     formData.append("filename[]",this.myFiles[i]);
+        //   }
+        //     formData.append("caption", this.userData.caption);
+        //     formData.append("userid", this.userDetails.userid);
+        //     formData.append("sub_caption", JSON.stringify(this.sub_captions_data));
+        //     formData.append("links", '');
+        //     formData.append("texts", '');
+        //       console.log('formData:', formData);
+        //     this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
+        //     ).subscribe((res) => {
+        //       console.log(res);
+        //       if (res['message']==='Successfully uploaded') {
+        //         this.Invitation.reset();
+        //         this.common.presentToast('File Uploaded Successful');
+        //         this.common.router.navigate(['tabs/tab6']);
+        //         this.common.hideLoader();
+        //       } else {
+        //         this.common.hideLoader();
+        //         this.common.presentToast('File Upload Failed !!!');
+        //       }
+        //     }, err => {
+        //       this.common.hideLoader();
+        //       console.log('err',err);
+        //       console.log(err.headers);
+        //     });
+
+        //   } else {
+
+        //     this.common.showAlert('You are not allowed to submit a personal match with single media');
+
+        //   }
+
+        // } else if (this.isLink==true) {
+        //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
+
+        //   if (this.userLink.link1.match(regex)!=null) {
+
+        //     console.log('Matching link');
+        //       this.Links[0] = this.userLink.link1;
+        //         console.log('link1',this.Links[0]);
+
+        //   } else {
+
+        //     console.log('No Match');
+        //       this.Links[0] = 'https://'+this.userLink.link1;
+        //         console.log('link1',this.Links[0]);
+
+        //   }
+
+        //   if (this.userLink.link2.match(regex)!=null) {
+
+        //     console.log('Matching link');
+        //       this.Links[1] = this.userLink.link2;
+        //         console.log('link2',this.Links[1]);
+
+        //   } else {
+
+        //     console.log('No Match');
+        //       this.Links[1] = 'https://'+this.userLink.link2;
+        //         console.log('link2',this.Links[1]);
+
+        //   }
+
+        //   console.log('link1',this.userLink.link1);
+        //   console.log('link2',this.userLink.link2);
+
+        //   if (this.LinkInputForm.valid) {
+        //     this.common.presentLoading();
+        //     const formData = new FormData();
+
+        //     formData.append("filename[]",'');
+        //     formData.append("caption", this.userLink.caption);
+        //     formData.append("userid", this.userDetails.userid);
+
+        //     for( let i=0;i<this.Links.length; i++) {
+        //       formData.append("links[]", this.Links[i]);
+        //     }
+
+        //     formData.append("texts", '');
+        //       console.log('formData:', formData);
+        //       this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
+        //       console.log(res);
+        //       if (res['message']==='Successfully uploaded') {
+        //         this.Invitation.reset();
+        //         this.common.presentToast('File Uploaded Successful');
+        //         this.common.router.navigate(['tabs/tab6']);
+        //       } else {
+        //         this.common.presentToast('File Upload Failed !!!');
+        //       }
+        //     }, err => {
+        //       console.log('err',err);
+        //       console.log(err.headers);
+        //     });
+            
+        //   } else {
+        //     console.log('Link is not valid');
+        //     this.common.showAlert('The link you entered is not valid, Please enter a valid link and press launch');
+        //   }
+
+        // } else if (this.isWordings==true && this.TextInputForm.valid) {
+        //   this.common.showLoader();
+
+        //   console.log('Text1',this.userText.text1);
+        //   console.log('Text2',this.userText.text2);
+        //   this.Text[0] = this.userText.text1;
+        //   this.Text[1] = this.userText.text2;
+        //   console.log('Text:',this.Text);
+
+        //   const formData = new FormData();
+
+        //   formData.append("filename[]",'');
+        //   formData.append("caption", this.userText.caption);
+        //   formData.append("userid", this.userDetails.userid);
+        //   formData.append("links", '');
+
+        //   for( let i=0;i<this.Text.length; i++) {
+        //     formData.append("texts[]", this.Text[i]);
+        //   }
+
+        //   console.log('formData:', formData.getAll("texts"));
+        //   this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData).subscribe(res => {
+        //     console.log(res);
+
+        //     if (res['message']==='Successfully uploaded') {
+        //       this.Invitation.reset();
+        //       this.common.presentToast('File Uploaded Successful');
+        //       this.common.router.navigate(['tabs/tab6']);
+        //       this.common.hideLoader();
+
+        //     } else {
+
+        //       this.common.presentToast('File Upload Failed !!!');
+        //       this.common.hideLoader();
+
+        //     }
+        //   }, err => {
+        //     console.log('err',err);
+        //     console.log(err.headers);
+        //     this.common.hideLoader();
+
+        //   });
+
+        // } else if (this.isCaptureImage==true) {
+
+        //   this.common.showLoader();
+
+        //   const formData = new FormData();
+
+        //   for( let i=0;i<this.myFiles.length; i++) 
+        //   {
+        //     formData.append("filename[]",this.myFiles[i]);
+        //     console.log('myFiles:',this.myFiles[i]);
+        //   }
+        //     formData.append("caption", this.userData.caption);
+        //     formData.append("userid", this.userDetails.userid);
+        //     formData.append("links[]", '');
+        //     formData.append("texts", '');
+        //     console.log('formData:', formData);
+        //     this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
+        //     ).subscribe((res) => {
+
+        //       console.log(res);
+        //       if (res['message']==='Successfully uploaded') {
+        //         this.Invitation.reset();
+        //         this.common.presentToast('File Uploaded Successful');
+        //         this.common.router.navigate(['tabs/tab6']);
+        //         this.common.hideLoader();
+
+        //       } else {
+        //         this.common.presentToast('File Upload Failed !!!');
+        //         this.common.hideLoader();
+
+        //       }
+        //     }, err => {
+        //       console.log('err',err);
+        //       console.log(err.headers);
+        //       this.common.presentToast('File Upload Failed !!!');
+        //       this.common.hideLoader();
+
+        //     });
+
+        // }
 
       }
 

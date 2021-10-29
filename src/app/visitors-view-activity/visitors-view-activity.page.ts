@@ -71,12 +71,12 @@ export class VisitorsViewActivityPage implements OnInit {
 
     this.common.postMethod('PersonalMatch',params).then((res:any) => {
       console.log('res:',res);
-      this.PersonalMatch = res.details.image;
-      this.PersonalMatchImage = res.details.image;
-      this.PersonalMatchAudio = res.details.audio;
-      this.PersonalMatchLink = res.details.link;
-      this.PersonalMatchText = res.details.text;
-      this.PersonalMatchVideo = res.details.video;
+      this.PersonalMatch = res.details;
+      // this.PersonalMatchImage = res.details.image;
+      // this.PersonalMatchAudio = res.details.audio;
+      // this.PersonalMatchLink = res.details.link;
+      // this.PersonalMatchText = res.details.text;
+      // this.PersonalMatchVideo = res.details.video;
       console.log('PersonalMatch:',this.PersonalMatch);
     });
 
@@ -185,7 +185,7 @@ export class VisitorsViewActivityPage implements OnInit {
   goToPersonalMatch(e, match, index: number, cat) {
     this.UserInfo.userType = 'visitor';
     this.UserInfo.personalMatchSlideIndex = index;
-    this.UserInfo.fileType = match.sender_image_type;
+    this.UserInfo.fileType = match.compare_data[0].image_type;
     this.UserInfo.category = cat;
     this.common.navCtrl.navigateForward(['/personal-match'], {queryParams: this.UserInfo});
     // this.common.router.navigate(['/personal-match']);

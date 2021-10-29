@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <img src="../../assets/icon/chat/back.png" alt="" style="height: 16px;width: 10px;position: absolute;left: 20px;" (click)="togoBack()">
+        <div style="text-align: center; font-family: OpenSansRegular; font-size: 16px; color: white;">
+            <span>Pending Open Matches</span>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div style="padding: 10px;" *ngFor="let invitaion of pendingMatches; let i = index;">
+        <div style="border-top: 10px solid #f21908; border-radius: 13px 13px 5px 5px; box-shadow: 1px 1px 5px 1px grey; background-color: #f21908;">
+
+            <div style="padding: 15px; border-radius: 13px 13px 5px 5px; background-color: white;">
+                <div style="display: flex; justify-content: space-between;">
+
+                    <div>
+                        <h5 style="font-weight: 600;">{{invitaion.caption}}</h5>
+                        <span>{{invitaion.description}}</span>
+                        <p style="margin: 0px; font-weight: 100; font-size: 13px;">{{invitaion.created_at}}</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="../../assets/icon/profile/user.png" alt="" style="height: 55px; width: 55px; border-radius: 50%; border: 1px solid #707070">
+                        <p style="margin: 0px; font-weight: 600; font-size: 13px;">{{this.userDetails.name}}</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <div style="display:flex; justify-content: space-between;">
+                        <div style="display:flex; justify-content: start;">
+                            <div *ngFor="let user of invitaion.users; let j = index;" style=" padding: 10px;">
+                                <div style="display: flex; justify-content: center;">
+                                    <img src="../../assets/icon/profile/user.png" alt="" style="height: 55px; width: 55px; border-radius: 50%; border: 1px solid #707070">
+                                </div>
+                                <p style="margin: 0px; font-weight: 600; font-size: 13px;align-text:content">{{user.name}}</p>
+                                <p *ngIf="user.accept_status=='accept'" style="margin: 0px; font-weight: 600; font-size: 13px;text-align: center; color: #398a31;">Accept</p>
+                                <p *ngIf="user.accept_status=='reject'" style="margin: 0px; font-weight: 600; font-size: 13px;text-align: center; color: #c0b3b3;">Reject</p>
+                                <p *ngIf="user.accept_status==null" style="margin: 0px; font-weight: 600; font-size: 13px;text-align: center; color:#d87c7c;">Pending</p>
+                            </div>
+                        </div>
+                        <ion-button *ngIf="invitaion.status" color="danger" style=" margin-top: 35px;" (click)="startMatch(invitaion.matchid)">Start
+                        </ion-button>
+                        <ion-button *ngIf="!invitaion.status" color="medium" style=" margin-top: 35px;">Start
+                        </ion-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ion-content>

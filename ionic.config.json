@@ -1,8 +1,7 @@
 {
-  "name": "iMatch",
-  "integrations": {
-    "cordova": {},
-    "capacitor": {}
-  },
-  "type": "angular"
+    "name": "iMatch",
+    "integrations": {
+        "cordova": {}
+    },
+    "type": "angular"
 }
