@@ -57,48 +57,34 @@
             <ion-input formControlName="caption" [(ngModel)]="userData.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
 
             <div style="justify-content: center;display: flex;flex-wrap: wrap;">
-            <ion-chip style="background-color: #f44336; display: inline-block;
-            justify-content: center;
-            flex-wrap: nowrap;">
-              <!-- <ion-icon name="folder-open"></ion-icon> -->
+            <ion-chip style="background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;">
               <input #file class="custom-file-input-storage" formControlName="file" style="width: 160px;" type="file" multiple (change)="fileChangeEvent($event, 'folder')">
-              <!-- (change)="fileChangeEvent($event,'folder')" -->
-
-              <!-- value="file" formControlName="file" [(ngModel)]="userData.file" -->
-              <!-- <ion-label>Files From Phone Storage</ion-label> -->
             </ion-chip>
 
             <ion-chip style="background-color: #9c27b0; display: inline-block;
             flex-wrap: nowrap;">
-              <!-- (click)="CaptureImage()" -->
-              <!-- <ion-icon name="camera"></ion-icon> -->
-              <input #file class="custom-file-input-Capture-Image" style="width: 92px;" formControlName="file" accept="image/*" capture type="file" multiple (change)="fileChangeEvent($event,'image')">
+              <input #file class="custom-file-input-Capture-Image" style="width: 92px;" formControlName="file" accept="image/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'image')">
+              <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed"> -->
+                <!-- <ion-button (click)="CaptureImage()"></ion-button> -->
+              <!-- </ion-fab> -->
               <!-- <ion-label>Capture Image</ion-label> -->
             </ion-chip>
 
-            <ion-chip style="background-color: #3f51b5; display: inline-block;
-            flex-wrap: nowrap;">
+            <ion-chip style="background-color: #3f51b5; display: inline-block; flex-wrap: nowrap;">
               <!-- <ion-icon name="videocam"></ion-icon> -->
-              <input #file class="custom-file-input-Capture-Video" formControlName="file" style="width: 92px;" accept="video/*" capture type="file" multiple (change)="fileChangeEvent($event,'video')">
+              <input #file class="custom-file-input-Capture-Video" formControlName="file" style="width: 92px;" accept="video/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'video')">
               <!-- <ion-label>Capture Video</ion-label> -->
             </ion-chip>
 
-            <ion-chip style="background-color: #2196f3; display: inline-block;
-            flex-wrap: nowrap;">
-              <!-- <ion-icon name="mic-circle"></ion-icon> -->
+            <ion-chip style="background-color: #2196f3; display: inline-block; flex-wrap: nowrap;">
               <input #file class="custom-file-input-Capture-Audio" formControlName="file" style="width: 90px;" accept="audio/*" capture type="file" multiple (change)="fileChangeEvent($event,'audio')">
-              <!-- <ion-label>Capture Audio</ion-label> -->
             </ion-chip>
 
             <ion-chip style="background-color: #009688;" (click)="toShowLinkInputFiled()">
-              <!-- <ion-icon name="link"></ion-icon> -->
-              <!-- <ion-input formControlName="file" [(ngModel)]="userData.file" style="display: none;" accept="audio/*" capture type="file" multiple (change)="fileChangeEvent($event)"></ion-input> -->
               <ion-label>Share Links</ion-label>
             </ion-chip>
 
             <ion-chip style="background-color: #ff9800;" (click)="toShowTextArea()">
-              <!-- <ion-icon name="text"></ion-icon> -->
-              <!-- <ion-input formControlName="file" [(ngModel)]="userData.file" style="display: none;" accept="audio/*" capture type="file" multiple (change)="fileChangeEvent($event)"></ion-input> -->
               <ion-label>Share Wordings</ion-label>
             </ion-chip>
 

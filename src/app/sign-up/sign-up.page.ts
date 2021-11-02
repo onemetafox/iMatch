@@ -6,14 +6,16 @@ import { StorageService } from '../services/storage.service';
 import {
 	FormBuilder,
 	FormGroup,
-  	Validators,
-    AbstractControl,
+	Validators,
+  AbstractControl,
 } from '@angular/forms';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.page.html',
   styleUrls: ['./sign-up.page.scss'],
 })
+
 export class SignUpPage implements OnInit {
 
   FormSubmit : boolean = false;
@@ -42,45 +44,42 @@ export class SignUpPage implements OnInit {
 
   constructor(
     private common: CommonService,
-	public formbuilder:FormBuilder,
-	private geolocation: Geolocation,
-	private storageservice: StorageService,
+		public formbuilder:FormBuilder,
+		private geolocation: Geolocation,
+		private storageservice: StorageService,
 	) { 
 
-      this.formgroup = formbuilder.group({
-        name:['', Validators.required],
-        code:['',Validators.compose([Validators.required,
-                                      Validators.minLength(1),
-                                    ])],
-        phone:['', Validators.compose([Validators.required,
-                                        Validators.minLength(10),
-                                        Validators.maxLength(35),
-                                        Validators.pattern('[0-9]+')
-                                      ])],
-        email:['', Validators.compose([Validators.required,
-                                        Validators.minLength(12),
-                                        Validators.email,
-                                        Validators.pattern(/[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/)
-                                      ])],
-        password:['', Validators.compose([Validators.required,
-                                          Validators.minLength(8),
-                                          Validators.maxLength(30),
-                                          Validators.pattern(/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/),
-                                        ])],
-        // university: ['',Validators.compose([ Validators.minLength(0)])],
-      })
+    this.formgroup = formbuilder.group({
+      name:['', Validators.required],
+      code:['',Validators.compose([Validators.required,
+        Validators.minLength(1),
+      ])],
+      phone:['', Validators.compose([Validators.required,
+	      Validators.minLength(10),
+	      Validators.maxLength(35),
+	      Validators.pattern('[0-9]+')
+	    ])],
+      email:['', Validators.compose([Validators.required,
+        Validators.minLength(12),
+        Validators.email,
+        Validators.pattern(/[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/)
+      ])],
+      password:['', Validators.compose([Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(30),
+        Validators.pattern(/(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/),
+      ])],
+      // university: ['',Validators.compose([ Validators.minLength(0)])],
+    })
      
-      this.name = this.formgroup.controls['name'];
-      this.code = this.formgroup.controls['code'];
-      this.phone = this.formgroup.controls['phone'];
-      this.email = this.formgroup.controls['email'];
-      this.password = this.formgroup.controls['password'];
-    //   this.university = this.formgroup.controls['university'];
-
-	  console.log(this.flags);
-	  console.log('Nigeria:',this.flags[161]);
+    this.name = this.formgroup.controls['name'];
+    this.code = this.formgroup.controls['code'];
+    this.phone = this.formgroup.controls['phone'];
+    this.email = this.formgroup.controls['email'];
+    this.password = this.formgroup.controls['password'];
+    // this.university = this.formgroup.controls['university'];
 	  this.userData.code = "+234";
-    }
+  }
     
   ngOnInit() {
 	  this.common.menu.swipeGesture(false);
@@ -88,127 +87,62 @@ export class SignUpPage implements OnInit {
 
   ionViewWillEnter(){
 
-	console.log('Entered Into Registration Page');
-
-	this.storageservice.storage.get('DeviceToken').then((val) => {
-    	console.log('Stored Device Token:',val);
-    		this.DeviceToken = val;
-	});
-	   
-    this.storageservice.storage.get('DeviceInfo').then((val) => {
-    	console.log('Stored Device Information:',val);
-    		this.DeviceInfo = val;
-	});
-
-		this.toGetUserLocation();
   }
 
   async toGetUserLocation() {
-
-	console.log('To Get User Location');
-
 		this.geolocation.getCurrentPosition().then((resp) => {
-
-			console.log('resp:',resp);
-			  this.UserLocation = resp.coords;
-			  	console.log('UserLocation:',this.UserLocation);
-
-	 }).catch((error) => {
-
-	   console.log('Error getting location', error);
-
-	 });
-
+		  this.UserLocation = resp.coords;
+	 	}).catch((error) => {
+	   	console.log('Error getting location', error);
+	 	});
   }
 
   signUp() {
 
     this.FormSubmit = true;
 
-    console.log('FormSubmit:',this.FormSubmit);
-    console.log('Password:',this.formgroup.controls['password'], this.formgroup.controls['password'].value , this.formgroup.controls['password'].value);
-    console.log('this.formgroup.valid:',this.formgroup.valid, 'this.formgroup.value:',this.formgroup.value);
-
     if(this.formgroup.valid){
 
-		let params = {
+			let params = {
 
-			name : this.userData.name,
-			code : this.userData.code,
-			phone : this.userData.phone,
-			email : this.userData.email,
-			password : this.userData.password,
-			// university : this.userData.university,
-			university : '',
-			lat: this.UserLocation.latitude,
-			long: this.UserLocation.longitude,
-			// lat : '',
-			// long : '',
-			device_token : '',
-			// device_token : this.DeviceToken.value,
-			device_type : '',
-			// device_type : this.DeviceInfo.platform,
+				name : this.userData.name,
+				code : this.userData.code,
+				phone : this.userData.phone,
+				email : this.userData.email,
+				password : this.userData.password,
+				// university : this.userData.university,
+				university : '',
+				lat: this.UserLocation.latitude,
+				long: this.UserLocation.longitude,
+				device_token : '',
+				// device_token : this.DeviceToken.value,
+				device_type : '',
+				// device_type : this.DeviceInfo.platform,
 
-		}
-
-		console.log('params:',params);
-      	this.common.postMethod('register',params).then((res:any) => {
-        console.log('res:',res);
-
+			}
+	  	this.common.postMethod('register',params).then((res:any) => {
 			this.responseData = res;
-			console.log('responseData:',this.responseData);
-
-        if(this.responseData.userData){
-			
-		  console.log('reg:',this.responseData);
-
-          }
-
-          if(res.message == "success"){
-
-            this.common.presentToast('Registration Successful!');
-            this.common.router.navigate(['/terms-of-service']);
-
-          }else if (res.message == "user already existing"){
-
-            this.common.showAlert('User already existing');
-
-          }else if (res.status == false){
-
-            this.common.showAlert('Registration failed');
-
-          }
-
-        }, (err) => {
-
-          console.log(err);
-          console.log(err.headers);
-
-        });
-
-	} else {
-
-		if (this.formgroup.controls['password'].status=='INVALID') {
-
-			this.common.presentToast('Password must contain 8 letters, a uppercase, a lowercase, a number , don\'t use any special characters, Password format must be like : Example0001');
+	    if(this.responseData.userData){}
+        if(res.message == "success"){
+          this.common.presentToast('Registration Successful!');
+          this.common.router.navigate(['/terms-of-service']);
+        }else if (res.message == "user already existing"){
+          this.common.showAlert('User already existing');
+        }else if (res.status == false){
+          this.common.showAlert('Registration failed');
+        }
+      }, (err) => {
+        console.log(err);
+        console.log(err.headers);
+      });
 
 		} else {
-
-			this.common.showAlert('Please enter valid details !');
-			
-		}
-
-		console.log('email:',this.formgroup.controls['name'].valid, this.formgroup.controls['name'].value );
-		console.log('phone:',this.formgroup.controls['phone'].valid, this.formgroup.controls['phone'].value);
-		console.log('email:',this.formgroup.controls['email'].valid, this.formgroup.controls['email'].value);
-		console.log('password:',this.formgroup.controls['password'].valid, this.formgroup.controls['password'].value);
-		console.log('university:',this.formgroup.controls['university'].valid, this.formgroup.controls['university'].value);
-
-        console.log('this.formgroup.valid');
-        console.log(this.formgroup.valid);
-
-      }
-
+			if (this.formgroup.controls['password'].status=='INVALID') {
+				this.common.presentToast('Password must contain 8 letters, a uppercase, a lowercase, a number , don\'t use any special characters, Password format must be like : Example0001');
+			} else {
+				this.common.showAlert('Please enter valid details !');
+			}
+	  }
   }
 
   flags = [

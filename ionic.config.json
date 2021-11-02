@@ -1,7 +1,7 @@
 {
-    "name": "iMatch",
-    "integrations": {
-        "cordova": {}
-    },
-    "type": "angular"
+  "name": "iMatch",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
 }
