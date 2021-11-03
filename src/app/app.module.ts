@@ -2,6 +2,7 @@ import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { Camera } from '@ionic-native/camera/ngx';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -28,7 +29,6 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Camera } from '@ionic-native/camera/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 // import { Base64 } from '@ionic-native/base64/ngx';
 import { WhatWouldIDoVisitorPipe } from './what-would-i-do-visitor.pipe';
@@ -77,7 +77,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     File,
     ScreenOrientation,
     MediaCapture,
-    FileTransfer
+    FileTransfer,
   ],
   bootstrap: [AppComponent]
 })

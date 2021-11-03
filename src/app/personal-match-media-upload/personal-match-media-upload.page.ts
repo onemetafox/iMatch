@@ -10,8 +10,9 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
 import * as BaseConfig from '../services/config';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
-const { Camera, Filesystem } = Plugins;
+const { Filesystem } = Plugins;
 
 @Component({
   selector: 'app-personal-match-media-upload',
@@ -43,7 +44,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
   Text1: AbstractControl;
   Text2: AbstractControl;
-
+  currentImage: string;
   userData = {
     "caption" :"",
     // "file" : "",
@@ -109,6 +110,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     public storageservice: StorageService,
     private actionSheetCtrl: ActionSheetController,
     private http : HttpClient,
+    private camera: Camera
   ) {
 
     this.Invitation = formbuilder.group({
@@ -127,43 +129,59 @@ export class PersonalMatchMediaUploadPage implements OnInit {
                 ])],
 
       link1 : ['', Validators.compose([
-                                      // Validators.required,
-                                      Validators.minLength(10),
-                                      Validators.pattern('(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?')
-                                        ])],
+        // Validators.required,
+        Validators.minLength(10),
+        Validators.pattern('(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?')
+      ])],
       link2 : ['', Validators.compose([
-                                      // Validators.required,
-                                      Validators.minLength(10),
-                                      Validators.pattern('(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?')
-                                            ])],
-                                      });
+        // Validators.required,
+        Validators.minLength(10),
+        Validators.pattern('(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?')
+      ])],
+    });
 
     this.TextInputForm = formbuilder.group({
-                                        caption : ['', Validators.compose([
-                                          Validators.minLength(0),
-                                                  ])],
-                                                  
-                                        text1 : ['', Validators.compose([
-                                                                        Validators.required,
-                                                                        Validators.minLength(5),
-                                                                          ])],
-                                        text2 : ['', Validators.compose([
-                                                                        Validators.required,
-                                                                        Validators.minLength(5),
-                                                                              ])],
-                                        });                                 
-   this.caption = this.LinkInputForm.controls['caption'];
-   this.link1 = this.LinkInputForm.controls['link1'];
-   this.link2 = this.LinkInputForm.controls['link2'];
+      caption : ['', Validators.compose([
+        Validators.minLength(0),
+      ])],
+                
+      text1 : ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+      ])],
+      text2 : ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+      ])],
+    });                                 
+    this.caption = this.LinkInputForm.controls['caption'];
+    this.link1 = this.LinkInputForm.controls['link1'];
+    this.link2 = this.LinkInputForm.controls['link2'];
 
-   this.caption = this.TextInputForm.controls['caption'];
-   this.Text1 = this.TextInputForm.controls['text1'];
-   this.Text2 = this.TextInputForm.controls['text2'];
+    this.caption = this.TextInputForm.controls['caption'];
+    this.Text1 = this.TextInputForm.controls['text1'];
+    this.Text2 = this.TextInputForm.controls['text2'];
 
-   this.caption = this.Invitation.controls['caption'];
-
+    this.caption = this.Invitation.controls['caption'];
    }
+  takePicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      // destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(options).then((imageData) => {
+      this.common.presentToast('1');
 
+      this.currentImage = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+      this.common.presentToast(err);
+      console.log("Camera issue:" + err);
+    });
+  }
   goTo(){
     console.log('this.anArray',this.anArray);
   }
@@ -203,36 +221,33 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     
   }
 
-
   ngOnInit() {
   }
 
   ionViewWillEnter(){
    console.log('Entered Into Personal Match Media Upload Page');
-
    this.storageservice.storage.get('userDetails').then ((val) => {
-    this.userDetails = val;
-  });
-
+      this.userDetails = val;
+    });
   }
 
-      toShowLinkInputFiled() {
-        // console.log('Link Input Clicked');
-        // this.isLink = true;
-        // this.isWordings = false;
-        // this.hideImageSpace = false;
-        this.linkArray.push({value: 'http://'});
-        this.Add('link');
-      }
+  toShowLinkInputFiled() {
+    // console.log('Link Input Clicked');
+    // this.isLink = true;
+    // this.isWordings = false;
+    // this.hideImageSpace = false;
+    this.linkArray.push({value: 'http://'});
+    this.Add('link');
+  }
 
-      toShowTextArea() {
-        // console.log('Text Input Clicked');
-        // this.isWordings = true;
-        // this.isLink =false;
-        // this.hideImageSpace = false;
-        this.wordArray.push({value: ''});
-        this.Add('text');
-      }
+  toShowTextArea() {
+    // console.log('Text Input Clicked');
+    // this.isWordings = true;
+    // this.isLink =false;
+    // this.hideImageSpace = false;
+    this.wordArray.push({value: ''});
+    this.Add('text');
+  }
 
     // toProceed() {
     //   this.FormSubmit = true;
@@ -330,7 +345,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             this.SendWordings();
             console.log('Wording clicked');
           }
-          },
+        },
 
         {
           text: 'Share Links',
@@ -502,7 +517,37 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
       fileChangeEvent(e, type) {
         if (type==='folder') {
-          
+          this.FolderClicked = true;
+          if (e.target.files === 0) {
+            this.common.presentToast('You Have Selected No File !!!');
+            return;
+          }
+          this.selectedFiles = e.target.files;
+          for (let i=0; i<e.target.files.length; i++) {
+            this.myFiles.push(e.target.files[i]);
+            this.Add('file');
+          }
+
+          this.urls = [];
+          console.log('urls:',this.urls);
+          let files = e.target.files;
+          console.log('files:',files);
+          if (files) {
+            for (let file of files) {
+              let reader = new FileReader();
+              var error = reader.error
+              reader.onload = (e:any) => {
+                console.log('Loaded:', reader.result);
+                console.log('error:', error);
+                this.urls.push(e.target.result);
+                console.log('urls:',this.urls);
+              }
+
+              reader.readAsDataURL(file);
+            }
+          }
+
+        } else if (type==='image') {
           this.FolderClicked = true;
           console.log('FolderClicked:',this.FolderClicked);
 
@@ -510,12 +555,12 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           //   this.Invitation.reset();
           //   this.common.presentToast('Your are not allowed to choose more than two images');
           // } 
-  
+
           if (e.target.files === 0) {
             this.common.presentToast('You Have Selected No File !!!');
             return;
           }
-  
+
           // if (e.target.files.length===1) {
           //   this.Invitation.reset();
           //   this.common.showAlert('Try to choose maximum 2 media');
@@ -527,84 +572,66 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             this.Add('file');
           }
 
-        this.urls = [];
-        console.log('urls:',this.urls);
-        let files = e.target.files;
-        console.log('files:',files);
-        if (files) {
-          for (let file of files) {
-            let reader = new FileReader();
-            var error = reader.error
-            reader.onload = (e:any) => {
-              console.log('Loaded:', reader.result);
-              console.log('error:', error);
-              this.urls.push(e.target.result);
-              console.log('urls:',this.urls);
-            }
-
-            reader.readAsDataURL(file);
-          }
-        }
-
-      } else if (type==='image') {
-        this.MediaCaptions = [];
-        this.FolderClicked = false;
-
-        if (this.MediaFiles.length===0) {
-          this.MediaFiles[0] = e.target.files[0];
-          console.log('MediaFiles:',this.MediaFiles);
-          this.common.showAlert('Try to capture maximum 2 images');
-        } else {
-          this.MediaFiles[1] = e.target.files[0];
-          console.log('MediaFiles:',this.MediaFiles);
-
-          for (let i=0; i<this.MediaFiles.length; i++) {
-            this.myFiles.push(this.MediaFiles[i]);
-            this.MediaCaptions.push(this.MediaFiles[i]);
-          }
-        }
-
-        } else if (type==='audio') {
-
-          this.FolderClicked = false;
-          console.log('recorder clicked:',this.FolderClicked);
-  
-                if (this.MediaFiles.length===0) {
-                this.MediaFiles[0] = e.target.files[0];
-                console.log('MediaFiles:',this.MediaFiles);
-                this.common.showAlert('Try to capture maximum 2 audio');
-  
-              } else {
-                this.MediaFiles[1] = e.target.files[0];
-                console.log('MediaFiles:',this.MediaFiles);
-  
-                  for (let i=0; i<this.MediaFiles.length; i++) {
-                    this.myFiles.push(this.MediaFiles[i]);
-                    console.log('myFiles:',this.myFiles);
-                  }
+          this.urls = [];
+          console.log('urls:',this.urls);
+          let files = e.target.files;
+          console.log('files:',files);
+          if (files) {
+            for (let file of files) {
+              let reader = new FileReader();
+              var error = reader.error
+              reader.onload = (e:any) => {
+                console.log('Loaded:', reader.result);
+                console.log('error:', error);
+                this.urls.push(e.target.result);
+                console.log('urls:',this.urls);
               }
 
-        } else if (type==='video') {
+              reader.readAsDataURL(file);
+            }
+          }
 
-          this.FolderClicked = false;
-          console.log('recorder clicked:',this.FolderClicked);
-  
-                if (this.MediaFiles.length===0) {
-                this.MediaFiles[0] = e.target.files[0];
-                console.log('MediaFiles:',this.MediaFiles);
-                this.common.showAlert('Try to capture maximum 2 video');
-  
-              } else {
-                this.MediaFiles[1] = e.target.files[0];
-                console.log('MediaFiles:',this.MediaFiles);
-  
-                  for (let i=0; i<this.MediaFiles.length; i++) {
-                    this.myFiles.push(this.MediaFiles[i]);
-                    console.log('myFiles:',this.myFiles);
-                  }
+          } else if (type==='audio') {
+
+            this.FolderClicked = false;
+            console.log('recorder clicked:',this.FolderClicked);
+    
+                  if (this.MediaFiles.length===0) {
+                  this.MediaFiles[0] = e.target.files[0];
+                  console.log('MediaFiles:',this.MediaFiles);
+                  this.common.showAlert('Try to capture maximum 2 audio');
+    
+                } else {
+                  this.MediaFiles[1] = e.target.files[0];
+                  console.log('MediaFiles:',this.MediaFiles);
+    
+                    for (let i=0; i<this.MediaFiles.length; i++) {
+                      this.myFiles.push(this.MediaFiles[i]);
+                      console.log('myFiles:',this.myFiles);
+                    }
                 }
 
-        }
+          } else if (type==='video') {
+
+            this.FolderClicked = false;
+            console.log('recorder clicked:',this.FolderClicked);
+    
+                  if (this.MediaFiles.length===0) {
+                  this.MediaFiles[0] = e.target.files[0];
+                  console.log('MediaFiles:',this.MediaFiles);
+                  this.common.showAlert('Try to capture maximum 2 video');
+    
+                } else {
+                  this.MediaFiles[1] = e.target.files[0];
+                  console.log('MediaFiles:',this.MediaFiles);
+    
+                    for (let i=0; i<this.MediaFiles.length; i++) {
+                      this.myFiles.push(this.MediaFiles[i]);
+                      console.log('myFiles:',this.myFiles);
+                    }
+                  }
+
+          }
     }
 
     //   fileChangeEvent(e,type) {
