@@ -9,49 +9,51 @@
 
 <ion-content>
     <div style="margin:5px; border-radius: 10px; border: 1px solid #e2e2e2; box-shadow: 0px 4px 0px 2px #f1eded; ">
-        <div>
+        <div *ngIf="this.ongoingData.compare_data != null">
             <div style="display:flex; justify-content: center;">
                 <div style="display: flex;">
-                    <div style="width: 100%; display: flex; justify-content: right; flex: 10; position: relative; left: 10px">
+                    <div style="width: 100%; display: flex; justify-content: right; flex: 25; position: relative; left: 10px">
                         <div style="padding: 3px;">
-                            <img src="../assets/icon/activity/avengers.jpg" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <img *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[0].mediafiles[0].filename}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <div *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'link' || this.ongoingData.compare_data[0].mediafiles[0].media_type == 'text'" style="height: 200px;border-radius: 5px;background:#e2e2e2; padding:10px;">{{this.ongoingData.compare_data[0].mediafiles[0].filename}}</div>
                             <div style="display: flex; justify-content: right; margin-top: -44px;">
                                 <div style=" width: 60px; height: 60px; background: #fff; border-radius: 50%; padding: 14px;margin-right: 14px; border: 1px solid #e2e2e2; box-shadow: 0px 3px 0px 1px #e2e2e2;">
                                     <img src="../assets/icon/04.png" alt="" style="width: 50px;height: 30px;">
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: start; ">
-                                <img src="../assets/icon/man4.jpg" alt="" style="width: 40px; height: 40px; border-radius: 50%">
+                                <img src="../assets/icon/profile/user.png" alt="" style="width: 40px; height: 40px; border-radius: 50%">
                                 <div style="padding-left: 10px; display: inline-grid;">
-                                    <span style="font-size: 13px;">Neymar John</span>
-                                    <span style="font-size: 10px;color: #7c7070;">neymarjohn215@gmail.com</span>
+                                    <span style="font-size: 13px;">{{this.ongoingData.compare_data[0].name}}</span>
+                                    <span style="font-size: 10px;color: #7c7070;">{{this.ongoingData.compare_data[0].email}}</span>
                                 </div>
                             </div>
                             <div>
-                                <p>Main caption</p>
+                                <p>{{this.ongoingData.compare_data[0].mediafiles[0].sub_caption}}</p>
                             </div>
                         </div>
                     </div>
                     <div style="display: flex; position: relative;z-index: 10; justify-content: center; margin: auto; margin-top: 90px;">
                         <img src="../assets/icon/vs.png" alt="" style="width: 30px;">
                     </div>
-                    <div style="width: 100%; display: flex; justify-content: left; flex: 10; position: relative; right: 10px">
+                    <div style="width: 100%; display: flex; justify-content: left; flex: 25; position: relative; right: 10px">
                         <div style="padding: 3px">
-                            <img src="../assets/icon/activity/aven.jpg" alt="" style="width: 300px; height: 200px;border-radius: 5px;">
+                            <img *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[1].mediafiles[0].filename}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <div *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'link' || this.ongoingData.compare_data[1].mediafiles[0].media_type == 'text'" style="height: 200px;border-radius: 5px;background:#e2e2e2; padding:10px;">{{this.ongoingData.compare_data[1].mediafiles[0].filename}}</div>
                             <div style="display: flex; justify-content: right; margin-top: -44px;">
                                 <div style=" width: 60px; height: 60px; background: #fff; border-radius: 50%; padding: 14px;margin-right: 14px; border: 1px solid #e2e2e2; box-shadow: 0px 3px 0px 1px #e2e2e2;">
                                     <img src="../assets/icon/04.png" alt="" style="width: 50px;height: 30px;">
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: start; ">
-                                <img src="../assets/icon/man4.jpg" alt="" style="width: 40px; height: 40px; border-radius: 50%">
+                                <img src="../assets/icon/profile/user.png" alt="" style="width: 40px; height: 40px; border-radius: 50%">
                                 <div style="padding-left: 10px; display: inline-grid;">
-                                    <span style="font-size: 13px;">Neymar John</span>
-                                    <span style="font-size: 10px;color: #7c7070;">neymarjohn215@gmail.com</span>
+                                    <span style="font-size: 13px;">{{this.ongoingData.compare_data[1].name}}</span>
+                                    <span style="font-size: 10px;color: #7c7070;">{{this.ongoingData.compare_data[1].email}}</span>
                                 </div>
                             </div>
                             <div>
-                                <p>Main caption</p>
+                                <p>{{this.ongoingData.compare_data[1].mediafiles[0].sub_caption}}</p>
                             </div>
                         </div>
                     </div>

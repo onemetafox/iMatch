@@ -7,8 +7,7 @@ import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 
 import { OnGoingMatchDetailPageRoutingModule } from './ongoing-match-detail-routing.module';
 
-import { OnGoingMatchDetailPage, PopoverComponent, SenderPopoverComponent, ReceiverPopoverComponent,
-         SendMatchComponent, RevealedCountComponent, CountComponent } from './ongoing-match-detail.page';
+import { OnGoingMatchDetailPage } from './ongoing-match-detail.page';
 
 @NgModule({
   imports: [
@@ -19,7 +18,6 @@ import { OnGoingMatchDetailPage, PopoverComponent, SenderPopoverComponent, Recei
     OnGoingMatchDetailPageRoutingModule,
     NgxIonicImageViewerModule
   ],
-  declarations: [OnGoingMatchDetailPage, PopoverComponent, SenderPopoverComponent, ReceiverPopoverComponent,
-    SendMatchComponent, RevealedCountComponent, CountComponent]
+  declarations: [OnGoingMatchDetailPage]
 })
 export class OnGoingMatchDetailPageModule {}
