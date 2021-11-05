@@ -217,13 +217,12 @@ export class PersonalMatchPage implements OnInit {
 
     ToSendSenderLike(e,match, match_id) {
       console.log('To Send Sender Like');
-
       if (this.userDetails.category === 'personal') {
 
         let params = {
-          userid : this.userDetail.userid,
+          user_liked : this.userDetail.userid,
           matchid : match_id,
-          image_liked : match.image_id,
+          image_id : match.media_id,
         }
 
         console.log('params:',params);
