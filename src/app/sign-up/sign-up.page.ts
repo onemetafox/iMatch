@@ -46,7 +46,7 @@ export class SignUpPage implements OnInit {
     private common: CommonService,
 		public formbuilder:FormBuilder,
 		private geolocation: Geolocation,
-		private storageservice: StorageService,
+		private storageservice: StorageService
 	) { 
 
     this.formgroup = formbuilder.group({

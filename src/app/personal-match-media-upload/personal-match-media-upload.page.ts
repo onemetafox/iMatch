@@ -407,37 +407,30 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   }
 
         SendWordings() {
-          console.log('Wording');
-            this.isWordings = true;
-              this.hideImageSpace = false;
-                this.isLink = false;
+          this.isWordings = true;
+          this.hideImageSpace = false;
+          this.isLink = false;
 
-                let params = {
-                  userid : this.userDetails.userid,
-                  word1 : '',
-                  word2 : ''
-                }
-                console.log('params:',params);
-                this.common.postMethod('',params).then((res:any) => {
-                  console.log('res:',res);
-                }, err => {
-                  console.log(err);
-                });
+          let params = {
+            userid : this.userDetails.userid,
+            word1 : '',
+            word2 : ''
+          }
+          this.common.postMethod('',params).then((res:any) => {
+            console.log('res:',res);
+          }, err => {
+            console.log(err);
+          });
         }
 
       CaptureImage() {
-        console.log('CaptureImage');
         this.isCaptureImage = true;
         const options: CaptureImageOptions = { limit: 2 };
         this.mediaCapture.captureImage(options)
           .then(
             (data: MediaFile[]) => {
-              console.log('data[0]:',data[0]);
-              console.log('data[1]:',data[1]);
               this.MediaFiles[0] = data[0].name;
               this.MediaFiles[1] = data[1].name;
-
-
               for (let i=0; i<this.MediaFiles.length; i++) {
                 this.myFiles.push(this.MediaFiles[i]);
               }
@@ -453,8 +446,8 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         this.mediaCapture.captureVideo(options)
         .then(
           (data: MediaFile[]) => {
-            console.log(data[0]);
-            // this.uploadFile2(data[0], 'video');
+            // console.log(data[0]);
+            this.uploadFile2(data[0], 'video');
           },
           (err: CaptureError) => console.error(err)
         );
@@ -462,13 +455,11 @@ export class PersonalMatchMediaUploadPage implements OnInit {
       }
 
       CaptureAudio() {
-        console.log('CaptureAudio');
         const options: CaptureImageOptions = { limit: 2 };
         this.mediaCapture.captureAudio(options)
         .then(
           (data: MediaFile[]) => {
-            console.log(data[0]);
-            // this.uploadFile2(data[0], 'audio');
+            this.uploadFile2(data[0], 'audio');
           },
           (err: CaptureError) => console.error(err)
         );
@@ -476,22 +467,15 @@ export class PersonalMatchMediaUploadPage implements OnInit {
       }
 
       PickLinks() {
-        console.log('Pick Links Button Presses');
-          this.isLink = true;
-            console.log('isLink:',this.isLink);
-              this.hideImageSpace = false;
-                console.log('hideImageSpace:',this.hideImageSpace);
+        this.isLink = true;
+        this.hideImageSpace = false;
       }
 
       PickDocuments() {
-
-        console.log('PickDocuments');
         let file: any;
 
         this.fileChooser.open()
         .then(uri => {
-          console.log(uri);
-
           this.filePath.resolveNativePath(uri)
           .then(filePath => {
             console.log(filePath);
@@ -529,18 +513,13 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           }
 
           this.urls = [];
-          console.log('urls:',this.urls);
           let files = e.target.files;
-          console.log('files:',files);
           if (files) {
             for (let file of files) {
               let reader = new FileReader();
               var error = reader.error
               reader.onload = (e:any) => {
-                console.log('Loaded:', reader.result);
-                console.log('error:', error);
                 this.urls.push(e.target.result);
-                console.log('urls:',this.urls);
               }
 
               reader.readAsDataURL(file);
@@ -549,8 +528,6 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
         } else if (type==='image') {
           this.FolderClicked = true;
-          console.log('FolderClicked:',this.FolderClicked);
-
           // if (e.target.files.length>2) {
           //   this.Invitation.reset();
           //   this.common.presentToast('Your are not allowed to choose more than two images');
@@ -573,18 +550,13 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           }
 
           this.urls = [];
-          console.log('urls:',this.urls);
           let files = e.target.files;
-          console.log('files:',files);
           if (files) {
             for (let file of files) {
               let reader = new FileReader();
               var error = reader.error
               reader.onload = (e:any) => {
-                console.log('Loaded:', reader.result);
-                console.log('error:', error);
                 this.urls.push(e.target.result);
-                console.log('urls:',this.urls);
               }
 
               reader.readAsDataURL(file);
@@ -592,44 +564,30 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           }
 
           } else if (type==='audio') {
-
             this.FolderClicked = false;
-            console.log('recorder clicked:',this.FolderClicked);
-    
-                  if (this.MediaFiles.length===0) {
-                  this.MediaFiles[0] = e.target.files[0];
-                  console.log('MediaFiles:',this.MediaFiles);
-                  this.common.showAlert('Try to capture maximum 2 audio');
-    
-                } else {
-                  this.MediaFiles[1] = e.target.files[0];
-                  console.log('MediaFiles:',this.MediaFiles);
-    
-                    for (let i=0; i<this.MediaFiles.length; i++) {
-                      this.myFiles.push(this.MediaFiles[i]);
-                      console.log('myFiles:',this.myFiles);
-                    }
-                }
+            if (this.MediaFiles.length===0) {
+              this.MediaFiles[0] = e.target.files[0];
+              this.common.showAlert('Try to capture maximum 2 audio');
+            } else {
+              this.MediaFiles[1] = e.target.files[0];
+              for (let i=0; i<this.MediaFiles.length; i++) {
+                this.myFiles.push(this.MediaFiles[i]);
+              }
+            }
 
           } else if (type==='video') {
 
             this.FolderClicked = false;
-            console.log('recorder clicked:',this.FolderClicked);
-    
-                  if (this.MediaFiles.length===0) {
-                  this.MediaFiles[0] = e.target.files[0];
-                  console.log('MediaFiles:',this.MediaFiles);
-                  this.common.showAlert('Try to capture maximum 2 video');
-    
-                } else {
-                  this.MediaFiles[1] = e.target.files[0];
-                  console.log('MediaFiles:',this.MediaFiles);
-    
-                    for (let i=0; i<this.MediaFiles.length; i++) {
-                      this.myFiles.push(this.MediaFiles[i]);
-                      console.log('myFiles:',this.myFiles);
-                    }
-                  }
+            if (this.MediaFiles.length===0) {
+            this.MediaFiles[0] = e.target.files[0];
+            this.common.showAlert('Try to capture maximum 2 video');
+
+            } else {
+              this.MediaFiles[1] = e.target.files[0];
+                for (let i=0; i<this.MediaFiles.length; i++) {
+                  this.myFiles.push(this.MediaFiles[i]);
+                }
+              }
 
           }
     }
@@ -980,7 +938,8 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         //   console.log('Value:',val);
         //   // console.log('');
         // });
-        if(this.anArray.length > 2) {
+
+        if(this.anArray.length >= 2) {
           const formData = new FormData();
           for( let i=0;i<this.myFiles.length; i++) 
           {
@@ -1008,6 +967,8 @@ export class PersonalMatchMediaUploadPage implements OnInit {
             console.log('err',err);
             console.log(err.headers);
           });
+        }else if(this.anArray.length < 2){
+          this.common.showAlert("Maximum media is 2");
         }
 
         // if (this.hideImageSpace==true && this.Invitation.valid) {

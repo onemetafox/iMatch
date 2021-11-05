@@ -61,19 +61,18 @@
               <input #file class="custom-file-input-storage" formControlName="file" style="width: 160px;" type="file" multiple (change)="fileChangeEvent($event, 'folder')">
             </ion-chip>
 
-            <ion-chip style="background-color: #9c27b0; display: inline-block;
-            flex-wrap: nowrap;">
-              <input #file class="custom-file-input-Capture-Image" style="width: 92px;" formControlName="file" accept="image/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'image')">
+            <ion-chip style="background-color: #9c27b0; display: inline-block;  flex-wrap: nowrap;">
+              <!-- <input #file class="custom-file-input-Capture-Image" style="width: 92px;" formControlName="file" accept="image/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'image')"> -->
               <!-- <ion-fab vertical="bottom" horizontal="center" slot="fixed"> -->
-                <!-- <ion-button (click)="CaptureImage()"></ion-button> -->
+                <ion-button (click)="CaptureImage()"></ion-button>
               <!-- </ion-fab> -->
               <!-- <ion-label>Capture Image</ion-label> -->
             </ion-chip>
 
             <ion-chip style="background-color: #3f51b5; display: inline-block; flex-wrap: nowrap;">
               <!-- <ion-icon name="videocam"></ion-icon> -->
-              <input #file class="custom-file-input-Capture-Video" formControlName="file" style="width: 92px;" accept="video/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'video')">
-              <!-- <ion-label>Capture Video</ion-label> -->
+              <!-- <input #file class="custom-file-input-Capture-Video" formControlName="file" style="width: 92px;" accept="video/*;capture=camera" capture type="file" multiple (change)="fileChangeEvent($event,'video')"> -->
+              <ion-label>Capture Video</ion-label>
             </ion-chip>
 
             <ion-chip style="background-color: #2196f3; display: inline-block; flex-wrap: nowrap;">
