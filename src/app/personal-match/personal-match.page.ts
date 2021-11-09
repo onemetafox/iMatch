@@ -1,17 +1,13 @@
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, ViewChild  } from '@angular/core';
 import { StorageService } from '../services/storage.service';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, ToastController, Platform, LoadingController,ModalController } from '@ionic/angular';
 import { CommonService } from '../services/common.service';
 import { PopoverController } from '@ionic/angular';
 import { NavParams, IonSlides } from '@ionic/angular';
-import {
-	FormBuilder,
-	FormGroup,
-  	Validators,
-    AbstractControl,
-} from '@angular/forms';
-import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPhoto, Capacitor, PhotosAlbumType, FilesystemEncoding } from '@capacitor/core';
+import { FormBuilder,	FormGroup, Validators, AbstractControl} from '@angular/forms';
+
+// import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPhoto, Capacitor, PhotosAlbumType, FilesystemEncoding } from '@capacitor/core';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
@@ -20,7 +16,9 @@ import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVide
 import { NavigationExtras } from '@angular/router';
 import * as BaseConfig from '../services/config';
 
-const { Camera, Filesystem } = Plugins;
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
+// const { Camera, Filesystem } = Plugins;
 
 
 @Component({
@@ -46,6 +44,13 @@ export class PersonalMatchPage implements OnInit {
     public popoverController: PopoverController,
     public modalController: ModalController,
     private common: CommonService, 
+    private androidPermissions: AndroidPermissions,
+    private fileChooser: FileChooser,
+    private transfer: FileTransfer,
+    private filePath: FilePath,
+    private mediaCapture: MediaCapture,
+    private camera: Camera,
+    private platform: Platform
   ) { 
 
     this.common.route.queryParams.subscribe((resp:any) => {
@@ -62,8 +67,19 @@ export class PersonalMatchPage implements OnInit {
   }
 
   ngOnInit() {
+    if (this.common.platform.is("cordova" || "capacitor")) {
+      this.common.platform.ready().then(() => {
+        this.filePermission();
+      });
+    }
   }
-
+  async filePermission() {
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(
+      result => console.log('Has permission?', result.hasPermission),
+      err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE)
+    );
+    this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.CAMERA, this.androidPermissions.PERMISSION.GET_ACCOUNTS]);
+  }
   ionViewWillEnter(){
     // this.common.showLoader();
     this.common.presentLoading();
@@ -1130,12 +1146,16 @@ export class PopoverComponent {
       public formbuilder: FormBuilder,
       public navParams: NavParams,
       private http : HttpClient,
+      public actionSheetController: ActionSheetController,
+      private androidPermissions: AndroidPermissions,
+      private camera: Camera,
+      private platform: Platform
     ) {
 
     this.MatchThisForm = formbuilder.group({
-    caption:['',Validators.compose([Validators.required,
-                                Validators.minLength(1),
-                              ])],
+      caption:['',Validators.compose([Validators.required,
+        Validators.minLength(1),
+      ])],
     });
 
     this.caption = this.MatchThisForm.controls['caption'];
@@ -1189,7 +1209,29 @@ export class PopoverComponent {
       this.anArray.push({'value':'', 'type': type, position: position});
     }
   }
-
+  takePicture(sourceType: PictureSourceType) {
+    var options: CameraOptions = {
+        quality: 100,
+        sourceType: sourceType,
+        saveToPhotoAlbum: false,
+        correctOrientation: true
+    };
+ 
+    this.camera.getPicture(options).then(imagePath => {
+        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+            this.filePath.resolveNativePath(imagePath)
+                .then(filePath => {
+                    let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                    let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                    // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                });
+        } else {
+            var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+            var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+            // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+        }
+    });
+  }
   async presentActionSheet() {
     console.log('Action Sheet Clicked');
     let actionSheet = await this.actionSheetCtrl.create({
@@ -1221,9 +1263,7 @@ export class PopoverComponent {
             text: 'Capture Image',
             icon: 'camera',
             handler: () => {
-              this.anArray.push({value: '', type: 'image'});
-              this.CaptureImage();
-              console.log('Camera clicked');
+              this.takePicture(this.camera.PictureSourceType.CAMERA);
             }
           }, 
 
@@ -1232,9 +1272,7 @@ export class PopoverComponent {
           icon: 'videocam',
 
           handler: () => {
-            this.anArray.push({value: '', type: 'video'});
-            this.CaptureVideo();
-            console.log("Gallery clicked");
+            this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
 
