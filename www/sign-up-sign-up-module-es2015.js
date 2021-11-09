@@ -425,33 +425,18 @@ let SignUpPage = class SignUpPage {
         this.phone = this.formgroup.controls['phone'];
         this.email = this.formgroup.controls['email'];
         this.password = this.formgroup.controls['password'];
-        //   this.university = this.formgroup.controls['university'];
-        console.log(this.flags);
-        console.log('Nigeria:', this.flags[161]);
+        // this.university = this.formgroup.controls['university'];
         this.userData.code = "+234";
     }
     ngOnInit() {
         this.common.menu.swipeGesture(false);
     }
     ionViewWillEnter() {
-        console.log('Entered Into Registration Page');
-        this.storageservice.storage.get('DeviceToken').then((val) => {
-            console.log('Stored Device Token:', val);
-            this.DeviceToken = val;
-        });
-        this.storageservice.storage.get('DeviceInfo').then((val) => {
-            console.log('Stored Device Information:', val);
-            this.DeviceInfo = val;
-        });
-        this.toGetUserLocation();
     }
     toGetUserLocation() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('To Get User Location');
             this.geolocation.getCurrentPosition().then((resp) => {
-                console.log('resp:', resp);
                 this.UserLocation = resp.coords;
-                console.log('UserLocation:', this.UserLocation);
             }).catch((error) => {
                 console.log('Error getting location', error);
             });
@@ -459,9 +444,6 @@ let SignUpPage = class SignUpPage {
     }
     signUp() {
         this.FormSubmit = true;
-        console.log('FormSubmit:', this.FormSubmit);
-        console.log('Password:', this.formgroup.controls['password'], this.formgroup.controls['password'].value, this.formgroup.controls['password'].value);
-        console.log('this.formgroup.valid:', this.formgroup.valid, 'this.formgroup.value:', this.formgroup.value);
         if (this.formgroup.valid) {
             let params = {
                 name: this.userData.name,
@@ -473,20 +455,13 @@ let SignUpPage = class SignUpPage {
                 university: '',
                 lat: this.UserLocation.latitude,
                 long: this.UserLocation.longitude,
-                // lat : '',
-                // long : '',
                 device_token: '',
                 // device_token : this.DeviceToken.value,
                 device_type: '',
             };
-            console.log('params:', params);
             this.common.postMethod('register', params).then((res) => {
-                console.log('res:', res);
                 this.responseData = res;
-                console.log('responseData:', this.responseData);
-                if (this.responseData.userData) {
-                    console.log('reg:', this.responseData);
-                }
+                if (this.responseData.userData) { }
                 if (res.message == "success") {
                     this.common.presentToast('Registration Successful!');
                     this.common.router.navigate(['/terms-of-service']);
@@ -509,13 +484,6 @@ let SignUpPage = class SignUpPage {
             else {
                 this.common.showAlert('Please enter valid details !');
             }
-            console.log('email:', this.formgroup.controls['name'].valid, this.formgroup.controls['name'].value);
-            console.log('phone:', this.formgroup.controls['phone'].valid, this.formgroup.controls['phone'].value);
-            console.log('email:', this.formgroup.controls['email'].valid, this.formgroup.controls['email'].value);
-            console.log('password:', this.formgroup.controls['password'].valid, this.formgroup.controls['password'].value);
-            console.log('university:', this.formgroup.controls['university'].valid, this.formgroup.controls['university'].value);
-            console.log('this.formgroup.valid');
-            console.log(this.formgroup.valid);
         }
     }
 };

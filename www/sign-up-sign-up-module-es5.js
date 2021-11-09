@@ -1510,10 +1510,8 @@
           this.code = this.formgroup.controls['code'];
           this.phone = this.formgroup.controls['phone'];
           this.email = this.formgroup.controls['email'];
-          this.password = this.formgroup.controls['password']; //   this.university = this.formgroup.controls['university'];
+          this.password = this.formgroup.controls['password']; // this.university = this.formgroup.controls['university'];
 
-          console.log(this.flags);
-          console.log('Nigeria:', this.flags[161]);
           this.userData.code = "+234";
         }
 
@@ -1524,40 +1522,24 @@
           }
         }, {
           key: "ionViewWillEnter",
-          value: function ionViewWillEnter() {
-            var _this = this;
-
-            console.log('Entered Into Registration Page');
-            this.storageservice.storage.get('DeviceToken').then(function (val) {
-              console.log('Stored Device Token:', val);
-              _this.DeviceToken = val;
-            });
-            this.storageservice.storage.get('DeviceInfo').then(function (val) {
-              console.log('Stored Device Information:', val);
-              _this.DeviceInfo = val;
-            });
-            this.toGetUserLocation();
-          }
+          value: function ionViewWillEnter() {}
         }, {
           key: "toGetUserLocation",
           value: function toGetUserLocation() {
             return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var _this2 = this;
+              var _this = this;
 
               return regeneratorRuntime.wrap(function _callee$(_context) {
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log('To Get User Location');
                       this.geolocation.getCurrentPosition().then(function (resp) {
-                        console.log('resp:', resp);
-                        _this2.UserLocation = resp.coords;
-                        console.log('UserLocation:', _this2.UserLocation);
+                        _this.UserLocation = resp.coords;
                       })["catch"](function (error) {
                         console.log('Error getting location', error);
                       });
 
-                    case 2:
+                    case 1:
                     case "end":
                       return _context.stop();
                   }
@@ -1568,12 +1550,9 @@
         }, {
           key: "signUp",
           value: function signUp() {
-            var _this3 = this;
+            var _this2 = this;
 
             this.FormSubmit = true;
-            console.log('FormSubmit:', this.FormSubmit);
-            console.log('Password:', this.formgroup.controls['password'], this.formgroup.controls['password'].value, this.formgroup.controls['password'].value);
-            console.log('this.formgroup.valid:', this.formgroup.valid, 'this.formgroup.value:', this.formgroup.value);
 
             if (this.formgroup.valid) {
               var params = {
@@ -1586,30 +1565,23 @@
                 university: '',
                 lat: this.UserLocation.latitude,
                 "long": this.UserLocation.longitude,
-                // lat : '',
-                // long : '',
                 device_token: '',
                 // device_token : this.DeviceToken.value,
                 device_type: ''
               };
-              console.log('params:', params);
               this.common.postMethod('register', params).then(function (res) {
-                console.log('res:', res);
-                _this3.responseData = res;
-                console.log('responseData:', _this3.responseData);
+                _this2.responseData = res;
 
-                if (_this3.responseData.userData) {
-                  console.log('reg:', _this3.responseData);
-                }
+                if (_this2.responseData.userData) {}
 
                 if (res.message == "success") {
-                  _this3.common.presentToast('Registration Successful!');
+                  _this2.common.presentToast('Registration Successful!');
 
-                  _this3.common.router.navigate(['/terms-of-service']);
+                  _this2.common.router.navigate(['/terms-of-service']);
                 } else if (res.message == "user already existing") {
-                  _this3.common.showAlert('User already existing');
+                  _this2.common.showAlert('User already existing');
                 } else if (res.status == false) {
-                  _this3.common.showAlert('Registration failed');
+                  _this2.common.showAlert('Registration failed');
                 }
               }, function (err) {
                 console.log(err);
@@ -1621,14 +1593,6 @@
               } else {
                 this.common.showAlert('Please enter valid details !');
               }
-
-              console.log('email:', this.formgroup.controls['name'].valid, this.formgroup.controls['name'].value);
-              console.log('phone:', this.formgroup.controls['phone'].valid, this.formgroup.controls['phone'].value);
-              console.log('email:', this.formgroup.controls['email'].valid, this.formgroup.controls['email'].value);
-              console.log('password:', this.formgroup.controls['password'].valid, this.formgroup.controls['password'].value);
-              console.log('university:', this.formgroup.controls['university'].valid, this.formgroup.controls['university'].value);
-              console.log('this.formgroup.valid');
-              console.log(this.formgroup.valid);
             }
           }
         }]);

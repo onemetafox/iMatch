@@ -423,9 +423,9 @@
 
             if (this.userDetails.category === 'personal') {
               var params = {
-                userid: this.userDetail.userid,
+                user_liked: this.userDetail.userid,
                 matchid: match_id,
-                image_liked: match.image_id
+                image_id: match.media_id
               };
               console.log('params:', params);
               this.common.postMethod('personallike', params).then(function (res) {

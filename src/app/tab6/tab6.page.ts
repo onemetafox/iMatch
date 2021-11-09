@@ -189,46 +189,46 @@ export class Tab6Page implements OnInit {
 
         this.common.postMethod('OpenMatch',params).then((res:any) => {
           console.log('OpenMatch:',res);
-          this.OpenMatchImage = res.details.image;
-          this.OpenMatchAudio = res.details.audio;
-          this.OpenMatchVideo = res.details.video;
-          this.OpenMatchLink = res.details.link;
-          this.OpenMatchText = res.details.text;
+          // this.OpenMatchImage = res.details.image;
+          // this.OpenMatchAudio = res.details.audio;
+          // this.OpenMatchVideo = res.details.video;
+          // this.OpenMatchLink = res.details.link;
+          // this.OpenMatchText = res.details.text;
 
-          if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
-            for (let i=0; i < this.OpenMatchAudio.length; i++) {
-              this.OpenMatch.push(this.OpenMatchAudio[i]);
-            }
-            console.log('OpenMatch:', this.OpenMatch);
-          } 
+          // if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
+          //   for (let i=0; i < this.OpenMatchAudio.length; i++) {
+          //     this.OpenMatch.push(this.OpenMatchAudio[i]);
+          //   }
+          //   console.log('OpenMatch:', this.OpenMatch);
+          // } 
 
-          if ( this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
-            for (let i=0; i < this.OpenMatchImage.length; i++) {
-              this.OpenMatch.push(this.OpenMatchImage[i]);
-            }
-            console.log('OpenMatch:', this.OpenMatch);
-          } 
+          // if ( this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
+          //   for (let i=0; i < this.OpenMatchImage.length; i++) {
+          //     this.OpenMatch.push(this.OpenMatchImage[i]);
+          //   }
+          //   console.log('OpenMatch:', this.OpenMatch);
+          // } 
 
-          if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
-            for (let i=0; i < this.OpenMatchLink.length; i++) {
-              this.OpenMatch.push(this.OpenMatchLink[i]);
-            }
-            console.log('OpenMatch:', this.OpenMatch);
-          } 
+          // if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
+          //   for (let i=0; i < this.OpenMatchLink.length; i++) {
+          //     this.OpenMatch.push(this.OpenMatchLink[i]);
+          //   }
+          //   console.log('OpenMatch:', this.OpenMatch);
+          // } 
 
-          if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
-            for (let i=0; i < this.OpenMatchText.length; i++) {
-              this.OpenMatch.push(this.OpenMatchText[i]);
-            }
-            console.log('OpenMatch:', this.OpenMatch);
-          } 
+          // if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
+          //   for (let i=0; i < this.OpenMatchText.length; i++) {
+          //     this.OpenMatch.push(this.OpenMatchText[i]);
+          //   }
+          //   console.log('OpenMatch:', this.OpenMatch);
+          // } 
 
-          if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
-            for (let i=0; i < this.OpenMatchVideo.length; i++) {
-              this.OpenMatch.push(this.OpenMatchVideo[i]);
-            }
-            console.log('OpenMatch:', this.OpenMatch);
-          } 
+          // if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
+          //   for (let i=0; i < this.OpenMatchVideo.length; i++) {
+          //     this.OpenMatch.push(this.OpenMatchVideo[i]);
+          //   }
+          //   console.log('OpenMatch:', this.OpenMatch);
+          // } 
 
         });
 

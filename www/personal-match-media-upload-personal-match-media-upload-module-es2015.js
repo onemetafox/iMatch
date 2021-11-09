@@ -16,15 +16,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "IheW");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "8Y7J");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "s7LF");
-/* harmony import */ var _services_common_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../services/common.service */ "OlR4");
-/* harmony import */ var _services_storage_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../services/storage.service */ "n90K");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/angular */ "sZkV");
-/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @capacitor/core */ "gcOT");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ "sZkV");
+/* harmony import */ var _services_common_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../services/common.service */ "OlR4");
+/* harmony import */ var _services_storage_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./../services/storage.service */ "n90K");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/storage */ "xgBC");
 /* harmony import */ var _ionic_native_file_chooser_ngx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic-native/file-chooser/ngx */ "uRF+");
 /* harmony import */ var _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @ionic-native/file-transfer/ngx */ "gRf5");
 /* harmony import */ var _ionic_native_file_path_ngx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @ionic-native/file-path/ngx */ "iWj2");
-/* harmony import */ var _ionic_native_media_capture_ngx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @ionic-native/media-capture/ngx */ "DJEK");
-/* harmony import */ var _services_config__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../services/config */ "82od");
+/* harmony import */ var _ionic_native_File_ngx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @ionic-native/File/ngx */ "t8sF");
+/* harmony import */ var _ionic_native_media_capture_ngx__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @ionic-native/media-capture/ngx */ "DJEK");
+/* harmony import */ var _services_config__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../services/config */ "82od");
+/* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "Pn9U");
+/* harmony import */ var _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic-native/ionic-webview/ngx */ "Yttj");
 
 
 
@@ -40,9 +43,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const { Camera, Filesystem } = _capacitor_core__WEBPACK_IMPORTED_MODULE_9__["Plugins"];
+
+
+
+
+const STORAGE_KEY = 'my_images';
 let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
-    constructor(common, formbuilder, fileChooser, transfer, filePath, mediaCapture, storageservice, actionSheetCtrl, http) {
+    constructor(common, formbuilder, fileChooser, transfer, filePath, mediaCapture, storageservice, actionSheetCtrl, http, camera, platform, storage, webview, file) {
         this.common = common;
         this.formbuilder = formbuilder;
         this.fileChooser = fileChooser;
@@ -52,6 +59,11 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         this.storageservice = storageservice;
         this.actionSheetCtrl = actionSheetCtrl;
         this.http = http;
+        this.camera = camera;
+        this.platform = platform;
+        this.storage = storage;
+        this.webview = webview;
+        this.file = file;
         this.myFiles = [];
         this.FormSubmit = false;
         this.showUploadSection = false;
@@ -94,6 +106,7 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         this.MediaCaptions = [];
         this.progressInfos = [];
         this.Links = [];
+        this.images = [];
         this.urls = new Array();
         this.Text = [];
         this.isCaptureImage = false;
@@ -143,6 +156,85 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         this.Text1 = this.TextInputForm.controls['text1'];
         this.Text2 = this.TextInputForm.controls['text2'];
         this.caption = this.Invitation.controls['caption'];
+    }
+    copyFileToLocalDir(namePath, currentName, newFileName) {
+        this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
+            this.updateStoredImages(newFileName);
+        }, error => {
+            this.common.showAlert('Error while storing file.');
+        });
+    }
+    // async presentToast(text) {
+    //   const toast = await this.toastController.create({
+    //       message: text,
+    //       position: 'bottom',
+    //       duration: 3000
+    //   });
+    //   toast.present();
+    // }
+    pathForImage(img) {
+        if (img === null) {
+            return '';
+        }
+        else {
+            let converted = this.webview.convertFileSrc(img);
+            return converted;
+        }
+    }
+    updateStoredImages(name) {
+        this.storage.get(STORAGE_KEY).then(images => {
+            let arr = JSON.parse(images);
+            if (!arr) {
+                let newImages = [name];
+                this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
+            }
+            else {
+                arr.push(name);
+                this.storage.set(STORAGE_KEY, JSON.stringify(arr));
+            }
+            let filePath = this.file.dataDirectory + name;
+            let resPath = this.pathForImage(filePath);
+            let newEntry = {
+                name: name,
+                path: resPath,
+                filePath: filePath
+            };
+            this.images = [newEntry, ...this.images];
+            // this.ref.detectChanges(); // trigger change detection cycle
+        });
+    }
+    createFileName() {
+        var d = new Date(), n = d.getTime(), newFileName = n + ".jpg";
+        return newFileName;
+    }
+    takePicture() {
+        const sourceType = this.camera.PictureSourceType.CAMERA;
+        const options = {
+            quality: 100,
+            // destinationType: this.camera.DestinationType.FILE_URI,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
+        };
+        this.camera.getPicture(options).then((imagePath) => {
+            if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+                this.filePath.resolveNativePath(imagePath)
+                    .then(filePath => {
+                    let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+                    let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                    this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+                });
+            }
+            else {
+                var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+                var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+                this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+            }
+        }, (err) => {
+            // Handle error
+            this.common.presentToast(err);
+            console.log("Camera issue:" + err);
+        });
     }
     goTo() {
         console.log('this.anArray', this.anArray);
@@ -325,7 +417,6 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         });
     }
     SendWordings() {
-        console.log('Wording');
         this.isWordings = true;
         this.hideImageSpace = false;
         this.isLink = false;
@@ -334,7 +425,6 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
             word1: '',
             word2: ''
         };
-        console.log('params:', params);
         this.common.postMethod('', params).then((res) => {
             console.log('res:', res);
         }, err => {
@@ -342,13 +432,10 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         });
     }
     CaptureImage() {
-        console.log('CaptureImage');
         this.isCaptureImage = true;
         const options = { limit: 2 };
         this.mediaCapture.captureImage(options)
             .then((data) => {
-            console.log('data[0]:', data[0]);
-            console.log('data[1]:', data[1]);
             this.MediaFiles[0] = data[0].name;
             this.MediaFiles[1] = data[1].name;
             for (let i = 0; i < this.MediaFiles.length; i++) {
@@ -361,32 +448,25 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         const options = { limit: 2 };
         this.mediaCapture.captureVideo(options)
             .then((data) => {
-            console.log(data[0]);
-            // this.uploadFile2(data[0], 'video');
+            // console.log(data[0]);
+            this.uploadFile2(data[0], 'video');
         }, (err) => console.error(err));
     }
     CaptureAudio() {
-        console.log('CaptureAudio');
         const options = { limit: 2 };
         this.mediaCapture.captureAudio(options)
             .then((data) => {
-            console.log(data[0]);
-            // this.uploadFile2(data[0], 'audio');
+            this.uploadFile2(data[0], 'audio');
         }, (err) => console.error(err));
     }
     PickLinks() {
-        console.log('Pick Links Button Presses');
         this.isLink = true;
-        console.log('isLink:', this.isLink);
         this.hideImageSpace = false;
-        console.log('hideImageSpace:', this.hideImageSpace);
     }
     PickDocuments() {
-        console.log('PickDocuments');
         let file;
         this.fileChooser.open()
             .then(uri => {
-            console.log(uri);
             this.filePath.resolveNativePath(uri)
                 .then(filePath => {
                 console.log(filePath);
@@ -408,7 +488,30 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
     fileChangeEvent(e, type) {
         if (type === 'folder') {
             this.FolderClicked = true;
-            console.log('FolderClicked:', this.FolderClicked);
+            if (e.target.files === 0) {
+                this.common.presentToast('You Have Selected No File !!!');
+                return;
+            }
+            this.selectedFiles = e.target.files;
+            for (let i = 0; i < e.target.files.length; i++) {
+                this.myFiles.push(e.target.files[i]);
+                this.Add('file');
+            }
+            this.urls = [];
+            let files = e.target.files;
+            if (files) {
+                for (let file of files) {
+                    let reader = new FileReader();
+                    var error = reader.error;
+                    reader.onload = (e) => {
+                        this.urls.push(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        else if (type === 'image') {
+            this.FolderClicked = true;
             // if (e.target.files.length>2) {
             //   this.Invitation.reset();
             //   this.common.presentToast('Your are not allowed to choose more than two images');
@@ -427,71 +530,41 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
                 this.Add('file');
             }
             this.urls = [];
-            console.log('urls:', this.urls);
             let files = e.target.files;
-            console.log('files:', files);
             if (files) {
                 for (let file of files) {
                     let reader = new FileReader();
                     var error = reader.error;
                     reader.onload = (e) => {
-                        console.log('Loaded:', reader.result);
-                        console.log('error:', error);
                         this.urls.push(e.target.result);
-                        console.log('urls:', this.urls);
                     };
                     reader.readAsDataURL(file);
                 }
             }
         }
-        else if (type === 'image') {
-            this.MediaCaptions = [];
-            this.FolderClicked = false;
-            if (this.MediaFiles.length === 0) {
-                this.MediaFiles[0] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
-                this.common.showAlert('Try to capture maximum 2 images');
-            }
-            else {
-                this.MediaFiles[1] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
-                for (let i = 0; i < this.MediaFiles.length; i++) {
-                    this.myFiles.push(this.MediaFiles[i]);
-                    this.MediaCaptions.push(this.MediaFiles[i]);
-                }
-            }
-        }
         else if (type === 'audio') {
             this.FolderClicked = false;
-            console.log('recorder clicked:', this.FolderClicked);
             if (this.MediaFiles.length === 0) {
                 this.MediaFiles[0] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
                 this.common.showAlert('Try to capture maximum 2 audio');
             }
             else {
                 this.MediaFiles[1] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
                 for (let i = 0; i < this.MediaFiles.length; i++) {
                     this.myFiles.push(this.MediaFiles[i]);
-                    console.log('myFiles:', this.myFiles);
                 }
             }
         }
         else if (type === 'video') {
             this.FolderClicked = false;
-            console.log('recorder clicked:', this.FolderClicked);
             if (this.MediaFiles.length === 0) {
                 this.MediaFiles[0] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
                 this.common.showAlert('Try to capture maximum 2 video');
             }
             else {
                 this.MediaFiles[1] = e.target.files[0];
-                console.log('MediaFiles:', this.MediaFiles);
                 for (let i = 0; i < this.MediaFiles.length; i++) {
                     this.myFiles.push(this.MediaFiles[i]);
-                    console.log('myFiles:', this.myFiles);
                 }
             }
         }
@@ -764,7 +837,7 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
         //   console.log('Value:',val);
         //   // console.log('');
         // });
-        if (this.anArray.length > 2) {
+        if (this.anArray.length >= 2) {
             const formData = new FormData();
             for (let i = 0; i < this.myFiles.length; i++) {
                 formData.append("filename[]", this.myFiles[i]);
@@ -774,7 +847,7 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
             formData.append("sub_caption", JSON.stringify(this.anArray));
             formData.append("links", JSON.stringify(this.linkArray));
             formData.append("texts", JSON.stringify(this.wordArray));
-            this.http.post(_services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/create_personalmatch', formData).subscribe((res) => {
+            this.http.post(_services_config__WEBPACK_IMPORTED_MODULE_15__["baseUrl"] + 'iMatch/api/v1/create_personalmatch', formData).subscribe((res) => {
                 console.log(res);
                 if (res['message'] === 'Successfully uploaded') {
                     this.Invitation.reset();
@@ -791,6 +864,9 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
                 console.log('err', err);
                 console.log(err.headers);
             });
+        }
+        else if (this.anArray.length < 2) {
+            this.common.showAlert("Maximum media is 2");
         }
         // if (this.hideImageSpace==true && this.Invitation.valid) {
         //   if (this.myFiles.length >= 2) {
@@ -973,7 +1049,7 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
             filePath = file.fullPath;
         }
         const fileTransfer = this.transfer.create();
-        const fileUplaodUrl = _services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + '/iMatch/api/v1/create_personalmatch';
+        const fileUplaodUrl = _services_config__WEBPACK_IMPORTED_MODULE_15__["baseUrl"] + '/iMatch/api/v1/create_personalmatch';
         fileTransfer.onProgress((e) => {
             let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
             console.log("progress:" + prg);
@@ -1012,15 +1088,20 @@ let PersonalMatchMediaUploadPage = class PersonalMatchMediaUploadPage {
     }
 };
 PersonalMatchMediaUploadPage.ctorParameters = () => [
-    { type: _services_common_service__WEBPACK_IMPORTED_MODULE_6__["CommonService"] },
+    { type: _services_common_service__WEBPACK_IMPORTED_MODULE_7__["CommonService"] },
     { type: _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"] },
     { type: _ionic_native_file_chooser_ngx__WEBPACK_IMPORTED_MODULE_10__["FileChooser"] },
     { type: _ionic_native_file_transfer_ngx__WEBPACK_IMPORTED_MODULE_11__["FileTransfer"] },
     { type: _ionic_native_file_path_ngx__WEBPACK_IMPORTED_MODULE_12__["FilePath"] },
-    { type: _ionic_native_media_capture_ngx__WEBPACK_IMPORTED_MODULE_13__["MediaCapture"] },
-    { type: _services_storage_service__WEBPACK_IMPORTED_MODULE_7__["StorageService"] },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_8__["ActionSheetController"] },
-    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] }
+    { type: _ionic_native_media_capture_ngx__WEBPACK_IMPORTED_MODULE_14__["MediaCapture"] },
+    { type: _services_storage_service__WEBPACK_IMPORTED_MODULE_8__["StorageService"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["ActionSheetController"] },
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] },
+    { type: _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_16__["Camera"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__["Platform"] },
+    { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_9__["Storage"] },
+    { type: _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_17__["WebView"] },
+    { type: _ionic_native_File_ngx__WEBPACK_IMPORTED_MODULE_13__["File"] }
 ];
 PersonalMatchMediaUploadPage.propDecorators = {
     fileInput: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['fileInput', { static: false },] }]
@@ -1080,21 +1161,6 @@ PersonalMatchMediaUploadPageModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["
 
 /***/ }),
 
-/***/ "82od":
-/*!************************************!*\
-  !*** ./src/app/services/config.ts ***!
-  \************************************/
-/*! exports provided: baseUrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseUrl", function() { return baseUrl; });
-let baseUrl = "http://192.168.107.183/";
-
-
-/***/ }),
-
 /***/ "JzAD":
 /*!*************************************************************************************************************************!*\
   !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/personal-match-media-upload/personal-match-media-upload.page.html ***!
@@ -1104,7 +1170,7 @@ let baseUrl = "http://192.168.107.183/";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative;right: 15px;\">PERSONAL MATCH MEDIA UPLOAD</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div class=\"box\">\r\n    <div  class=\"inner-box\">\r\n      <div style=\"text-align: center;\">\r\n          <img src=\"../../assets/icon/help-invitation-terms/bar.png\" style=\"height: 130px; width: 180px;\">\r\n      </div>\r\n\r\n      <div style=\"background-color: #444446; margin-top: -5%; padding: 20px 10px 10px 10px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n        <div *ngFor=\"let att of this.anArray; let idx = index\">\r\n          <div *ngIf=\"att.type=='file'\">\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{selectedFiles[att.position].name}} </p>\r\n          </div>\r\n          <div *ngIf=\"att.type=='text'\">\r\n            <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[att.position].value\" class=\"input-field\"></ion-input>  \r\n          </div>\r\n          <div *ngIf=\"att.type=='link'\">\r\n            <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[att.position].value\" class=\"input-field\"></ion-input>  \r\n          </div>\r\n          <ion-input type=\"text\" placeholder=\"Enter sub caption\" [(ngModel)]=\"anArray[idx].value\" class=\"input-field\"></ion-input>\r\n        </div>\r\n        <!-- <ion-item *ngFor=\"let att of this.linkArray; let idx = index\">\r\n          <ion-input type=\"text\" [(ngModel)]=\"linkArray[idx].value\"></ion-input>\r\n        </ion-item>\r\n        <ion-item *ngFor=\"let att of this.wordArray; let idx = index\">\r\n          <ion-input type=\"text\"  text-right  [(ngModel)]=\"wordArray[idx].value\"></ion-input>\r\n        </ion-item> -->\r\n        <!-- <button ion-button   (click)=\"Add()\">Add More</button>\r\n        <button ion-button full  (click)=\"goTo()\" >let's go</button> -->\r\n      \r\n        <!-- <div *ngIf=\"this.FolderClicked===true\" style=\"text-align: -webkit-center; margin-bottom: 20px;\">\r\n          <div *ngFor=\"let files of selectedFiles; let i = index\">\r\n            <ion-input (ionInput)=\"keychage($event, i)\" placeholder=\"Enter sub caption\" type=\"text\" class=\"input-field\"></ion-input>\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{files.name}} </p>\r\n          </div>\r\n        </div>\r\n        <div *ngIf=\"this.FolderClicked===false\" style=\"text-align: -webkit-center; margin-bottom: 20px;\">\r\n          <div *ngFor=\"let files of MediaFiles; let i = index\" style=\"width: 130px;\">\r\n            <ion-input [(ngModel)]=\"sub_captions_data[i].caption\" placeholder=\"Enter sub caption\" type=\"text\" class=\"input-field\"></ion-input>\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{files.name}} </p>\r\n          </div>\r\n        </div> -->\r\n\r\n        <div *ngIf=\"hideImageSpace==true\">\r\n\r\n          <form [formGroup]=\"Invitation\">\r\n\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userData.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <div style=\"justify-content: center;display: flex;flex-wrap: wrap;\">\r\n            <ion-chip style=\"background-color: #f44336; display: inline-block;\r\n            justify-content: center;\r\n            flex-wrap: nowrap;\">\r\n              <!-- <ion-icon name=\"folder-open\"></ion-icon> -->\r\n              <input #file class=\"custom-file-input-storage\" formControlName=\"file\" style=\"width: 160px;\" type=\"file\" multiple (change)=\"fileChangeEvent($event, 'folder')\">\r\n              <!-- (change)=\"fileChangeEvent($event,'folder')\" -->\r\n\r\n              <!-- value=\"file\" formControlName=\"file\" [(ngModel)]=\"userData.file\" -->\r\n              <!-- <ion-label>Files From Phone Storage</ion-label> -->\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #9c27b0; display: inline-block;\r\n            flex-wrap: nowrap;\">\r\n              <!-- (click)=\"CaptureImage()\" -->\r\n              <!-- <ion-icon name=\"camera\"></ion-icon> -->\r\n              <input #file class=\"custom-file-input-Capture-Image\" style=\"width: 92px;\" formControlName=\"file\" accept=\"image/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'image')\">\r\n              <!-- <ion-label>Capture Image</ion-label> -->\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #3f51b5; display: inline-block;\r\n            flex-wrap: nowrap;\">\r\n              <!-- <ion-icon name=\"videocam\"></ion-icon> -->\r\n              <input #file class=\"custom-file-input-Capture-Video\" formControlName=\"file\" style=\"width: 92px;\" accept=\"video/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'video')\">\r\n              <!-- <ion-label>Capture Video</ion-label> -->\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #2196f3; display: inline-block;\r\n            flex-wrap: nowrap;\">\r\n              <!-- <ion-icon name=\"mic-circle\"></ion-icon> -->\r\n              <input #file class=\"custom-file-input-Capture-Audio\" formControlName=\"file\" style=\"width: 90px;\" accept=\"audio/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'audio')\">\r\n              <!-- <ion-label>Capture Audio</ion-label> -->\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #009688;\" (click)=\"toShowLinkInputFiled()\">\r\n              <!-- <ion-icon name=\"link\"></ion-icon> -->\r\n              <!-- <ion-input formControlName=\"file\" [(ngModel)]=\"userData.file\" style=\"display: none;\" accept=\"audio/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event)\"></ion-input> -->\r\n              <ion-label>Share Links</ion-label>\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #ff9800;\" (click)=\"toShowTextArea()\">\r\n              <!-- <ion-icon name=\"text\"></ion-icon> -->\r\n              <!-- <ion-input formControlName=\"file\" [(ngModel)]=\"userData.file\" style=\"display: none;\" accept=\"audio/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event)\"></ion-input> -->\r\n              <ion-label>Share Wordings</ion-label>\r\n            </ion-chip>\r\n\r\n          </div>\r\n\r\n            <!-- (click)=\"toSubmitLinkField()\" -->\r\n\r\n            <!-- <ion-label> media\r\n              <ion-input class=\"custom-file-input\" formControlName=\"file\" accept=\"image/*,video/*,audio/*\" capture [(ngModel)]=\"userData.file\" type=\"file\" multiple placeholder=\"Upload a file ...\" (change)=\"fileChangeEvent($event)\"></ion-input>\r\n            </ion-label> -->\r\n\r\n            <!-- <input type=\"file\" class=\"custom-file-input\"> -->\r\n\r\n            <!-- <div>\r\n\r\n              <div style=\"display: flex;\r\n              justify-content: center;\r\n              padding: 10px;\">\r\n                <img *ngIf=\"urls\" [src]=\"urls[0]\" alt=\"\" style=\"height: 180px;\r\n                width: 125px;\r\n                padding: 15px;\"> -->\r\n                                <!-- <img *ngIf=\"urls\" [src]=\"urls[1]\" alt=\"\" style=\"height: 180px;\r\n                                width: 125px;\r\n                                padding: 15px;\"> -->\r\n                <!-- *ngIf=\"imgURL\" -->\r\n                <!-- <p *ngFor=\"let files of selectedFiles\" style=\"font-size: 15px; color: white; background-color: #5e5e5f; border-radius: 10px; padding: 20px; width: 150px;\"> {{files.name}} </p> -->\r\n              <!-- </div> -->\r\n\r\n              <!-- <div style=\"display: flex;\r\n              justify-content: center;\r\n              padding: 10px;\">\r\n                <img  [src]=\"imgURL\" alt=\"\" style=\"height: 180px;\r\n                width: 125px;\r\n                padding: 15px;\"> -->\r\n                <!-- *ngIf=\"imgURL\" -->\r\n                <!-- <p style=\"font-size: 15px; color: white; background-color: #5e5e5f; border-radius: 10px; padding: 20px; width: 150px;\"> {{files[1]?.name}} </p>\r\n              </div> -->\r\n\r\n            <!-- </div> -->\r\n\r\n            <!-- <div> -->\r\n  \r\n              <!-- <img *ngIf=\"imgURL\" [src]=\"imgURL\" alt=\"\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\"> -->\r\n              <!-- <img *ngIf=\"MediaFiles\" [src]=\"MediaFiles[1]?.name\" alt=\"\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\"> -->\r\n  \r\n            <!-- </div> -->\r\n\r\n            <!-- <div style=\"display: flex; text-align: center; justify-content: center;\" *ngIf=\"hideImageSpace==true\">\r\n              <img *ngIf=\"MediaArray\" [src]=\"MediaArray.name\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\" style=\"height: 150px; width: 130px;\" (click)=\"presentActionSheet()\">\r\n              <img *ngIf=\"MediaArray\" [src]=\"MediaArray.name\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\" style=\"height: 150px; width: 130px;\" (click)=\"presentActionSheet()\">\r\n              </div> -->\r\n\r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n            <!-- (click)=\"ToLaunchAMatch($event)\" -->\r\n\r\n          </form>\r\n        </div>\r\n\r\n\r\n        <form [formGroup]=\"LinkInputForm\">\r\n          <div *ngIf=\"isLink==true\" class=\"animate__animated animate__fadeInUp\">\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userLink.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <ion-textarea formControlName=\"link1\" [(ngModel)]=\"userLink.link1\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\" value=\"https://\"></ion-textarea>\r\n            <ion-textarea formControlName=\"link2\" [(ngModel)]=\"userLink.link2\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\" value=\"https://\"></ion-textarea>\r\n\r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n          </div>\r\n        </form>\r\n\r\n        <form [formGroup]=\"TextInputForm\">\r\n          <div *ngIf=\"isWordings==true\" class=\"animate__animated animate__fadeInUp\">\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userText.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <ion-textarea formControlName=\"text1\" [(ngModel)]=\"userText.text1\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n            <ion-textarea formControlName=\"text2\" [(ngModel)]=\"userText.text2\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n            \r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n          </div>\r\n        </form>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n</ion-content>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative;right: 15px;\">PERSONAL MATCH MEDIA UPLOAD</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div class=\"box\">\r\n    <div  class=\"inner-box\">\r\n      <div style=\"text-align: center;\">\r\n          <img src=\"../../assets/icon/help-invitation-terms/bar.png\" style=\"height: 130px; width: 180px;\">\r\n      </div>\r\n\r\n      <div style=\"background-color: #444446; margin-top: -5%; padding: 20px 10px 10px 10px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n        <div *ngFor=\"let att of this.anArray; let idx = index\">\r\n          <div *ngIf=\"att.type=='file'\">\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{selectedFiles[att.position].name}} </p>\r\n          </div>\r\n          <div *ngIf=\"att.type=='text'\">\r\n            <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[att.position].value\" class=\"input-field\"></ion-input>  \r\n          </div>\r\n          <div *ngIf=\"att.type=='link'\">\r\n            <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[att.position].value\" class=\"input-field\"></ion-input>  \r\n          </div>\r\n          <ion-input type=\"text\" placeholder=\"Enter sub caption\" [(ngModel)]=\"anArray[idx].value\" class=\"input-field\"></ion-input>\r\n        </div>\r\n        <!-- <ion-item *ngFor=\"let att of this.linkArray; let idx = index\">\r\n          <ion-input type=\"text\" [(ngModel)]=\"linkArray[idx].value\"></ion-input>\r\n        </ion-item>\r\n        <ion-item *ngFor=\"let att of this.wordArray; let idx = index\">\r\n          <ion-input type=\"text\"  text-right  [(ngModel)]=\"wordArray[idx].value\"></ion-input>\r\n        </ion-item> -->\r\n        <!-- <button ion-button   (click)=\"Add()\">Add More</button>\r\n        <button ion-button full  (click)=\"goTo()\" >let's go</button> -->\r\n      \r\n        <!-- <div *ngIf=\"this.FolderClicked===true\" style=\"text-align: -webkit-center; margin-bottom: 20px;\">\r\n          <div *ngFor=\"let files of selectedFiles; let i = index\">\r\n            <ion-input (ionInput)=\"keychage($event, i)\" placeholder=\"Enter sub caption\" type=\"text\" class=\"input-field\"></ion-input>\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{files.name}} </p>\r\n          </div>\r\n        </div>\r\n        <div *ngIf=\"this.FolderClicked===false\" style=\"text-align: -webkit-center; margin-bottom: 20px;\">\r\n          <div *ngFor=\"let files of MediaFiles; let i = index\" style=\"width: 130px;\">\r\n            <ion-input [(ngModel)]=\"sub_captions_data[i].caption\" placeholder=\"Enter sub caption\" type=\"text\" class=\"input-field\"></ion-input>\r\n            <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{files.name}} </p>\r\n          </div>\r\n        </div> -->\r\n\r\n        <div *ngIf=\"hideImageSpace==true\">\r\n\r\n          <form [formGroup]=\"Invitation\">\r\n\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userData.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <div style=\"justify-content: center;display: flex;flex-wrap: wrap;\">\r\n            <ion-chip style=\"background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;\">\r\n              <input #file class=\"custom-file-input-storage\" formControlName=\"file\" style=\"width: 160px;\" type=\"file\" multiple (change)=\"fileChangeEvent($event, 'folder')\">\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #9c27b0; display: inline-block;  flex-wrap: nowrap;\">\r\n              <!-- <input #file class=\"custom-file-input-Capture-Image\" style=\"width: 92px;\" formControlName=\"file\" accept=\"image/*;capture=camera\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'image')\"> -->\r\n              <!-- <ion-fab vertical=\"bottom\" horizontal=\"center\" slot=\"fixed\"> -->\r\n                <ion-button (click)=\"CaptureImage()\"></ion-button>\r\n              <!-- </ion-fab> -->\r\n              <!-- <ion-label>Capture Image</ion-label> -->\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #3f51b5; display: inline-block; flex-wrap: nowrap;\">\r\n              <!-- <ion-icon name=\"videocam\"></ion-icon> -->\r\n              <!-- <input #file class=\"custom-file-input-Capture-Video\" formControlName=\"file\" style=\"width: 92px;\" accept=\"video/*;capture=camera\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'video')\"> -->\r\n              <ion-label>Capture Video</ion-label>\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #2196f3; display: inline-block; flex-wrap: nowrap;\">\r\n              <input #file class=\"custom-file-input-Capture-Audio\" formControlName=\"file\" style=\"width: 90px;\" accept=\"audio/*\" capture type=\"file\" multiple (change)=\"fileChangeEvent($event,'audio')\">\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #009688;\" (click)=\"toShowLinkInputFiled()\">\r\n              <ion-label>Share Links</ion-label>\r\n            </ion-chip>\r\n\r\n            <ion-chip style=\"background-color: #ff9800;\" (click)=\"toShowTextArea()\">\r\n              <ion-label>Share Wordings</ion-label>\r\n            </ion-chip>\r\n\r\n          </div>\r\n\r\n            <!-- (click)=\"toSubmitLinkField()\" -->\r\n\r\n            <!-- <ion-label> media\r\n              <ion-input class=\"custom-file-input\" formControlName=\"file\" accept=\"image/*,video/*,audio/*\" capture [(ngModel)]=\"userData.file\" type=\"file\" multiple placeholder=\"Upload a file ...\" (change)=\"fileChangeEvent($event)\"></ion-input>\r\n            </ion-label> -->\r\n\r\n            <!-- <input type=\"file\" class=\"custom-file-input\"> -->\r\n\r\n            <!-- <div>\r\n\r\n              <div style=\"display: flex;\r\n              justify-content: center;\r\n              padding: 10px;\">\r\n                <img *ngIf=\"urls\" [src]=\"urls[0]\" alt=\"\" style=\"height: 180px;\r\n                width: 125px;\r\n                padding: 15px;\"> -->\r\n                                <!-- <img *ngIf=\"urls\" [src]=\"urls[1]\" alt=\"\" style=\"height: 180px;\r\n                                width: 125px;\r\n                                padding: 15px;\"> -->\r\n                <!-- *ngIf=\"imgURL\" -->\r\n                <!-- <p *ngFor=\"let files of selectedFiles\" style=\"font-size: 15px; color: white; background-color: #5e5e5f; border-radius: 10px; padding: 20px; width: 150px;\"> {{files.name}} </p> -->\r\n              <!-- </div> -->\r\n\r\n              <!-- <div style=\"display: flex;\r\n              justify-content: center;\r\n              padding: 10px;\">\r\n                <img  [src]=\"imgURL\" alt=\"\" style=\"height: 180px;\r\n                width: 125px;\r\n                padding: 15px;\"> -->\r\n                <!-- *ngIf=\"imgURL\" -->\r\n                <!-- <p style=\"font-size: 15px; color: white; background-color: #5e5e5f; border-radius: 10px; padding: 20px; width: 150px;\"> {{files[1]?.name}} </p>\r\n              </div> -->\r\n\r\n            <!-- </div> -->\r\n\r\n            <!-- <div> -->\r\n  \r\n              <!-- <img *ngIf=\"imgURL\" [src]=\"imgURL\" alt=\"\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\"> -->\r\n              <!-- <img *ngIf=\"MediaFiles\" [src]=\"MediaFiles[1]?.name\" alt=\"\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\"> -->\r\n  \r\n            <!-- </div> -->\r\n\r\n            <!-- <div style=\"display: flex; text-align: center; justify-content: center;\" *ngIf=\"hideImageSpace==true\">\r\n              <img *ngIf=\"MediaArray\" [src]=\"MediaArray.name\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\" style=\"height: 150px; width: 130px;\" (click)=\"presentActionSheet()\">\r\n              <img *ngIf=\"MediaArray\" [src]=\"MediaArray.name\" onerror=\"this.onerror=null;this.src='../../assets/icon/help-invitation-terms/bg2.png';\" style=\"height: 150px; width: 130px;\" (click)=\"presentActionSheet()\">\r\n              </div> -->\r\n\r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n            <!-- (click)=\"ToLaunchAMatch($event)\" -->\r\n\r\n          </form>\r\n        </div>\r\n\r\n\r\n        <form [formGroup]=\"LinkInputForm\">\r\n          <div *ngIf=\"isLink==true\" class=\"animate__animated animate__fadeInUp\">\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userLink.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <ion-textarea formControlName=\"link1\" [(ngModel)]=\"userLink.link1\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\" value=\"https://\"></ion-textarea>\r\n            <ion-textarea formControlName=\"link2\" [(ngModel)]=\"userLink.link2\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\" value=\"https://\"></ion-textarea>\r\n\r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n          </div>\r\n        </form>\r\n\r\n        <form [formGroup]=\"TextInputForm\">\r\n          <div *ngIf=\"isWordings==true\" class=\"animate__animated animate__fadeInUp\">\r\n            <ion-input formControlName=\"caption\" [(ngModel)]=\"userText.caption\" placeholder=\"Enter Caption\" class=\"input-field\" autocapitalize=\"true\"></ion-input>\r\n\r\n            <ion-textarea formControlName=\"text1\" [(ngModel)]=\"userText.text1\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n            <ion-textarea formControlName=\"text2\" [(ngModel)]=\"userText.text2\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n            \r\n            <ion-button color=\"warning\" style=\"font-family: OpenSansBold;\" type=\"submit\" (click)=\"submit()\">Launch</ion-button>\r\n          </div>\r\n        </form>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n</ion-content>\r\n");
 
 /***/ }),
 

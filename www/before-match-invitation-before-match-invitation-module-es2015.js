@@ -13,21 +13,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "82od":
-/*!************************************!*\
-  !*** ./src/app/services/config.ts ***!
-  \************************************/
-/*! exports provided: baseUrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseUrl", function() { return baseUrl; });
-let baseUrl = "http://192.168.107.183/";
-
-
-/***/ }),
-
 /***/ "CwYS":
 /*!*************************************************************************!*\
   !*** ./src/app/before-match-invitation/before-match-invitation.page.ts ***!
@@ -181,7 +166,6 @@ let BeforeMatchInvitationPage = class BeforeMatchInvitationPage {
         console.log('params:', params);
         this.common.postMethod('CreateOpenMatch', params).then((res) => {
             console.log('res:', res);
-            this.statusId = res.details.uploaded_id;
         }, (err) => {
             this.common.hideLoader();
             // console.log('Error:',err);

@@ -71,47 +71,19 @@ export class PersonalMatchPage implements OnInit {
     this.slides.updateAutoHeight();
     this.slides.update();
 
-    // this.storageservice.storage.get('userDetails').then((val) => {
-      // this.userDetails = val ;
-
     if ( this.userDetails.category == "personal" ) {
 
       let params = {
         userid : this.userDetails.userid
       }
 
-      console.log('------------------------------params:',params);
       this.common.postMethod('PersonalMatch',params).then((res:any) => {
         this.PersonalMatch = res.details;
-        // if ( this.userDetails.fileType === "image" ) {
-
-        //   this.PersonalMatch = res.details.image;
-
-        // } else if ( this.userDetails.fileType === "audio" ) {
-
-        //   this.PersonalMatch = res.details.audio;
-
-        // } else if ( this.userDetails.fileType === "link" ) {
-
-        //   this.PersonalMatch = res.details.link;
-
-        // } else if ( this.userDetails.fileType === "video" ) {
-
-        //   this.PersonalMatch = res.details.video;
-
-        // } else if ( this.userDetails.fileType === "text" ) {
-
-        //   this.PersonalMatch = res.details.text;
-
-        // }
 
         this.slides.slideTo(this.personalMatchSlideIndex);
         this.common.hideLoader();
       }, (err) => {
         this.ionViewWillEnter();
-        console.log('Error:',err);
-        console.log('Error headers:',err.headers);
-        // this.common.presentToast('A Network Issue Occured !... Please Wait While We Fetch Again ...');
         this.common.hideLoader();
       });
     } else if (this.userDetails.category == "closed") {
@@ -122,34 +94,6 @@ export class PersonalMatchPage implements OnInit {
 
       console.log('params:',params);
       this.common.postMethod('ClosedMatch',params).then((res:any) => {
-        console.log('Closed-------------------res:',res);
-        // this.PersonalMatchImage = res.details.image;
-        // this.PersonalMatchAudio = res.details.audio;
-        // this.PersonalMatchLink = res.details.link;
-        // this.PersonalMatchVideo = res.details.video;
-        // this.PersonalMatchText = res.details.text;
-
-        // if ( this.userDetails.fileType === "file" ) {
-
-        //   this.PersonalMatch = res.details.image;
-
-        // } else if ( this.userDetails.fileType === "audio" ) {
-
-        //   this.PersonalMatch = res.details.audio;
-
-        // } else if ( this.userDetails.filetype === "link" ) {
-
-        //   this.PersonalMatch = res.details.link;
-
-        // } else if ( this.userDetails.fileType === "video" ) {
-
-        //   this.PersonalMatch = res.details.video;
-
-        // } else if ( this.userDetails.fileType === "text" ) {
-
-        //   this.PersonalMatch = res.details.text;
-
-        // }
 
         this.PersonalMatch = res.details;
 
@@ -158,8 +102,6 @@ export class PersonalMatchPage implements OnInit {
         this.common.hideLoader();
       }, (err) => {
         this.ionViewWillEnter();
-        console.log('Error:',err);
-        console.log('Error headers:',err.headers);
         this.common.presentToast('A Network Issue Occured !... Please Wait While We Fetch Again ...');
         this.common.hideLoader();
       });
@@ -170,30 +112,22 @@ export class PersonalMatchPage implements OnInit {
   }
 
   gotoPersonalMatchComments(e,match) {
-    console.log('Comment View Page Clicked');
-    console.log('match:',match);
     match.matchType = 'PERSONAL';
     this.common.navCtrl.navigateForward(['/comments'], {queryParams: match});
    }
 
    ToSendReceiverLike(e,match, match_id) {
-     console.log('SenderLike BUtton Clicked',match);
      if (this.userDetails.category === 'personal') {
-
       let params = {
         userid : this.userDetail.userid,
         matchid : match_id,
         image_liked : match.image_id,
       }
 
-     console.log('params:',params);
       this.common.postMethod('personallike',params).then((res:any)=> {
-        console.log('res:',res);
         // this.userDetails.fileType = match.receiver_image_type;
         this.ionViewWillEnter();
       }, (err) => {
-        console.log('Error:',err);
-        console.log(err.headers);
       });
 
       } else {
@@ -204,19 +138,15 @@ export class PersonalMatchPage implements OnInit {
           contestentid : match.id,
           status : 'like'
         }
-        console.log('params:',params);
         this.common.postMethod('Like',params).then((res:any) => {
-          console.log('res:',res);
           this.ionViewWillEnter();
         }, err => {
-          console.log('Error:',err);
         });
       }
 
     }
 
     ToSendSenderLike(e,match, match_id) {
-      console.log('To Send Sender Like');
       if (this.userDetails.category === 'personal') {
 
         let params = {
@@ -225,12 +155,9 @@ export class PersonalMatchPage implements OnInit {
           image_id : match.media_id,
         }
 
-        console.log('params:',params);
         this.common.postMethod('personallike',params).then((res:any) => {
-          console.log('res:',res);
           this.ionViewWillEnter();
         }, (err) => {
-          console.log('Error:',err);
           console.log(err.headers);
         });
       } else {
@@ -241,9 +168,7 @@ export class PersonalMatchPage implements OnInit {
           contestentid : match.id,
           status : 'like'
         }
-        console.log('params:',params);
         this.common.postMethod('Like',params).then((res:any) => {
-          console.log('res:',res);
           this.ionViewWillEnter();
         }, err => {
           console.log('Error:',err);
