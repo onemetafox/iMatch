@@ -234,7 +234,6 @@ export class PersonalMatchPage implements OnInit {
           console.log(err.headers);
         });
       } else {
-
         let params = {
           userid : this.userDetail.userid,
           matchid : match_id,
