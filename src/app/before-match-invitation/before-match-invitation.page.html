@@ -90,35 +90,27 @@
             
             <img *ngIf="isDummyImage==true" style="height: 165px; width: 155px;" src="../../assets/icon/bg2new.png" alt="" (click)="presentActionSheet()">
             <img *ngIf="isImage==true" type='image/jpeg' style="height: 165px; width: 155px;" [src]="FileTransferResponse.filename" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-          <!-- <img *ngIf="FileTransferResponse?.length==0 || isImage==false" style="height: 165px; width: 155px;" src="../../assets/icon/bg2new.png" (click)="presentActionSheet()"> -->
             <video *ngIf="isVideo==true" style="height: 165px; width: 155px;" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-            <!-- <source  type="video/mp4"> -->
             </video>
             <audio *ngIf="isAudio==true" style="height: 165px; width: 155px;" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-            <!-- <source  type="video/mp4"> -->
             </audio>
-          <!-- <img *ngIf="FileTransferResponse==undefined" style="height: 165px; width: 155px;" src="../../assets/icon/bg2new.png" onerror="this.onerror=null;this.src='../../assets/icon/bg2new.png';" (click)="presentActionSheet()"> -->
           </div>
-
           <div *ngIf="isLink==true">
             <form [formGroup]="LinkInputForm">
             <ion-textarea formControlName="link" [(ngModel)]="userLink.link" placeholder="Enter Your Link" class="input-field" auto-grow="true" type="url"></ion-textarea>
             </form>
           </div>
-
           <div *ngIf="isWording==true">
             <form [formGroup]="WordingInputForm">
             <ion-textarea formControlName="wording" [(ngModel)]="userWording.wording" placeholder="Enter Your Wording" class="input-field" auto-grow="true" type="text"></ion-textarea>
             </form>
           </div>
-
           <div>
             <ion-input formControlName="caption" [(ngModel)]="userData.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
           </div>
         </div>
         <ion-button type="submit" color="warning" style="font-family: OpenSansBold;" type="submit" (click)="toCallForAMatch()">CALL FOR A MATCH</ion-button>
       </div>
-
   </form>
 
     </div>
