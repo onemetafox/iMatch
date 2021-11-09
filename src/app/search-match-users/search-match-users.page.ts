@@ -56,18 +56,11 @@ export class SearchMatchUsersPage implements OnInit {
 
   ionViewWillEnter(){
 
-    console.log('in ionViewWillEnter');
-
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
       if (this.userDetails.userid!=undefined) {
-
         this.listAllUsers();
         this.toGetUsersCategory();
-
-      } else {
-        console.log('*** UserId undefined ***');
       }
 
 
@@ -81,18 +74,14 @@ export class SearchMatchUsersPage implements OnInit {
       userid : this.userDetails.userid
     }
 
-    console.log('userid:',params);
     this.common.listUsers('Listusers',params).subscribe((res:any) => {
-      console.log('res:',res);
       this.allUsers = res.details.name;
-      console.log('allUsers:',this.allUsers);
     });
 
   }
 
   onSearchInput(e) {
     this.searching = true;
-    console.log('E:',e);
     this.setFilteredItems();
     this.listAllUsers();
   }
@@ -102,12 +91,10 @@ export class SearchMatchUsersPage implements OnInit {
   }
 
   addToMatch(event,user) {
-    console.log('user:',user);
     this.common.navCtrl.navigateForward(['/before-match-invitation'], {queryParams: user});
   }
 
   filterItems(searchTerm) {
-    console.log(searchTerm);
     return this.allUsers.filter(user => {
       return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
@@ -115,36 +102,28 @@ export class SearchMatchUsersPage implements OnInit {
   }
 
   toListCategory(val) {
-
-    console.log('To List Specific Category Clicked');
-    console.log('Value:',val);
-
         if (val=='bestie') {
 
           this.common.presentLoading();
             this.allUsers = this.BestiesList ;
-            console.log('allUsers:',this.allUsers);
             this.common.presentToast('Your Bestie List is Successfully Fetched ...');
 
         } else if (val=='squad') {
 
           this.common.presentLoading();
             this.allUsers = this.SquadList;
-            console.log('allUsers:',this.allUsers);
             this.common.presentToast('Your Squad List is Successfully Fetched ...');
 
         } else if (val=='fan') {
 
           this.common.presentLoading();
             this.allUsers = this.Fans;
-            console.log('allUsers:',this.allUsers);
             this.common.presentToast('Your Fan List is Successfully Fetched ...');
 
         } else if (val=='fan-of') {
 
           this.common.presentLoading();
             this.allUsers = this.FansOf;
-            console.log('allUsers:',this.allUsers);
             this.common.presentToast('Your Fan Of List is Successfully Fetched ...');
 
         } else if (val=='invite') {
@@ -161,47 +140,33 @@ export class SearchMatchUsersPage implements OnInit {
 
   toGetUsersCategory() {
 
-    console.log('To Get User Category Wise Working');
-
     let params = {
       id : this.userDetails.userid
     }
-
-    console.log('params:',params);
     this.common.postMethod('Listbesties',params).then((res:any) => {
-      console.log('res:',res);
-
       if (res.status == true) {
-
         this.BestiesList = res.details.besties;
         this.SquadList = res.details.squad;
         this.Fans = res.details.fan;
         this.FansOf = res.details.fan_of;
-
       } else {
-
         this.common.presentToast(' Error Loading Categories ');
-
       }
-
     } , err => {
-
       console.log('Error:',err);
 
     });
 
   }
 
-      toShare() {
+  toShare() {
 
-        const msg = 'Share iMatch with your friends:';
+    const msg = 'Share iMatch with your friends:';
 
-        this.socialSharing.share(msg).then(() => {
-          // Success!
-        }).catch(() => {
-          // Error!
-        });
+    this.socialSharing.share(msg).then(() => {
+    }).catch(() => {
+    });
 
-      }
+  }
 
 }

@@ -17,7 +17,6 @@ export class OurSloganPage implements OnInit {
   ) {
     this.common.route.queryParams.subscribe((resp: any) => {
       this.bestieDetails = resp;
-      console.log("BestiesDetails:", this.bestieDetails);
     });
   }
 
@@ -29,7 +28,6 @@ export class OurSloganPage implements OnInit {
 
   GetStoredUserDetails() {
     this.storageservice.storage.get("userDetails").then((val) => {
-      console.log("Storage Value of userDetails:", val);
       this.userDetails = val;
       this.GetUserSlogan();
     });
@@ -40,10 +38,8 @@ export class OurSloganPage implements OnInit {
       userid: this.userDetails.userid,
       senderid: this.bestieDetails.userid,
     };
-    console.log("params:", params);
     this.common.postMethod("GetStatus", params).then(
       (res: any) => {
-        console.log("res:", res);
         this.userSlogan = res.details.slogan[0]?.text;
       },
       (err) => {
@@ -60,10 +56,8 @@ export class OurSloganPage implements OnInit {
         text: this.userSlogan,
         send_to: this.bestieDetails.userid,
       };
-      console.log("params:", params);
       this.common.postMethod("statusbar", params).then(
         (res: any) => {
-          console.log("res:", res);
           if (res.status == true) {
             this.userSlogan = "";
             this.common.presentToast(

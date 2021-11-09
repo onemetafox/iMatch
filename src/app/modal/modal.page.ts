@@ -13,11 +13,7 @@ export class ModalPage implements OnInit {
 
   constructor(private common: CommonService) { }
 
-  ngOnInit() {
-    console.log('Modal Heading:', this.heading);
-    console.log('Modal Contents:', this.content);
-
-  }
+  ngOnInit() {}
 
   dismissModal() {
     this.common.modalController.dismiss({

@@ -63,7 +63,6 @@ export class ProfilePage implements OnInit {
     // this.university = this.formgroup.controls['university'];
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
   }
@@ -82,8 +81,6 @@ export class ProfilePage implements OnInit {
 
   onSubmit() {
     this.FormSubmit = true;
-    console.log('FormSubmit:',this.FormSubmit);
-    console.log('formgroup:',this.formgroup.value);
     if(this.formgroup.valid) {
 
       this.common.presentLoading();
@@ -98,15 +95,11 @@ export class ProfilePage implements OnInit {
         university : ''
       }
 
-      console.log('params:',params);
       this.common.postMethod('profile',this.formgroup.value).then((res:any) => {
-        console.log('res:',res);
         if(res.message == 'success') {
           this.common.presentToast('Profile details updated successful');
           this.responseData = res.details[0];
-          console.log('response:' ,res.details[0]);
           this.storageservice.setStorage('userDetails', res.details[0]);
-          console.log('Profile updated details successfully stored');
         } else {
           this.common.presentToast('Profile details update failed !');
         }
@@ -125,7 +118,6 @@ export class ProfilePage implements OnInit {
         icon: 'images',
         handler: () => {
           this.pickImageGallery();
-          console.log('Gallery clicked');
         }
       }, 
       {
@@ -133,7 +125,6 @@ export class ProfilePage implements OnInit {
         icon: 'camera',
         handler: () => {
           this.pickImage(CameraSource.Camera);
-          console.log('Camera clicked');
         }
       },
       {
@@ -141,7 +132,6 @@ export class ProfilePage implements OnInit {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });
@@ -159,12 +149,9 @@ export class ProfilePage implements OnInit {
       resultType: CameraResultType.Base64,
     });
 
-    console.log('image:',image);
-
     const blobData = this.b64toBlob(image.base64String, `image/${image.format}`);
 
     this.uploadImage(blobData, image.format).subscribe((newImage) => {
-      console.log('newImage:',newImage);
       this.common.presentLoading();
       this.getProfileImg();
     }, err => {
@@ -186,12 +173,9 @@ export class ProfilePage implements OnInit {
       resultType: CameraResultType.Base64,
     });
 
-    console.log('image:',image);
-
     const blobData = this.b64toBlob(image.base64String, `image/${image.format}`);
   
     this.uploadImage(blobData, image.format).subscribe((newImage) => {
-      console.log('newImage:',newImage);
       this.common.presentLoading();
       this.getProfileImg();
     }, err => {
@@ -232,19 +216,15 @@ export class ProfilePage implements OnInit {
 
       getProfileImg() {
         this.isLoading = true;
-        console.log('getProfileImg');
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.profilepicget('get_profile_pic/' + params.userid).subscribe((res:any) => {
-          console.log('res:',res);
           if (res.status == true) {
             this.userDetails = res.details[0];
             this.common.presentToast('Profile image loaded successfully...');
             this.storageservice.setStorage('userDetails', res.details[0]);
             this.isLoading = false;
-            console.log('userDetails:',this.userDetails);
           } else {
             this.common.presentToast(' 🛑 Something went wrong !!!');
           }

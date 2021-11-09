@@ -18,7 +18,6 @@ export class BestiesActionsPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -28,8 +27,6 @@ export class BestiesActionsPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Besties Action Page');
-
    this.storageservice.storage.get('userDetails').then((val) => {
      this.userDetails = val;
 
@@ -39,10 +36,7 @@ export class BestiesActionsPage implements OnInit {
           userid : this.userDetails.userid
         }
 
-        console.log('params:', params);
         this.common.postMethod('BestieAction',params).then((res:any) => {
-         console.log('res:',res);
-
          this.BestiesAction = res.details;
 
         });

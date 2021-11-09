@@ -74,7 +74,6 @@ export class WhatWouldIDoPage implements OnInit {
 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -84,8 +83,6 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    console.log('Entered into What Would I Do page');
-
     this.iQueryForm.reset();
 
     this.storageservice.storage.get('userDetails').then((val) => {
@@ -95,13 +92,9 @@ export class WhatWouldIDoPage implements OnInit {
         let params = {
           userid : this.userDetails.userid,
         }
-        console.log('params:',params);
         this.common.postMethod('GetAdminMessage',params).then((res:any) => {
-          console.log('res:',res);
           this.AdminQuestions = res.details.adminmessage;
-          console.log('AdminQuestions:',this.AdminQuestions);
           this.Answers = res.details.answers;
-          console.log('Answers:',this.Answers);
           this.MyiQuery = res.details.MyiQuery;
           this.Like1 = res.details.Like[0];
           this.Like2 = res.details.Like[1];
@@ -111,20 +104,12 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   toSendComment(event,messages) {
-    console.log('Send Button Clicked');
     this.FormSubmit = true;
-    console.log('message',messages);
-    console.log('FormSubmit:',this.FormSubmit);
-    console.log('Value:',this.commentForm.value);
-    console.log(this.commentForm.controls['comment']);
-
       let params = {
         userid : this.userDetails.userid,
         comment : this.userComment.comment,
       }
-      console.log('params:',params);
       this.common.postMethod('CommentAnswer',params).then((res:any) => {
-        console.log('res:',res);
         if (res.status == true) {
           this.commentForm.reset();
           this.common.presentToast(' ✅ Your comment successfully send');
@@ -141,22 +126,14 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   toSendAnswer(event,AdminQuestions) {
-    console.log('Answer 1 Done Button Clicked');
     this.FormSubmit = true;
-    console.log('AdminQuestions:',AdminQuestions);
-    console.log('FormSubmit:',this.FormSubmit);
-    console.log('Value:',this.answerForm.value);
-    console.log(this.answerForm.controls['answer1']);
-
     let params = {
       userid : this.userDetails.userid,
       answer1 : this.userAnswer.answer1,
       answer2 : this.userAnswer.answer2,
       questionnum : AdminQuestions.id
     }
-    console.log('params:',params);
     this.common.postMethod('AnswerMessage',params).then((res:any) => {
-      console.log('res:',res);
       if (res.status == true) {
         this.ionViewWillEnter();
         this.common.presentToast(' ✅ Your answers successfully send ');
@@ -167,48 +144,33 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   toLikeAnswer1(event,AdminQuestions) {
-    console.log('Like 1 Clicked');
-    console.log('AdminQuestions:',AdminQuestions);
-
     let params = {
       userid : this.userDetails.userid,
       questionid : this.AdminQuestions.id,
       answerid: 'answer1',
       status: 'like'
     }
-    console.log('params:',params);
     this.common.postMethod('CommentLike',params).then((res:any) => {
-      console.log('res:',res);
       this.ionViewWillEnter();
     });
 
   }
 
   toLikeAnswer2(event,AdminQuestions) {
-    console.log('Like 2 Clicked');
-    console.log('AdminQuestions:',AdminQuestions);
     let params = {
       userid : this.userDetails.userid,
       questionid : this.AdminQuestions.id,
       answerid: 'answer2',
       status: 'like'
     }
-    console.log('params:',params);
     this.common.postMethod('CommentLike',params).then((res:any) => {
-      console.log('res:',res);
       this.ionViewWillEnter();
     });
   }
 
   toSendiQuery(event,messages) {
-    console.log('iQuery 1 Text Area Clicked');
     this.FormSubmit = true;
     this.showTextArea = false;
-    console.log('message',messages);
-    console.log('FormSubmit:',this.FormSubmit);
-    console.log('Value:',this.iQueryForm.value);
-    console.log(this.iQueryForm.controls['iQuery1']);
-
     if (this.MyiQuery.length!=7 && this.MyiQuery.length>7) {
 
     let params = {
@@ -217,9 +179,7 @@ export class WhatWouldIDoPage implements OnInit {
       query2 : this.useriQuery.iQuery2,
       queryid : ''
     }
-    console.log('params:',params);
     this.common.postMethod('MyiQuery',params).then((res:any) => {
-      console.log('res',res);
       if (res.status == true) {
         this.common.presentToast(' ✅ Your new iQuery successfully added ');
       } else {
@@ -233,14 +193,10 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   toRemoveiQuery(event,iQuery) {
-    console.log('Remove iQuery button clicked');
     let params = {
       queryid : iQuery.queryid
     }
-    console.log('params:',params);
-    console.log('iQuery:',iQuery);
     this.common.postMethod('RemoveiQuery',params).then((res:any) => {
-      console.log('res:',res);
       if (res.status == true) {
         this.ionViewWillEnter();
         this.common.presentToast(' ✅ iQuery successfully removed ');
@@ -251,23 +207,18 @@ export class WhatWouldIDoPage implements OnInit {
   }
 
   toEditiQuery(event,iQuery) {
-    console.log('Edit iQuery Button Clicked');
     this.showEditArea = true;
-    console.log('iQuery:',iQuery);
     this.SingleQuery = iQuery;
   }
 
   toSendEditediQuery(event,SingleQuery) {
-    console.log('Send Edited iQuery Button Clicked');
     let params = {
       userid : this.userDetails.userid,
       queryid : SingleQuery.queryid,
       query1 : this.useriQuery.iQuery1,
       query2 : this.useriQuery.iQuery2
     }
-    console.log('params:',params);
     this.common.postMethod('MyiQuery',params).then((res:any) => {
-      console.log('res:',res);
       if (res.status == true) {
         this.ionViewWillEnter();
         this.common.presentToast(' ✅ Your iQuery successfully updated ');

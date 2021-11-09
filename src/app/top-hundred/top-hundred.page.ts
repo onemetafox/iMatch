@@ -18,7 +18,6 @@ export class TopHundredPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -28,13 +27,10 @@ export class TopHundredPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Top Hundred Page');
    let params = {
      userid : this.userDetails.userid
    }
-   console.log('params:',params);
    this.common.postMethod('Top100',params).then((res:any) => {
-    console.log('res:',res);
     this.TopHundred = res.details;
    });
   }

@@ -54,10 +54,7 @@ export class Tab6Page implements OnInit {
     });
 
     this.platform.backButton.subscribeWithPriority(10, () => {
-      console.log('Handler was called!');
     });
-
-    const Video_Ext = ['mp4','webm','mpg','mp2','mpeg','mpe','mpv','ogg','m4p','m4v','avi','wmv','mov','qt','flv','swf','avchd'];
   }
 
   toOpenPersonalMatch() {
@@ -101,7 +98,6 @@ export class Tab6Page implements OnInit {
             this.closedMatch = res.details;
         });
       } else {
-        console.log('UserId is Empty');
       }
       });
       this.isDisableOtherCategory = true;
@@ -110,7 +106,6 @@ export class Tab6Page implements OnInit {
     doRefresh(event) {
       this.ionViewWillEnter();
       setTimeout(() => {
-        console.log('Async operation has ended');
         event.target.complete();
       }, 2000);
     }
@@ -157,7 +152,6 @@ export class Tab6Page implements OnInit {
   }
 
   gotoImageIcon(icon) {
-    console.log('Icon:',icon);
     this.isDisableOtherCategory = false;
     if (icon == 'image') {
 
@@ -167,7 +161,6 @@ export class Tab6Page implements OnInit {
         this.common.presentLoading();
         // this.ionViewWillEnter();
         this.PersonalMatch = this.PersonalMatchImage;
-        console.log('PersonalMatchImage',this.PersonalMatch);
         this.common.presentToast('Image Match is Successfully Displayed');
         this.common.hideLoader();
 
@@ -187,7 +180,6 @@ export class Tab6Page implements OnInit {
         this.common.showLoader();
         this.common.presentLoading();
         this.PersonalMatch = this.PersonalMatchVideo;
-        console.log('PersonalMatchVideo',this.PersonalMatch);
 
         // this.closedMatch = this.closedMatchVideo;
         this.common.presentToast('Video Match is Successfully Displayed');
@@ -210,7 +202,6 @@ export class Tab6Page implements OnInit {
         // this.common.showLoader();
         this.common.presentLoading();
         this.PersonalMatch = this.PersonalMatchAudio;
-        console.log('PersonalMatchAudio',this.PersonalMatch);
 
         // this.closedMatch = this.closedMatchAudio;
         this.common.presentToast('Audio Match is Successfully Displayed');
@@ -233,7 +224,6 @@ export class Tab6Page implements OnInit {
         // this.common.showLoader();
         this.common.presentLoading();
         this.PersonalMatch = this.PersonalMatchText;
-        console.log('PersonalMatchText',this.PersonalMatch);
 
         // this.closedMatch = this.closedMatchText;
         this.common.presentToast('Text Match is Successfully Displayed');
@@ -257,7 +247,6 @@ export class Tab6Page implements OnInit {
         // this.common.showLoader();
         this.common.presentLoading();
         this.PersonalMatch = this.PersonalMatchLink;
-        console.log('PersonalMatchLink',this.PersonalMatch);
 
         // this.closedMatch = this.closedMatchLink;
         this.common.presentToast('Link Match is Successfully Displayed');
@@ -298,8 +287,6 @@ export class Tab6Page implements OnInit {
   }
 
   goToOpenMatch(event, open, index: number, cat) {
-    console.log('Entered into Open Match page');
-    console.log('open:',open);
     this.userDetails.userType = 'owner';
     this.userDetails.personalMatchSlideIndex = index;
     this.userDetails.fileType = open.sender_image_type;
@@ -384,7 +371,6 @@ export class PopoverComponent {
     private common: CommonService,
     ) {
       this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
         this.userDetails = val;
       });
     }

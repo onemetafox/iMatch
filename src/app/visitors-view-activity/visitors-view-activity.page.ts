@@ -257,7 +257,6 @@ export class VisitorsViewActivityPage implements OnInit {
   }
 
   async Popover(ev:any) {
-    console.log('presentPopover Clicked');
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       cssClass: 'my-custom-class',
@@ -358,14 +357,11 @@ export class PopoverComponent {
     }
 
     toAddAsFavourite(){
-
       let params = {
         from : this.userDetails.userid,
         to : this.UserInfo.userid,
         category : 'fan'
       }
-
-      console.log('params:',params);
       this.common.postMethod('add_fan',params).then((res:any) => {
         if (res.status == true) {
 

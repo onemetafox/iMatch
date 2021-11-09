@@ -20,17 +20,12 @@ export class Tab7Page implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Profile Page ');
-
    this.storageservice.storage.get('userDetails').then((val) => {
-    console.log('Storage Value of userDetails:', val);
     this.userDetails = val;
   });
   
   }
-
   togoBack() {
-    console.log('Back Button Clicked');
     this.common.router.navigate(['/tabs/tab6']);
   }
 

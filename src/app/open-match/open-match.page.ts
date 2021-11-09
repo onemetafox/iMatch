@@ -30,11 +30,9 @@ export class OpenMatchPage implements OnInit {
     this.common.route.queryParams.subscribe((resp:any) => {
       this.userDetails = resp;
       this.personalMatchSlideIndex = this.userDetails.personalMatchSlideIndex;
-      console.log('userArray:',this.userDetails);
     });
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -44,8 +42,6 @@ export class OpenMatchPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    console.log('Entered into Open Match page');
- 
      this.storageservice.storage.get('userDetails').then((val) => {
        this.userDetails = val ;
  
@@ -55,9 +51,7 @@ export class OpenMatchPage implements OnInit {
            userid : this.userDetails.userid
          }
  
-         console.log('params:',params);
          this.common.postMethod('OpenMatch',params).then((res:any) => {
-           console.log('openMatches:',res);
           //  this.openMatches = res.details.image;
 
            this.OpenMatchImage = res.details.image;
@@ -67,41 +61,35 @@ export class OpenMatchPage implements OnInit {
            this.OpenMatchText = res.details.text;
 
            this.slides.slideTo(this.personalMatchSlideIndex);
-           console.log('openMatches:', this.openMatches);
 
            if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
             for (let i=0; i < this.OpenMatchAudio.length; i++) {
               this.openMatches.push(this.OpenMatchAudio[i]);
             }
-            console.log('OpenMatch:', this.openMatches);
           } 
 
           if (this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
             for (let i=0; i < this.OpenMatchImage.length; i++) {
               this.openMatches.push(this.OpenMatchImage[i]);
             }
-            console.log('OpenMatch:', this.openMatches);
           } 
 
           if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
             for (let i=0; i < this.OpenMatchLink.length; i++) {
               this.openMatches.push(this.OpenMatchLink[i]);
             }
-            console.log('OpenMatch:', this.openMatches);
           } 
 
           if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
             for (let i=0; i < this.OpenMatchText.length; i++) {
               this.openMatches.push(this.OpenMatchText[i]);
             }
-            console.log('OpenMatch:', this.openMatches);
           } 
 
           if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
             for (let i=0; i < this.OpenMatchVideo.length; i++) {
               this.openMatches.push(this.OpenMatchVideo[i]);
             }
-            console.log('OpenMatch:', this.openMatches);
           } 
          });
        }
@@ -110,50 +98,38 @@ export class OpenMatchPage implements OnInit {
    }
    
    gotoOpenMatchComments(event,match) {
-    console.log('Comment View Page Clicked');
-    console.log('match:',match);
     this.common.navCtrl.navigateForward(['/comments'], {queryParams: match});
    }
 
    toLikeOpenMatch(event,match) {
-    console.log('Like Open Match Button Clicked');
     let params = {
       userid : this.userDetails.userid,
       matchid : match.match_id,
       contestentid : '',
       status : 'like'
     }
-    console.log('params:',params);
-    console.log('match:',match);
     this.common.postMethod('Like',params).then((res:any) => {
-      console.log('res:',res);
       this.ionViewWillEnter();
     });
    }
 
    toDisLikeOpenMatch(event,match) {
-    console.log('Dislike Open Match Button Clicked');
     let params = {
       userid : this.userDetails.userid,
       matchid : match.match_id,
       contestentid : '',
       status : 'dislike'
     }
-    console.log('params:',params);
-    console.log('match:',match);
     this.common.postMethod('Like',params).then((res:any) => {
-      console.log('res:',res);
       this.ionViewWillEnter();
     });
    }
 
    toCommentOpenMatch(event,match) {
-     console.log('Comment Open Match Button Clicked');
      this.common.navCtrl.navigateForward(['/open-match-comments'], {queryParams: match});
    }
 
     GetIconSearch(icon) {
-     console.log('Icon clicked:',icon);
      if (icon === 'image') {
 
       // await this.common.showLoader();
@@ -161,16 +137,13 @@ export class OpenMatchPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-      console.log('params:',params);
       this.common.postMethod('OpenMatch',params).then((res:any) => {
-        console.log('res:',res);
         this.openMatches = res.details.image;
         if (this.openMatches.length===0) {
           this.common.presentToast('You are having no image Open Matches');
         } else {
           this.common.presentToast('You are having '+ this.openMatches.length + ' image Open Matches');
         }
-        console.log('openMatches:',this.openMatches);
       }, err => {
         console.log('err:',err);
       });
@@ -184,16 +157,13 @@ export class OpenMatchPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-      console.log('params:',params);
       this.common.postMethod('OpenMatch',params).then((res:any) => {
-        console.log('res:',res);
         this.openMatches = res.details.video;
         if (this.openMatches.length===0) {
           this.common.presentToast('You are having no video Open Matches');
         } else {
           this.common.presentToast('You are having '+ this.openMatches.length + ' video Open Matches');
         }
-        console.log('openMatches:',this.openMatches);
       }, err => {
         console.log('err:',err);
       });
@@ -207,16 +177,13 @@ export class OpenMatchPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-      console.log('params:',params);
       this.common.postMethod('OpenMatch',params).then((res:any) => {
-        console.log('res:',res);
         this.openMatches = res.details.audio;
         if (this.openMatches.length===0) {
           this.common.presentToast('You are having no audio Open Matches');
         } else {
           this.common.presentToast('You are having '+ this.openMatches.length + ' audio Open Matches');
         }
-        console.log('openMatches:',this.openMatches);
       }, err => {
         console.log('err:',err);
       });
@@ -230,16 +197,13 @@ export class OpenMatchPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-      console.log('params:',params);
       this.common.postMethod('OpenMatch',params).then((res:any) => {
-        console.log('res:',res);
         this.openMatches = res.details.text;
         if (this.openMatches.length===0) {
           this.common.presentToast('You are having no text Open Matches');
         } else {
           this.common.presentToast('You are having '+ this.openMatches.length + ' text Open Matches');
         }
-        console.log('openMatches:',this.openMatches);
       }, err => {
         console.log('err:',err);
       });
@@ -253,16 +217,13 @@ export class OpenMatchPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-      console.log('params:',params);
       this.common.postMethod('OpenMatch',params).then((res:any) => {
-        console.log('res:',res);
         this.openMatches = res.details.link;
         if (this.openMatches.length===0) {
           this.common.presentToast('You are having no link Open Matches');
         } else {
           this.common.presentToast('You are having '+ this.openMatches.length + ' link Open Matches');
         }
-        console.log('openMatches:',this.openMatches);
       }, err => {
         console.log('err:',err);
       });
@@ -273,8 +234,6 @@ export class OpenMatchPage implements OnInit {
    }
 
    async toShowMatchHistory(ev:any ,match) {
-     console.log('Show Match History Button Clicked');
-
      const popover = await this.popoverController.create({
       component: PopoverComponent,
       cssClass: 'my-custom-class',
@@ -312,14 +271,10 @@ export class PopoverComponent {
    private common: CommonService,
    public navParams: NavParams,
    ) {
-     console.log(this.navParams.get('key'));
     this.Match = this.navParams.get('key');
-     console.log('users in popover:',this.Match);
    }
 
-   ionViewWillEnter(){
-     console.log('ionViewWillEnter:',this.Match);
-     }
+   ionViewWillEnter(){}
 
     //  toClose() {
     //    this.common.popoverController.dismiss();

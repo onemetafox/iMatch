@@ -67,7 +67,6 @@ export class BestiesPage implements OnInit {
   ) {
     this.common.route.queryParams.subscribe((resp) => {
       this.bestieDetails = resp;
-      console.log("bestieDetails:", this.bestieDetails);
     });
 
     // this.showTextContent();
@@ -84,7 +83,6 @@ export class BestiesPage implements OnInit {
 
   GetStorageDetails() {
     this.storageservice.storage.get("userDetails").then((val) => {
-      console.log("Stored Details of userDetails:", val);
       this.userDetails = val;
       this.GetPageContent();
     });
@@ -95,11 +93,8 @@ export class BestiesPage implements OnInit {
       userid: this.userDetails.userid,
       senderid: this.bestieDetails.userid
     };
-    console.log("params:", params);
     this.common.postMethod("GetStatus", params).then(
       (res: any) => {
-        console.log("res:", res);
-
         if (res.message === "success") {
           this.CountDetails = res;
           this.ourStory = res.details.story;
@@ -117,7 +112,6 @@ export class BestiesPage implements OnInit {
 
   GetEnableDisableCommStatus() {
     this.storageservice.storage.get("isDisable").then((val) => {
-      console.log("Stored Details of Comment Status:", val);
       this.CommentStatus = val;
 
       if (this.CommentStatus == 0) {
@@ -131,24 +125,8 @@ export class BestiesPage implements OnInit {
       }
     });
   }
-
-  // ionViewWillEnter(){
-  //  console.log('userDetails:',this.userDetails);
-
-  //  console.log('bestieDetails:',this.bestieDetails);
-
-  // this.showTextContent();
-  // }
-
-  // ionViewDidEnter(){
-  //   console.log('ionViewDidEnter');
-  //   this.storageservice.storage.set('bestieDetails',this.bestieDetails);
-  //   console.log('Besties Details Successfully Stored In Device , ionViewDidEnter');
-  // }
-
   showTextContent() {
     this.storageservice.storage.get("userDetails").then((val) => {
-      console.log("Storage Value of userDetails:", val);
       this.userDetails = val;
 
       if (this.userDetails.userid != "") {
@@ -161,30 +139,17 @@ export class BestiesPage implements OnInit {
           senderid: this.bestieDetails.userid,
         };
 
-        console.log("params", params);
         this.common.postMethod("GetStatus", params).then((res: any) => {
-          console.log("res:", res);
-
           if (res.message == "success") {
             this.CountDetails = res;
             this.ourStory = res.details.story;
             this.ourSlogan = res.details.slogan;
             this.ourLetter = res.details.letter;
             this.MediaFiles = res.link;
-
-            console.log("ourStory:", this.ourStory);
-            console.log("ourSlogan:", this.ourSlogan);
-            console.log("ourLetter:", this.ourLetter);
           } else if ((res.message = "failed")) {
-            console.log("res:", res);
-
             this.ourStory = res.details;
             this.ourSlogan = res.details;
             this.ourLetter = res.details;
-
-            console.log("ourStory:", this.ourStory);
-            console.log("ourSlogan:", this.ourSlogan);
-            console.log("ourLetter:", this.ourLetter);
           }
         });
       } else {
@@ -198,10 +163,8 @@ export class BestiesPage implements OnInit {
       userid: this.userDetails.userid,
       bestieid: this.bestieDetails.userid,
     };
-    console.log("params:", params);
     this.common.postMethod("bestielike", params).then(
       (res: any) => {
-        console.log("res:", res);
         if (res.status == true) {
           this.GetPageContent();
         }
@@ -228,7 +191,6 @@ export class BestiesPage implements OnInit {
   }
 
   addMoreBesties() {
-    console.log("Besties Search page clicked ");
     this.common.navCtrl.navigateForward(["/besties-search"], {
       queryParams: this.bestieDetails,
     });
@@ -261,8 +223,6 @@ export class BestiesPage implements OnInit {
   }
 
   async PresentActionSheet() {
-    console.log(" Action Sheet Clicked ");
-
     const actionSheet = await this.actionSheetController.create({
       cssClass: "my-custom-class",
       header: " File format must be MP4, PNG, JPG , JPEG",
@@ -272,7 +232,6 @@ export class BestiesPage implements OnInit {
           icon: "folder-open",
           handler: () => {
             this.pickDocuments();
-            console.log("Folder clicked");
           },
         },
 
@@ -282,7 +241,6 @@ export class BestiesPage implements OnInit {
           handler: () => {
             this.captureImage();
             // this.isImage = true;
-            console.log("Camera clicked");
           },
         },
 
@@ -292,7 +250,6 @@ export class BestiesPage implements OnInit {
           handler: () => {
             this.captureVideo();
             // this.isVideo = true;
-            console.log("Camera clicked");
           },
         },
 
@@ -301,7 +258,6 @@ export class BestiesPage implements OnInit {
           icon: "close",
           role: "cancel",
           handler: () => {
-            console.log("Cancel clicked");
           },
         },
       ],
@@ -314,10 +270,8 @@ export class BestiesPage implements OnInit {
     const options: CaptureImageOptions = { limit: 1 };
     this.mediaCapture.captureImage(options).then(
       (data: MediaFile[]) => {
-        console.log(data[0]);
         // this.isImage = true;
         this.uploadFile2(data[0], "image");
-        console.log("Data:", data[0]);
       },
       (err: CaptureError) => console.error(err)
     );
@@ -328,10 +282,8 @@ export class BestiesPage implements OnInit {
     const options: CaptureVideoOptions = { limit: 1, duration: 2, quality: 80 };
     this.mediaCapture.captureVideo(options).then(
       (data: MediaFile[]) => {
-        console.log(data[0]);
         // this.isVideo = true;
         this.uploadFile2(data[0], "video");
-        console.log("Data:", data[0]);
       },
       (err: CaptureError) => console.error(err)
     );
@@ -344,12 +296,9 @@ export class BestiesPage implements OnInit {
     this.fileChooser
       .open()
       .then((uri) => {
-        console.log("uri:", uri);
-
         this.filePath
           .resolveNativePath(uri)
           .then((filePath) => {
-            console.log("filePath:", filePath);
             let fileNameFromPath = filePath.substring(
               filePath.lastIndexOf("/") + 1
             );
@@ -357,10 +306,6 @@ export class BestiesPage implements OnInit {
               uri.lastIndexOf("/") + 1,
               uri.lastIndexOf("?")
             );
-
-            console.log("currentName:", currentName);
-            console.log("fileNameFromPath:", fileNameFromPath);
-
             file = {
               name: fileNameFromPath,
               fullPath: filePath,
@@ -393,8 +338,6 @@ export class BestiesPage implements OnInit {
         Connection: "close",
       },
     };
-    console.log("options:", options);
-
     let filePath: any;
     if (type !== "audio") {
       filePath = encodeURI(file.fullPath);
@@ -412,60 +355,19 @@ export class BestiesPage implements OnInit {
       let prg = e.lengthComputable
         ? Math.round((e.loaded / e.total) * 100)
         : -1;
-      console.log("progress:" + prg + "%");
       this.common.presentToast("Uploaded " + prg + "% of file");
-
-      if (prg === 100) {
-        console.log("Upload completed");
-      } else {
-        console.log("file is uploading");
-      }
     });
 
     fileTransfer.upload(filePath, fileUplaodUrl, options).then(
       (data) => {
-        console.log("File Transfer Success:", data);
-        console.log(JSON.parse(data.response));
         let res = JSON.parse(data.response);
-
-        console.log("res:", res);
-
-        // if (res.file_extension === 'mp4') {
-        //   console.log('This is a video file');
-        //   this.isVideo = true;
-        //   this.isDummyImage = false;
-
-        // } else if (res.file_extension === 'aac') {
-        //   console.log(' This is a audio file ');
-        //   this.isAudio = true;
-        //   this.isDummyImage = false;
-
-        // } else if (res.file_extension === 'png') {
-        //   console.log(' This is a image file ');
-        //   this.isImage = true;
-        //   this.isDummyImage = false;
-
-        // } else if (res.file_extension === 'jpg') {
-        //   console.log(' This is a image file ');
-        //   this.isImage = true;
-        //   this.isDummyImage = false;
-
-        // } else if (res.file_extension === 'mp3') {
-        //   console.log(' This is a audio file ');
-        //   this.isAudio = true;
-        //   this.isDummyImage = false;
-
-        // }
 
         if (res.status == true) {
           this.ionViewWillEnter();
           // this.FileTransferResponse = res.upload_details;
-          // console.log('File Transfer Success:', this.FileTransferResponse);
         } else {
           console.log("File Transfer Error");
         }
-
-        // console.log('FileTransferResponse:',this.FileTransferResponse);
         this.common.hideLoader();
       },
       (err) => {
@@ -475,15 +377,12 @@ export class BestiesPage implements OnInit {
   }
 
   async toUploadImage() {
-    console.log("To Upload Image");
     const image = await Camera.getPhoto({
       quality: 60,
       allowEditing: true,
       resultType: CameraResultType.Base64,
       source: CameraSource.Photos,
     });
-
-    console.log("image:", image);
 
     const blobData = this.b64toBlob(
       image.base64String,
@@ -492,7 +391,6 @@ export class BestiesPage implements OnInit {
 
     this.uploadImage(blobData, image.format).subscribe(
       (newImage) => {
-        console.log("newImage:", newImage);
         this.showTextContent();
       },
       (err) => {

@@ -118,7 +118,6 @@ export class BeforeMatchInvitationPage implements OnInit {
 
     this.common.route.queryParams.subscribe(resp => {
       this.opponentDetails = JSON.parse(resp.selectUsers);
-      console.log('opponentDetails:',this.opponentDetails);
     });
 
   }
@@ -159,157 +158,11 @@ export class BeforeMatchInvitationPage implements OnInit {
     }
 
     this.common.postMethod('CreateOpenMatch',params).then((res:any) => {
-      console.log('res:',res);
       this.common.router.navigate(['/tabs/tab6']);
     }, (err) => {
       this.common.hideLoader();
       console.log('Error:',err);
     });
-    
-    // console.log('Call For A Match Clicked');
-    // this.FormSubmit = true ;
-    // console.log('invitation', this.invitation.valid, 'FormSubmit:', this.FormSubmit, 'isLink:', this.isLink, 'isWording:', this.isWording, 'isMedia:', this.isMedia);
-
-    // if (this.isLink==true) {
-
-    //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-    //     if (this.userLink.link.match(regex)!=null) {
-  
-    //       console.log('Matching link');
-    //         this.userLink.link = this.userLink.link;
-    //           console.log('link1',this.userLink.link);
-  
-    //     } else {
-  
-    //       console.log('No Match');
-    //         this.userLink.link = 'https://'+this.userLink.link;
-    //           console.log('link1',this.userLink.link);
-  
-    //     }
-
-    //     if (this.LinkInputForm.valid) {
-
-    //       let params = {
-
-    //         text : this.userLink.link,
-    //         filetype : 'link',
-    //         userid : this.userDetails.userid
-    
-    //       }
-    
-    //       console.log('params:',params);
-    //       this.common.postMethod('MatchUpload',params).then((res:any) => {
-    //         console.log('res:',res);
-    
-    //           this.statusId = res.details.uploaded_id;
-    
-    //         if (res.status === true) {
-    
-    //           this.ForLinkWordingSubmit();
-    
-    //         } else {
-    
-    //           console.log('Failed');
-    
-    //         }
-    
-    //       }, (err) => {
-    //         this.common.hideLoader();
-    //         console.log('Error:',err);
-    //         console.log(err.headers);
-    
-    //       });
-
-    //     } else {
-
-    //       console.log('Link failed');
-    //       this.common.showAlert('The link you entered is not valid, Please enter a valid link and press launch');
-
-    //     }
-
-    // } else if (this.isWording==true) {
-
-    //   let params = {
-
-    //     text : this.userWording.wording,
-    //     filetype : 'text',
-    //     userid : this.userDetails.userid
-
-    //   }
-
-    //   console.log('params:',params);
-    //   this.common.postMethod('MatchUpload',params).then((res:any) => {
-    //     console.log('res:',res);
-
-    //     this.statusId = res.details.uploaded_id;
-
-    //     if (res.status === true) {
-
-    //       this.ForLinkWordingSubmit();
-
-    //     } else {
-
-    //       console.log('Failed');
-
-    //     }
-
-    //   }, (err) => {
-
-    //     console.log('Error:',err);
-    //     console.log(err.headers);
-
-    //   });
-
-    // } else if (this.isMedia == true) {
-
-    //   if (this.invitation.valid) {
-    //     let params = {
-
-    //       rival_id : this.userDetails.userid,
-    //       opponent_id : this.opponentDetails.userid,
-    //       description : this.userData.description,
-    //       time_duration : this.userData.duration,
-    //       caption : this.userData.caption,
-    //       category : 'Personalized',
-    //       uploaded_id : this.FileTransferResponse.uploaded_id,
-    //     }
-
-    //     this.common.showLoader();
-    //     console.log('params:',params);
-    //     this.common.postMethod('MatchInvitation',params).then((res:any) => {
-    //       console.log('res:',res);
-
-    //        if (res.status == true) {
-
-    //          this.common.presentToast(' You have successfully sent a match invitation to ' + this.opponentDetails.name);
-    //          this.common.router.navigate(['/tabs/tab3']);
-
-    //        } else {
-
-    //          this.common.presentToast(' Match Invitation Sending Failed ! ');
-
-    //        }
-
-    //       this.MatchDetails = res;
-    //       console.log('MatchDetails:',this.MatchDetails.matchid);
-    //        this.common.hideLoader();
-           
-    //     } , (err) => {
-
-    //       console.log('Error:',err);
-    //       console.log(err.headers);
-
-    //     });
-
-    //   } else {
-
-    //       this.common.presentToast(' All Fields Are Mandatory ');
-
-    //     }
-
-    // }
-
   }
 
   ForLinkWordingSubmit () {
@@ -457,7 +310,6 @@ export class BeforeMatchInvitationPage implements OnInit {
           icon: 'close',
           role: 'cancel',
             handler: () => {
-          console.log('Cancel clicked');
           }
         }
       ]
@@ -470,10 +322,8 @@ export class BeforeMatchInvitationPage implements OnInit {
     const options: CaptureImageOptions = { limit: 1 };
     this.mediaCapture.captureImage(options).then(
       (data: MediaFile[]) => {
-        console.log(data[0]);
           this.isImage = true;
-            this.uploadFile2(data[0], 'image');
-          console.log('Data:',data[0]);
+          this.uploadFile2(data[0], 'image');
         },
       (err: CaptureError) => console.error(err)
     ); 
@@ -485,10 +335,8 @@ export class BeforeMatchInvitationPage implements OnInit {
       this.mediaCapture.captureVideo(options)
         .then(
           (data: MediaFile[]) => {
-            console.log(data[0]);
-              this.isVideo = true;
+            this.isVideo = true;
             this.uploadFile2(data[0], 'video');
-          console.log('Data:',data[0]);
         },
       (err: CaptureError) => console.error(err)
     );
@@ -497,15 +345,14 @@ export class BeforeMatchInvitationPage implements OnInit {
   captureAudio() {
     this.isMedia = true;
     const options: CaptureAudioOptions = { limit: 1};
-      this.mediaCapture.captureAudio(options)
-        .then(
-          (data: MediaFile[]) => {
-            console.log(data[0]);
-          this.isAudio = true;
+    this.mediaCapture.captureAudio(options)
+      .then(
+        (data: MediaFile[]) => {
+        this.isAudio = true;
         this.uploadFile2(data[0], 'audio');
-      console.log('Data:',data[0]);
-    },
-    (err: CaptureError) => console.error(err));
+      },
+      (err: CaptureError) => console.error(err)
+    );
   }
 
   pickWording() {
@@ -570,12 +417,6 @@ export class BeforeMatchInvitationPage implements OnInit {
     {
       let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
       this.common.presentToast('Uploaded ' + prg + '% of file');
-
-      if (prg===100) {
-        console.log('Upload completed');
-      } else {
-        console.log('file is uploading');
-      }
     });
 
     fileTransfer.upload(filePath, fileUplaodUrl, options).then((data) => {
@@ -603,13 +444,10 @@ export class BeforeMatchInvitationPage implements OnInit {
 
       if (res.status == true) {
         this.FileTransferResponse = res.upload_details;
-      } else {
-        console.log('File Transfer Error');
       }
-      console.log('FileTransferResponse:',this.FileTransferResponse);
       this.common.hideLoader();
     }, (err) => {
-      console.log('File Transfer Error:', err);
+      console.log('Error:', err);
     });
   }
 

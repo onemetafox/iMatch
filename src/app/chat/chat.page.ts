@@ -30,32 +30,23 @@ export class ChatPage implements OnInit {
     ) { 
 
       this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
         this.userDetails = val;
       });
 
     }
 
-  ngOnInit() {
-
-    console.log('Colors:',this.ChatEndColors);
-  }
+  ngOnInit() {}
 
   gotoProfile() {
-    console.log('Profile Clicked');
     this.common.navCtrl.navigateForward(['tabs/tab7'], {queryParams: this.userDetails});
   }
 
   openMessage(event,chat,i) {
-    console.log('chat:',chat);
-    console.log('i:',i);
     chat.OpponentId = this.userDetails.userid;
     this.common.router.navigate(['/chat-message'], {queryParams: chat});
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Chat page');
-
    this.storageservice.storage.get('userDetails').then((val) => {
     this.userDetails = val;
 
@@ -64,9 +55,7 @@ export class ChatPage implements OnInit {
       let params = {
         userid : this.userDetails.userid,
       }
-      console.log('params:',params);
       this.common.postMethod('GetChat',params).then((res:any) => {
-        console.log('res:',res);
         this.chatList = res.details;
 
         // var chatA = new Date(this.chatList[0].send_at);
@@ -78,11 +67,8 @@ export class ChatPage implements OnInit {
       });
 
     } else {
-      /////////////////////////
     }
   });
-
-
   }
 
   gotoNewMessage() {

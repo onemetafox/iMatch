@@ -31,7 +31,6 @@ export class BestiesBeforePage implements OnInit {
 
   GetStoredUserDetails () {
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Stored details of userDetails:', val);
       this.userDetails = val;
       this.GetBestiesList();
     });
@@ -42,24 +41,15 @@ export class BestiesBeforePage implements OnInit {
       id : this.userDetails.userid
     }
     await this.common.showLoader();
-    console.log('params:',params);
     this.common.postMethod('Listbesties',params).then((res:any) => {
-     console.log('res:',res);
      this.common.hideLoader();
 
      this.mybesties = res.details.besties;
-     console.log('mybesties',this.mybesties);
 
      if (this.mybesties.length==0) {
        this.common.presentToast('You are having no `Besties` to show');
        return;
-   }
-    // else {
-
-    //    this.common.presentToast('You are having '+ res.details.besties.length + ' bestie list members to show');
-   
-    //  }
-
+      }
     }, err => {
 
       console.log('Error:',err);
@@ -74,14 +64,11 @@ export class BestiesBeforePage implements OnInit {
   }
 
   ToRemoveBestie (e, bestie) {
-    console.log('Bestie:', bestie);
     let params = {
       userid : this.userDetails.userid,
       besiteid : bestie.tableid
     }
-    console.log('params:',params);
     this.common.postMethod('RemoveBesties',params).then((res:any) => {
-      console.log('res:',res);
       if (res.status == true) {
         this.GetBestiesList();
         this.common.presentToast( bestie.name + 'is successfully removed from your besties list');
@@ -109,9 +96,7 @@ export class BestiesBeforePage implements OnInit {
       senderid : bestie.userid
     }
 
-    console.log('params',params);
     this.common.postMethod('GetStatus',params).then((res:any) => {
-      console.log('res:',res);
       this.ourStory = res.details.story;
       this.ourSlogan = res.details.slogan;
       this.ourLetter = res.details.letter;
@@ -119,7 +104,6 @@ export class BestiesBeforePage implements OnInit {
   }
 
   goToBestiesDetails(event,bestie){
-    console.log(bestie);
     this.common.navCtrl.navigateForward(['besties'], {queryParams : bestie});
   }
 
@@ -128,7 +112,6 @@ export class BestiesBeforePage implements OnInit {
   }
 
   addMoreBesties() {
-    console.log('Besties Search page clicked ');
     this.common.navCtrl.navigateForward(['besties-search']);
   }
 

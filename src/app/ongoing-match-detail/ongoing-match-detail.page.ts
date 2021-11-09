@@ -38,14 +38,10 @@ export class OnGoingMatchDetailPage implements OnInit {
 
   ionViewWillEnter(){
     this.common.presentLoading();
-    console.log('Entered into Personal Match page');
-
     this.common.route.queryParams.subscribe((resp:any) => {
       this.common.http.get(this.common.ajx.BaseUrl+'get_ongoing_match/'+resp.matchid).subscribe((res:any) => {
         this.ongoingData = res['data'];
-        console.log("-------------------------", this.ongoingData);
         this.storageservice.storage.get('userDetails').then((val) => {
-          console.log('Storage Value of userDetails:', val);
           this.userDetail = val;
         });
       }, err => {
@@ -63,8 +59,6 @@ export class OnGoingMatchDetailPage implements OnInit {
       let params = {
         userid : this.userDetails.userid
       }
-
-      console.log('------------------------------params:',params);
       this.common.postMethod('PersonalMatch',params).then((res:any) => {
         this.PersonalMatch = res.details;
         this.slides.slideTo(this.personalMatchSlideIndex);
@@ -72,12 +66,10 @@ export class OnGoingMatchDetailPage implements OnInit {
       }, (err) => {
         this.ionViewWillEnter();
         console.log('Error:',err);
-        console.log('Error headers:',err.headers);
         // this.common.presentToast('A Network Issue Occured !... Please Wait While We Fetch Again ...');
         this.common.hideLoader();
       });
     } else if (this.userDetails.category == "closed") {
-
 
     }
 

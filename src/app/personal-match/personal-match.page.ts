@@ -56,11 +56,9 @@ export class PersonalMatchPage implements OnInit {
     this.common.route.queryParams.subscribe((resp:any) => {
       this.userDetails = resp;
       this.personalMatchSlideIndex = this.userDetails.personalMatchSlideIndex;
-      console.log('userArray:',this.userDetails);
     });
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetail = val;
     });
 
@@ -83,7 +81,6 @@ export class PersonalMatchPage implements OnInit {
   ionViewWillEnter(){
     // this.common.showLoader();
     this.common.presentLoading();
-    console.log('Entered into Personal Match page');
     this.slides.updateAutoHeight();
     this.slides.update();
 
@@ -108,13 +105,11 @@ export class PersonalMatchPage implements OnInit {
         userid : this.userDetails.userid
       }
 
-      console.log('params:',params);
       this.common.postMethod('ClosedMatch',params).then((res:any) => {
 
         this.PersonalMatch = res.details;
 
         this.slides.slideTo(this.personalMatchSlideIndex);
-        console.log('closed:', this.PersonalMatch);
         this.common.hideLoader();
       }, (err) => {
         this.ionViewWillEnter();
@@ -193,8 +188,6 @@ export class PersonalMatchPage implements OnInit {
     }
 
   async toShowMatchHistory(ev:any ,match) {
-    console.log('Show Match History Button Clicked');
-
     const popover = await this.popoverController.create({
      component: PopoverComponent,
      cssClass: 'my-custom-class',
@@ -208,8 +201,6 @@ export class PersonalMatchPage implements OnInit {
   }
 
   IconCategorize(cat) {
-    console.log('Cat:',cat);
-
     if (this.userDetail.category === 'personal') {
 
       if (cat === 'image') {
@@ -218,16 +209,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.image;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no image Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' image Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
         }, err => {
           console.log('e:',err);
@@ -239,18 +227,14 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.video;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no video Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' video Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
-  
         }, err => {
           console.log('e:',err);
         });
@@ -261,16 +245,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.audio;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no audio Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' audio Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -284,16 +265,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.text;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no text Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' text Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -307,16 +285,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.link;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no link Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' link Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -333,16 +308,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.image;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no image Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' image Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
         }, err => {
           console.log('e:',err);
@@ -354,9 +326,7 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.video;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no video Personal Matches');
@@ -364,7 +334,6 @@ export class PersonalMatchPage implements OnInit {
 
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' video Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -377,16 +346,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.audio;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no audio Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' audio Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -400,16 +366,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.text;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no text Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' text Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -423,16 +386,13 @@ export class PersonalMatchPage implements OnInit {
         let params = {
           userid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log('res:',res);
           this.PersonalMatch = res.details.link;
           if (this.PersonalMatch.length===0) {
             this.common.presentToast('You are having no link Personal Matches');
           } else {
             this.common.presentToast('You are having '+ this.PersonalMatch.length + ' link Personal Matches');
           }
-          console.log('PersonalMatchImage:',this.PersonalMatch);
           this.common.hideLoader();
   
         }, err => {
@@ -446,7 +406,6 @@ export class PersonalMatchPage implements OnInit {
   }
 
   async openRevealedCount(i: number, type: string) {
-    console.log('Revealed Count');
 
     const popover = await this.popoverController.create({
       component: RevealedCountComponent,
@@ -460,8 +419,6 @@ export class PersonalMatchPage implements OnInit {
 
   }
   async openCount(i: number, type: string) {
-    console.log(' Count');
-
     const popover = await this.popoverController.create({
       component: CountComponent,
       cssClass: 'my-custom-class',
@@ -475,8 +432,6 @@ export class PersonalMatchPage implements OnInit {
   }
 
   async toViewSenderMatchImage(ev:any, match) {
-    console.log('Show Sender Match Image Button Clicked');
-
     const popover = await this.modalController.create({
       component: SenderPopoverComponent,
       cssClass: 'my-custom-class',
@@ -490,8 +445,6 @@ export class PersonalMatchPage implements OnInit {
   }
 
   async toViewReceiverMatchImage(ev:any, match) {
-    console.log('Show Receiver Match Image Button Clicked:', this.userDetails.userType);
-
     const popover = await this.modalController.create({
       component: ReceiverPopoverComponent,
       cssClass: 'my-custom-class',
@@ -546,16 +499,12 @@ export class RevealedCountComponent {
           public navParams: NavParams,
    ) {
 
-     console.log(this.navParams.get('key'));
-     console.log(this.navParams.get('type'));
      this.Match = this.navParams.get('key');
      this.type = this.navParams.get('type');
 
    }
 
-   ionViewWillEnter(){
-    //  console.log('ionViewWillEnter:',this.Match);
-     }
+   ionViewWillEnter(){}
 
     }
 
@@ -604,21 +553,13 @@ public popoverController: PopoverController,
         private common: CommonService,
         public navParams: NavParams,
   ) {
-
-    console.log(this.navParams.get('key'));
-    console.log(this.navParams.get('type'));
     this.Match = this.navParams.get('key');
     this.type = this.navParams.get('type');
-
   }
 
-  ionViewWillEnter(){
-  //  console.log('ionViewWillEnter:',this.Match);
-    }
+  ionViewWillEnter(){}
 
     async openRevealedCount(type: string) {
-      console.log('Revealed Count');
-
       this.popoverController.dismiss();
 
       const navigationExtras: NavigationExtras = {
@@ -670,15 +611,11 @@ export class PopoverComponent {
    private common: CommonService,
    public navParams: NavParams,
    ) {
-     console.log(this.navParams.get('key'));
     this.Match = this.navParams.get('key');
 
-     console.log('users in popover:',this.Match);
    }
 
-   ionViewWillEnter(){
-     console.log('ionViewWillEnter:',this.Match);
-     }
+   ionViewWillEnter(){}
 
     }
 @Component({
@@ -704,89 +641,73 @@ export class PopoverComponent {
   `
 })
     
-    export class SenderPopoverComponent {
+  export class SenderPopoverComponent {
 
-      FormSubmit: boolean = false;
-      public MatchThisForm: FormGroup;
-      caption: AbstractControl;
+    FormSubmit: boolean = false;
+    public MatchThisForm: FormGroup;
+    caption: AbstractControl;
 
-      userCaption = {
-      "caption": "" ,
-      };
-    
-     Match: any  = [];
-    userDetails: any;
-    userType: string;
-     constructor(
-      public popoverController: PopoverController,
-      public storageservice: StorageService,
-       private common: CommonService,
-       public formbuilder: FormBuilder,
-       public navParams: NavParams,
-       ) {
+    userCaption = {
+    "caption": "" ,
+    };
+  
+    Match: any  = [];
+  userDetails: any;
+  userType: string;
+    constructor(
+    public popoverController: PopoverController,
+    public storageservice: StorageService,
+      private common: CommonService,
+      public formbuilder: FormBuilder,
+      public navParams: NavParams,
+      ) {
 
-        this.MatchThisForm = formbuilder.group({
-          caption:['',Validators.compose([Validators.required,
-                                        Validators.minLength(1),
-                                      ])],
-        });
+      this.MatchThisForm = formbuilder.group({
+        caption:['',Validators.compose([Validators.required,
+                                      Validators.minLength(1),
+                                    ])],
+      });
 
-        this.caption = this.MatchThisForm.controls['caption'];
+      this.caption = this.MatchThisForm.controls['caption'];
+      this.Match = this.navParams.get('key');
+      this.userType = this.navParams.get('userType');
+      this.storageservice.storage.get('userDetails').then((val) => {
+        this.userDetails = val;
+      });
 
-         console.log(this.navParams.get('key'));
-        this.Match = this.navParams.get('key');
-        this.userType = this.navParams.get('userType');
-         console.log('users in popover:',this.Match);
-         console.log('user type:',this.userType);
+    }
+  
+    ionViewWillEnter(){}
 
-         this.storageservice.storage.get('userDetails').then((val) => {
-          console.log('Storage Value of userDetails:', val);
-          this.userDetails = val;
-       });
+    async sendMatch() {
+  
+      const popover = await this.popoverController.create({
+        component: SendMatchComponent,
+        cssClass: 'my-custom-class',
+        componentProps:{key:this.Match, userType: 'sender'},
+        translucent: true,
+        backdropDismiss: true,
+        animated: false
+      });
+      return await popover.present();
+  
+    }
+    ToSendMatch(e,m) {
 
+      let params = {
+        userid : this.userDetails.userid,
+        caption: this.userCaption.caption
       }
-    
-        ionViewWillEnter(){
-          console.log('ionViewWillEnter:',this.Match);
-          }
 
-          async sendMatch() {
-        
-            const popover = await this.popoverController.create({
-              component: SendMatchComponent,
-              cssClass: 'my-custom-class',
-              componentProps:{key:this.Match, userType: 'sender'},
-              translucent: true,
-              backdropDismiss: true,
-              animated: false
-            });
-            return await popover.present();
-        
-          }
-
-          
-
-         ToSendMatch(e,m) {
-           console.log('Send Match Button Clicked');
-          console.log('Match:',m);
-
-          let params = {
-            userid : this.userDetails.userid,
-            caption: this.userCaption.caption
-          }
-
-          this.common.postMethod('abc',params).then((res:any) => {
-            console.log('res:',res);
-          }, (err) => {
-            this.common.presentToast('This area is under Development');
-            this.MatchThisForm.reset();
-            console.log('Error:',err);
-          });
-         }
-
-         
-    
-        }
+      this.common.postMethod('abc',params).then((res:any) => {
+        console.log('res:',res);
+      }, (err) => {
+        this.common.presentToast('This area is under Development');
+        this.MatchThisForm.reset();
+        console.log('Error:',err);
+      });
+      }
+  }
 
 @Component({
   template: `
@@ -899,9 +820,7 @@ export class PopoverComponent {
               this.selectItem = [];
           }
         
-          ionViewWillEnter(){
-            console.log('ionViewWillEnter:',this.Match);
-          }
+          ionViewWillEnter(){}
 
           async sendMatch() {
             if(this.selectItem.length > 0){
@@ -930,7 +849,6 @@ export class PopoverComponent {
           }
 
           selectImage(e, index){
-            console.log(e.target);
             if(e.target.style.border != ""){
               this.selectItem.splice(this.selectItem.indexOf(index), 1);
               e.target.style.border="";
@@ -941,16 +859,6 @@ export class PopoverComponent {
           }
         
         }
-
-      //   <div style="display: flex; margin-bottom: 10px; padding: 5px; justify-content: center;">
-      //   <img [src]="this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image" style="height: 100px; width: 100px; margin-bottom: 10px; border-radius: 10px; position: relative; left: -5px;" onerror="this.src='../../assets/icon/no_media.png';" (click)="presentActionSheet()">
-
-      //   <img *ngIf="hideImageSpace===true && isCaptureImage==false" src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
-      //   <img *ngIf="isImage==true && isCaptureImage==true" [src]="FileTransferResponse.filename" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';">
-      //   <video *ngIf="isVideo==true && isCaptureVideo==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></video>
-      //   <audio *ngIf="isAudio==true && isCaptureAudio==true" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" [src]="FileTransferResponse.filename" controls controlsList="nodownload" onerror="this.onerror=null;this.src='../../assets/icon/loader.gif';"></audio>
-      // </div>
-
 @Component({
   template: `
     <ion-header>
@@ -1165,18 +1073,15 @@ export class PopoverComponent {
     this.selectItem = this.navParams.get('selectItem');
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
   }
 
   ionViewWillEnter(){
-    console.log("selecteditem--------------------------", this.Match);
     for(var i = 0; i < this.selectItem.length; i++){
       this.matchIds.push(this.Match.compare_data[this.selectItem[i]].media_id);
     }
-    console.log(this.matchIds);
     this.isCaptureImage = false;
     this.hideImageSpace = true;
   }
@@ -1233,7 +1138,6 @@ export class PopoverComponent {
     });
   }
   async presentActionSheet() {
-    console.log('Action Sheet Clicked');
     let actionSheet = await this.actionSheetCtrl.create({
       header: ' Choose A Media To Upload For Closed Match',
       buttons: [
@@ -1244,7 +1148,6 @@ export class PopoverComponent {
             this.wordArray.push({value: ''});
             this.Add('text');
             this.SendWordings();
-            console.log('Wording clicked');
           }
           },
 
@@ -1255,7 +1158,6 @@ export class PopoverComponent {
             this.linkArray.push({value: 'http://'});
             this.Add('link');
             this.PickLinks();
-            console.log('Share clicked');
           }
           },
 
@@ -1283,7 +1185,6 @@ export class PopoverComponent {
           handler: () => {
             this.anArray.push({value: '', type: 'audio'});
             this.CaptureAudio();
-            console.log("Audio clicked");
           }
           },
 
@@ -1293,7 +1194,6 @@ export class PopoverComponent {
           handler: () => {
             this.anArray.push({value: '', type: 'file'});
             this.PickDocuments();
-            console.log('Folder clicked');
           }
           },
 
@@ -1301,7 +1201,6 @@ export class PopoverComponent {
           text: "Cancel",
           role: "cancel",
           handler: () => {
-            console.log("Cancel clicked");
           }
         }
       ]
@@ -1310,43 +1209,27 @@ export class PopoverComponent {
   }
 
   SendWordings() {
-    console.log('Wording');
       this.isWordings = true;
-      console.log('isWordings:',this.isWordings);
-
-        this.hideImageSpace = false;
-        console.log('hideImageSpace:',this.hideImageSpace);
-
-          this.isLink = false;
-          console.log('isLink:',this.isLink);
-
+      this.hideImageSpace = false;
+      this.isLink = false;
   }
 
   PickLinks() {
-    console.log('Pick Links Button Presses');
       this.isLink = true;
-        console.log('isLink:',this.isLink);
-
-        this.isWordings = false;
-        console.log('isWordings:',this.isWordings);
-
-          this.hideImageSpace = false;
-            console.log('hideImageSpace:',this.hideImageSpace);
+      this.isWordings = false;
+      this.hideImageSpace = false;
   }
 
   CaptureImage() {
-    console.log('CaptureImage');
     this.isLink = false;
     this.isWordings = false;
       this.hideImageSpace = true;
     this.isCaptureImage = true;
-    console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings, 'isCaptureImage:', this.isCaptureImage);
 
     const options: CaptureImageOptions = { limit: 1};
     this.mediaCapture.captureImage(options)
       .then(
         (data: MediaFile[]) => {
-          console.log('data[0]:',data[0]);
           this.cameraData = data[0];
           this.uploadFile2(data[0], 'image');
         },
@@ -1356,18 +1239,15 @@ export class PopoverComponent {
   }
 
   CaptureVideo() {
-    console.log('CaptureVideo');
     this.isLink = false;
     this.isWordings = false;
-      this.hideImageSpace = true;
-        console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings);
+    this.hideImageSpace = true;
     this.isCaptureImage = true;
     this.isCaptureVideo = true;
     const options: CaptureVideoOptions = { limit: 1 , duration: 2, quality: 90};
     this.mediaCapture.captureVideo(options)
     .then(
       (data: MediaFile[]) => {
-        console.log('data[0]:',data[0]);
         this.videoData = data[0];
         this.uploadFile2(data[0], 'video');
       },
@@ -1377,18 +1257,15 @@ export class PopoverComponent {
   }
 
   CaptureAudio() {
-    console.log('CaptureAudio');
     this.isLink = false;
     this.isWordings = false;
-      this.hideImageSpace = true;
-        console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings);
+    this.hideImageSpace = true;
     this.isCaptureImage = true;
     this.isCaptureAudio = true;
     const options: CaptureImageOptions = { limit: 1};
     this.mediaCapture.captureAudio(options)
     .then(
       (data: MediaFile[]) => {
-        console.log('data[0]:',data[0]);
         this.audioData = data[0];
         this.uploadFile2(data[0], 'audio');
       },
@@ -1399,11 +1276,9 @@ export class PopoverComponent {
 
   PickDocuments() {
 
-    console.log('PickDocuments');
     this.isLink = false;
     this.isWordings = false;
     this.hideImageSpace = true;
-    console.log('hideImageSpace:', this.hideImageSpace, 'isLink:', this.isLink, 'isWordings:', this.isWordings);
     this.isCaptureImage = true;
     this.isPickDocuments = true;
 
@@ -1411,15 +1286,9 @@ export class PopoverComponent {
 
     this.fileChooser.open()
     .then(uri => {
-      console.log('uri:',uri);
-
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
-
-        console.log('filePath:',filePath);
         let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-        console.log('fileNameFromPath:',fileNameFromPath);
-
         file = {
           name: fileNameFromPath,
           fullPath: filePath
@@ -1464,12 +1333,10 @@ export class PopoverComponent {
       }
    };
 
-   console.log('options:',options);
 
     let filePath: any;
     if (type !== 'audio') {
       filePath = encodeURI(file.fullPath);
-      console.log(filePath);
     } else {
       filePath = file.fullPath;
     }
@@ -1483,7 +1350,6 @@ export class PopoverComponent {
     fileTransfer.onProgress((e) =>
     {
       let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
-      console.log("progress:"+prg+'%');
       this.common.presentToast('Uploaded ' + prg + '% of file');
 
     });
@@ -1497,7 +1363,6 @@ export class PopoverComponent {
 
     this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_closedmatch',formData 
     ).subscribe((res) => {
-      console.log(res);
       if (res['message']==='Successfully uploaded') {
         this.common.presentToast('File Uploaded Successful');
         this.common.router.navigate(['tabs/tab6']);
@@ -1506,40 +1371,30 @@ export class PopoverComponent {
       }
     }, err => {
       console.log('err',err);
-      console.log(err.headers);
     });
 
     
     fileTransfer.upload(filePath, fileUplaodUrl, options)
       .then((data) => {
-        console.log('File Transfer Success:', data);
-        console.log(JSON.parse(data.response));
-
         let res = JSON.parse(data.response);
-        console.log('res:',res);
 
         if (res.file_extension === 'mp4') {
-          console.log('This is a video file');
           this.isVideo = true;
           this.hideImageSpace = false;
           this.isCaptureImage = false;
         } else if (res.file_extension === 'aac') {
-          console.log(' This is a audio file ');
           this.isAudio = true;
           this.hideImageSpace = false;
           this.isCaptureImage = false;
         } else if (res.file_extension === 'png') {
-          console.log(' This is a image file ');
           this.isImage = true;
           this.hideImageSpace = false;
           this.isCaptureImage = false;
         } else if (res.file_extension === 'jpg') {
-          console.log(' This is a image file ');
           this.isImage = true;
           this.hideImageSpace = false;
           this.isCaptureImage = false;
         } else if (res.file_extension === 'mp3') {
-          console.log(' This is a audio file ');
           this.isAudio = true;
           this.hideImageSpace = false;
           this.isCaptureImage = false;
@@ -1549,7 +1404,6 @@ export class PopoverComponent {
           this.common.showAlertSuccess('Match File Upload Successful');
           // this.FileTransferResponse = res.upload_details;
           this.FileTransferResponse = res;
-           console.log('File Transfer Success:', this.FileTransferResponse);
            this.common.hideLoader();
         } else {
           this.common.presentToast('File upload Failed');
@@ -1560,248 +1414,38 @@ export class PopoverComponent {
         // this.FileTransferResponse = data;
       }, (err) => {
         console.log('File Transfer Error:', err);
-
       });
 
-}
-
-
-// fileChangeEvent(e, type) {
-//   if (type==='folder') {
-    
-//     if (e.target.files.length > 2) {
-//       this.common.showAlert('Try to choose maximum 2 media');
-//     } 
-
-//     this.selectedFiles = e.target.files;
-//     for (let i=0; i<e.target.files.length; i++) {
-//       this.myFiles.push(e.target.files[i]);
-//     }
-
-//     this.urls = [];
-//     console.log('urls:',this.urls);
-//     let files = e.target.files;
-//     console.log('files:',files);
-//     if (files) {
-//       for (let file of files) {
-//         let reader = new FileReader();
-//         var error = reader.error
-//         reader.onload = (e:any) => {
-//           console.log('Loaded:', reader.result);
-//           console.log('error:', error);
-//           this.urls.push(e.target.result);
-//           console.log('urls:',this.urls);
-//         }
-
-//         reader.readAsDataURL(file);
-//       }
-//     }
-//   } 
-// }
-  // ToSendMatch() {
-  // console.log('Send Match Button Clicked');
-
-  // const params = {
-  //   rival_userid : this.userDetails.userid,
-  //   opponent_userid: this.Match.senderid,
-  //   personal_matchid: this.Match.match_id,
-  //   match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-  //   caption: this.closedMatchCaption,
-  //   matchfile: ''
-  // };
-  
-  // console.log('params:',params);
-  // this.common.postMethod('create_closedmatch',params).then((res:any) => {
-  // console.log('res:',res);
-  // // this.common.navController.navigateRoot('tab6');
-  // setTimeout(() => {
-  //   this.common.presentToast('Your Closed Match is Uploaded Successfully');
-  //   this.common.router.navigate(['tabs/tab6']);
-  // }, 2000);
-  // }, (err) => {
-  // // this.common.presentToast('This area is under Development');
-  // this.MatchThisForm.reset();
-  // console.log('Error:',err);
-  // });
-  // }
+  }
 
   ToSendMatch (e) {
-  console.log('Send Match Button Clicked');
-
-  this.common.showLoader();
-  let params = {
-    rival_userid : this.userDetails.userid,
-    opponent_userid: this.Match.compare_data[0].id,
-    personal_matchid: this.Match.match_id,
-    caption: this.closedMatchCaption,
-    link: JSON.stringify(this.linkArray),
-    text: JSON.stringify(this.wordArray),
-    sub_captions: JSON.stringify(this.anArray),
-    seen_status: '0',
-    select_medias: JSON.stringify(this.matchIds),
-  }
-
-  this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
-    console.log('res:',res);
-
-    if (res.status === true) {
-      this.common.presentToast(' Your closed match invitaion send successfully ');
-      this.popoverController.dismiss();
-    } else {
-      this.common.presentToast(' Your closed match invitaion sending failed ');
+    this.common.showLoader();
+    let params = {
+      rival_userid : this.userDetails.userid,
+      opponent_userid: this.Match.compare_data[0].id,
+      personal_matchid: this.Match.match_id,
+      caption: this.closedMatchCaption,
+      link: JSON.stringify(this.linkArray),
+      text: JSON.stringify(this.wordArray),
+      sub_captions: JSON.stringify(this.anArray),
+      seen_status: '0',
+      select_medias: JSON.stringify(this.matchIds),
     }
-    await this.common.hideLoader();
-  }, async err => {
-    await this.common.hideLoader();
-    console.log('err:',err);
-    this.popoverController.dismiss();  
-  });
-  
-  // if (this.isLink==true) {
 
-  //   if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
-
-  //     this.common.showLoader();
-
-  //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-  //     if (this.closedMatchLink.match(regex)!=null) {
-  
-  //       console.log('Matching link');
-  //         this.closedMatchLink = this.closedMatchLink;
-  //           console.log('closedMatchLink',this.closedMatchLink);
-  
-  //     } else {
-  
-  //       console.log('No Match');
-  //         this.closedMatchLink = 'https://'+this.closedMatchLink;
-  //           console.log('closedMatchLink',this.closedMatchLink);
-  
-  //     }
-
-  //     console.log(this.userType);
-  
-  //     let params = {
-  //       rival_userid : this.userDetails.userid,
-  //       opponent_userid: this.Match.compare_data[0].id,
-  //       personal_matchid: this.Match.match_id,
-  //       match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-  //       caption: this.closedMatchCaption,
-  //       link: this.closedMatchLink,
-  //       text: '',
-  //       match_link:'',
-  //       match_text: '',
-  //       seen_status: '0',
-  //       select_medis: JSON.stringify(this.matchIds),
-  //     }
-  //     console.log('params:',params);
-  //       this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
-  //         console.log('res:',res);
-  
-  //         if (res.status === true) {
-  //           this.common.presentToast(' Your closed match invitaion send successfully ');
-  //           this.popoverController.dismiss();
-  //         } else {
-  //           this.common.presentToast(' Your closed match invitaion sending failed ');
-  //         }
-  //         await this.common.hideLoader();
-  //     }, async err => {
-  //       await this.common.hideLoader();
-  //         console.log('err:',err);
-  //         this.popoverController.dismiss();  
-  
-  //     });
-
-  //   } else {
-  //     this.common.showAlert('All fields are mandatory');
-  //   }
-
-
-
-  // } else if (this.isWordings==true) {
-
-  //   if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
-
-  //     let params = {
-  //       rival_userid : this.userDetails.userid,
-  //       opponent_userid: this.Match.compare_data[0].id,
-  //       personal_matchid: this.Match.match_id,
-  //       match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
-  //       caption: this.closedMatchCaption,
-  //       link: '',
-  //       text: this.closedMatchWording,
-  //       match_link:'',
-  //       match_text: '',
-  //       seen_status: '0',
-  //       select_medis: JSON.stringify(this.matchIds),
-  //     }
-  //     console.log('params:',params);
-  //       this.common.postMethod('create_closedmatch',params).then((res:any) => {
-  //         console.log('res:',res);
-  //         if (res.status === true) {
-  //           this.common.presentToast(' Your closed match invitaion send successfully ');
-  //           this.popoverController.dismiss();
-  //         } else {
-  //           this.common.presentToast(' Your closed match invitaion sending failed ');
-  //         }
-  //     }, err => {
-  //         console.log('err:',err);
-  //           console.log('headers:',err.Headers);
-  //           this.popoverController.dismiss();
-  
-  //     });
-
-  //   } else {
-
-  //     this.common.showAlert('All fields are mandatory');
-
-  //   }
-
-
-
-  // } else if (this.hideImageSpace==true && e.type==="click") {
-
-  //   // if (this.FileTransferResponse.length!=0) {
-  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
-  //   //   if (this.FileTransferResponse.status === true) {
-  //   //     this.common.popoverController.dismiss();
-  //   //     this.common.presentToast(' Your closed match send successfully ');
-  //   //   } else {
-  //   //     this.common.popoverController.dismiss();
-  //   //     this.common.presentToast('Closed Match Send Failed!');
-  //   //   }
-
-  //   // } else {
-  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
-  //   //   this.common.popoverController.dismiss();
-  //   //   this.common.showAlert('You must need to upload a media');
-  //   // }
-
-  //   //---------------------------------------------------------------------------------Add multi files
-  //   console.log(this,this.myFiles);
-  //   for( let i=0; i<this.myFiles.length; i++ ) 
-  //   {
-  //     this.uploadFile2(this.myFiles[i], 'image');
-  //   }
-
-  //   //--------------------------------------------------------------------------------------------------------------------
-    
-  // } else if (this.isImage) {
-  //     // this.uploadFile2(this.cameraData, 'image'); 
-  //     this.common.popoverController.dismiss();
-  // } else if (this.isAudio) {
-  //     // this.uploadFile2(this.documentData, 'file');
-  //     this.common.popoverController.dismiss();
-
-  // } else if (this.isVideo) {
-  //   // this.uploadFile2(this.videoData, 'video');
-  //   this.common.popoverController.dismiss();
-
-  // }
-  //  else if (this.isPickDocuments) {
-  //   this.uploadFile2(this.audioData, 'audio');
-  // }
+    this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
+      if (res.status === true) {
+        this.common.presentToast(' Your closed match invitaion send successfully ');
+        this.popoverController.dismiss();
+      } else {
+        this.common.presentToast(' Your closed match invitaion sending failed ');
+      }
+      await this.common.hideLoader();
+    }, async err => {
+      await this.common.hideLoader();
+      console.log('err:',err);
+      this.popoverController.dismiss();  
+    });
 
   }
 
-  }
+}

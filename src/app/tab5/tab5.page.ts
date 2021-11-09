@@ -20,14 +20,11 @@ export class Tab5Page implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
     this.common.route.queryParams.subscribe(resp => {
       this.userDetails = resp;
-      console.log('userDetails:',this.userDetails);
-      console.log('Working on GetNotificationDetails function ....');
       this.GetNotificationDetails();
   });
 
@@ -42,9 +39,7 @@ export class Tab5Page implements OnInit {
       this.userDetails = val;
         if (this.userDetails.userid!=null) {
           this.GetNotificationDetails();
-        } else {
-          console.log('No userid');
-        }
+        } 
     });
   }
 
@@ -54,21 +49,13 @@ export class Tab5Page implements OnInit {
       const userid = this.userDetails.userid;
       const Api = 'get_profile_pic/';
         this.common.http.get(this.common.ajx.BaseUrl+Api+userid).subscribe((res:any) => {
-          console.log('res:',res);
             this.NotificationDetails = res.details[0];
-              console.log('NotificationDetails:',this.NotificationDetails);
             this.userDetails = this.NotificationDetails;
-          console.log('userDetails:',this.userDetails);
         }, err => {
       console.log('err:',err);
     });
     });
   }
-
-  // ionViewWillLeave(){
-  //     clearInterval(this.interval);
-  //   console.log('Notification Page Leaved');
-  // }
 
   ngOnInit() {
   }
@@ -131,7 +118,6 @@ export class Tab5Page implements OnInit {
   }
 
   togoBack() {
-    console.log('Back Button Clicked');
     this.common.router.navigate(['tabs/tab6']);
   }
 
