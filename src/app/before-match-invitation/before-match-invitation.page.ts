@@ -165,7 +165,7 @@ export class BeforeMatchInvitationPage implements OnInit {
     console.log('params:',params);
     this.common.postMethod('CreateOpenMatch',params).then((res:any) => {
       console.log('res:',res);
-
+      this.common.router.navigate(['/tabs/tab6']);
     }, (err) => {
       this.common.hideLoader();
       // console.log('Error:',err);
