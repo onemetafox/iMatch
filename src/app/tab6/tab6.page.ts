@@ -1,22 +1,13 @@
 import { StorageService } from './../services/storage.service';
 import { Component, OnInit } from '@angular/core';
-import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPhoto, Capacitor, PhotosAlbumType, FilesystemEncoding } from '@capacitor/core';
-// import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
 import { CommonService } from '../services/common.service';
-// import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-// import { FileChooser } from '@ionic-native/file-chooser/ngx';
-// import { Base64 } from '@ionic-native/base64/ngx';
-// import { FilePath } from '@ionic-native/file-path/ngx';
 import { PopoverController } from '@ionic/angular';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
-
+import { Platform } from '@ionic/angular';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer} from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
-
-const { Camera, Filesystem } = Plugins;
+import { MediaCapture} from '@ionic-native/media-capture/ngx';
 
 @Component({
   selector: 'app-tab6',
@@ -51,263 +42,117 @@ export class Tab6Page implements OnInit {
   OpenMatchText: any = [];
   closedMatchImage: any = [];
 
-  constructor(
-    private common: CommonService,
-    public popoverController: PopoverController,
-    private actionSheetCtrl: ActionSheetController,
-    public storageservice: StorageService,
-    private platform: Platform,
-    private fileChooser: FileChooser,
-    private transfer: FileTransfer,
-    private filePath: FilePath,
-    private mediaCapture: MediaCapture,
-    // private base64: Base64,
-    // private camera: Camera,
-    // private fileChooser: FileChooser,
-    // private filePicker: IOSFilePicker,
-    // private filePath: FilePath,
-    ) {
-
-      this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
-        this.userDetails = val;
-      });
-
-      this.common.route.queryParams.subscribe(resp => {
-        this.userDetails = resp;
-        console.log('userDetails:',this.userDetails);
-
-        // this.userDetails = this.userDetails;
-        // console.log('Combining both arrays');
-
-        this.ionViewWillEnter();
+  constructor(private common: CommonService, public popoverController: PopoverController, public storageservice: StorageService, private platform: Platform) 
+  {
+    this.storageservice.storage.get('userDetails').then((val) => {
+      this.userDetails = val;
     });
 
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        console.log('Handler was called!');
-      });
+    this.common.route.queryParams.subscribe(resp => {
+      this.userDetails = resp;
+      this.ionViewWillEnter();
+    });
 
-      const Video_Ext = ['mp4','webm','mpg','mp2','mpeg','mpe','mpv','ogg','m4p','m4v','avi','wmv','mov','qt','flv','swf','avchd'];
-      console.log('Video_Ext:',Video_Ext);
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      console.log('Handler was called!');
+    });
 
-     }
+    const Video_Ext = ['mp4','webm','mpg','mp2','mpeg','mpe','mpv','ogg','m4p','m4v','avi','wmv','mov','qt','flv','swf','avchd'];
+  }
 
-     toOpenPersonalMatch() {
-       this.showOpenMatch = false;
-       this.showPersonalMatch = !this.showPersonalMatch;
-     }
+  toOpenPersonalMatch() {
+    this.showOpenMatch = false;
+    this.showPersonalMatch = !this.showPersonalMatch;
+  }
 
-     toShowOpenMatch() {
-       this.showPersonalMatch = true;
-       this.showOpenMatch = !this.showOpenMatch;
-     }
+  toShowOpenMatch() {
+    this.showPersonalMatch = true;
+    this.showOpenMatch = !this.showOpenMatch;
+  }
 
-     ionViewWillEnter(){
-
-      this.OpenMatch = [];
-      this.closedMatch = [];
-
-       this.storageservice.storage.get('userDetails').then((val) => {
-
-        if (val==null) {
-        } else {
-          this.userDetails = val;
-
-          const userid = this.userDetails.userid;
-          const name = 'get_profile_pic/';
-          this.common.http.get(this.common.ajx.BaseUrl+name+userid).subscribe((res:any) => {
-            this.userArray = res.details[0];
-            this.userDetails = this.userArray;
-            this.storageservice.setStorage('userDetails', res.details[0]);
-          });
-        }
-
-       if (this.userDetails.userid != '') {
-
+  ionViewWillEnter(){
+    this.OpenMatch = [];
+    this.closedMatch = [];
+    this.storageservice.storage.get('userDetails').then((val) => {
+      if (val!=null) {
+        this.userDetails = val;
+        const userid = this.userDetails.userid;
+        const name = 'get_profile_pic/';
+        this.common.http.get(this.common.ajx.BaseUrl+name+userid).subscribe((res:any) => {
+          this.userArray = res.details[0];
+          this.userDetails = this.userArray;
+          this.storageservice.setStorage('userDetails', res.details[0]);
+        });
+      }
+      if (this.userDetails.userid != '') {
         let params = {
           userid : this.userDetails.userid
         }
-
-        console.log(params);
-        
         this.common.postMethod('PersonalMatch',params).then((res:any) => {
-          console.log("Response------------------------", res);
-          this.PersonalMatch = res.details;
-          // this.PersonalMatchImage = res.details.image;
-          // this.PersonalMatchAudio = res.details.audio;
-          // this.PersonalMatchVideo = res.details.video;
-          // this.PersonalMatchLink = res.details.link;
-          // this.PersonalMatchText = res.details.text;
+          if(res)
+            this.PersonalMatch = res.details;
         });
-
         this.common.postMethod('ClosedMatch',params).then((res:any) => {
-          console.log(res.details);
-          // this.closedMatchImage = res.details.image;
-          // this.closedMatchAudio = res.details.audio;
-          // this.closedMatchLink = res.details.link;
-          // this.closedMatchText = res.details.text;
-          // this.closedMatchVideo = res.details.video;
-
-          // if (this.closedMatchAudio.length!==0) {
-          //   for (let i=0; i < this.closedMatchAudio.length; i++) {
-          //     this.closedMatch.push(this.closedMatchAudio[i]);
-          //   }
-          //   console.log('closedMatch:', this.closedMatch);
-          // } 
-
-          // if (this.closedMatchImage.length!==0) {
-          //   for (let i=0; i < this.closedMatchImage.length; i++) {
-          //     this.closedMatch.push(this.closedMatchImage[i]);
-          //   }
-          //   console.log('closedMatch:', this.closedMatch);
-          // } 
-
-          // if (this.closedMatchLink.length!==0) {
-          //   for (let i=0; i < this.closedMatchLink.length; i++) {
-          //     this.closedMatch.push(this.closedMatchLink[i]);
-          //   }
-          //   console.log('closedMatch:', this.closedMatch);
-          // } 
-
-          // if (this.closedMatchText.length!==0) {
-          //   for (let i=0; i < this.closedMatchText.length; i++) {
-          //     this.closedMatch.push(this.closedMatchText[i]);
-          //   }
-          //   console.log('closedMatch:', this.closedMatch);
-          // } 
-
-          // if (this.closedMatchVideo.length!==0) {
-          //   for (let i=0; i < this.closedMatchVideo.length; i++) {
-          //     this.closedMatch.push(this.closedMatchVideo[i]);
-          //   }
-          //   console.log('closedMatch:', this.closedMatch);
-          // } 
-
-          this.closedMatch = res.details;
-
+          if(res)
+            this.closedMatch = res.details;
         });
-
         this.common.postMethod('OpenMatch',params).then((res:any) => {
-          console.log('OpenMatch:',res);
-          // this.OpenMatchImage = res.details.image;
-          // this.OpenMatchAudio = res.details.audio;
-          // this.OpenMatchVideo = res.details.video;
-          // this.OpenMatchLink = res.details.link;
-          // this.OpenMatchText = res.details.text;
-
-          // if (this.OpenMatchAudio != null && this.OpenMatchAudio.length!==0) {
-          //   for (let i=0; i < this.OpenMatchAudio.length; i++) {
-          //     this.OpenMatch.push(this.OpenMatchAudio[i]);
-          //   }
-          //   console.log('OpenMatch:', this.OpenMatch);
-          // } 
-
-          // if ( this.OpenMatchImage != null && this.OpenMatchImage.length!==0) {
-          //   for (let i=0; i < this.OpenMatchImage.length; i++) {
-          //     this.OpenMatch.push(this.OpenMatchImage[i]);
-          //   }
-          //   console.log('OpenMatch:', this.OpenMatch);
-          // } 
-
-          // if (this.OpenMatchLink != null && this.OpenMatchLink.length!==0) {
-          //   for (let i=0; i < this.OpenMatchLink.length; i++) {
-          //     this.OpenMatch.push(this.OpenMatchLink[i]);
-          //   }
-          //   console.log('OpenMatch:', this.OpenMatch);
-          // } 
-
-          // if (this.OpenMatchText != null && this.OpenMatchText.length!==0) {
-          //   for (let i=0; i < this.OpenMatchText.length; i++) {
-          //     this.OpenMatch.push(this.OpenMatchText[i]);
-          //   }
-          //   console.log('OpenMatch:', this.OpenMatch);
-          // } 
-
-          // if (this.OpenMatchVideo != null && this.OpenMatchVideo.length!==0) {
-          //   for (let i=0; i < this.OpenMatchVideo.length; i++) {
-          //     this.OpenMatch.push(this.OpenMatchVideo[i]);
-          //   }
-          //   console.log('OpenMatch:', this.OpenMatch);
-          // } 
-
+          if(res)
+            this.closedMatch = res.details;
         });
-
-        // this.OnlineOfflineStatus();
-       } else {
-         console.log('UserId is Empty');
-       }
-       });
-       this.isDisableOtherCategory = true;
+      } else {
+        console.log('UserId is Empty');
       }
-
-      doRefresh(event) {
-        console.log('Begin async operation');
-
-        this.ionViewWillEnter();
-    
-        setTimeout(() => {
-          console.log('Async operation has ended');
-          event.target.complete();
-        }, 2000);
-      }
-
-    ngOnInit() {
+      });
+      this.isDisableOtherCategory = true;
     }
 
-    OnOffButton(name) {
-      console.log('ON / OFF Button Clicked');
-      console.log('Name:',name);
-
-      if (name=='Ongoing') {
-        this.common.presentToast('Your `Ongoing Matches` Box view is disabled from Visitors');
-      } else if (name=='What-would') {
-        this.common.presentToast('Your `What Would I Do` Box view is disabled from Visitors');
-      } else if (name=='My-Faves') {
-        this.common.presentToast('Your `My Faves/Luxury Items & Where To Get` Box view is disabled from Visitors');
-      } else if (name=='Best-Moments') {
-        this.common.presentToast('Your `Best Moments` Box view is disabled from Visitors');
-      } else if (name=='Besties-Action') {
-        this.common.presentToast('Your `Besties Action` Box view is disabled from Visitors');
-      } else if (name='Last') {
-        this.common.presentToast('Your `Besties Action` Box view is disabled from Visitors');
-      }
+    doRefresh(event) {
+      this.ionViewWillEnter();
+      setTimeout(() => {
+        console.log('Async operation has ended');
+        event.target.complete();
+      }, 2000);
     }
 
-    gotoProfile() {
-      this.common.router.navigate(['/tabs/tab7']);
+  ngOnInit() {
+  }
+
+  OnOffButton(name) {
+    if (name=='Ongoing') {
+      this.common.presentToast('Your `Ongoing Matches` Box view is disabled from Visitors');
+    } else if (name=='What-would') {
+      this.common.presentToast('Your `What Would I Do` Box view is disabled from Visitors');
+    } else if (name=='My-Faves') {
+      this.common.presentToast('Your `My Faves/Luxury Items & Where To Get` Box view is disabled from Visitors');
+    } else if (name=='Best-Moments') {
+      this.common.presentToast('Your `Best Moments` Box view is disabled from Visitors');
+    } else if (name=='Besties-Action') {
+      this.common.presentToast('Your `Besties Action` Box view is disabled from Visitors');
+    } else if (name='Last') {
+      this.common.presentToast('Your `Besties Action` Box view is disabled from Visitors');
     }
+  }
 
-    gotoOnGoingMatch() {
-      // this.common.router.navigate(['/tabs/tab8']);
-      this.userArray.userStatus;
-      this.userArray.visitor_id = this.userDetails.userid;
-      this.common.navCtrl.navigateForward(['visitors-ongoing-match'], {queryParams: this.userArray});
-    }
+  gotoProfile() {
+    this.common.router.navigate(['/tabs/tab7']);
+  }
 
-  // OnlineOfflineStatus() {
-  //   console.log('OnlineOfflineStatus');
-
-  //   let params = {
-  //     userid : this.userDetails.userid,
-  //     status : '0'
-  //   }
-  //   this.common.postMethod('Online_Offline_status',params).then((res:any) => {
-  //     console.log('res:',res);
-  //   });
-  // }
-
+  gotoOnGoingMatch() {
+    this.userArray.userStatus;
+    this.userArray.visitor_id = this.userDetails.userid;
+    this.common.navCtrl.navigateForward(['visitors-ongoing-match'], {queryParams: this.userArray});
+  }
   goToPage(page: string) {
     const p = 'tabs/tab6/' + page;
     this.common.router.navigate([p]);
   }
 
   toShowImageIcons() {
-    console.log('To Show Image Icon Clicked');
     this.showImageIcons = true;
   }
 
   toHideImageIcons() {
-    console.log('To Hide Image Icon Clicked');
     this.showImageIcons = false;
   }
 
@@ -318,22 +163,20 @@ export class Tab6Page implements OnInit {
 
       if (this.PersonalMatch.length!==0) {
 
-        // this.common.showLoader();
+        this.common.showLoader();
         this.common.presentLoading();
-
-        // this.closedMatch = this.closedMatch;
         // this.ionViewWillEnter();
         this.PersonalMatch = this.PersonalMatchImage;
         console.log('PersonalMatchImage',this.PersonalMatch);
         this.common.presentToast('Image Match is Successfully Displayed');
-        // this.common.hideLoader();
+        this.common.hideLoader();
 
       } else {
 
-        // this.common.showLoader();
+        this.common.showLoader();
         // this.closedMatch = this.closedMatch;
         this.common.presentToast('You are not having any image match');
-        // this.common.hideLoader();
+        this.common.hideLoader();
 
       }
 
@@ -341,21 +184,21 @@ export class Tab6Page implements OnInit {
 
       if (this.PersonalMatch.length!==0) {
 
-        // this.common.showLoader();
+        this.common.showLoader();
         this.common.presentLoading();
         this.PersonalMatch = this.PersonalMatchVideo;
         console.log('PersonalMatchVideo',this.PersonalMatch);
 
         // this.closedMatch = this.closedMatchVideo;
         this.common.presentToast('Video Match is Successfully Displayed');
-        // this.common.hideLoader();
+        this.common.hideLoader();
 
       } else {
 
-        // this.common.showLoader();
+        this.common.showLoader();
         // this.closedMatch = this.closedMatch;
         this.common.presentToast('You are not having any video match');
-        // this.common.hideLoader();
+        this.common.hideLoader();
 
       }
 
@@ -375,10 +218,10 @@ export class Tab6Page implements OnInit {
 
       } else {
 
-        // this.common.showLoader();
+        this.common.showLoader();
         // this.closedMatch = this.closedMatch;
         this.common.presentToast('You are not having any audio match');
-        // this.common.hideLoader();
+        this.common.hideLoader();
 
       }
 
@@ -438,7 +281,6 @@ export class Tab6Page implements OnInit {
   }
 
   gotoCallForAMatch() {
-    console.log('Call For A Match Button Clicked');
     this.common.router.navigate(['/tabs/tab3']);
   }
 
@@ -466,7 +308,6 @@ export class Tab6Page implements OnInit {
   }
 
   goToPersonalMatch(e, match, index: number, cat) {
-    console.log('Entered into Personal Match page:',match);
     this.userDetails.userType = 'owner';
     this.userDetails.personalMatchSlideIndex = index;
     this.userDetails.fileType = match.compare_data[0].image_type;
@@ -475,7 +316,6 @@ export class Tab6Page implements OnInit {
   }
 
   goToPersonalMatch1(e, match, index: number, cat) {
-    console.log('Entered into Personal Match page:',match);
     this.userDetails.userType = 'owner';
     this.userDetails.personalMatchSlideIndex = index;
     this.userDetails.fileType = 'image'
@@ -524,124 +364,6 @@ export class Tab6Page implements OnInit {
   gotoSettings() {
     this.common.navCtrl.navigateForward(['settings']);
   }
-
-  // async presentActionSheet() {
-  //   console.log('Action Sheet Clicked');
-  //   let actionSheet = await this.actionSheetCtrl.create({
-  //     header: 'Choose Minimum 2 File For Personal Match',
-  //     buttons: [
-  //       {
-  //         text: 'Share Links',
-  //         icon: 'link',
-  //         handler: () => {
-  //           this.PickLinks();
-  //           console.log('Share clicked');
-  //         }
-  //         },
-
-  //         {
-  //           text: 'Capture Image',
-  //           icon: 'camera',
-  //           handler: () => {
-  //             // this.pickImage(CameraSource.Camera);
-  //             this.CaptureImage();
-  //             console.log('Camera clicked');
-  //           }
-  //         }, 
-
-  //         {
-  //         text: 'Capture Video',
-  //         icon: 'images',
-
-  //         handler: () => {
-  //           this.CaptureVideo();
-  //           console.log("Gallery clicked");
-  //         }
-  //       },
-
-  //       {
-  //         text: 'Capture Audio',
-  //         icon: 'camera',
-
-  //         handler: () => {
-  //           this.CaptureAudio();
-  //           console.log("Camera clicked");
-  //         }
-  //         },
-
-  //         {
-  //         text: 'Other Files',
-  //         icon: 'folder-open',
-  //         handler: () => {
-  //           this.PickDocuments();
-  //           console.log('Folder clicked');
-  //         }
-  //         },
-
-  //         {
-  //         text: "Cancel",
-  //         role: "cancel",
-  //         handler: () => {
-  //           console.log("Cancel clicked");
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   await actionSheet.present();
-  // }
-
-  //     CaptureImage() {
-
-  //       const options: CaptureImageOptions = { limit: 2 };
-  //       this.mediaCapture.captureImage(options)
-  //         .then(
-  //           (data: MediaFile[]) => {
-  //             console.log(data[0]);
-  //             this.uploadFile2(data[0], 'image');
-  //           },
-  //           (err: CaptureError) => console.error(err)
-  //         );
-
-  //     }
-
-  //     CaptureVideo() {
-
-  //       const options: CaptureImageOptions = { limit: 2 };
-  //       this.mediaCapture.captureVideo(options)
-  //       .then(
-  //         (data: MediaFile[]) => {
-  //           console.log(data[0]);
-  //           this.uploadFile2(data[0], 'video');
-  //         },
-  //         (err: CaptureError) => console.error(err)
-  //       );
-    
-  //     }
-
-  //     CaptureAudio() {
-
-  //       const options: CaptureImageOptions = { limit: 2 };
-  //       this.mediaCapture.captureAudio(options)
-  //       .then(
-  //         (data: MediaFile[]) => {
-  //           console.log(data[0]);
-  //           this.uploadFile2(data[0], 'audio');
-  //         },
-  //         (err: CaptureError) => console.error(err)
-  //       );
-    
-  //     }
-
-  //     pickLinks() {
-  //       console.log('Pick Links Button Presses');
-  //         this.isLink = true;
-  //           console.log('isLink:',this.isLink);
-  //             this.hideImageSpace = false;
-  //               console.log('hideImageSpace:',this.hideImageSpace);
-  //     }
-
-
-
 }
 
 @Component({
@@ -654,7 +376,6 @@ export class Tab6Page implements OnInit {
         </ion-list>
     `
 })
-
 export class PopoverComponent {
   userDetails: any;
   constructor(
