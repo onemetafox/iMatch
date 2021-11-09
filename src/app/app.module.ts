@@ -38,6 +38,9 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 // import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+ 
+
 @NgModule({
   declarations: [AppComponent, WhatWouldIDoVisitorPipe ,LogoutPopoverPage, ModalPage],
   entryComponents: [ LogoutPopoverPage, ModalPage],
@@ -60,6 +63,8 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     IOSFilePicker,
     FilePath,
     Camera,
+    File,
+    WebView,
     // Base64,
     TwitterConnect,
     GooglePlus,
@@ -70,6 +75,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     PopoverController,
     ModalController,
     SocialSharing,
+    WebView,
     PhotoViewer,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AjaxService,

@@ -360,9 +360,9 @@
           }, {
             path: 'besties',
             loadChildren: function loadChildren() {
-              return __webpack_require__.e(
+              return Promise.all(
               /*! import() | besties-besties-module */
-              "besties-besties-module").then(__webpack_require__.bind(null,
+              [__webpack_require__.e("common"), __webpack_require__.e("besties-besties-module")]).then(__webpack_require__.bind(null,
               /*! ../besties/besties.module */
               "BCzL")).then(function (m) {
                 return m.BestiesPageModule;

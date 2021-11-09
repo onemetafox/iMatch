@@ -326,21 +326,6 @@ ChatMessagePage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 /***/ }),
 
-/***/ "82od":
-/*!************************************!*\
-  !*** ./src/app/services/config.ts ***!
-  \************************************/
-/*! exports provided: baseUrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseUrl", function() { return baseUrl; });
-let baseUrl = "http://192.168.107.183/";
-
-
-/***/ }),
-
 /***/ "QcEV":
 /*!*****************************************************!*\
   !*** ./src/app/chat-message/chat-message.page.scss ***!

@@ -205,7 +205,7 @@ const routes = [
                     },
                     {
                         path: 'besties',
-                        loadChildren: () => __webpack_require__.e(/*! import() | besties-besties-module */ "besties-besties-module").then(__webpack_require__.bind(null, /*! ../besties/besties.module */ "BCzL")).then(m => m.BestiesPageModule)
+                        loadChildren: () => Promise.all(/*! import() | besties-besties-module */[__webpack_require__.e("common"), __webpack_require__.e("besties-besties-module")]).then(__webpack_require__.bind(null, /*! ../besties/besties.module */ "BCzL")).then(m => m.BestiesPageModule)
                     },
                     {
                         path: 'besties-actions',

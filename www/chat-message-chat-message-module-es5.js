@@ -512,30 +512,6 @@
     },
 
     /***/
-    "82od":
-    /*!************************************!*\
-      !*** ./src/app/services/config.ts ***!
-      \************************************/
-
-    /*! exports provided: baseUrl */
-
-    /***/
-    function od(module, __webpack_exports__, __webpack_require__) {
-      "use strict";
-
-      __webpack_require__.r(__webpack_exports__);
-      /* harmony export (binding) */
-
-
-      __webpack_require__.d(__webpack_exports__, "baseUrl", function () {
-        return baseUrl;
-      });
-
-      var baseUrl = "http://192.168.107.183/";
-      /***/
-    },
-
-    /***/
     "QcEV":
     /*!*****************************************************!*\
       !*** ./src/app/chat-message/chat-message.page.scss ***!
