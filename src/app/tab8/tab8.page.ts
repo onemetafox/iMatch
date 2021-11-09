@@ -91,70 +91,12 @@ export class Tab8Page implements OnInit {
             console.log('res:',res);
 
             if (res.status == true) {
-
-              this.ongoingDetailsAudio = res.details.audio;
-              console.log('ongoingDetailsAudio:', this.ongoingDetailsAudio);
-      
-              this.ongoingDetailsImage = res.details.image;
-              console.log('ongoingDetailsImage:', this.ongoingDetailsImage);
-      
-              this.ongoingDetailsLink = res.details.link;
-              console.log('ongoingDetailsLink:', this.ongoingDetailsLink);
-      
-              this.ongoingDetailsText = res.details.text;
-              console.log('ongoingDetailsText:', this.ongoingDetailsText);
-      
-              this.ongoingDetailsVideo = res.details.video;
-              console.log('ongoingDetailsVideo:', this.ongoingDetailsVideo);
-    
-              if (this.ongoingDetailsAudio.length!==0) {
-                for (let i=0; i < this.ongoingDetailsAudio.length; i++) {
-                  this.ongoingDetails.push(this.ongoingDetailsAudio[i]);
-                }
-                console.log('ongoingDetails:', this.ongoingDetails);
-              } 
-              if (this.ongoingDetailsImage.length!==0) {
-                for (let i=0; i < this.ongoingDetailsImage.length; i++) {
-                  this.ongoingDetails.push(this.ongoingDetailsImage[i]);
-                }
-                console.log('ongoingDetails:', this.ongoingDetails);
-              }
-              if (this.ongoingDetailsLink.length!==0) {
-                for (let i=0; i < this.ongoingDetailsLink.length; i++) {
-                  this.ongoingDetails.push(this.ongoingDetailsLink[i]);
-                }
-                console.log('ongoingDetails:', this.ongoingDetails);
-              }
-              if (this.ongoingDetailsText.length!==0) {
-                for (let i=0; i < this.ongoingDetailsText.length; i++) {
-                  this.ongoingDetails.push(this.ongoingDetailsText[i]);
-                }
-                console.log('ongoingDetails:', this.ongoingDetails);
-              }
-              if (this.ongoingDetailsVideo.length!==0) {
-                for (let i=0; i < this.ongoingDetailsVideo.length; i++) {
-                  this.ongoingDetails.push(this.ongoingDetailsVideo[i]);
-                }
-                console.log('ongoingDetails:', this.ongoingDetails);
-              } else {
-                  console.log('ongoingDetails:', this.ongoingDetails);
-                  console.log('currently you are having no ongoing matches');
-           
-                }
+              this.ongoingDetails = res.details;
             }
           });
           this.common.postMethod('Recommended_for_you',params).then((res:any) => {
             console.log('res:',res);
             this.RecommendedForYou = res.details;
-            // this.SlideSecond = res.details[1];
-            // this.SlideThird = res.details[2];
-            // this.SlideFourth = res.details[3];
-            // this.SlideFifth = res.details[4];
-            // this.SlideSixth = res.details[5];
-            // this.SlideSeventh = res.details[6];
-            // this.SlideEighth = res.details[7];
-            // this.SlideNinth = res.details[8];
-            // this.SlideTenth = res.details[9];
           });
         // }
       // });
@@ -227,6 +169,10 @@ export class Tab8Page implements OnInit {
 
       console.log('HashTagOptions:',this.HashTagOptions);
 
+    }
+
+    goDetail(id){
+      this.common.router.navigate(['/ongoing-match-detail'], {queryParams: {matchid: id}});
     }
 
     goToPage(page: string) {

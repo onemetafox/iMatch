@@ -262,27 +262,87 @@
 
       </div>
 
+      <div class="animate__animated animate__fadeInLeft" *ngIf="!showPersonalMatch">
+          <div class="row" style="display: flex; flex-wrap: wrap;">
+              <div *ngFor="let match of this.ongoingDetails; let i = index" (click)="goDetail(match.matchid)" style="margin-top:5px;padding: 5px; margin-left:3px;">
+                  <div *ngIf="match.compare_data.length == 2 || match.compare_data.length == 3" style="flex-grow: 1;display: flex;">
+                      <div *ngFor="let item of match.compare_data; let k = index">
+                          <div *ngIf="k == 0; then temp1 else temp2"></div>
+                          <ng-template #temp1>
+                              <div class="image-div_first">
+                                  <img *ngIf="item.mediafiles[0].media_type==='image'" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <video style="width: 44px; height: 75px;" *ngIf="item.mediafiles[0].media_type==='video'" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;"></video>
+                                  <img *ngIf="item.mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="iitem.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <img *ngIf="item.mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <img *ngIf="item.mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              </div>
+                          </ng-template>
+                          <ng-template #temp2>
+                              <div class="image-div_first" style="margin-left: 3px;">
+                                  <img *ngIf="item.mediafiles[0].media_type==='image'" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <video style="width: 44px; height: 75px;" *ngIf="item.mediafiles[0].media_type==='video'" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;"></video>
+                                  <img *ngIf="item.mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <img *ngIf="item.mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                                  <img *ngIf="item.mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="item.mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              </div>
+                          </ng-template>
+
+                          <div *ngIf="k !=0 " style="position: relative;z-index: 100;margin-top: -40px;margin-left: -13px;">
+                              <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
+                          </div>
+                      </div>
+                  </div>
+                  <div *ngIf="match.compare_data.length == 4">
+                      <div style="flex-grow: 1;display: flex;">
+                          <div class="image-div_first">
+                              <img *ngIf="match.compare_data[0].mediafiles[0].media_type==='image'" [src]="match.compare_data[0].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <video style="width: 44px; height: 75px;" *ngIf="match.compare_data[0].mediafiles[0].media_type==='video'" [src]="match.compare_data[0].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"
+                                  style="border-radius: 5px;"></video>
+                              <img *ngIf="match.compare_data[0].mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="match.compare_data[0].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[0].mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="match.compare_data[0].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[0].mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="match.compare_data[0].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                          </div>
+                          <div class="image-div_first" style="margin-left: 3px;">
+                              <img *ngIf="match.compare_data[1].mediafiles[0].media_type==='image'" [src]="match.compare_data[1].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <video style="width: 44px; height: 75px;" *ngIf="match.compare_data[1].mediafiles[0].media_type==='video'" [src]="match.compare_data[1].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"
+                                  style="border-radius: 5px;"></video>
+                              <img *ngIf="match.compare_data[1].mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="match.compare_data[1].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[1].mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="match.compare_data[1].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[1].mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="match.compare_data[1].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                          </div>
+                      </div>
+
+                      <div style="flex-grow: 1;display: flex;">
+                          <div class="image-div_first">
+                              <img *ngIf="match.compare_data[2].mediafiles[0].media_type==='image'" [src]="match.compare_data[2].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <video style="width: 44px; height: 75px;" *ngIf="match.compare_data[0].mediafiles[0].media_type==='video'" [src]="match.compare_data[2].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"
+                                  style="border-radius: 5px;"></video>
+                              <img *ngIf="match.compare_data[2].mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="match.compare_data[2].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[2].mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="match.compare_data[2].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[2].mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="match.compare_data[2].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                          </div>
+                          <div class="image-div_first" style="margin-left: 3px;">
+                              <img *ngIf="match.compare_data[3].mediafiles[0].media_type==='image'" [src]="match.compare_data[3].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <video style="width: 44px; height: 75px;" *ngIf="match.compare_data[3].mediafiles[0].media_type==='video'" [src]="match.compare_data[3].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-0.5s"
+                                  style="border-radius: 5px;"></video>
+                              <img *ngIf="match.compare_data[3].mediafiles[0].media_type==='audio'" style="object-fit: contain;" [src]="match.compare_data[3].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[3].mediafiles[0].media_type==='text'" style="object-fit: cover;" [src]="match.compare_data[3].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                              <img *ngIf="match.compare_data[3].mediafiles[0].media_type==='link'" style="object-fit: cover;" [src]="match.compare_data[3].mediafiles[0].filename" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                          </div>
+                      </div>
+
+                      <div style="position: relative;z-index: 100;margin-top: -70px;margin-left: 35px;">
+                          <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+
       <div style="display: flex; flex-wrap: wrap; margin-bottom: 20px; margin-left: 20px;">
         <div *ngFor=" let details of ongoingDetails ; let i = index" style="display: flex; margin-right: -20px" (click)="goToOngoingContestPage($event, details, i, 'VISITOR')">
-          <div>
-            <img *ngIf="details.receiver_image_type==='image'" [src]="details.receiver_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/no_media.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.receiver_image_type==='audio'" style="object-fit: contain;" [src]="details.receiver_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.receiver_image_type==='text'" style="object-fit: cover;" [src]="details.receiver_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.receiver_image_type==='link'" style="object-fit: cover;" [src]="details.receiver_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <video style="width: 55px; height: 45px;" *ngIf="details.receiver_image_type==='video'" [src]="details.receiver_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-1s"></video>
-          </div>
-
-          <div>
-            <img *ngIf="details.sender_image_type==='image'" [src]="details.sender_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/no_media.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.sender_image_type==='audio'" style="object-fit: contain;" [src]="details.sender_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/mic-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.sender_image_type==='text'" style="object-fit: cover;" [src]="details.sender_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <img *ngIf="details.sender_image_type==='link'" style="object-fit: cover;" [src]="details.sender_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-1s">
-            <video style="width: 55px; height: 45px;" *ngIf="details.sender_image_type==='video'" [src]="details.sender_image" alt="" style="height: 55px; width: 45px;" onerror="this.src='../../assets/icon/play-button.png';" class="animate__animated animate__fadeIn animate__delay-1s"></video>
-          </div>
-
-          <div style="position: relative; right: 50%; top: 17px;">
-            <img src="../../assets/icon/vs.png" alt="" style="height: 25px;">
-          </div>
+                    
         </div>
       </div>
   
