@@ -19,7 +19,7 @@ import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import { NavigationExtras } from '@angular/router';
 import * as BaseConfig from '../services/config';
-
+import { Chooser } from '@ionic-native/chooser';
 const { Camera, Filesystem } = Plugins;
 
 
@@ -51,11 +51,9 @@ export class PersonalMatchPage implements OnInit {
     this.common.route.queryParams.subscribe((resp:any) => {
       this.userDetails = resp;
       this.personalMatchSlideIndex = this.userDetails.personalMatchSlideIndex;
-      console.log('userArray:',this.userDetails);
     });
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetail = val;
     });
 
@@ -109,6 +107,19 @@ export class PersonalMatchPage implements OnInit {
     }
     // });
 
+  }
+
+  async imageSlide(match){
+    // const popover = await this.popoverController.create({
+    //   component: ItemSliderComponent,
+    //   cssClass: 'my-custom-class',
+    //   componentProps:{key: match},
+    //   translucent: true,
+    //   backdropDismiss: true,
+    //   animated: false
+    // });
+    // return await popover.present();
+    this.common.router.navigate(['/personal-item-slider'], {queryParams: {match: JSON.stringify(match)}});
   }
 
   gotoPersonalMatchComments(e,match) {
@@ -1373,14 +1384,10 @@ export class PopoverComponent {
 
     this.fileChooser.open()
     .then(uri => {
-      console.log('uri:',uri);
 
       this.filePath.resolveNativePath(uri)
       .then(filePath => {
-
-        console.log('filePath:',filePath);
         let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-        console.log('fileNameFromPath:',fileNameFromPath);
 
         file = {
           name: fileNameFromPath,
@@ -1618,152 +1625,99 @@ export class PopoverComponent {
     console.log('err:',err);
     this.popoverController.dismiss();  
   });
-  
-  // if (this.isLink==true) {
-
-  //   if (this.closedMatchCaption!=undefined && this.closedMatchLink!=undefined) {
-
-  //     this.common.showLoader();
-
-  //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-
-  //     if (this.closedMatchLink.match(regex)!=null) {
-  
-  //       console.log('Matching link');
-  //         this.closedMatchLink = this.closedMatchLink;
-  //           console.log('closedMatchLink',this.closedMatchLink);
-  
-  //     } else {
-  
-  //       console.log('No Match');
-  //         this.closedMatchLink = 'https://'+this.closedMatchLink;
-  //           console.log('closedMatchLink',this.closedMatchLink);
-  
-  //     }
-
-  //     console.log(this.userType);
-  
-  //     let params = {
-  //       rival_userid : this.userDetails.userid,
-  //       opponent_userid: this.Match.compare_data[0].id,
-  //       personal_matchid: this.Match.match_id,
-  //       match_filename: this.userType === 'sender' ? this.Match.sender_image : this.Match.receiver_image,
-  //       caption: this.closedMatchCaption,
-  //       link: this.closedMatchLink,
-  //       text: '',
-  //       match_link:'',
-  //       match_text: '',
-  //       seen_status: '0',
-  //       select_medis: JSON.stringify(this.matchIds),
-  //     }
-  //     console.log('params:',params);
-  //       this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
-  //         console.log('res:',res);
-  
-  //         if (res.status === true) {
-  //           this.common.presentToast(' Your closed match invitaion send successfully ');
-  //           this.popoverController.dismiss();
-  //         } else {
-  //           this.common.presentToast(' Your closed match invitaion sending failed ');
-  //         }
-  //         await this.common.hideLoader();
-  //     }, async err => {
-  //       await this.common.hideLoader();
-  //         console.log('err:',err);
-  //         this.popoverController.dismiss();  
-  
-  //     });
-
-  //   } else {
-  //     this.common.showAlert('All fields are mandatory');
-  //   }
-
-
-
-  // } else if (this.isWordings==true) {
-
-  //   if (this.closedMatchCaption!=undefined && this.closedMatchWording!=undefined) {
-
-  //     let params = {
-  //       rival_userid : this.userDetails.userid,
-  //       opponent_userid: this.Match.compare_data[0].id,
-  //       personal_matchid: this.Match.match_id,
-  //       match_filename: this.userType === 'sender' ? this.Match.compare_data[0].image : this.Match.compare_data[1].image,
-  //       caption: this.closedMatchCaption,
-  //       link: '',
-  //       text: this.closedMatchWording,
-  //       match_link:'',
-  //       match_text: '',
-  //       seen_status: '0',
-  //       select_medis: JSON.stringify(this.matchIds),
-  //     }
-  //     console.log('params:',params);
-  //       this.common.postMethod('create_closedmatch',params).then((res:any) => {
-  //         console.log('res:',res);
-  //         if (res.status === true) {
-  //           this.common.presentToast(' Your closed match invitaion send successfully ');
-  //           this.popoverController.dismiss();
-  //         } else {
-  //           this.common.presentToast(' Your closed match invitaion sending failed ');
-  //         }
-  //     }, err => {
-  //         console.log('err:',err);
-  //           console.log('headers:',err.Headers);
-  //           this.popoverController.dismiss();
-  
-  //     });
-
-  //   } else {
-
-  //     this.common.showAlert('All fields are mandatory');
-
-  //   }
-
-
-
-  // } else if (this.hideImageSpace==true && e.type==="click") {
-
-  //   // if (this.FileTransferResponse.length!=0) {
-  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
-  //   //   if (this.FileTransferResponse.status === true) {
-  //   //     this.common.popoverController.dismiss();
-  //   //     this.common.presentToast(' Your closed match send successfully ');
-  //   //   } else {
-  //   //     this.common.popoverController.dismiss();
-  //   //     this.common.presentToast('Closed Match Send Failed!');
-  //   //   }
-
-  //   // } else {
-  //   //   console.log('FileTransferResponse:',this.FileTransferResponse);
-  //   //   this.common.popoverController.dismiss();
-  //   //   this.common.showAlert('You must need to upload a media');
-  //   // }
-
-  //   //---------------------------------------------------------------------------------Add multi files
-  //   console.log(this,this.myFiles);
-  //   for( let i=0; i<this.myFiles.length; i++ ) 
-  //   {
-  //     this.uploadFile2(this.myFiles[i], 'image');
-  //   }
-
-  //   //--------------------------------------------------------------------------------------------------------------------
-    
-  // } else if (this.isImage) {
-  //     // this.uploadFile2(this.cameraData, 'image'); 
-  //     this.common.popoverController.dismiss();
-  // } else if (this.isAudio) {
-  //     // this.uploadFile2(this.documentData, 'file');
-  //     this.common.popoverController.dismiss();
-
-  // } else if (this.isVideo) {
-  //   // this.uploadFile2(this.videoData, 'video');
-  //   this.common.popoverController.dismiss();
-
-  // }
-  //  else if (this.isPickDocuments) {
-  //   this.uploadFile2(this.audioData, 'audio');
-  // }
 
   }
 
   }
+
+  // @Component({
+  //   template: `
+  //     <ion-header>
+  //       <ion-toolbar>
+  //         <ion-buttons slot="start">
+  //           <ion-button (click)="dismissButton()">
+  //             <img src='../../assets/icon/back.png' alt="" style="width:10px; height: 18px;">
+  //           </ion-button>
+  //         </ion-buttons>
+  //       </ion-toolbar>
+  //     </ion-header>
+  //     <ion-content>
+  //       <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+  //         (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+  //         <ion-slide *ngFor="let s of sliderOne.slidesItems">
+  //           <img src="https://i.picsum.photos/id/{{s.id}}/300/200.jpg">
+  //           <span class="slide-text">Slide id {{s.id}}</span>
+  //         </ion-slide>
+  //       </ion-slides>
+  //     </ion-content>
+  //   `
+  // })
+  
+  //   export class ItemSliderComponent {
+  
+  //     @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
+  //     sliderOne: any;
+  //     slideOptsOne = {
+  //       initialSlide: 0,
+  //       slidesPerView: 1,
+  //       autoplay: true
+  //     };
+  //     constructor(
+  //       public popoverController: PopoverController,
+  //       public modalController: ModalController,
+  //       private actionSheetCtrl: ActionSheetController,
+  //       public storageservice: StorageService,
+  //       private mediaCapture: MediaCapture,
+  //       private fileChooser: FileChooser,
+  //       private filePath: FilePath,
+  //       private transfer: FileTransfer,
+  //       private common: CommonService,
+  //       public formbuilder: FormBuilder,
+  //       public navParams: NavParams,
+  //       private http : HttpClient,
+  //     ) {
+  
+  //       this.sliderOne =
+  //       {
+  //         isBeginningSlide: true,
+  //         isEndSlide: false,
+  //         slidesItems: [
+  //           {
+  //             id: 995
+  //           },
+  //           {
+  //             id: 925
+  //           },
+  //           {
+  //             id: 940
+  //           },
+  //           {
+  //             id: 943
+  //           },
+  //           {
+  //             id: 944
+  //           }
+  //         ]
+  //       };
+  //     }
+
+  //     SlideDidChange(object, slideView) {
+  //       this.checkIfNavDisabled(object, slideView);
+  //     }
+
+  //     checkIfNavDisabled(object, slideView) {
+  //       this.checkisBeginning(object, slideView);
+  //       this.checkisEnd(object, slideView);
+  //     }
+
+  //     checkisBeginning(object, slideView) {
+  //       slideView.isBeginning().then((istrue) => {
+  //         object.isBeginningSlide = istrue;
+  //       });
+  //     }
+  //     checkisEnd(object, slideView) {
+  //       slideView.isEnd().then((istrue) => {
+  //         object.isEndSlide = istrue;
+  //       });
+  //     }
+  // }
