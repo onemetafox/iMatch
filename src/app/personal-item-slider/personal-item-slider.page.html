@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button style="color: white" icon="chevron-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="height: 100%; background: #000;">
+    <p style="padding: 10px 30px 0px 0px; color:#fff; margin:0px; text-align: right;">{{this.slideIndex}} / {{sliderOne.slidesItems.length}}</p>
+    <div style="display:flex; height: 90%;">
+      <ion-slides pager="true" #slideWithNav (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
+        <ion-slide *ngFor="let item of sliderOne.slidesItems; let i = index">
+          <div>
+            <img *ngIf="item.media_type == 'image'" [src]="item.media">
+            <div *ngIf="item.media_type == 'text'">
+              <p>
+                {{item.media}}
+              </p>
+            </div>
+            <div *ngIf="item.media_type==='link'">
+              <a [href]="item.media">{{item.media}}</a>
+            </div>
+            <video *ngIf="item.media_type==='video'" [src]="item.media" controls ></video>
+            <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls ></audio>
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
+  </div>
+</ion-content>

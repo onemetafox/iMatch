@@ -256,6 +256,10 @@ const routes: Routes = [
     loadChildren: () => import('./personal-match/personal-match.module').then( m => m.PersonalMatchPageModule)
   },
   {
+    path: 'personal-item-slider',
+    loadChildren: () => import('./personal-item-slider/personal-item-slider.module').then( m => m.PersonalMatchPageModule)
+  },
+  {
     path: 'visitors-personal-match-view',
     loadChildren: () => import('./visitors-personal-match-view/visitors-personal-match-view.module').then( m => m.VisitorsPersonalMatchViewPageModule)
   },

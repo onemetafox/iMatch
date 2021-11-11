@@ -122,6 +122,19 @@ export class PersonalMatchPage implements OnInit {
 
   }
 
+  async imageSlide(match){
+    // const popover = await this.popoverController.create({
+    //   component: ItemSliderComponent,
+    //   cssClass: 'my-custom-class',
+    //   componentProps:{key: match},
+    //   translucent: true,
+    //   backdropDismiss: true,
+    //   animated: false
+    // });
+    // return await popover.present();
+    this.common.router.navigate(['/personal-item-slider'], {queryParams: {match: JSON.stringify(match)}});
+  }
+
   gotoPersonalMatchComments(e,match) {
     match.matchType = 'PERSONAL';
     this.common.navCtrl.navigateForward(['/comments'], {queryParams: match});
