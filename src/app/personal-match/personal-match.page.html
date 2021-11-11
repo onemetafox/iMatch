@@ -10,7 +10,7 @@
 
 <ion-content>
 
-  <!-- <div class="top-icons-container">
+  <div class="top-icons-container">
     <ion-row>
       <ion-col class="col-icon" (click)="IconCategorize('image')">
         <img src="../../assets/icon/img.png" alt="" style="height: 17px;width: 15px;">
@@ -32,19 +32,21 @@
         <img src="../../assets/icon/link.png" alt="" style="height: 17px;width: 15px;">
       </ion-col>
     </ion-row>
-  </div> -->
+  </div>
 
   <ion-slides pager="true" #slides style="padding: 15px;">
+
     <!-- slide starts here -->
+    
     <ion-slide *ngFor="let match of PersonalMatch; let i = index" class="animate__animated animate__flipInY">
       <div *ngIf="this.userDetails.category == 'personal'">
         <div style=" margin: 10px;box-shadow: 1px 1px 10px 0px;padding: 5px 5px 30px 5px;margin-top: 0px !important;border-radius: 3px; border-top: 2px solid #80808078 ; margin-bottom: 50px;">
+      
           <div style="flex:1">
             <div *ngIf="match.compare_data.length == 2">
               <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
                     <img class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" [src]="match.compare_data[0].media" (click)="imageSlide(match)">
                     
                     <ion-textarea class="media-container-2" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[0].media}}</ion-textarea>
@@ -54,23 +56,16 @@
                     <audio class="media-container-2" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls (click)="imageSlide(match)"></audio>
 
                     <div class="media-container-2" *ngIf="match.compare_data[0].media_type==='link'" (click)="imageSlide(match)">
-=======
-                    <ion-img-viewer class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" scheme="dark" 
-                    [src]="match.compare_data[0].media"></ion-img-viewer>
-                    <ion-textarea class="media-container-2" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow >{{match.compare_data[0].media}}</ion-textarea>
-                    <video class="media-container-2" *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls ></video>
-                    <audio class="media-container-2" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls></audio>
-                    <div class="media-container-2" *ngIf="match.compare_data[0].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[0].media" class="media-container-2">{{match.compare_data[0].media}}</a>
                     </div>
+      
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
                       <img *ngIf="match.compare_data[0].media_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
                     </p>
                     <div style="font-size: 12px;">
                       <span>{{match.compare_data[0].sub_caption}}</span>
                     </div>
-                    <div (click)="ToSendSenderLike($event,match.compare_data[0], match.match_id)">
+                    <div style="" (click)="ToSendSenderLike($event,match.compare_data[0], match.match_id)">
                       <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
                       <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
                       <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.compare_data[0].likecount}}</span>
@@ -79,7 +74,6 @@
                 </div>
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
                     <img class="media-container-2" *ngIf="match.compare_data[1].media_type==='image'" [src]="match.compare_data[1].media" (click)="imageSlide(match)">
                     
                     <ion-textarea  class="media-container-2" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[1].media}}</ion-textarea>
@@ -89,25 +83,16 @@
                     <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls(click)="imageSlide(match)" ></audio>
 
                     <div  class="media-container-2" *ngIf="match.compare_data[1].media_type==='link'" (click)="imageSlide(match)">
-=======
-                    <ion-img-viewer 
-                    *ngIf="match.compare_data[1].media_type==='image'" scheme="dark" [src]="match.compare_data[1].media"
-                     class="media-container-2">
-                    </ion-img-viewer>
-                    <ion-textarea  class="media-container-2" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow >{{match.compare_data[1].media}}</ion-textarea>
-                    <video  class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls ></video>
-                    <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls ></audio>
-                    <div  class="media-container-2" *ngIf="match.compare_data[1].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[1].media">{{match.compare_data[1].media}}</a>
                     </div>
+      
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
                       <img *ngIf="match.compare_data[1].media_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
                     </p>
                     <div style="font-size: 12px;">
                       <span>{{match.compare_data[1].sub_caption}}</span>
                     </div>
-                    <div (click)="ToSendSenderLike($event,match.compare_data[1], match.match_id)">
+                    <div style="" (click)="ToSendSenderLike($event,match.compare_data[1], match.match_id)">
                       <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
                       <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
                       <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.compare_data[1].likecount}}</span>
@@ -120,7 +105,6 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
                     <img class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" [src]="match.compare_data[0].media" (click)="imageSlide(match)">
                     
                     <ion-textarea class = "media-container-3" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[0].media}}</ion-textarea>
@@ -130,27 +114,16 @@
                     <audio class = "media-container-3" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls (click)="imageSlide(match)"></audio>
 
                     <div class = "media-container-3" *ngIf="match.compare_data[0].media_type==='link'" (click)="imageSlide(match)">
-=======
-                    <ion-img-viewer 
-                    *ngIf="match.compare_data[0].media_type==='image'"
-                    scheme="dark" 
-                    [src]="match.compare_data[0].media"
-                    class = "media-container-3">
-                    </ion-img-viewer>
-                    <ion-textarea class = "media-container-3" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow >{{match.compare_data[0].media}}</ion-textarea>
-                    <video *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls class = "media-container-3"></video>
-                    <audio class = "media-container-3" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls ></audio>
-                    <div class = "media-container-3" *ngIf="match.compare_data[0].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[0].media">{{match.compare_data[0].media}}</a>
                     </div>
+      
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
                       <img *ngIf="match.compare_data[0].media_closedstatus===1" style="width: 30px;" src="../../assets/icon/shoot-grey.png" alt="">
                     </p>
                     <div style="font-size: 12px;">
                       <span>{{match.compare_data[0].sub_caption}}</span>
                     </div>
-                    <div (click)="ToSendSenderLike($event,match.compare_data[0], match.match_id)">
+                    <div style="" (click)="ToSendSenderLike($event,match.compare_data[0], match.match_id)">
                       <!-- <img src="../../assets/icon/shoot.png" alt="" style=" width: 29px;height: 25px; margin-top: 10px; "> -->
                       <img src="../../assets/icon/newIc-1 (1).png" alt="" style=" width: 45px;height: 45px;">
                       <span style="margin-left: 10px; position: relative; bottom: 15px;">{{match.compare_data[0].likecount}}</span>
