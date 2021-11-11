@@ -32,10 +32,10 @@
           <form [formGroup]="Invitation">
             <ion-input formControlName="caption" [(ngModel)]="userData.caption" placeholder="Enter Caption" class="input-field" autocapitalize="true"></ion-input>
             <div style="justify-content: center;display: flex;flex-wrap: wrap;">
-              <ion-chip style="background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;">
+              <!-- <ion-chip style="background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;">
                 <input #file class="custom-file-input-storage" formControlName="file" style="width: 160px;" type="file" multiple (change)="fileChangeEvent($event, 'folder')">
-              </ion-chip>
-
+              </ion-chip> -->
+              <ion-chip   (click)="PickDocuments()" style="background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;">Select File</ion-chip>
               <ion-chip   (click)="takePicture()" style="background-color: #9c27b0; display: inline-block;  flex-wrap: nowrap;">Capture Image</ion-chip>
 
               <ion-chip style="background-color: #3f51b5; display: inline-block; flex-wrap: nowrap;">

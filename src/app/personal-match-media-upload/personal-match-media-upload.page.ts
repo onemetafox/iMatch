@@ -42,7 +42,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   caption: AbstractControl;
   link1: AbstractControl;
   link2: AbstractControl;
-
+  fileArray: any [] = [];
   Text1: AbstractControl;
   Text2: AbstractControl;
   currentImage: string;
@@ -51,20 +51,6 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     // "file" : "",
   };
 
-  sub_captions_data = [
-    {
-      "caption" :"",
-    },
-    {
-      "caption" :"",
-    },
-    {
-      "caption" :"",
-    },
-    {
-      "caption" :"",
-    }
-  ]
 
   userDetails: any;
   MatchDetails: any;
@@ -350,18 +336,16 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     let file: any;
 
     this.fileChooser.open()
-    .then(uri => {
-      this.filePath.resolveNativePath(uri)
-      .then(filePath => {
-        file = {
-          name: '',
-          fullPath: filePath
-        };
-
-        // this.uploadFile2(file, 'file');
-      })
-      .catch(err => console.log(err));
-
+    .then((fileData)=>{
+      file = {
+        name: fileData.substr(fileData.lastIndexOf('/') + 1),
+      }
+      // this.base64.encodeFile(fileData).then((base64File:string) => {        
+      //   file.data.push(base64File.substr(base64File.indexOf(',') + 1));
+      // }, (err) => {
+      //   console.log(err);
+      // });
+      this.fileArray.push(file);
     })
     .catch(e => console.log(e));
 
