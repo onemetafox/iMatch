@@ -140,8 +140,7 @@
             "nl.x-services.plugins.videocaptureplus": {}
         },
         "platforms": [
-            "ios",
-            "android"
+            "ios"
         ]
     }
 }

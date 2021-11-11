@@ -44,24 +44,12 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
-                    <img class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" [src]="match.compare_data[0].media" (click)="imageSlide(match)">
-                    
-                    <ion-textarea class="media-container-2" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[0].media}}</ion-textarea>
-
-                    <video class="media-container-2" *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls (click)="imageSlide(match)"></video>
-
-                    <audio class="media-container-2" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls (click)="imageSlide(match)"></audio>
-
-                    <div class="media-container-2" *ngIf="match.compare_data[0].media_type==='link'" (click)="imageSlide(match)">
-=======
                     <ion-img-viewer class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" scheme="dark" 
                     [src]="match.compare_data[0].media"></ion-img-viewer>
                     <ion-textarea class="media-container-2" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow >{{match.compare_data[0].media}}</ion-textarea>
                     <video class="media-container-2" *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls ></video>
                     <audio class="media-container-2" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls></audio>
                     <div class="media-container-2" *ngIf="match.compare_data[0].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[0].media" class="media-container-2">{{match.compare_data[0].media}}</a>
                     </div>
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
@@ -79,17 +67,6 @@
                 </div>
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
-                    <img class="media-container-2" *ngIf="match.compare_data[1].media_type==='image'" [src]="match.compare_data[1].media" (click)="imageSlide(match)">
-                    
-                    <ion-textarea  class="media-container-2" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[1].media}}</ion-textarea>
-
-                    <video  class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></video>
-
-                    <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls(click)="imageSlide(match)" ></audio>
-
-                    <div  class="media-container-2" *ngIf="match.compare_data[1].media_type==='link'" (click)="imageSlide(match)">
-=======
                     <ion-img-viewer 
                     *ngIf="match.compare_data[1].media_type==='image'" scheme="dark" [src]="match.compare_data[1].media"
                      class="media-container-2">
@@ -98,7 +75,6 @@
                     <video  class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls ></video>
                     <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls ></audio>
                     <div  class="media-container-2" *ngIf="match.compare_data[1].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[1].media">{{match.compare_data[1].media}}</a>
                     </div>
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
@@ -120,17 +96,6 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
                 <div style="padding:5px;display: flex;justify-content: center;">
                   <div>
-<<<<<<< HEAD
-                    <img class="media-container-2" *ngIf="match.compare_data[0].media_type==='image'" [src]="match.compare_data[0].media" (click)="imageSlide(match)">
-                    
-                    <ion-textarea class = "media-container-3" *ngIf="match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[0].media}}</ion-textarea>
-
-                    <video *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls class = "media-container-3" (click)="imageSlide(match)"></video>
-
-                    <audio class = "media-container-3" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls (click)="imageSlide(match)"></audio>
-
-                    <div class = "media-container-3" *ngIf="match.compare_data[0].media_type==='link'" (click)="imageSlide(match)">
-=======
                     <ion-img-viewer 
                     *ngIf="match.compare_data[0].media_type==='image'"
                     scheme="dark" 
@@ -141,7 +106,6 @@
                     <video *ngIf="match.compare_data[0].media_type==='video'" [src]="match.compare_data[0].media" controls class = "media-container-3"></video>
                     <audio class = "media-container-3" *ngIf="match.compare_data[0].media_type==='audio'" [src]="match.compare_data[0].media" controls ></audio>
                     <div class = "media-container-3" *ngIf="match.compare_data[0].media_type==='link'">
->>>>>>> 0a573c7dab9a96e81f7ce0d527dfbe7b69b5ed76
                       <a [href]="match.compare_data[0].media">{{match.compare_data[0].media}}</a>
                     </div>
                     <p *ngIf="userDetails.userType==='owner'" (click)="openCount(i, 'receiver')" style="margin: 0; font-size: 14px;"> 
