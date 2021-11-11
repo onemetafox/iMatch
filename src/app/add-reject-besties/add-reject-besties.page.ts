@@ -50,7 +50,6 @@ export class AddRejectBestiesPage implements OnInit {
 
   GetStoredUserDetails() {
     this.storageservice.storage.get("userDetails").then((val) => {
-      console.log("Storage Value of userDetails:", val);
       this.userDetails = val;
       this.GetBestieInvitations();
     });
@@ -60,11 +59,8 @@ export class AddRejectBestiesPage implements OnInit {
     let params = {
       userid: this.userDetails.userid,
     };
-    console.log("params:", params);
     this.common.postMethod("abc", params).then(
-      (res: any) => {
-        console.log("res:", res);
-      },
+      (res: any) => {},
       (err) => {
         console.log("Error:", err);
       }
@@ -75,10 +71,8 @@ export class AddRejectBestiesPage implements OnInit {
     let params = {
       userid: this.userDetails.userid,
     };
-    console.log("params:", params);
     this.common.postMethod("abc", params).then(
       (res: any) => {
-        console.log("res:", res);
       },
       (err) => {
         console.log("Error:", err);
@@ -91,10 +85,8 @@ export class AddRejectBestiesPage implements OnInit {
       request_id: '',
       status : 'accept'
     };
-    console.log("params:", params);
     this.common.postMethod("accept_or_reject", params).then(
       (res: any) => {
-        console.log("res:", res);
         if (res.status === true) {
           this.GetBestieInvitations();
         }
@@ -110,10 +102,8 @@ export class AddRejectBestiesPage implements OnInit {
       request_id: '',
       status : 'reject'
     };
-    console.log("params:", params);
     this.common.postMethod("accept_or_reject", params).then(
       (res: any) => {
-        console.log("res:", res);
         if (res.status === true) {
           this.GetBestieInvitations();
         }
@@ -129,10 +119,8 @@ export class AddRejectBestiesPage implements OnInit {
       request_id: '',
       status : 'block'
     };
-    console.log("params:", params);
     this.common.postMethod("abc", params).then(
       (res: any) => {
-        console.log("res:", res);
         if (res.status === true) {
           this.GetBestieInvitations();
         }

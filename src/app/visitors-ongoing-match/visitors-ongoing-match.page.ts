@@ -33,13 +33,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
   ) {
 
       this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
         this.userDetails = val;
       });
 
       this.common.route.queryParams.subscribe(resp => {
         this.userArray = resp;
-        console.log('userArray:',this.userArray);
       });
 
    }
@@ -52,22 +50,15 @@ export class VisitorsOngoingMatchPage implements OnInit {
 
     this.common.presentLoading();
     this.ongoingDetails = [];
-    console.log('Entered into Visitors Ongoing Contest page');
-
     let params = {
       userid : this.userArray.userid,
       visitorid : this.userArray.visitor_id
     }
 
-    console.log('params:',params);
     this.common.postMethod('OngoingMatch',params).then((res:any) => {
       if (res.status == true) {
         this.ongoingDetails = res.details;
-        console.log('ongoingDetails:', this.ongoingDetails);
-      } else {
-        console.log('ongoingDetails:', this.ongoingDetails);
-        console.log('currently you are having no ongoing matches');
-      }
+      } 
     }, err => {
      console.log('Error:',err);
     });
@@ -76,32 +67,16 @@ export class VisitorsOngoingMatchPage implements OnInit {
 
 
     Timer() {
-      console.log('Timer is running');
-
       if (this.ongoingDetails!==undefined || this.ongoingDetails.length!=0) {
 
         for (let i=0; i<this.ongoingDetails.length; i++) {
-          console.log('Match End Time:',this.ongoingDetails[i]?.match_end);
-          console.log('Match Start Time:',this.ongoingDetails[i]?.match_start);
-          console.log('Time Duration:',this.ongoingDetails[i]?.time_duration);
-
           let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          console.log('countDownDate:',StartTime);
-      
           let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          console.log('now:',EndTime);
-
           let LeftTime = new Date(this.ongoingDetails[i]?.remaining_time).getTime();
-          console.log('now:',LeftTime);
-
           let CurrentTime = new Date().getTime();
-          console.log('CurrentTime:',CurrentTime);
-
           var difference = LeftTime - CurrentTime;
-
           var daysDifference = Math.floor(difference/1000/60/60/24);
           difference -= daysDifference*1000*60*60*24
-      
           var hoursDifference = Math.floor(difference/1000/60/60);
           difference -= hoursDifference*1000*60*60
       
@@ -109,159 +84,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
           difference -= minutesDifference*1000*60
       
           var secondsDifference = Math.floor(difference/1000);
-      
-          console.log('difference = ' + 
-            daysDifference + ' day/s ' + 
-            hoursDifference + ' hour/s ' + 
-            minutesDifference + ' minute/s ' + 
-            secondsDifference + ' second/s ');
-
-          // var difference = this.ongoingDetails[i]?.match_end - this.ongoingDetails[i]?.match_start;
-          // var daysDifference = Math.floor(difference/1000/60/60/24);
-          // this.RemainingTime = difference;
-
-          // return daysDifference;
-
-          // if (this.ongoingDetails[i]?.time_duration ==='1 hour') {
-
-          //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          //   console.log('countDownDate:',StartTime);
-      
-          //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          //   console.log('now:',EndTime);
-
-          //   if (StartTime>EndTime) {
-
-          //     let RemainingDuration = StartTime - EndTime;
-          //     this.RemainingTime = RemainingDuration;
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   } else {
-
-          //     let RemainingDuration = EndTime - StartTime;
-          //     this.RemainingTime = RemainingDuration;
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   }
-
-          // } else if (this.ongoingDetails[i]?.time_duration ==='2 hour') {
-
-          //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          //   console.log('countDownDate:',StartTime);
-      
-          //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          //   console.log('now:',EndTime);
-
-          //   if (StartTime>EndTime) {
-
-          //     let RemainingDuration = StartTime - EndTime;
-          //     this.RemainingTime = RemainingDuration;
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   } else {
-
-          //     let RemainingDuration = EndTime - StartTime;
-          //     this.RemainingTime = RemainingDuration;
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   }
-
-          // } else if (this.ongoingDetails[i]?.time_duration ==='3 hour') {
-
-          //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          //   console.log('countDownDate:',StartTime);
-      
-          //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          //   console.log('now:',EndTime);
-
-          //   if (StartTime>EndTime) {
-
-          //     let RemainingDuration = StartTime - EndTime;
-          //     this.RemainingTime = RemainingDuration;
-
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   } else {
-
-          //     let RemainingDuration = EndTime - StartTime;
-          //     this.RemainingTime = RemainingDuration;
-
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   }
-
-          // } else if (this.ongoingDetails[i]?.time_duration ==='4 hour') {
-
-          //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          //   console.log('countDownDate:',StartTime);
-      
-          //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          //   console.log('now:',EndTime);
-
-          //   if (StartTime>EndTime) {
-
-          //     let RemainingDuration = StartTime - EndTime;
-          //     this.RemainingTime = RemainingDuration;
-
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   } else {
-
-          //     let RemainingDuration = EndTime - StartTime;
-          //     this.RemainingTime = RemainingDuration;
-
-          //     console.log('TotalRemaining:',RemainingDuration);
-          //   }
-
-          // } else if (this.ongoingDetails[i]?.time_duration ==='5 hour') {
-          //   console.log('Five hours match');
-
-          //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          //   console.log('countDownDate:',StartTime);
-      
-          //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          //   console.log('now:',EndTime);
-
-          //     let RemainingDuration = EndTime - StartTime;
-          //     this.RemainingTime = RemainingDuration;
-          //     console.log('TotalRemaining:',RemainingDuration);
-
-            // if (StartTime>EndTime) {
-
-            //   let RemainingDuration = StartTime - EndTime;
-            //   this.RemainingTime = RemainingDuration;
-
-            //   console.log('TotalRemaining:',RemainingDuration);
-            // } else {
-
-            //   let RemainingDuration = EndTime - StartTime;
-            //   this.RemainingTime = RemainingDuration;
-
-            //   console.log('TotalRemaining:',RemainingDuration);
-            // }
-
-          }
-  
-          // let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-          // console.log('countDownDate:',StartTime);
-    
-          // let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-          // console.log('now:',EndTime);
-  
-          // let CurrentTime = new Date().getTime();
-          // console.log('CurrentTime:',CurrentTime);
-    
-          // let TotalRemaining = EndTime - StartTime ;
-          // this.RemainingTime = TotalRemaining;
-          // console.log('TotalRemaining:', TotalRemaining, 'RemainingTime:', this.RemainingTime);
-    
-          // let LeftTime = TotalRemaining - CurrentTime;
-          // this.RemainingTime = LeftTime;
-          // console.log('left:',LeftTime ,'RemainingTime:',this.RemainingTime);
-    
-          // let TimeAgo = CurrentTime - StartTime;
-          // console.log('TimeAgo:',TimeAgo);
-          // this.HoursAgo = TimeAgo;
-          // console.log('HoursAgo:',this.HoursAgo);
-      //   }
+        }
       }
     }
 
     toLikeForReceiver(e, details, i) {
-      console.log('Receiver side post Liked:',i);
       // i = this.personalMatchSlideIndex;
       this.slides.slideTo(this.personalMatchSlideIndex);
 
@@ -271,10 +98,7 @@ export class VisitorsOngoingMatchPage implements OnInit {
         contestentid : details.receiverid,
         status : 'like',
                 }
-      console.log('details:',details);
-      console.log('params:',params);
       this.common.postMethod('Like',params).then((res:any) => {
-        console.log('res:',res);
         if (res.status == true) {
           // this.slides.slideTo(this.personalMatchSlideIndex);
           this.ionViewWillEnter();
@@ -282,7 +106,6 @@ export class VisitorsOngoingMatchPage implements OnInit {
           this.common.presentToast('You had already liked this Ongoing Match');
         }
       }, err => {
-        console.log('Error:',err);
         this.common.presentLoading();
         this.ionViewWillEnter();
         // this.common.presentToast(' A Network Error Occured... Please Try Once Again');
@@ -290,7 +113,6 @@ export class VisitorsOngoingMatchPage implements OnInit {
      }
 
      toLikeForSender(e, details, i) {
-      console.log('Sender side post liked:',i);
       // i = this.personalMatchSlideIndex;
       this.slides.slideTo(this.personalMatchSlideIndex);
 
@@ -300,10 +122,7 @@ export class VisitorsOngoingMatchPage implements OnInit {
         contestentid : details.senderid,
        status : 'like'
       }
-      console.log('details:',details);
-      console.log('params:',params);
       this.common.postMethod('Like',params).then((res:any) => {
-        console.log('res:',res);
         if (res.status == true) {
           // this.slides.slideTo(this.personalMatchSlideIndex);
          this.ionViewWillEnter();
@@ -319,24 +138,20 @@ export class VisitorsOngoingMatchPage implements OnInit {
     }
 
     openComments(e,details) {
-      console.log('match details:',details);
       // this.common.router.navigate(['/comments'], {queryParams : details});
       details.matchType = 'ONGOING';
       this.common.navCtrl.navigateForward(['comments'], {queryParams: details});
     }
 
     toshowPersonalScores(e,details) {
-      console.log('details:',details);
       this.showPersonalScores = !this.showPersonalScores;
     }
 
     toHidePopover () {
-      console.log('To Hide Popover Clicked');
       this.showPersonalScores = false;
     }
 
     gotoImageIcon(icon) {
-      console.log('Icon:',icon);
 
       if (this.userArray.userStatus==='VISITOR') {
 
@@ -347,20 +162,15 @@ export class VisitorsOngoingMatchPage implements OnInit {
             userid : '',
             visitorid : this.userArray.visitor_id
           }
-          console.log('params:',params);
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
   
             if (res.details.image.length!=0) {
               this.ongoingDetails = res.details.image;
               this.common.presentToast('Ongoing Image Match is Successfully Displayed');
               // this.slides.slideTo(this.personalMatchSlideIndex);
-              console.log('OngoingMatch:',this.ongoingDetails);
-  
             } else  {
               this.common.presentToast('Currently You Are Having No Ongoing Image Matches');  
             }
-  
           }, err=> {
             console.log('Error:',err);
           });
@@ -372,15 +182,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
             userid : '',
             visitorid : this.userArray.visitor_id
           }
-          console.log('params:',params);
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
             if (res.details.video.length!=0) {
               this.ongoingDetails = res.details.video;
               this.common.presentToast('Ongoing Video Match is Successfully Displayed');
               // this.slides.slideTo(this.personalMatchSlideIndex);
-              console.log('OngoingMatch:',this.ongoingDetails);
-  
             } else  {
               this.common.presentToast('Currently You Are Having No Ongoing Video Matches');  
             }
@@ -395,15 +201,12 @@ export class VisitorsOngoingMatchPage implements OnInit {
             userid : '',
             visitorid : this.userArray.visitor_id
           }
-          console.log('params:',params);
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
   
             if (res.details.audio.length!=0) {
               this.ongoingDetails = res.details.audio;
               this.common.presentToast('Ongoing Audio Match is Successfully Displayed');
               // this.slides.slideTo(this.personalMatchSlideIndex);
-              console.log('OngoingMatch:',this.ongoingDetails);
   
             } else  {
               this.common.presentToast('Currently You Are Having No Ongoing Audio Matches');  
@@ -419,15 +222,12 @@ export class VisitorsOngoingMatchPage implements OnInit {
             userid : '',
             visitorid : this.userArray.visitor_id
           }
-          console.log('params:',params);
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
   
             if (res.details.text.length!=0) {
               this.ongoingDetails = res.details.text;
               this.common.presentToast('Ongoing Text Match is Successfully Displayed');
               // this.slides.slideTo(this.personalMatchSlideIndex);
-              console.log('OngoingMatch:',this.ongoingDetails);
   
             } else  {
               this.common.presentToast('Currently You Are Having No Ongoing Text Matches');  
@@ -442,15 +242,12 @@ export class VisitorsOngoingMatchPage implements OnInit {
             userid : '',
             visitorid : this.userArray.visitor_id
           }
-          console.log('params:',params);
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
   
             if (res.details.link.length!=0) {
               this.ongoingDetails = res.details.link;
               this.common.presentToast('Ongoing Link Match is Successfully Displayed');
               // this.slides.slideTo(this.personalMatchSlideIndex);
-              console.log('OngoingMatch:',this.ongoingDetails);
   
             } else  {
               this.common.presentToast('Currently You Are Having No Ongoing Link Matches');  
@@ -469,15 +266,12 @@ export class VisitorsOngoingMatchPage implements OnInit {
           userid : this.userArray.userid,
           visitorid : this.userArray.visitor_id
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
 
           if (res.details.image.length!=0) {
             this.ongoingDetails = res.details.image;
             this.common.presentToast('Ongoing Image Match is Successfully Displayed');
             // this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Image Matches');
@@ -494,14 +288,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
           userid : this.userArray.userid,
           visitorid : this.userArray.visitor_id
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
           if (res.details.video.length!=0) {
             this.ongoingDetails = res.details.video;
             this.common.presentToast('Ongoing Video Match is Successfully Displayed');
             // this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Video Matches');
@@ -518,16 +309,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
           userid : this.userArray.userid,
           visitorid : this.userArray.visitor_id
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
-
           if (res.details.audio.length!=0) {
             this.ongoingDetails = res.details.audio;
             this.common.presentToast('Ongoing Audio Match is Successfully Displayed');
             // this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('OngoingMatch:',this.ongoingDetails);
-
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Audio Matches');
           }
@@ -543,16 +329,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
           userid : this.userArray.userid,
           visitorid : this.userArray.visitor_id
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
-
           if (res.details.text.length!=0) {
             this.ongoingDetails = res.details.text;
             this.common.presentToast('Ongoing Text Match is Successfully Displayed');
             // this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('OngoingMatch:',this.ongoingDetails);
-
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Text Matches');
           }
@@ -568,16 +349,11 @@ export class VisitorsOngoingMatchPage implements OnInit {
           userid : this.userArray.userid,
           visitorid : this.userArray.visitor_id
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
-
           if (res.details.link.length!=0) {
             this.ongoingDetails = res.details.link;
             this.common.presentToast('Ongoing Link Match is Successfully Displayed');
             // this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('OngoingMatch:',this.ongoingDetails);
-
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Link Matches');
           }

@@ -100,41 +100,33 @@ export class AppComponent {
       this.platform.ready().then(() => {
         // this.statusBar.styleDefault();
         this.AjxService.initPush();
-          this.checkUserDetails();
-            this.splashScreen.hide();
-  
-              this.common.screenOrientation.lock(this.common.screenOrientation.ORIENTATIONS.PORTRAIT);
-                console.log(this.common.screenOrientation.type);
-  
+        this.checkUserDetails();
+        this.splashScreen.hide();
+        this.common.screenOrientation.lock(this.common.screenOrientation.ORIENTATIONS.PORTRAIT);
       });
 
       // this.AjxService.initPush();
 
     } else {
-      console.log('This is a browser view');
-
         this.platform.ready().then(() => {
-          
-          this.checkUserDetails();
+        this.checkUserDetails();
       });
     }
 
   }
 
   checkUserDetails() {
-    console.log('Checking User Details ....');
-        this.storage.get('userDetails').then((val) => {
-          console.log('userDetails:',val);
-          this.userDetails = val;
-            if (val) {
-            this.common.statusBar.backgroundColorByHexString('#707072');
-              this.navCtrl.navigateRoot(['tabs/tab6']);
-            } else {
-              this.statusBar.styleDefault();
-                this.common.navCtrl.navigateRoot(['landing']);
-            }
-        });
-      }
+    this.storage.get('userDetails').then((val) => {
+        this.userDetails = val;
+        if (val) {
+          this.common.statusBar.backgroundColorByHexString('#707072');
+          this.navCtrl.navigateRoot(['tabs/tab6']);
+        } else {
+          this.statusBar.styleDefault();
+          this.common.navCtrl.navigateRoot(['landing']);
+        }
+      });
+    }
 
   // initializeApp() {
   //   this.common.platform.ready().then(() => {

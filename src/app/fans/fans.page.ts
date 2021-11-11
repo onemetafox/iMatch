@@ -19,7 +19,6 @@ export class FansPage implements OnInit {
 
       this.common.route.queryParams.subscribe(resp => {
         this.userDetails = resp;
-        console.log('userDetails:',this.userDetails);
     });
 
     // this.storageservice.storage.get('userDetails').then((val) => {
@@ -33,7 +32,6 @@ export class FansPage implements OnInit {
   }
 
   ionViewWillEnter(){
-    console.log('Entered into Fans Page');
     this.common.showLoader();
 
     // this.storageservice.storage.get('userDetails').then((val) => {
@@ -46,13 +44,10 @@ export class FansPage implements OnInit {
           id : this.userDetails.userid
         }
 
-        console.log('params:',params);
         // this.common.presentLoading();
         this.common.postMethod('Listbesties',params).then((res:any) => {
-          console.log('res:',res);
 
           this.myfans = res.details.fan;
-          console.log('myfans:',this.myfans);
           this.common.hideLoader();
 
           if (this.myfans.length==0) {
@@ -82,7 +77,6 @@ export class FansPage implements OnInit {
 
 
   gotoSearchFans() {
-    console.log('Fans Search Icon Clicked');
     this.common.navCtrl.navigateForward(['/search-fans'], {queryParams: this.userDetails});
   }
 
@@ -91,16 +85,10 @@ export class FansPage implements OnInit {
   }
 
   toRemoveFan(event,fan) {
-    console.log('Remove Fan Button clicked');
-    console.log('fan:',fan);
-
         let params = {
           fanid : fan.tableid,    
         }
-        console.log('params:',params);
         this.common.postMethod('RemoveFans',params).then((res:any) => {
-          console.log('res:',res);
-
           if (res.status == true) {
             this.common.presentToast('✅ ' + fan.name + ' is successfully removed from your fans list ' );
             this.ionViewWillEnter();

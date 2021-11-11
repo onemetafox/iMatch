@@ -23,7 +23,6 @@ export class VisitorsPersonalMatchViewPage implements OnInit {
 
     this.common.route.queryParams.subscribe(resp => {
       this.UserInfo = resp;
-      console.log('matchDetails for comment page:',this.UserInfo);
   });
 
   }
@@ -32,19 +31,15 @@ export class VisitorsPersonalMatchViewPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into visitors personal match view page');
 
    let params = {
      userid : this.UserInfo.userid
    }
 
-   console.log('params:',params);
    this.common.postMethod('PersonalMatch',params).then((res:any) => {
-     console.log('res:',res);
      this.PersonalMatch = res.details.image;
     }, (err) => {
       console.log('Error:',err);
-      console.log('Error headers:',err.headers);
     });
   }
 

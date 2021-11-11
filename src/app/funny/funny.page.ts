@@ -18,7 +18,6 @@ export class FunnyPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -28,7 +27,6 @@ export class FunnyPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered Into Funny Posts Page');
 
    this.storageservice.storage.get('userDetails').then((val) => {
     this.userDetails = val;
@@ -38,13 +36,10 @@ export class FunnyPage implements OnInit {
      userid : this.userDetails.userid ,
      category : 'funny',
    }
-   console.log('params:',params);
    this.common.postMethod('BannerSearch',params).then((res:any) => {
-     console.log('res:',res);
      this.FunnyDetails = res.details;
    }, (err) => {
      console.log('Error:',err);
-     console.log(err.headers);
    });
   }
 

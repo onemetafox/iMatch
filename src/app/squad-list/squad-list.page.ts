@@ -18,14 +18,12 @@ export class SquadListPage implements OnInit {
     ) { 
       
       this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
         this.userDetails = val;
       });
 
     }
 
     ionViewWillEnter(){
-      console.log('ionViewWillEnter');
       this.storageservice.storage.get('userDetails').then((val) => {
 
         this.userDetails = val ;
@@ -36,13 +34,10 @@ export class SquadListPage implements OnInit {
             id : this.userDetails.userid
           }
 
-          console.log('params:',params);
           this.common.presentLoading();
           this.common.postMethod('Listbesties',params).then((res:any) => {
-            console.log('res:',res);
 
             this.mysquads = res.details.squad;
-              console.log('mysquads',this.mysquads);
 
               if (this.mysquads.length==0) {
 

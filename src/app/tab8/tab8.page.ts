@@ -52,16 +52,12 @@ export class Tab8Page implements OnInit {
     ) {
 
       this.storageservice.storage.get('userDetails').then((val) => {
-        console.log('Storage Value of userDetails:', val);
         this.userDetails = val;
       });        
      }
 
      ionSlideChanges(slides) {
       this.selectedSlide = slides;
-      console.log('slides:',slides);
-      console.log('selectedSlide:',this.selectedSlide);
-
       // slides.getActiveIndex().then(
       //   (slidesIndex) => {
       //     if (slidesIndex == 2) {
@@ -73,12 +69,10 @@ export class Tab8Page implements OnInit {
      }
 
      nextSlide() {
-      console.log('Next Button Clicked');
       // this.slides.slideNext();
      }
 
      ionViewWillEnter() {
-       console.log('Entered Into Home Page');
        this.ongoingDetails = [];
       // this.storageservice.storage.get('userDetails').then((val) => {
       //   this.userDetails = val;
@@ -88,14 +82,12 @@ export class Tab8Page implements OnInit {
             userid : ''
           }
           this.common.postMethod('OngoingMatch',params).then((res:any) => {
-            console.log('res:',res);
 
             if (res.status == true) {
               this.ongoingDetails = res.details;
             }
           });
           this.common.postMethod('Recommended_for_you',params).then((res:any) => {
-            console.log('res:',res);
             this.RecommendedForYou = res.details;
           });
         // }
@@ -166,9 +158,6 @@ export class Tab8Page implements OnInit {
           image : '../../assets/icon/blog.png'
         },
       ]
-
-      console.log('HashTagOptions:',this.HashTagOptions);
-
     }
 
     goDetail(id){
@@ -190,12 +179,10 @@ export class Tab8Page implements OnInit {
     }
 
     toShowImageIcons() {
-      console.log('Show Images Icons Button Clicked');
       this.ImageIcons = true;
     }
 
     toHideImageIcons() {
-      console.log('Show Images Icons Button Clicked');
       this.ImageIcons = false;
     }
 
@@ -204,9 +191,7 @@ export class Tab8Page implements OnInit {
     }
 
     toOpenIconsPanel() {
-      console.log('To Open Icons Panel Clicked');
       this.showIcons = !this.showIcons;
-      console.log('showIcons:',this.showIcons);
     }
 
     gotoProfile() {
@@ -214,7 +199,6 @@ export class Tab8Page implements OnInit {
     }
 
     gotoImageIcon(icon) {
-      console.log('icon:',icon);
       if (icon == 'image') {
 
         this.common.presentLoading();
@@ -222,14 +206,11 @@ export class Tab8Page implements OnInit {
           userid : '',
           visitorid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
 
           if (res.details.image.length!=0) {
             this.ongoingDetails = res.details.image;
             this.common.presentToast('Ongoing Image Match is Successfully Displayed');
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Image Matches');
@@ -245,13 +226,10 @@ export class Tab8Page implements OnInit {
           userid : '',
           visitorid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
           if (res.details.video.length!=0) {
             this.ongoingDetails = res.details.video;
             this.common.presentToast('Ongoing Video Match is Successfully Displayed');
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Video Matches');
@@ -259,7 +237,6 @@ export class Tab8Page implements OnInit {
           this.common.hideLoader();
         }, err=> {
           this.common.hideLoader();
-          console.log('Error:',err);
         });
       } else if (icon == 'audio') {
 
@@ -269,14 +246,11 @@ export class Tab8Page implements OnInit {
           userid : '',
           visitorid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
 
           if (res.details.audio.length!=0) {
             this.ongoingDetails = res.details.audio;
             this.common.presentToast('Ongoing Audio Match is Successfully Displayed');
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Audio Matches');
@@ -291,14 +265,11 @@ export class Tab8Page implements OnInit {
           userid : '',
           visitorid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
 
           if (res.details.text.length!=0) {
             this.ongoingDetails = res.details.text;
             this.common.presentToast('Ongoing Text Match is Successfully Displayed');
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Text Matches');
@@ -313,14 +284,11 @@ export class Tab8Page implements OnInit {
           userid : '',
           visitorid : this.userDetails.userid
         }
-        console.log('params:',params);
         this.common.postMethod('OngoingMatch',params).then((res:any) => {
-          console.log('res:',res);
 
           if (res.details.link.length!=0) {
             this.ongoingDetails = res.details.link;
             this.common.presentToast('Ongoing Link Match is Successfully Displayed');
-            console.log('OngoingMatch:',this.ongoingDetails);
 
           } else  {
             this.common.presentToast('Currently You Are Having No Ongoing Link Matches');
@@ -332,43 +300,34 @@ export class Tab8Page implements OnInit {
     }
 
     swipeNext() {
-      console.log('Swipe Next Icon Clicked');
       // this.slides.slideNext(speed?: 400 | , runCallbacks?: false | undefined) => Promise<void>;
     }
 
     gotoFunny() {
-      console.log('Funny Button Clicked');
       this.common.router.navigate(['/funny']);
     }
 
     gotoArtAndEntertainment() {
-      console.log('Art And Entertainment Button clicked');
       this.common.router.navigate(['/art-entertainment']);
     }
 
     gotoBeautyAndFashion() {
-      console.log('Beauty And Fashion Button Clicked');
       this.common.router.navigate(['/beauty-fashion']);
     }
 
     gotoiMatchTop100() {
-      console.log('iMatch Top 100 Button Clicked');
       this.common.router.navigate(['/top-hundred']);
     }
 
     gotoNews() {
-      console.log('News Button Clicked');
       // this.common.router.navigate(['/']);
     }
 
     gotoBlog() {
-      console.log('Blog Button Clicked');
       this.common.router.navigate(['/blog']);
     }
 
     gotoUserProfile(event,user) {
-      console.log('Clicked On A user');
-      console.log('user:',user);
       this.common.navCtrl.navigateForward(['/visitors-view-activity'] ,{queryParams: user} );
     }
 

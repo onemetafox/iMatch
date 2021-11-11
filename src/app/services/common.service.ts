@@ -18,89 +18,85 @@ import { map } from "rxjs/operators";
 export class CommonService {
 
   constructor(public router: Router,
-              public modalController: ModalController,
-              public platform: Platform,
-              public http: HttpClient,
-              public ajx:AjaxService,
-              public alertCtrl: AlertController,
-              public toastController: ToastController,
-              public loadingController: LoadingController,
-              public popoverController: PopoverController,
-              public splashScreen: SplashScreen,
-              public statusBar: StatusBar,
-              public navCtrl: NavController,
-              public route: ActivatedRoute,
-              public fb: Facebook,
-              public google: GooglePlus,
-              public twit: TwitterConnect,
-              public screenOrientation: ScreenOrientation,
-              public menu: MenuController
-              ) { 
-                console.log('Hello Common Service Provider');
-              }
+    public modalController: ModalController,
+    public platform: Platform,
+    public http: HttpClient,
+    public ajx:AjaxService,
+    public alertCtrl: AlertController,
+    public toastController: ToastController,
+    public loadingController: LoadingController,
+    public popoverController: PopoverController,
+    public splashScreen: SplashScreen,
+    public statusBar: StatusBar,
+    public navCtrl: NavController,
+    public route: ActivatedRoute,
+    public fb: Facebook,
+    public google: GooglePlus,
+    public twit: TwitterConnect,
+    public screenOrientation: ScreenOrientation,
+    public menu: MenuController
+    ) {}
 
-              // --- Alert to show failed message ---
-              async showAlert(msg) {
-                const alert = await this.alertCtrl.create({
-                  cssClass: 'my-custom-class',
-                  header: 'Failed !',
-                  message: msg,
-                  buttons: ['OK']
-                });
-            
-                await alert.present();
-              }
+    // --- Alert to show failed message ---
+    async showAlert(msg) {
+      const alert = await this.alertCtrl.create({
+        cssClass: 'my-custom-class',
+        header: 'Failed !',
+        message: msg,
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+    }
 
-            // --- Alert to show failed message ---
-              async showAlertSuccess(msg) {
-                const alert = await this.alertCtrl.create({
-                  cssClass: 'my-custom-class',
-                  header: 'Alert',
-                  message: msg,
-                  buttons: ['OK']
-                });
-            
-                await alert.present();
-              }
+  // --- Alert to show failed message ---
+    async showAlertSuccess(msg) {
+      const alert = await this.alertCtrl.create({
+        cssClass: 'my-custom-class',
+        header: 'Alert',
+        message: msg,
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+    }
 
-              async presentToast(msg) {
-                const toast = await this.toastController.create({
-                  message: msg,
-                  duration: 3000,
-                  position: 'bottom',
-                  // mode: 'md'
-                });
-                toast.present();
-              }
+    async presentToast(msg) {
+      const toast = await this.toastController.create({
+        message: msg,
+        duration: 3000,
+        position: 'bottom',
+        // mode: 'md'
+      });
+      toast.present();
+    }
 
-              async presentLoading() {
-                const loading = await this.loadingController.create({
-                  cssClass: 'my-custom-class',
-                  // message: 'Please wait...',
-                  duration: 900,
-                  spinner: 'dots'
-                });
-                await loading.present();
-            
-                const { role, data } = await loading.onDidDismiss();
-                console.log('Loading dismissed!');
-              }
+    async presentLoading() {
+      const loading = await this.loadingController.create({
+        cssClass: 'my-custom-class',
+        // message: 'Please wait...',
+        duration: 900,
+        spinner: 'dots'
+      });
+      await loading.present();
+  
+      const { role, data } = await loading.onDidDismiss();
+    }
 
-              async showLoader() {
-                // await this.loadingController.dismiss();
-                 const loading = await this.loadingController.create({
-                  // message: 'Please wait...',
-                  spinner: 'dots'
-                });
-                await loading.present();
-              }
+    async showLoader() {
+      // await this.loadingController.dismiss();
+        const loading = await this.loadingController.create({
+        // message: 'Please wait...',
+        spinner: 'dots'
+      });
+      await loading.present();
+    }
 
-              async hideLoader() {
-                 await this.loadingController.dismiss();
-              }
+    async hideLoader() {
+        await this.loadingController.dismiss();
+    }
 
     register(path,params:any) {
-      console.log(params);
       let httpParams = new HttpParams()
         .append("name", params.name)
         .append("phone", params.phone)
@@ -113,7 +109,6 @@ export class CommonService {
     }
 
     login(path,params:any) {
-      console.log(params);
       let httpParams = new HttpParams()
         .append("email", params.email)
         .append("password", params.password)
@@ -123,7 +118,6 @@ export class CommonService {
     }
 
     forgotpassword(path,params:any) {
-      console.log(params);
       let httpParams  = new HttpParams()
         .append("email",params.email)
       var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
@@ -132,7 +126,6 @@ export class CommonService {
     }
 
     profileupdate(path,params:any) {
-      console.log(params);
       let httpParams = new HttpParams()
       .append("name", params.name)
       .append("email", params.email)
@@ -148,7 +141,6 @@ export class CommonService {
     }
 
     profilepic(path,params:any) {
-      console.log(params);
       let httpParams = new HttpParams()
       var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
       return this.http
@@ -163,7 +155,6 @@ export class CommonService {
     }
 
     listUsers(path,params) {
-      console.log(params);
       let httpParams = new HttpParams()
       .append("userid", params.userid)
       var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
@@ -196,25 +187,19 @@ export class CommonService {
         .pipe(map ((res:any) => res))
         .subscribe(
           (res) => {       
-              console.log("POST call successful value returned in body",
-                    res);
-                          resolve(res);
+              resolve(res);
                                   },
           (err) => {       
-              console.log("POST call in error", err);
               reject(err);
-          }
-          ,
+          },
           () => {
               console.log("The POST observable is now completed.");
           }
-          );    
+        );    
     });
     }
 
     PostData(path: any, params: any) {
-      console.log('path:', path);
-      console.log('Params:', params);
   
       const config = { headers: { 'Content-Type': 'application/json' } };
 

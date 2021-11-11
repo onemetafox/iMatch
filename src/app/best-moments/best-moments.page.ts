@@ -22,7 +22,6 @@ export class BestMomentsPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
     
@@ -32,11 +31,7 @@ export class BestMomentsPage implements OnInit {
   }
 
   ionViewWillEnter(){
-
-   console.log('Entered into Best Moments Page');
-
   //  this.common.showLoader();
-
    this.storageservice.storage.get('userDetails').then((val) => {
     this.userDetails = val;
 
@@ -44,9 +39,7 @@ export class BestMomentsPage implements OnInit {
       userid : this.userDetails.userid
     }
 
-    console.log('params:',params);
     this.common.postMethod('GetBestMoment',params).then((res:any) => {
-      console.log('res:',res);
       // this.common.presentToast
       this.common.presentLoading();
       this.BestMoments = res.details.moments;
@@ -67,25 +60,20 @@ export class BestMomentsPage implements OnInit {
   }
 
   toAddMedia(event,moments) {
-    console.log('moments:',moments);
     this.common.navCtrl.navigateForward(['/best-moments-add'], {queryParams: moments});
   }
 
   gotoBestMomentComments(e,moments) {
-    console.log('moments:',moments);
     this.common.navCtrl.navigateForward(['/best-moment-comment'], {queryParams: moments});
   }
 
   ToLikeBestMoment (e, moments) {
-    console.log('moments:',moments);
 
     let params = {
       userid : this.userDetails.userid,
       momentid : moments.momentid
     }
-    console.log('params:',params);
     this.common.postMethod('MomentLike',params).then((res:any) => {
-      console.log('res:',res.details);
 
       if (res.status == true) {
         this.ionViewWillEnter();

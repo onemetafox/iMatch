@@ -18,13 +18,11 @@ export class FansOfPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
     this.common.route.queryParams.subscribe(resp => {
       this.userDetails = resp;
-      console.log('userDetails:',this.userDetails);
   });
 
   }
@@ -34,7 +32,6 @@ export class FansOfPage implements OnInit {
 
   ionViewWillEnter(){
 
-    console.log('Entered into Fans Of Page');
     this.common.showLoader();
     // this.storageservice.storage.get('userDetails').then((val) => {
 
@@ -46,13 +43,10 @@ export class FansOfPage implements OnInit {
           id : this.userDetails.userid
         }
 
-        console.log('params:',params);
         // this.common.presentLoading();
         this.common.postMethod('Listbesties',params).then((res:any) => {
-         console.log('res:',res);
 
          this.myfanof = res.details.fan_of;
-         console.log('myfanof:',this.myfanof);
 
          if (this.myfanof.length==0) {
 
@@ -66,7 +60,6 @@ export class FansOfPage implements OnInit {
         this.common.hideLoader();
 
        }, err => {
-
          console.log('Error:',err);
         this.ionViewWillEnter();
        });
@@ -83,7 +76,6 @@ export class FansOfPage implements OnInit {
 
 
   gotoSearchFansOf() {
-    console.log('Fans Of Search Icon Clicked');
     this.common.navCtrl.navigateForward(['/search-fans-of'] , {queryParams: this.userDetails});
   }
 
@@ -92,21 +84,15 @@ export class FansOfPage implements OnInit {
   }
 
   toRemoveFansOf(event,fan) {
-    console.log('Fans Of Remove Button Clicked');
-    console.log('fans of:',fan);
-
     let params = {
       fanid : fan.tableid,
     }
-    console.log('params',params);
     this.common.postMethod('RemoveFans',params).then((res:any) => {
-      console.log('res:',res);
 
       if (res.status == true) {
         this.common.presentToast( fan.name + 'is successfully removed from your Fan Of list');
         this.ionViewWillEnter();
       } else {
-        /////
       }
     } , err => {
       console.log('E:',err);

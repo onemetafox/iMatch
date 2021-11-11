@@ -22,10 +22,7 @@ export class LogoutPopoverPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Logout Popover Page');
-
    this.storageservice.storage.get('userDetails').then((val) => {
-    console.log('Storage Value of userDetails:', val);
     this.userDetails = val;
   });
 
@@ -43,30 +40,22 @@ export class LogoutPopoverPage implements OnInit {
   }
 
   toCancel(e) {
-    console.log('Cancel button clicked:',e);
     this.popoverController.dismiss();
   }
 
   toOkay(e) {
-    console.log('Okay Button clicked:',e);
     if  (e.type == 'click') {
       let params = {
         status : '1',
         userid : this.userDetails.userid,
       }
-      console.log('params:',params);
       this.common.postMethod('Online_Offline_status',params).then((res:any) => {
-        console.log('res:',res);
         if (res.status == true && this.common.platform.is("capacitor"||"cordova")) {
           this.storageservice.storage.remove('userDetails');
           this.popoverController.dismiss();
-          console.log('User Details Cleared');
           this.common.fb.logout();
-            console.log('Facebook Logged out');
           this.common.google.logout();
-            console.log('Google Logged out');
           this.common.twit.logout();
-            console.log('Twitter Logged out');
             this.common.presentToast('You are successfully Logged out from the iMatch');
             this.common.router.navigate(['/login']);
           // navigator['app'].exitApp();
@@ -74,7 +63,6 @@ export class LogoutPopoverPage implements OnInit {
         } else {
           this.storageservice.storage.remove('userDetails');
           this.popoverController.dismiss();
-          console.log('User Details Cleared');
           this.common.router.navigate(['/landing']);
           this.common.presentToast('You are successfully Logged out from the iMatch');
         }

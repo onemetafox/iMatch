@@ -60,13 +60,11 @@ export class ChatMessagePage implements OnInit {
     this.message = this.MessageForm.controls['message'];
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
     this.common.route.queryParams.subscribe(resp => {
       this.chatDetails = resp;
-      console.log('chatDetails:',this.chatDetails);
   });
 
   // this.interval = setInterval(() => {
@@ -83,15 +81,12 @@ export class ChatMessagePage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered into Chat Message Page');
 
       let params = {
         loggeduserid : this.chatDetails.OpponentId,
         chatuserid : this.chatDetails.userid,
       }
-      console.log('params:',params);
       this.common.postMethod('GetDetailChat',params).then((res:any) => {
-        console.log('res:',res);
         this.chatMessage = res.details;
         if (res.details > res.details[5]) {
           this.content.scrollToBottom(1500);
@@ -106,23 +101,18 @@ export class ChatMessagePage implements OnInit {
 
   ionViewWillLeave(){
    clearInterval(this.interval);
-   console.log('Chat Message Page Leaved');
   }
 
   ChattedUsers() {
     let params = {
       userid: this.userDetails.userid,
     }
-    console.log('params:',params);
     this.common.postMethod('GetChat',params).then((res:any) => {
-      console.log('res:',res);
       this.ChattedUser = res.details;
     });
   }
 
   toViewNextChat(event,ChattedUser) {
-    console.log('Next User Clicked');
-    console.log('ChattedUser:',ChattedUser);
     if(ChattedUser != undefined) {
       this.common.navCtrl.navigateForward(['chat-message'], {queryParams: ChattedUser});
     } else {
@@ -136,7 +126,6 @@ export class ChatMessagePage implements OnInit {
   }
 
   onChange(e) {
-    console.log('onChange:',e);
 
     // if (e.key=='Backspace') {
     //   this.isTyping = false;
@@ -148,16 +137,13 @@ export class ChatMessagePage implements OnInit {
   }
 
   chatSubmit() {
-    console.log('Chat Submit Button Clicked');
     this.FormSubmit = true;
     let params  = {
       userid_from : this.userDetails.userid,
       userid_to : this.chatDetails.userid,
       message : this.userMessage.message,
     }
-    console.log('params',params);
     this.common.postMethod('Chat',params).then((res:any) => {
-      console.log('res:',res);
       if(res.status == true) {
         setTimeout(() => {
         this.content.scrollToBottom(1500);
@@ -170,59 +156,39 @@ export class ChatMessagePage implements OnInit {
   }
 
   ClickedOnImage(e, message, i) {
-    console.log('Image:', message, message.filename, i, this.chatDetails.name);
     this.photoView.show(message.filename, this.chatDetails.name, {share: false});
   }
 
   showEnlargedView() {
     this.showPlusView = !this.showPlusView;
-    console.log('showPlusView:',this.showPlusView);
-  }
-
-  toShareFile() {
-    console.log('toShareFile clicked');
   }
 
   toShareAttachment() {
-    console.log('toShareAttachment clicked');
-
     let file: any;
 
-      this.fileChooser.open()
-        .then(uri => {
-          console.log('uri:',uri);
+    this.fileChooser.open()
+      .then(uri => {
 
-    this.filePath.resolveNativePath(uri)
-      .then(filePath => {
-        console.log('filePath:',filePath);
-          let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
+        this.filePath.resolveNativePath(uri)
+          .then(filePath => {
+            let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
             let currentName = uri.substring(uri.lastIndexOf('/') + 1, uri.lastIndexOf('?'));
-
-      console.log('currentName:',currentName);
-      console.log('fileNameFromPath:',fileNameFromPath);
-
-
-      file = {
-        name: fileNameFromPath,
-        fullPath: filePath
-      };
-
-      this.uploadFile(file, 'file');
+            file = {
+              name: fileNameFromPath,
+              fullPath: filePath
+            };
+            this.uploadFile(file, 'file');
+          })
+          .catch(err => console.log(err));
     })
-    .catch(err => console.log(err));
-
-  })
-  .catch(e => console.log(e));
+    .catch(e => console.log(e));
   }
 
   toShareImage() {
-    console.log('toShareImage clicked');
-
     const options: CaptureImageOptions = { limit: 1};
     this.mediaCapture.captureImage(options)
       .then(
         (data: MediaFile[]) => {
-          console.log('data[0]:',data[0]);
           this.uploadFile(data[0], 'image');
         },
         (err: CaptureError) => console.error(err)
@@ -230,21 +196,14 @@ export class ChatMessagePage implements OnInit {
   }
 
   toShareAudio() {
-    console.log('toShareAudio clicked');
-
     const options: CaptureAudioOptions = { limit: 1};
     this.mediaCapture.captureAudio(options)
       .then(
         (data: MediaFile[]) => {
-          console.log('data[0]:',data[0]);
           this.uploadFile(data[0], 'audio');
         },
         (err: CaptureError) => console.error(err)
       );
-  }
-
-  toShareContact() {
-    console.log('toShareContact clicked');
   }
 
   uploadFile(file:any, type: string) {
@@ -267,7 +226,6 @@ export class ChatMessagePage implements OnInit {
       }
    };
 
-   console.log('options:',options);
 
     let filePath: any;
     if (type !== 'audio') {
@@ -283,19 +241,10 @@ export class ChatMessagePage implements OnInit {
     fileTransfer.onProgress((e) =>
     {
       let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
-      console.log("progress:"+prg+'%');
-
-      if (prg===100) {
-        console.log('Upload completed');
-      } else {
-        console.log('file is uploading');
-      }
-
     });
 
     fileTransfer.upload(filePath, fileUplaodUrl, options)
       .then((data) => {
-        console.log('File Transfer Success:', data);
         // this.FileTransferResponse = data;
       }, (err) => {
         console.log('File Transfer Error:', err);

@@ -34,7 +34,6 @@ export class GoodiesPage implements OnInit {
   ) { 
 
     this.storageservice.storage.get('userDetails').then((val) => {
-      console.log('Storage Value of userDetails:', val);
       this.userDetails = val;
     });
 
@@ -44,8 +43,6 @@ export class GoodiesPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   console.log('Entered Into Goodies Of The Moment Page');
-
    this.storageservice.storage.get('userDetails').then((val) => {
     this.userDetails = val;
   });
@@ -53,9 +50,7 @@ export class GoodiesPage implements OnInit {
    let params = {
      userid : this.userDetails.userid,
    }
-   console.log('params:',params);
    this.common.postMethod('winners_of_the_moment',params).then((res:any) => {
-     console.log('res:',res);
      this.WinnerDetails = res.details;
    });
   }
