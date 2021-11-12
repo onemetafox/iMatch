@@ -228,29 +228,6 @@ export class BeforeMatchInvitationPage implements OnInit {
       this.anArray.push({'value':'', 'type': type, position: position});
     }
   }
-  takePicture(sourceType: PictureSourceType) {
-    var options: CameraOptions = {
-        quality: 100,
-        sourceType: sourceType,
-        saveToPhotoAlbum: false,
-        correctOrientation: true
-    };
- 
-    this.camera.getPicture(options).then(imagePath => {
-        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-            this.filePath.resolveNativePath(imagePath)
-                .then(filePath => {
-                    let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                    let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                    // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-                });
-        } else {
-            var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-            var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-            // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-        }
-    });
-  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       cssClass: 'my-custom-class',
@@ -285,7 +262,7 @@ export class BeforeMatchInvitationPage implements OnInit {
           text: 'Capture Image',
           icon: 'camera',
             handler: () => {
-              this.takePicture(this.camera.PictureSourceType.CAMERA);
+              this.captureImage()
           }
         },
 
@@ -293,7 +270,7 @@ export class BeforeMatchInvitationPage implements OnInit {
           text: 'Capture Video',
           icon: 'videocam',
             handler: () => {
-              this.takePicture(this.camera.PictureSourceType.CAMERA);
+              this.captureVideo()
           }
         },
 
