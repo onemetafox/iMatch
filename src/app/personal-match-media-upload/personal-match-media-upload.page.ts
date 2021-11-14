@@ -73,6 +73,9 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   isCaptureImage: boolean = false;
   FolderClicked: boolean = false;
   CaptureClicked: boolean = false;
+  filesPath: any;
+  filesType: any;
+  filesName: any;
 
   constructor(
     public common: CommonService,
@@ -88,7 +91,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     private platform: Platform,
     private storage: Storage,
     private webview : WebView,
-    private file: File
+    private file: File,
   ) {
 
     this.Invitation = formbuilder.group({
@@ -271,6 +274,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
       this.LinkInputForm.reset();
     }
   }
+
   SendWordings() {
     this.isWordings = true;
     this.hideImageSpace = false;
@@ -332,23 +336,42 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     this.hideImageSpace = false;
   }
 
-  PickDocuments() {
-    let file: any;
-
-    this.fileChooser.open()
-    .then((fileData)=>{
-      file = {
-        name: fileData.substr(fileData.lastIndexOf('/') + 1),
-      }
-      // this.base64.encodeFile(fileData).then((base64File:string) => {        
-      //   file.data.push(base64File.substr(base64File.indexOf(',') + 1));
-      // }, (err) => {
-      //   console.log(err);
-      // });
-      this.fileArray.push(file);
-    })
-    .catch(e => console.log(e));
-
+  async PickDocuments() {
+    await this.fileChooser.open().then(uri => {
+      this.filePath.resolveNativePath(uri).then(filePath => {
+        this.filesPath = filePath;
+        this.filesName   = this.filesPath.substring(this.filesPath.lastIndexOf("/") + 1);
+        this.filesType   = this.filesName.substring(this.filesName.lastIndexOf(".") + 1);
+        this.Add('file');
+        this.fileArray.push({
+          name: this.filesName,
+          type: this.filesType,
+          uri: uri
+        })
+        // this.file.resolveLocalFilesystemUrl(filePath).then(fileInfo => {
+        //   let files = fileInfo as FileEntry;
+        //   files.file(success => {
+        //     this.filesType   = success.type;
+        //     this.filesName  = success.name;
+        //     this.fileArray.push({
+        //       name: this.filesName,
+        //       type: this.filesType,
+        //       uri: uri
+        //     })
+        //     this.Add('file');
+        //   });
+        // },err => {
+        //   console.log(err);
+        //   throw err;
+        // });
+      },err => {
+        console.log(err);
+        throw err;
+      });
+    },err => {
+      console.log(err);
+      throw err;
+    });
   }
   fileChangeEvent(e, type) {
     if (type==='folder') {
@@ -446,9 +469,24 @@ export class PersonalMatchMediaUploadPage implements OnInit {
   submit() {
     if(this.anArray.length >= 2) {
       const formData = new FormData();
-      for( let i=0;i<this.myFiles.length; i++) 
+      for( let i=0;i<this.fileArray.length; i++) 
       {
-        formData.append("filename[]",this.myFiles[i]);
+        this.filePath.resolveNativePath(this.fileArray[i].uri).then(filePath => {
+          this.filesPath = filePath;
+          
+          this.file.resolveLocalFilesystemUrl(filePath).then(fileInfo => {
+            let files = fileInfo as FileEntry;
+            files.file(success => {
+              formData.append('filename[]', success);
+            });
+          },err => {
+            console.log(err);
+            throw err;
+          });
+        },err => {
+          console.log(err);
+          throw err;
+        });
       }
       formData.append("caption", this.userData.caption);
       formData.append("userid", this.userDetails.userid);
@@ -471,7 +509,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         console.log('err',err);
       });
     }else if(this.anArray.length < 2){
-      this.common.showAlert("Maximum media is 2");
+      this.common.showAlert("Maximum media more than 2");
     }
   }
 

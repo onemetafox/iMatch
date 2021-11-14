@@ -3,7 +3,7 @@
     <name>iMatch</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -101,6 +101,8 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-filechooser" spec="^1.2.0" />
     <plugin name="com-badrit-base64" spec="^0.2.0" />
+    <plugin name="cordova-plugin-filepath" spec="1.6.0" />
+    <plugin name="cordova-plugin-file" spec="6.0.2" />
     <hook src="hooks/after_prepare/uglify.js" type="after_prepare" />
     <allow-navigation href="http://localhost:8100" sessionid="7439703e" />
     <allow-navigation href="http://localhost:8101" sessionid="a0dd3e62" />
