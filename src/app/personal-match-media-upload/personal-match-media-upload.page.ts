@@ -10,7 +10,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { File, FileEntry } from '@ionic-native/File/ngx'
-import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import * as BaseConfig from '../services/config';
 import { Camera, CameraOptions, PictureSourceType  } from '@ionic-native/camera/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
@@ -293,41 +293,52 @@ export class PersonalMatchMediaUploadPage implements OnInit {
 
   CaptureImage() {
     this.isCaptureImage = true;
-    const options: CaptureImageOptions = { limit: 2 };
+    const options: CaptureImageOptions = { limit: 1 };
     this.mediaCapture.captureImage(options)
       .then(
-        (data: MediaFile[]) => {
-          this.MediaFiles[0] = data[0].name;
-          this.MediaFiles[1] = data[1].name;
-          for (let i=0; i<this.MediaFiles.length; i++) {
-            this.myFiles.push(this.MediaFiles[i]);
-          }
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'jpg'
+          })
         },
         (err: CaptureError) => console.error(err)
       );
   }
 
   CaptureVideo() {
-    const options: CaptureImageOptions = { limit: 2 };
+    const options: CaptureVideoOptions = { limit: 1, duration:120, quality: 80 };
     this.mediaCapture.captureVideo(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.uploadFile2(data[0], 'video');
-      },
-      (err: CaptureError) => console.error(err)
-    );
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp4'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
 
   }
 
   CaptureAudio() {
-    const options: CaptureImageOptions = { limit: 2 };
+    const options: CaptureAudioOptions = { limit: 1 };
     this.mediaCapture.captureAudio(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.uploadFile2(data[0], 'audio');
-      },
-      (err: CaptureError) => console.error(err)
-    );
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp3'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
 
   }
 
@@ -346,7 +357,8 @@ export class PersonalMatchMediaUploadPage implements OnInit {
         this.fileArray.push({
           name: this.filesName,
           type: this.filesType,
-          uri: uri
+          uri: uri,
+          filePath: filePath
         })
         // this.file.resolveLocalFilesystemUrl(filePath).then(fileInfo => {
         //   let files = fileInfo as FileEntry;
@@ -466,37 +478,78 @@ export class PersonalMatchMediaUploadPage implements OnInit {
       }
     }
 
-  submit() {
+  async submit() {
     if(this.anArray.length >= 2) {
       const formData = new FormData();
-      for( let i=0;i<this.fileArray.length; i++) 
-      {
-        this.filePath.resolveNativePath(this.fileArray[i].uri).then(filePath => {
-          this.filesPath = filePath;
-          
-          this.file.resolveLocalFilesystemUrl(filePath).then(fileInfo => {
-            let files = fileInfo as FileEntry;
-            files.file(success => {
-              formData.append('filename[]', success);
-            });
-          },err => {
-            console.log(err);
-            throw err;
-          });
-        },err => {
-          console.log(err);
-          throw err;
-        });
-      }
+      // for( let i=0;i<this.fileArray.length; i++) 
+      // {
+      //   this.filePath.resolveNativePath(this.fileArray[i].uri).then(filePath => {
+      //     this.filesPath = filePath;
+      //     var fileName = this.fileArray[i].name;
+      //     this.file.resolveLocalFilesystemUrl(filePath).then(fileInfo => {
+      //       let files = fileInfo as FileEntry;
+      //       files.file(success => {
+      //         // console.log('now i have a file ob');
+      //         console.dir(JSON.stringify(success));
+      //         // var reader = new FileReader();
+      //         // reader.onloadend = function(e) {
+      //         //   var imgBlob = new Blob([this.result], { type:success.type});
+      //         //   console.dir("blob--------------------------" + imgBlob);
+      //         //   formData.append('filename[]', imgBlob, fileName);
+      //         // };
+      //         // reader.readAsArrayBuffer(success);
+              
+      //         formData.append('filename', success);
+      //       });
+      //     },err => {
+      //       console.log(err);
+      //       throw err;
+      //     });
+      //   },err => {
+      //     console.log(err);
+      //     throw err;
+      //   });
+      // }
       formData.append("caption", this.userData.caption);
       formData.append("userid", this.userDetails.userid);
       formData.append("sub_caption", JSON.stringify(this.anArray));
       formData.append("links", JSON.stringify(this.linkArray));
       formData.append("texts", JSON.stringify(this.wordArray));
-      this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
+      await this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/create_personalmatch',formData 
       ).subscribe((res) => {
-        if (res['message']==='Successfully uploaded') {
-          this.Invitation.reset();
+        if (res['status']) {
+          var matchid = res['matchid'];
+          this.fileArray.forEach(item => {
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            fileTransfer.onProgress((e) =>
+            {
+              let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
+              this.common.presentToast('Uploaded ' + prg + '% of file');
+            });
+            let options: FileUploadOptions = {
+              fileKey: 'matchfile',
+              fileName: item.name,
+              httpMethod: 'POST',
+              mimeType: 'multipart/form-data',
+              chunkedMode: false,
+              params: {
+                match_id: matchid,
+                userid: this.userDetails.userid
+              },
+              headers: {
+                Connection: 'close'
+              }
+            }
+            fileTransfer.upload(item.filePath, BaseConfig.baseUrl + 'iMatch/api/v1/MatchFileUpload', options)
+              .then((data) => {
+                console.dir('*****************' + data);
+
+              }, (err) => {
+                console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+
+            });
+          });
+          
           this.common.presentToast('File Uploaded Successful');
           this.common.router.navigate(['tabs/tab6']);
           this.common.hideLoader();
@@ -505,6 +558,7 @@ export class PersonalMatchMediaUploadPage implements OnInit {
           this.common.presentToast('File Upload Failed !!!');
         }
       }, err => {
+        console.dir("*****************err", JSON.stringify(err));
         this.common.hideLoader();
         console.log('err',err);
       });

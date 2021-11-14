@@ -138,7 +138,9 @@
             "cordova-plugin-filechooser": {},
             "com-badrit-base64": {},
             "cordova-plugin-filepath": {},
-            "cordova-plugin-file": {}
+            "cordova-plugin-file": {},
+            "cordova-plugin-file-transfer": {},
+            "cordova-plugin-media-capture": {}
         },
         "platforms": [
             "ios",
