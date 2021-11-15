@@ -26,7 +26,6 @@
         "@capacitor/core": "2.1.2",
         "@ionic-native/action-sheet": "^5.28.0",
         "@ionic-native/android-permissions": "^5.31.1",
-        "@ionic-native/base64": "^4.20.0",
         "@ionic-native/camera": "^5.36.0",
         "@ionic-native/chooser": "^5.36.0",
         "@ionic-native/core": "^5.0.7",
@@ -62,7 +61,7 @@
         "cordova-plugin-facebook4": "^6.4.0",
         "cordova-plugin-file-transfer": "^1.7.1",
         "cordova-plugin-filechooser": "^1.2.0",
-        "cordova-plugin-filepath": "^1.5.8",
+        "cordova-plugin-filepath": "^1.6.0",
         "cordova-plugin-filepicker": "^1.1.6",
         "cordova-plugin-geolocation": "^4.1.0",
         "cordova-plugin-googleplus": "^8.5.0",
@@ -136,8 +135,11 @@
             "com-sarriaroman-photoviewer": {},
             "cordova-plugin-ionic-webview": {},
             "cordova-plugin-filechooser": {},
-            "cordova-plugin-media-capture": {},
-            "cordova-plugin-file": {}
+            "com-badrit-base64": {},
+            "cordova-plugin-filepath": {},
+            "cordova-plugin-file": {},
+            "cordova-plugin-file-transfer": {},
+            "cordova-plugin-media-capture": {}
         },
         "platforms": [
             "ios",
