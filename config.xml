@@ -100,4 +100,5 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-media-capture" spec="^3.0.3" />
     <plugin name="cordova-plugin-file" spec="^6.0.2" />
+    <allow-navigation href="http://localhost:8100" sessionid="7169954d" />
 </widget>
