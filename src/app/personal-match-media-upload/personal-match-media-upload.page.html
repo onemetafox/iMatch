@@ -18,7 +18,7 @@
       <div style="background-color: #444446; margin-top: -5%; padding: 20px 10px 10px 10px; border-right: 1px solid #e0e0e0; text-align: center;">
         <div *ngFor="let att of this.anArray; let idx = index">
           <div *ngIf="att.type=='file'">
-            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{this.myFiles[att.position].name}} </p>
+            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{this.fileArray[att.position].name}} </p>
           </div>
           <div *ngIf="att.type=='text'">
             <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" class="input-field"></ion-input>  
@@ -26,7 +26,7 @@
           <div *ngIf="att.type=='link'">
             <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" class="input-field"></ion-input>  
           </div>
-          <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" class="input-field"></ion-input>
+          <!--<ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" class="input-field"></ion-input> -->
         </div>
         <div *ngIf="hideImageSpace==true">
           <form [formGroup]="Invitation">
@@ -38,9 +38,11 @@
               <ion-chip   (click)="PickDocuments()" style="background-color: #f44336; display: inline-block;justify-content: center; flex-wrap: nowrap;">Select File</ion-chip>
               <ion-chip   (click)="CaptureImage()" style="background-color: #9c27b0; display: inline-block;  flex-wrap: nowrap;">Capture Image</ion-chip>
 
-              <ion-chip (click)="CaptureVideo()" style="background-color: #3f51b5; display: inline-block; flex-wrap: nowrap;">Capture Video</ion-chip>
+                <!-- <ion-icon name="videocam"></ion-icon> -->
+                <ion-chip   (click)="CaptureVideo()" style="background-color: #3f51b5; display: inline-block;  flex-wrap: nowrap;">Capture Video</ion-chip>
+                <!-- <ion-label>Capture Video</ion-label> -->
 
-              <ion-chip (click)="CaptureAudio()" style="background-color: #2196f3; display: inline-block; flex-wrap: nowrap;">Capture Audio</ion-chip>
+                <ion-chip   (click)="CaptureAudio()" style="background-color: #2196f3; display: inline-block;  flex-wrap: nowrap;">Capture Audio</ion-chip>
 
               <ion-chip style="background-color: #009688;" (click)="toShowLinkInputFiled()">
                 <ion-label>Share Links</ion-label>

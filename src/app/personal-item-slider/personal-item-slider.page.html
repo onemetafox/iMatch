@@ -22,7 +22,7 @@
             <div *ngIf="item.media_type==='link'">
               <a [href]="item.media">{{item.media}}</a>
             </div>
-            <video *ngIf="item.media_type==='video'" [src]="item.media" controls ></video>
+            <video style="width: 100%;" *ngIf="item.media_type==='video'" [src]="item.media" controls ></video>
             <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls ></audio>
           </div>
         </ion-slide>

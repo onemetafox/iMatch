@@ -10,7 +10,7 @@
 
 <ion-content>
 
-  <!-- <div class="top-icons-container">
+  <div class="top-icons-container">
     <ion-row>
       <ion-col class="col-icon" (click)="IconCategorize('image')">
         <img src="../../assets/icon/img.png" alt="" style="height: 17px;width: 15px;">
@@ -32,7 +32,7 @@
         <img src="../../assets/icon/link.png" alt="" style="height: 17px;width: 15px;">
       </ion-col>
     </ion-row>
-  </div> -->
+  </div>
 
   <ion-slides pager="true" #slides style="padding: 15px;">
 
@@ -78,9 +78,9 @@
                     
                     <ion-textarea  class="media-container-2" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[1].media}}</ion-textarea>
 
-                    <video  class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></video>
+                    <video  class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].media" controls (click)="imageSlide(match)"></video>
 
-                    <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls(click)="imageSlide(match)" ></audio>
+                    <audio  class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].media" controls(click)="imageSlide(match)" ></audio>
 
                     <div  class="media-container-2" *ngIf="match.compare_data[1].media_type==='link'" (click)="imageSlide(match)">
                       <a [href]="match.compare_data[1].media">{{match.compare_data[1].media}}</a>
@@ -136,9 +136,9 @@
                     
                     <ion-textarea class = "media-container-3" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[1].media}}</ion-textarea>
 
-                    <video class = "media-container-3" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></video>
+                    <video class = "media-container-3" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].media" controls (click)="imageSlide(match)"></video>
 
-                    <audio class = "media-container-3" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></audio>
+                    <audio class = "media-container-3" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].media" controls (click)="imageSlide(match)"></audio>
 
                     <div class = "media-container-3" *ngIf="match.compare_data[1].media_type==='link'" (click)="imageSlide(match)">
                       <a [href]="match.compare_data[1].media">{{match.compare_data[1].media}}</a>
@@ -222,9 +222,9 @@
                     
                     <ion-textarea class="media-container-2" *ngIf="match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[1].media}}</ion-textarea>
 
-                    <video class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></video>
+                    <video class="media-container-2" *ngIf="match.compare_data[1].media_type==='video'" [src]="match.compare_data[1].media" controls (click)="imageSlide(match)"></video>
 
-                    <audio class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].image" controls (click)="imageSlide(match)"></audio>
+                    <audio class="media-container-2" *ngIf="match.compare_data[1].media_type==='audio'" [src]="match.compare_data[1].media" controls (click)="imageSlide(match)"></audio>
                     <div *ngIf="match.compare_data[1].media_type==='link'" class="media-container-2" (click)="imageSlide(match)">
                       <a [href]="match.compare_data[1].media">{{match.compare_data[1].media}}</a>
                     </div>
@@ -276,9 +276,9 @@
                     
                     <ion-textarea class="media-container-2" *ngIf="match.compare_data[3].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{match.compare_data[3].media}}</ion-textarea>
 
-                    <video class="media-container-2" *ngIf="match.compare_data[3].media_type==='video'" [src]="match.compare_data[3].image" controls (click)="imageSlide(match)"></video>
+                    <video class="media-container-2" *ngIf="match.compare_data[3].media_type==='video'" [src]="match.compare_data[3].media" controls (click)="imageSlide(match)"></video>
 
-                    <audio class="media-container-2" *ngIf="match.compare_data[3].media_type==='audio'" [src]="match.compare_data[3].image" controls (click)="imageSlide(match)"></audio>
+                    <audio class="media-container-2" *ngIf="match.compare_data[3].media_type==='audio'" [src]="match.compare_data[3].media" controls (click)="imageSlide(match)"></audio>
 
                     <div *ngIf="match.compare_data[3].media_type==='link'" class="media-container-2" (click)="imageSlide(match)">
                       <a [href]="match.compare_data[3].media">{{match.compare_data[3].media}}</a>
@@ -301,14 +301,16 @@
           </div>
       
           <div>
-      
             <div style="position: relative; bottom: 6%; margin-top: 30px;">
+              <div style="font-size: 14px; margin: 0px; font-weight: 600; position: relative; display:flex; justify-content: center;" (click)="imageSlide(match)">
+                <p style=" border:1px solid #ada6a6; padding:10px; border-radius: 10px" >More detail</p>
+              </div>
+              
               <img [src]="match.compare_data[0].profile" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="border-radius: 50%; height: 40px; width: 40px; border: 1px solid;">
               <p style=" font-size: 14px; margin: 0px; font-weight: 600; position: relative;">{{match.compare_data[0].name}}</p>
       
               <h3> {{match.caption}} </h3>
             </div>
-      
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr">
             <div style="position: relative; margin-top: 40px; background-color: white; width: 35px; height: 35px; border-radius: 50%; box-shadow: 0.5px 0.5px 9px 3px grey;">
@@ -376,9 +378,9 @@
                     
                     <ion-textarea class="media-container-3" *ngIf="item.medias[0].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)">{{item.medias[0].media}}</ion-textarea>
 
-                    <video class="media-container-3" *ngIf="item.medias[0].media_type==='video'" [src]="item.medias[0].image" controls (click)="imageSlide(match)"></video>
+                    <video class="media-container-3" *ngIf="item.medias[0].media_type==='video'" [src]="item.medias[0].media" controls (click)="imageSlide(match)"></video>
 
-                    <audio class="media-container-3" *ngIf="item.medias[0].media_type==='audio'" [src]="item.medias[0].image" controls (click)="imageSlide(match)"></audio>
+                    <audio class="media-container-3" *ngIf="item.medias[0].media_type==='audio'" [src]="item.medias[0].media" controls (click)="imageSlide(match)"></audio>
                     <div *ngIf="item.medias[0].media_type==='link'" class="media-container-3" (click)="imageSlide(match)">
                       <a [href]="item.medias[0].media">{{item.medias[0].media}}</a>
                     </div>
@@ -407,8 +409,8 @@
                     <img class="media-container-2" *ngIf="item.medias[2].media_type==='image'" [src]="item.medias[2].media" (click)="imageSlide(match)">
                     
                     <ion-textarea *ngIf="item.medias[2].media_type==='text'" readonly class="text-match-style" autoGrow (click)="imageSlide(match)" style="margin-top:0px;width: 120px;min-height: 90px; border-radius: 7px;">{{item.medias[2].media}}</ion-textarea>
-                    <video *ngIf="item.medias[2].media_type==='video'" [src]="item.medias[2].image" controls class="media-container-3" (click)="imageSlide(match)"></video>
-                    <audio *ngIf="item.medias[2].media_type==='audio'" [src]="item.medias[2].image" controls class="media-container-3" (click)="imageSlide(match)"></audio>
+                    <video *ngIf="item.medias[2].media_type==='video'" [src]="item.medias[2].media" controls class="media-container-3" (click)="imageSlide(match)"></video>
+                    <audio *ngIf="item.medias[2].media_type==='audio'" [src]="item.medias[2].media" controls class="media-container-3" (click)="imageSlide(match)"></audio>
                     <div *ngIf="item.medias[2].media_type==='link'" class="media-container-3" (click)="imageSlide(match)">
                       <a [href]="item.medias[2].media">{{item.medias[2].media}}</a>
                     </div>
