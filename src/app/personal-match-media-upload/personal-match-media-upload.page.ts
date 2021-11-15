@@ -175,33 +175,6 @@ export class PersonalMatchMediaUploadPage implements OnInit {
     });
   }
 
-  takePicture() {
-    const sourceType = this.camera.PictureSourceType.CAMERA;
-    const options: CameraOptions = {
-      quality: 100,
-      // destinationType: this.camera.DestinationType.FILE_URI,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-    this.camera.getPicture(options).then((imagePath) => {
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-            .then(filePath => {
-                let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-            });
-      } else {
-          var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-          var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-          // this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-      }
-    }, (err) => {
-      this.common.presentToast(err);
-      console.log("Camera issue:" + err);
-    });
-  }
   Add(type){
     if(this.anArray.length >= 4){
       this.common.showAlert('Maximum is 4 items');

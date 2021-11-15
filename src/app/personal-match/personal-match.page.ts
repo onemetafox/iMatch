@@ -1178,7 +1178,8 @@ export class PopoverComponent {
             text: 'Capture Image',
             icon: 'camera',
             handler: () => {
-              this.takePicture(this.camera.PictureSourceType.CAMERA);
+              this.CaptureImage()
+              // this.takePicture(this.camera.PictureSourceType.CAMERA);
             }
           }, 
 
@@ -1187,7 +1188,8 @@ export class PopoverComponent {
           icon: 'videocam',
 
           handler: () => {
-            this.takePicture(this.camera.PictureSourceType.CAMERA);
+            this.CaptureVideo()
+            // this.takePicture(this.camera.PictureSourceType.CAMERA);
           }
         },
 
