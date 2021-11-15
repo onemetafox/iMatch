@@ -132,6 +132,7 @@ export class PersonalMatchPage implements OnInit {
     //   animated: false
     // });
     // return await popover.present();
+    console.log(match);
     this.common.router.navigate(['/personal-item-slider'], {queryParams: {match: JSON.stringify(match)}});
   }
 
@@ -982,13 +983,15 @@ export class PopoverComponent {
             <ion-input [(ngModel)]="closedMatchCaption" placeholder="Enter Caption" autocapitalize="true" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
             
             <div *ngFor="let att of this.anArray; let idx = index">
+              <div *ngIf="att.type=='file'">
+                <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{this.fileArray[att.position].name}} </p>
+              </div>
               <div *ngIf="att.type=='text'">
                 <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
               </div>
               <div *ngIf="att.type=='link'">
                 <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>  
               </div>
-              <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" style="border: 2px solid grey; border-radius: 5px; margin-bottom: 15px; background: lightgrey;"></ion-input>
             </div>
             
             <img src="../../assets/icon/bg2new.png" style="height: 100px; width: 100px; border-radius: 10px; position: relative; left: 5px" (click)="presentActionSheet()">
@@ -1130,6 +1133,15 @@ export class PopoverComponent {
       }
       this.anArray.push({'value':'', 'type': type, position: position});
     }
+    if(type == 'file'){
+      let position = 0;
+      for(let i = 0; i < this.anArray.length; i++){
+        if(this.anArray[i].type == 'file'){
+          position++;
+        }
+      }
+      this.anArray.push({'value':'', 'type': type, position: position});
+    }
   }
   takePicture(sourceType: PictureSourceType) {
     var options: CameraOptions = {
@@ -1211,7 +1223,6 @@ export class PopoverComponent {
           text: 'Other Files',
           icon: 'folder-open',
           handler: () => {
-            this.anArray.push({value: '', type: 'file'});
             this.PickDocuments();
           }
           },
@@ -1442,8 +1453,44 @@ export class PopoverComponent {
 
     this.common.postMethod('create_closedmatch',params).then(async (res:any) => {
       if (res.status === true) {
-        this.common.presentToast(' Your closed match invitaion send successfully ');
-        this.popoverController.dismiss();
+        // this.common.presentToast(' Your closed match invitaion send successfully ');
+        // this.popoverController.dismiss();
+        var matchid = res['matchid'];
+          this.fileArray.forEach(item => {
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            fileTransfer.onProgress((e) =>
+            {
+              let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
+              this.common.presentToast('Uploaded ' + prg + '% of file');
+            });
+            let options: FileUploadOptions = {
+              fileKey: 'matchfile',
+              fileName: item.name,
+              httpMethod: 'POST',
+              mimeType: 'multipart/form-data',
+              chunkedMode: false,
+              params: {
+                match_id: matchid,
+                userid: this.userDetails.userid
+              },
+              headers: {
+                Connection: 'close'
+              }
+            }
+            fileTransfer.upload(item.filePath, BaseConfig.baseUrl + 'iMatch/api/v1/MatchFileUpload', options)
+              .then((data) => {
+                console.dir('*****************' + data);
+
+              }, (err) => {
+                console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+
+            });
+          });
+          
+          this.common.presentToast('File Uploaded Successful');
+          this.common.presentToast(' Your closed match invitaion send successfully ');
+          this.popoverController.dismiss();
+          this.common.hideLoader();
       } else {
         this.common.presentToast(' Your closed match invitaion sending failed ');
       }

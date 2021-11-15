@@ -58,7 +58,7 @@ export class PersonalItemSlider implements OnInit {
           {
             isBeginningSlide: true,
             isEndSlide: true,
-            slidesItems: this.PersonalMatch.compare_data
+            slidesItems: this.PersonalMatch
           };
 
   }

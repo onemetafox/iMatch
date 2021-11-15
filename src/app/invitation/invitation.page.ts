@@ -27,10 +27,13 @@ export class InvitationPage implements OnInit {
   // hideImageSpace: boolean = true;
   hideImageSpace: {[key: number]: boolean} = {};
 
-  anArray: any = [];
-  wordArray: any = [];
-  linkArray: any = [];
-  myFiles: any = [];
+  anArray: any [] [] = [];
+  wordArray: any [] [] = [];
+  linkArray: any [] [] = [];
+  fileArray: any [] []= [];
+  filesName: any;
+  filesType: any;
+  filesPath: any;
 
   userDetails: any = [];
   invitationDetails: any = [];
@@ -111,6 +114,10 @@ export class InvitationPage implements OnInit {
       this.MatchFiles = res.details.files;
       for (let i = 0; i < this.invitationDetails.length; i++) {
           this.hideImageSpace[i] = true;
+          this.anArray[i] = [];
+          this.fileArray[i] = [];
+          this.wordArray[i] = [];
+          this.linkArray[i] = [];
       }
       await this.common.hideLoader();
 
@@ -127,37 +134,37 @@ export class InvitationPage implements OnInit {
 
   }
 
-  Add(type){
-    if(this.anArray.length >= 4){
+  Add(type, k){
+    if(this.anArray[k].length >= 4){
       this.common.showAlert('Maximum is 4 items');
       return;
     }
     if(type == 'link'){
       let position = 0;
-      for(let i = 0; i < this.anArray.length; i++){
-        if(this.anArray[i].type == 'link'){
+      for(let i = 0; i < this.anArray[k].length; i++){
+        if(this.anArray[k][i].type == 'link'){
           position++;
         }
       }
-      this.anArray.push({'value':'', 'type': type, position: position});
+      this.anArray[k].push({'value':'', 'type': type, position: position});
     }
     if(type == 'file'){
       let position = 0;
-      for(let i = 0; i < this.anArray.length; i++){
-        if(this.anArray[i].type == 'file'){
+      for(let i = 0; i < this.anArray[k].length; i++){
+        if(this.anArray[k][i].type == 'file'){
           position++;
         }
       }
-      this.anArray.push({'value':'', 'type': type, position: position});
+      this.anArray[k].push({'value':'', 'type': type, position: position});
     }
     if(type == 'text'){
       let position = 0;
-      for(let i = 0; i < this.anArray.length; i++){
-        if(this.anArray[i].type == 'text'){
+      for(let i = 0; i < this.anArray[k].length; i++){
+        if(this.anArray[k][i].type == 'text'){
           position++;
         }
       }
-      this.anArray.push({'value':'', 'type': type, position: position});
+      this.anArray[k].push({'value':'', 'type': type, position: position});
     }
     
   }
@@ -203,35 +210,61 @@ export class InvitationPage implements OnInit {
     }
     this.common.postMethod('AllInvitation',params).then((res:any) => {
       this.invitationDetails = res.details;
+      
     }, err => {
       console.log('Error:',err);
     });
   }
 
   acceptInvitation(e, invite, i) {
-    if(this.anArray.length > 0){
+    if(this.anArray[i].length > 0){
       this.common.showLoader();
       const formData = new FormData();
-      for( let i=0;i<this.myFiles.length; i++) 
-      {
-        formData.append("filename[]",this.myFiles[i]);
-      }
       formData.append("matchid", invite.match_id);
       formData.append("userid", this.userDetails.userid);
-      formData.append("sub_caption", JSON.stringify(this.anArray));
-      formData.append("links", JSON.stringify(this.linkArray));
-      formData.append("texts", JSON.stringify(this.wordArray));
+      formData.append("sub_caption", JSON.stringify(this.anArray[i]));
+      formData.append("links", JSON.stringify(this.linkArray[i]));
+      formData.append("texts", JSON.stringify(this.wordArray[i]));
       this.http.post(BaseConfig.baseUrl + 'iMatch/api/v1/acceptInvitation',formData 
       ).subscribe((res) => {
-        if (res['message']==='Successfully uploaded') {
-          // this.common.presentToast('File Uploaded Successful');
+        console.dir("---------------------------------", res);
+        var matchid = res['matchid'];
+          this.fileArray[i].forEach(item => {
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            fileTransfer.onProgress((e) =>
+            {
+              let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
+              this.common.presentToast('Uploaded ' + prg + '% of file');
+            });
+            let options: FileUploadOptions = {
+              fileKey: 'matchfile',
+              fileName: item.name,
+              httpMethod: 'POST',
+              mimeType: 'multipart/form-data',
+              chunkedMode: false,
+              params: {
+                match_id: matchid,
+                userid: this.userDetails.userid
+              },
+              headers: {
+                Connection: 'close'
+              }
+            }
+            fileTransfer.upload(item.filePath, BaseConfig.baseUrl + 'iMatch/api/v1/MatchFileUpload', options)
+              .then((data) => {
+                console.dir('*****************' + data);
+
+              }, (err) => {
+                console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+
+            });
+          });
+          
+          this.common.presentToast('File Uploaded Successful');
           this.common.router.navigate(['tabs/tab6']);
           this.common.hideLoader();
-        } else {
-          this.common.router.navigate(['tabs/tab6']);
-          this.common.hideLoader();
-        }
       }, err => {
+        console.dir('**********************************', JSON.stringify(err));
         this.common.hideLoader();
         this.common.router.navigate(['tabs/tab6']);
         console.log('err',err);
@@ -252,8 +285,8 @@ export class InvitationPage implements OnInit {
           icon: 'text',
           handler: () => {
             // this.SendWordings(i);
-            this.wordArray.push({value: ''});
-            this.Add('text');
+            this.wordArray[i].push({value: ''});
+            this.Add('text', i);
           }
         },
         {
@@ -261,8 +294,9 @@ export class InvitationPage implements OnInit {
           icon: 'link',
           handler: () => {
             // this.pickLinks(i);
-            this.linkArray.push({value: 'http://'});
-            this.Add('link');
+            this.linkArray[i].push({value: 'http://'});
+            console.log(this.linkArray);
+            this.Add('link', i);
           }
         },
         {
@@ -347,159 +381,76 @@ export class InvitationPage implements OnInit {
     this.isWording[i] = true;
   }
 
-  CaptureImage(i:number) {
-    this.hideImageSpace[i] = true;
-    this.isWording[i] = false;
-    this.isLink[i] = false;
-    // this.isCaptureImage = true;
-    const options: CaptureImageOptions = { limit: 1};
+  CaptureImage(i: number) {
+    const options: CaptureImageOptions = { limit: 1 };
     this.mediaCapture.captureImage(options)
       .then(
-        (data: MediaFile[]) => {
-          this.isImage[i] = true;
-          this.uploadFile2(data[0], 'image', i);
+        (data) => {
+          this.Add('file', i);
+          this.fileArray[i].push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'jpg'
+          })
         },
         (err: CaptureError) => console.error(err)
       );
   }
 
-  CaptureAudio(i:number) {
-    this.hideImageSpace[i] = true;
-    this.isWording[i] = false;
-    this.isLink[i] = false;
-    const options: CaptureAudioOptions = { limit: 1, duration: 2};
-    this.mediaCapture.captureAudio(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.isAudio[i] = true;
-        this.uploadFile2(data[0], 'audio', i);
-      },
-      (err: CaptureError) => console.error(err)
-    );
-  }
-
-  CaptureVideo(i:number) {
-    this.hideImageSpace[i] = true;
-    this.isWording[i] = false;
-    this.isLink[i] = false;
-    const options: CaptureVideoOptions = { limit: 1 , duration: 2, quality: 80};
+  CaptureVideo(i: number) {
+    const options: CaptureVideoOptions = { limit: 1, duration:120, quality: 80 };
     this.mediaCapture.captureVideo(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.isVideo[i] = true;
-        this.uploadFile2(data[0], 'video', i);
-      },
-      (err: CaptureError) => console.error(err)
-    );
+      .then(
+        (data) => {
+          this.Add('file', i);
+          this.fileArray[i].push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp4'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
 
   }
 
-  PickDocuments(i:number) {
-    this.hideImageSpace[i] = true;
-    this.isWording[i] = false;
-    this.isLink[i] = false;
-
-    let file: any;
-
-    this.fileChooser.open()
-    .then(uri => {
-
-      this.filePath.resolveNativePath(uri)
-      .then(filePath => {
-        let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-
-        file = {
-          name: fileNameFromPath,
-          fullPath: filePath
-        };
-
-        this.isImage[i] = true;
-        this.uploadFile2(file, 'file', i);
-      })
-      .catch(err => console.log(err));
-
-    })
-    .catch(e => console.log(e));
+  CaptureAudio(i: number) {
+    const options: CaptureAudioOptions = { limit: 1 };
+    this.mediaCapture.captureAudio(options)
+      .then(
+        (data) => {
+          this.Add('file', i);
+          this.fileArray[i].push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp3'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
 
   }
 
-  uploadFile2(file:any, type: string, i:number) {
-
-    let options: FileUploadOptions;
-
-    options = {
-      fileKey: "matchfile",
-      fileName: file.name,
-      httpMethod: 'POST',
-      mimeType: 'multipart/form-data',
-      chunkedMode: false,
-      params: {
-        matchid: this.invite.match_id,
-        userid: this.userDetails.userid,
-        upload_id: 0
-      },
-      headers: {
-        Connection: 'close'
-      }
-    };
-    let filePath: any;
-    if (type !== 'audio') {
-      filePath = encodeURI(file.fullPath);
-    } else {
-      filePath = file.fullPath;
-    }
-
-    this.common.showLoader();
-
-    const fileTransfer: FileTransferObject = this.transfer.create();
-
-    const fileUplaodUrl = 'http://192.168.107.183/iMatch/api/v1/MatchFileUpload';
-
-    fileTransfer.onProgress((e) => 
-    {
-      let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
-      this.common.presentToast('Uploaded ' + prg + '% of file');
+  async PickDocuments(i: number) {
+    await this.fileChooser.open().then(uri => {
+      this.filePath.resolveNativePath(uri).then(filePath => {
+        this.filesPath = filePath;
+        this.filesName   = this.filesPath.substring(this.filesPath.lastIndexOf("/") + 1);
+        this.filesType   = this.filesName.substring(this.filesName.lastIndexOf(".") + 1);
+        this.Add('file', i);
+        this.fileArray[i].push({
+          name: this.filesName,
+          type: this.filesType,
+          uri: uri,
+          filePath: filePath
+        })
+      },err => {
+        console.log(err);
+        throw err;
+      });
+    },err => {
+      console.log(err);
+      throw err;
     });
-
-    fileTransfer.upload(filePath, fileUplaodUrl, options)
-      .then((data) => {
-        let res = JSON.parse(data.response);
-        if (res.file_extension === 'mp4') {
-          this.isVideo[i] = true;
-          // this.isDummyImage = false;
-
-        } else if (res.file_extension === 'aac') {
-          this.isAudio[i] = true;
-          // this.isDummyImage = false;
-
-        } else if (res.file_extension === 'png') {
-          this.isImage[i] = true;
-          // this.isDummyImage = false;
-
-        } else if (res.file_extension === 'jpg') {
-          this.isImage[i] = true;
-          // this.isDummyImage = false;
-
-        } else if (res.file_extension === 'mp3') {
-          this.isAudio[i] = true;
-          // this.isDummyImage = false;
-
-        }
-
-        if (res.status == true) {
-          this.common.showAlertSuccess('Match File Upload Successful');
-          this.FileTransferResponse = res.upload_details;
-            this.common.hideLoader();
-        } else {
-          this.common.presentToast('File upload Failed');
-        }
-
-        this.common.hideLoader();
-      }, (err) => {
-        console.log('File Transfer Error:', err);
-      }
-    );
   }
-
-
 }

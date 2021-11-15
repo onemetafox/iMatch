@@ -14,7 +14,9 @@
                 <div style="display: flex;">
                     <div style="width: 100%; display: flex; justify-content: right; flex: 25; position: relative; left: 10px">
                         <div style="padding: 3px;">
-                            <img *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[0].mediafiles[0].filename}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <img *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[0].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <video *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'video'" src="{{this.ongoingData.compare_data[0].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;"></video>
+                            <audio *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'audio'" src="{{this.ongoingData.compare_data[0].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;"></audio>
                             <div *ngIf="this.ongoingData.compare_data[0].mediafiles[0].media_type == 'link' || this.ongoingData.compare_data[0].mediafiles[0].media_type == 'text'" style="height: 200px;border-radius: 5px;background:#e2e2e2; padding:10px;">{{this.ongoingData.compare_data[0].mediafiles[0].filename}}</div>
                             <div style="display: flex; justify-content: right; margin-top: -44px;">
                                 <div style=" width: 60px; height: 60px; background: #fff; border-radius: 50%; padding: 14px;margin-right: 14px; border: 1px solid #e2e2e2; box-shadow: 0px 3px 0px 1px #e2e2e2;">
@@ -38,7 +40,9 @@
                     </div>
                     <div style="width: 100%; display: flex; justify-content: left; flex: 25; position: relative; right: 10px">
                         <div style="padding: 3px">
-                            <img *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[1].mediafiles[0].filename}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <img *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'image'" src="{{this.ongoingData.compare_data[1].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;">
+                            <video *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'video'" src="{{this.ongoingData.compare_data[1].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;"></video>
+                            <audio *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'audio'" src="{{this.ongoingData.compare_data[1].mediafiles[0].file_path}}" alt="" style="width: 500px; height: 200px;border-radius: 5px;"></audio>
                             <div *ngIf="this.ongoingData.compare_data[1].mediafiles[0].media_type == 'link' || this.ongoingData.compare_data[1].mediafiles[0].media_type == 'text'" style="height: 200px;border-radius: 5px;background:#e2e2e2; padding:10px;">{{this.ongoingData.compare_data[1].mediafiles[0].filename}}</div>
                             <div style="display: flex; justify-content: right; margin-top: -44px;">
                                 <div style=" width: 60px; height: 60px; background: #fff; border-radius: 50%; padding: 14px;margin-right: 14px; border: 1px solid #e2e2e2; box-shadow: 0px 3px 0px 1px #e2e2e2;">
