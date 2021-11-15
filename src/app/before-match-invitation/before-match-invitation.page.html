@@ -23,13 +23,15 @@
           </div>
       </div>
       <div *ngFor="let att of this.anArray; let idx = index">
+        <div *ngIf="att.type=='file'">
+            <p style="font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;"> {{this.fileArray[att.position].name}} </p>
+        </div>
         <div *ngIf="att.type=='text'">
           <ion-input type="text" placeholder="" [(ngModel)]="wordArray[att.position].value" class="input-field"></ion-input>  
         </div>
         <div *ngIf="att.type=='link'">
           <ion-input type="text" placeholder="" [(ngModel)]="linkArray[att.position].value" class="input-field"></ion-input>  
         </div>
-        <ion-input type="text" placeholder="Enter sub caption" [(ngModel)]="anArray[idx].value" class="input-field"></ion-input>
       </div>
       <form [formGroup]="invitation">
 

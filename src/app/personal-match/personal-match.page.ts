@@ -742,7 +742,7 @@ export class PopoverComponent {
             <div *ngFor="let item of Match.compare_data; let i = index">
               <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
               <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)" />
-              <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></video>
+              <img *ngIf="item.media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
               <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)"></audio>
               <div *ngIf="item.media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, i)">
                 <a [href]="item.media">{{item.media}}</a>
@@ -756,7 +756,7 @@ export class PopoverComponent {
               <div *ngFor="let item of Match.compare_data; let i = index">
                 <div *ngIf="item.media_type==='text'" readonly class="text-match-style" autoGrow style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">{{item.media}}</div>
                 <img *ngIf="item.media_type==='image' || item.media_type===''" [src]="item.media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
-                <video *ngIf="item.media_type==='video'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></video>
+                <img *ngIf="item.media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
                 <audio *ngIf="item.media_type==='audio'" [src]="item.media" controls style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)"></audio>
                 <div *ngIf="item.media_type==='link'" style="height: 255px; width: 150px;padding:5px" (click)="selectImage($event, i)">
                   <a [href]="item.media">{{item.media}}</a>
@@ -769,7 +769,7 @@ export class PopoverComponent {
           <div style="display: grid; grid-template-columns: 1fr 1fr;margin-top: 10px;">
             <div *ngIf="Match.compare_data[0].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">{{Match.compare_data[0].media}}</div>
             <img *ngIf="Match.compare_data[0].media_type==='image' || Match.compare_data[0].media_type===''" [src]="Match.compare_data[0].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
-            <video *ngIf="Match.compare_data[0].media_type==='video'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></video>
+            <img *ngIf="Match.compare_data[0].media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
             <audio *ngIf="Match.compare_data[0].media_type==='audio'" [src]="Match.compare_data[0].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)"></audio>
             <div *ngIf="Match.compare_data[0].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 0)">
               <a [href]="Match.compare_data[0].media">{{Match.compare_data[0].media}}</a>
@@ -777,7 +777,7 @@ export class PopoverComponent {
 
             <div *ngIf="Match.compare_data[1].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">{{Match.compare_data[1].media}}</div>
             <img *ngIf="Match.compare_data[1].media_type==='image' || Match.compare_data[1].media_type===''" [src]="Match.compare_data[1].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
-            <video *ngIf="Match.compare_data[1].media_type==='video'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></video>
+            <img *ngIf="Match.compare_data[1].media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
             <audio *ngIf="Match.compare_data[1].media_type==='audio'" [src]="Match.compare_data[1].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)"></audio>
             <div *ngIf="Match.compare_data[1].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 1)">
               <a [href]="Match.compare_data[1].media">{{Match.compare_data[1].media}}</a>
@@ -786,7 +786,7 @@ export class PopoverComponent {
           <div style="display: grid; grid-template-columns: 1fr 1fr; margin-top: 10px;">
             <div *ngIf="Match.compare_data[2].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">{{Match.compare_data[2].media}}</div>
             <img *ngIf="Match.compare_data[2].media_type==='image' || Match.compare_data[2].media_type===''" [src]="Match.compare_data[2].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
-            <video *ngIf="Match.compare_data[2].media_type==='video'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></video>
+            <img *ngIf="Match.compare_data[2].media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
             <audio *ngIf="Match.compare_data[2].media_type==='audio'" [src]="Match.compare_data[2].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)"></audio>
             <div *ngIf="Match.compare_data[2].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 2)">
               <a [href]="Match.compare_data[2].media">{{Match.compare_data[2].media}}</a>
@@ -794,7 +794,7 @@ export class PopoverComponent {
 
             <div *ngIf="Match.compare_data[3].media_type==='text'" readonly class="text-match-style" autoGrow style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">{{Match.compare_data[3].media}}</div>
             <img *ngIf="Match.compare_data[3].media_type==='image' || Match.compare_data[3].media_type===''" [src]="Match.compare_data[3].media" alt="" onerror="this.src='../../assets/icon/no_media.png';" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
-            <video *ngIf="Match.compare_data[3].media_type==='video'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></video>
+            <img *ngIf="Match.compare_data[3].media_type==='video'" onerror="this.src='../../assets/icon/video1.png';" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
             <audio *ngIf="Match.compare_data[3].media_type==='audio'" [src]="Match.compare_data[3].media" controls style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)"></audio>
             <div *ngIf="Match.compare_data[3].media_type==='link'" style="width:195px; height: 255px;padding:5px" (click)="selectImage($event, 3)">
               <a [href]="Match.compare_data[3].media">{{Match.compare_data[3].media}}</a>
@@ -1053,6 +1053,10 @@ export class PopoverComponent {
     isVideo: boolean = false;
     isAudio: boolean = false;
     isImage: boolean = false;
+    filesType: any;
+    filesName: any;
+    filesPath: any;
+    fileArray: any [] = [];
 
     constructor(
       public popoverController: PopoverController,
@@ -1236,87 +1240,76 @@ export class PopoverComponent {
   }
 
   CaptureImage() {
-    this.isLink = false;
-    this.isWordings = false;
-      this.hideImageSpace = true;
-    this.isCaptureImage = true;
-
-    const options: CaptureImageOptions = { limit: 1};
+    const options: CaptureImageOptions = { limit: 1 };
     this.mediaCapture.captureImage(options)
       .then(
-        (data: MediaFile[]) => {
-          this.cameraData = data[0];
-          this.uploadFile2(data[0], 'image');
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'jpg'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
+  }
+
+  CaptureVideo() {
+    const options: CaptureVideoOptions = { limit: 1, duration:120, quality: 80 };
+    this.mediaCapture.captureVideo(options)
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp4'
+          })
         },
         (err: CaptureError) => console.error(err)
       );
 
   }
 
-  CaptureVideo() {
-    this.isLink = false;
-    this.isWordings = false;
-    this.hideImageSpace = true;
-    this.isCaptureImage = true;
-    this.isCaptureVideo = true;
-    const options: CaptureVideoOptions = { limit: 1 , duration: 2, quality: 90};
-    this.mediaCapture.captureVideo(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.videoData = data[0];
-        this.uploadFile2(data[0], 'video');
-      },
-      (err: CaptureError) => console.error(err)
-    );
-
-  }
-
   CaptureAudio() {
-    this.isLink = false;
-    this.isWordings = false;
-    this.hideImageSpace = true;
-    this.isCaptureImage = true;
-    this.isCaptureAudio = true;
-    const options: CaptureImageOptions = { limit: 1};
+    const options: CaptureAudioOptions = { limit: 1 };
     this.mediaCapture.captureAudio(options)
-    .then(
-      (data: MediaFile[]) => {
-        this.audioData = data[0];
-        this.uploadFile2(data[0], 'audio');
-      },
-      (err: CaptureError) => console.error(err)
-    );
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp3'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
 
   }
 
-  PickDocuments() {
-
-    this.isLink = false;
-    this.isWordings = false;
-    this.hideImageSpace = true;
-    this.isCaptureImage = true;
-    this.isPickDocuments = true;
-
-    let file: any;
-
-    this.fileChooser.open()
-    .then(uri => {
-      this.filePath.resolveNativePath(uri)
-      .then(filePath => {
-        let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-        file = {
-          name: fileNameFromPath,
-          fullPath: filePath
-        };
-
-        this.documentData = file;
-        this.uploadFile2(file, 'file');
-      })
-      .catch(err => console.log(err));
-
-    })
-    .catch(e => console.log(e));
-
+  async PickDocuments() {
+    await this.fileChooser.open().then(uri => {
+      this.filePath.resolveNativePath(uri).then(filePath => {
+        this.filesPath = filePath;
+        this.filesName   = this.filesPath.substring(this.filesPath.lastIndexOf("/") + 1);
+        this.filesType   = this.filesName.substring(this.filesName.lastIndexOf(".") + 1);
+        this.Add('file');
+        this.fileArray.push({
+          name: this.filesName,
+          type: this.filesType,
+          uri: uri,
+          filePath: filePath
+        })
+      },err => {
+        console.log(err);
+        throw err;
+      });
+    },err => {
+      console.log(err);
+      throw err;
+    });
   }
 
   uploadFile2(file:any, type: string) {

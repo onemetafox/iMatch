@@ -65,6 +65,9 @@ export class BeforeMatchInvitationPage implements OnInit {
   isImage: boolean = false;
   isDummyImage: boolean = true;
   fileArray: any [] = [];
+  filesPath: any;
+  filesName: any;
+  filesType: any;
 
   constructor(
 
@@ -159,7 +162,41 @@ export class BeforeMatchInvitationPage implements OnInit {
     }
 
     this.common.postMethod('CreateOpenMatch',params).then((res:any) => {
-      this.common.router.navigate(['/tabs/tab6']);
+      var matchid = res['matchid'];
+          this.fileArray.forEach(item => {
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            fileTransfer.onProgress((e) =>
+            {
+              let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
+              this.common.presentToast('Uploaded ' + prg + '% of file');
+            });
+            let options: FileUploadOptions = {
+              fileKey: 'matchfile',
+              fileName: item.name,
+              httpMethod: 'POST',
+              mimeType: 'multipart/form-data',
+              chunkedMode: false,
+              params: {
+                match_id: matchid,
+                userid: this.userDetails.userid
+              },
+              headers: {
+                Connection: 'close'
+              }
+            }
+            fileTransfer.upload(item.filePath, BaseConfig.baseUrl + 'iMatch/api/v1/MatchFileUpload', options)
+              .then((data) => {
+                console.dir('*****************' + data);
+
+              }, (err) => {
+                console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+
+            });
+          });
+          
+          this.common.presentToast('File Uploaded Successful');
+          this.common.router.navigate(['tabs/tab6']);
+          this.common.hideLoader();
     }, (err) => {
       this.common.hideLoader();
       console.log('Error:',err);
@@ -262,7 +299,7 @@ export class BeforeMatchInvitationPage implements OnInit {
           text: 'Capture Image',
           icon: 'camera',
             handler: () => {
-              this.captureImage()
+              this.CaptureImage()
           }
         },
 
@@ -270,7 +307,7 @@ export class BeforeMatchInvitationPage implements OnInit {
           text: 'Capture Video',
           icon: 'videocam',
             handler: () => {
-              this.captureVideo()
+              this.CaptureVideo()
           }
         },
 
@@ -278,7 +315,7 @@ export class BeforeMatchInvitationPage implements OnInit {
           text: 'Capture Audio',
           icon: 'mic',
             handler: () => {
-              this.captureAudio();
+              this.CaptureAudio();
           }
         },
 
@@ -294,42 +331,54 @@ export class BeforeMatchInvitationPage implements OnInit {
     await actionSheet.present();
   }
 
-  captureImage() {
-    this.isMedia = true;
+  CaptureImage() {
     const options: CaptureImageOptions = { limit: 1 };
-    this.mediaCapture.captureImage(options).then(
-      (data: MediaFile[]) => {
-          this.isImage = true;
-          this.uploadFile2(data[0], 'image');
+    this.mediaCapture.captureImage(options)
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'jpg'
+          })
         },
-      (err: CaptureError) => console.error(err)
-    ); 
+        (err: CaptureError) => console.error(err)
+      );
   }
-        
-  captureVideo() {
-    this.isMedia = true;
-    const options: CaptureVideoOptions = { limit: 1 , duration: 2, quality: 80};
-      this.mediaCapture.captureVideo(options)
-        .then(
-          (data: MediaFile[]) => {
-            this.isVideo = true;
-            this.uploadFile2(data[0], 'video');
+
+  CaptureVideo() {
+    const options: CaptureVideoOptions = { limit: 1, duration:120, quality: 80 };
+    this.mediaCapture.captureVideo(options)
+      .then(
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp4'
+          })
         },
-      (err: CaptureError) => console.error(err)
-    );
+        (err: CaptureError) => console.error(err)
+      );
+
   }
-        
-  captureAudio() {
-    this.isMedia = true;
-    const options: CaptureAudioOptions = { limit: 1};
+
+  CaptureAudio() {
+    const options: CaptureAudioOptions = { limit: 1 };
     this.mediaCapture.captureAudio(options)
       .then(
-        (data: MediaFile[]) => {
-        this.isAudio = true;
-        this.uploadFile2(data[0], 'audio');
-      },
-      (err: CaptureError) => console.error(err)
-    );
+        (data) => {
+          this.Add('file');
+          this.fileArray.push({
+            name: data[0].name,
+            filePath: data[0].fullPath,
+            fileType: 'mp3'
+          })
+        },
+        (err: CaptureError) => console.error(err)
+      );
+
   }
 
   pickWording() {
@@ -342,40 +391,28 @@ export class BeforeMatchInvitationPage implements OnInit {
     this.isLink = true;
     this.hideImageSpace = false;
   }
-  PickDocuments() {
-    let file: any;
-
-    this.fileChooser.open()
-    .then((fileData)=>{
-      file = {
-        name: fileData.substr(fileData.lastIndexOf('/') + 1),
-      }
-      // this.base64.encodeFile(fileData).then((base64File:string) => {        
-      //   file.data.push(base64File.substr(base64File.indexOf(',') + 1));
-      // }, (err) => {
-      //   console.log(err);
-      // });
-      this.fileArray.push(file);
-    })
-    .catch(e => console.log(e));
-
+  async PickDocuments() {
+    await this.fileChooser.open().then(uri => {
+      this.filePath.resolveNativePath(uri).then(filePath => {
+        this.filesPath = filePath;
+        this.filesName   = this.filesPath.substring(this.filesPath.lastIndexOf("/") + 1);
+        this.filesType   = this.filesName.substring(this.filesName.lastIndexOf(".") + 1);
+        this.Add('file');
+        this.fileArray.push({
+          name: this.filesName,
+          type: this.filesType,
+          uri: uri,
+          filePath: filePath
+        })
+      },err => {
+        console.log(err);
+        throw err;
+      });
+    },err => {
+      console.log(err);
+      throw err;
+    });
   }
-  // async pickDocuments() {
-  //   this.isMedia = true;
-  //   let file: any;
-  //   this.fileChooser.open().then(uri => {
-  //     this.filePath.resolveNativePath(uri).then(filePath => {
-  //       let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-  //       let currentName = uri.substring(uri.lastIndexOf('/') + 1, uri.lastIndexOf('?'));
-  //       file = {
-  //         name: fileNameFromPath,
-  //         fullPath: filePath
-  //       };
-  //       this.uploadFile2(file, 'file');
-  //     })
-  //     .catch(err => console.log(err));
-  //   }).catch(e => console.log(e));
-  // }
 
   uploadFile2(file: any, type: string) {
     this.isDummyImage = false;
