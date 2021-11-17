@@ -358,8 +358,8 @@ export class PopoverComponent {
 
     toAddAsFavourite(){
       let params = {
-        from : this.userDetails.userid,
-        to : this.UserInfo.userid,
+        req_from : this.userDetails.userid,
+        req_to : this.UserInfo.userid,
         category : 'fan'
       }
       this.common.postMethod('add_fan',params).then((res:any) => {

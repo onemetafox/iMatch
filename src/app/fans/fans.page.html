@@ -27,7 +27,7 @@
 
 <ion-item lines="none" class="item-styles , animate__animated animate__fadeIn" *ngFor="let fan of myfans">
   <ion-avatar style="height: 50px; width: 50px;">
-    <img [src]="fan.profile_pic" alt="">
+    <img [src]="fan.pic" alt="">
   </ion-avatar>
   <ion-label style="margin-left: 15px;">{{fan.name}}</ion-label>
   <img src="../../assets/icon/cls.png" alt="" style="height: 30px; width: 30px;" (click)="toRemoveFan($event,fan)">
