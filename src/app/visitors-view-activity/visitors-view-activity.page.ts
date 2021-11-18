@@ -68,37 +68,8 @@ export class VisitorsViewActivityPage implements OnInit {
     });
 
     this.common.postMethod('OpenMatch',params).then((res:any) => {
-      this.OpenMatch = res.details;
-      if (this.OpenMatchAudio.length!==0) {
-        for (let i=0; i < this.OpenMatchAudio.length; i++) {
-          this.OpenMatch.push(this.OpenMatchAudio[i]);
-        }
-      } 
-
-      if (this.OpenMatchImage.length!==0) {
-        for (let i=0; i < this.OpenMatchImage.length; i++) {
-          this.OpenMatch.push(this.OpenMatchImage[i]);
-        }
-      } 
-
-      if (this.OpenMatchLink.length!==0) {
-        for (let i=0; i < this.OpenMatchLink.length; i++) {
-          this.OpenMatch.push(this.OpenMatchLink[i]);
-        }
-      } 
-
-      if (this.OpenMatchText.length!==0) {
-        for (let i=0; i < this.OpenMatchText.length; i++) {
-          this.OpenMatch.push(this.OpenMatchText[i]);
-        }
-      } 
-
-      if (this.OpenMatchVideo.length!==0) {
-        for (let i=0; i < this.OpenMatchVideo.length; i++) {
-          this.OpenMatch.push(this.OpenMatchVideo[i]);
-        }
-      } 
-      
+      if(res)
+        this.OpenMatch = res.details;
     });
   }
 
@@ -241,6 +212,30 @@ export class VisitorsViewActivityPage implements OnInit {
 
     }
   }
+  toAddAsFavourite(){
+    let params = {
+      req_from : this.userDetails.userid,
+      req_to : this.UserInfo.userid,
+      category : 'fan'
+    }
+    this.common.postMethod('add_fan',params).then((res:any) => {
+      if (res.status == true) {
+
+        this.common.presentLoading();
+        this.common.presentToast('This User is Successfully Added To Your Fan List');
+        this.common.router.navigate(['/fans'], {queryParams: this.userDetails});
+
+      } else if (res.message= 'Already added' ){
+
+        this.common.presentToast('This User is Already added to your Fan List');
+
+      }
+    }, (err) => {
+      console.log('Error:',err);
+      this.common.presentToast('Adding this user to your fan list failed');
+    });
+
+  }
 
   toShareProfile() {
 
@@ -309,7 +304,7 @@ export class PopoverComponent {
         if(val=='message'){
           this.toSendMessage();
         } else if(val=='favourite') {
-          this.toAddAsFavourite();
+          // this.toAddAsFavourite();
         } else if(val=='squad') {
           this.toAddAsSquad();
         } else if(val=='bestie') {
