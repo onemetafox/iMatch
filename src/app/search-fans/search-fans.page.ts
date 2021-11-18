@@ -116,8 +116,8 @@ export class SearchFansPage implements OnInit {
     
     if( user.userid != '' ) {
       let params = {
-        from : this.userDetails.userid,
-        to : user.userid,
+        req_from : this.userDetails.userid,
+        req_to : user.userid,
         category : 'fan'
       }
       this.common.postMethod('add_fan',params).then((res:any) => {
