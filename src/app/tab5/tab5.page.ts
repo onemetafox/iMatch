@@ -48,12 +48,12 @@ export class Tab5Page implements OnInit {
       this.userDetails = val;
       const userid = this.userDetails.userid;
       const Api = 'getNotification/';
-        this.common.http.get(this.common.ajx.BaseUrl+Api+userid).subscribe((res:any) => {
-            this.NotificationDetails = res.details;
-            this.userDetails = res.details.user;
-        }, err => {
-          console.log('err:',err);
-        });
+      this.common.http.get(this.common.ajx.BaseUrl+Api+userid).subscribe((res:any) => {
+          this.NotificationDetails = res.details;
+          this.userDetails = res.details.user;
+      }, err => {
+        console.log('err:',err);
+      });
     });
   }
 
@@ -61,6 +61,16 @@ export class Tab5Page implements OnInit {
   }
 
   openListFans() {
+    let params = {
+      receiver_id : this.userDetails.id,
+      notification_status : 'Add_fan',
+      read_status: '1'
+    }
+    this.common.postMethod('setNotificationRead',params).then((res:any) => {
+      if(!res.status) {
+        this.common.presentToast(res.message);
+      }
+    });
     this.common.navCtrl.navigateForward(['fans'], {queryParams: this.userDetails});
   }
 
