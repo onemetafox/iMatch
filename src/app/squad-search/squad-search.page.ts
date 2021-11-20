@@ -89,16 +89,16 @@ export class SquadSearchPage implements OnInit {
     // this.common.presentToast(name +' is added to your besties list ...');
     if( user.userid != '' ) {
       let params = {
-        from : this.userDetails.userid,
-        to : user.userid,
+        req_from : this.userDetails.userid,
+        req_to : user.userid,
         category : 'squad'
       }
       this.common.postMethod('add_bestie',params).then((res:any) => {
-        if(res.message == "Successfully added to squadlist") {
+        if(res.status) {
           this.common.router.navigate(['/squad-list']);
-          this.common.presentToast(name + ' is successfully added to your squad list ...');
-        } else if (res.message == "Already added ") {
-          this.common.presentToast(name + ' is already in your squad list ...');
+          this.common.presentToast(res.message);
+        } else {
+          this.common.presentToast(res.message);
         }
       });
     } else {

@@ -47,13 +47,13 @@ export class Tab5Page implements OnInit {
     this.storageservice.storage.get('userDetails').then((val) => {
       this.userDetails = val;
       const userid = this.userDetails.userid;
-      const Api = 'get_profile_pic/';
+      const Api = 'getNotification/';
         this.common.http.get(this.common.ajx.BaseUrl+Api+userid).subscribe((res:any) => {
-            this.NotificationDetails = res.details[0];
-            this.userDetails = this.NotificationDetails;
+            this.NotificationDetails = res.details;
+            this.userDetails = res.details.user;
         }, err => {
-      console.log('err:',err);
-    });
+          console.log('err:',err);
+        });
     });
   }
 

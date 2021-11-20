@@ -97,8 +97,8 @@ export class BestiesSearchPage implements OnInit {
   public addToList(event,name,user) {
     if( user.userid != '' ) {
       let params = {
-        from : this.userDetails.userid,
-        to : user.userid,
+        req_from : this.userDetails.userid,
+        req_to : user.userid,
         category : 'bestie'
       }
       this.common.postMethod('add_bestie',params).then((res:any) => {
