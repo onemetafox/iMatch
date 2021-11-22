@@ -51,6 +51,7 @@ export class Tab5Page implements OnInit {
       this.common.http.get(this.common.ajx.BaseUrl+Api+userid).subscribe((res:any) => {
           this.NotificationDetails = res.details;
           this.userDetails = res.details.user;
+          this.userDetails.userid = this.userDetails.id;
       }, err => {
         console.log('err:',err);
       });
@@ -71,11 +72,11 @@ export class Tab5Page implements OnInit {
         this.common.presentToast(res.message);
       }
     });
-    this.common.navCtrl.navigateForward(['fans'], {queryParams: this.userDetails});
+    this.common.navCtrl.navigateForward(['fans-of'], {queryParams: this.userDetails});
   }
 
   openListSquad() {
-    this.common.navCtrl.navigateForward(['squad-list'], {queryParams: this.userDetails});
+    this.common.navCtrl.navigateForward(['squad-list-invitation'], {queryParams: this.userDetails});
   }
 
   openListBesties() {

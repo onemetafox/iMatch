@@ -1,9 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>squad-list-invitation</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button style="color: white" icon="chevron-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Squad Invitation List
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div style="padding: 10px;" *ngFor="let invitation of invitations; let i = index;">
+    <div class="container-sub">
+      <ion-row>
+        <ion-col>
+          <img src="{{invitation.pic}}" class="user_avatar">
+        </ion-col>
+        <ion-col>
+          <div class="content-container">
+            <h6 style=" font-size: 15px; font-weight:600; margin-left: 5px; margin-top: 0px; ">{{invitation.name}} Invite you</h6>
+            <ion-item lines="none">
+              <ion-button color="success" style=" margin-top: 30px;" (click)="changeStatus(invitation.bestie_id,'1')">Accept
+              </ion-button>
+              <ion-button color="warning" style=" margin-top: 30px;" (click)="changeStatus(invitation.bestie_id,'2')">Reject
+              </ion-button>
+              <ion-button color="danger" style=" margin-top: 30px;" (click)="inviteBack(invitation.bestie_id)">Invite Back
+              </ion-button>
+            </ion-item>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 </ion-content>
