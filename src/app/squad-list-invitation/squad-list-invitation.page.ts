@@ -68,4 +68,19 @@ export class SquadListInvitationPage implements OnInit {
     });
   }
 
+  inviteBack(userid){
+    let params = {
+      req_from : this.userDetails.userid,
+      req_to : userid,
+      category : 'squad'
+    }
+    this.common.postMethod('add_bestie',params).then((res:any) => {
+      if(res.status) {
+        this.common.presentToast(res.message);
+      } else {
+        this.common.presentToast(res.message);
+      }
+    });
+  }
+
 }

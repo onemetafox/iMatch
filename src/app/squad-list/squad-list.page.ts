@@ -35,7 +35,7 @@ export class SquadListPage implements OnInit {
           }
 
           this.common.presentLoading();
-          this.common.postMethod('Listbesties',params).then((res:any) => {
+          this.common.postMethod('getSquadList',params).then((res:any) => {
 
             this.mysquads = res.details.squad;
 
