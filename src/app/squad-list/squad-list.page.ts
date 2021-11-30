@@ -35,20 +35,14 @@ export class SquadListPage implements OnInit {
           }
 
           this.common.presentLoading();
-          this.common.postMethod('getSquadList',params).then((res:any) => {
+          this.common.postMethod('getSquadList', params).then((res:any) => {
 
-            this.mysquads = res.details.squad;
-
-              if (this.mysquads.length==0) {
-
-                  this.common.presentToast('You are having no `Squads` to show');
-
-              } else {
-
-                  this.common.presentToast('You are having '+ res.details.squad.length + ' squad list members to show');
-              
-                }
-
+            this.mysquads = res.details;
+            if (this.mysquads.length==0) {
+              this.common.presentToast('You are having no `Squads` to show');
+            } else {
+              this.common.presentToast('You are having '+ res.details.length + ' squad list members to show');
+            }
           }, err => {
             console.log('Error:',err);
           });
