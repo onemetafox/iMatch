@@ -78,6 +78,26 @@
     box-shadow: 0.5px 0px 2px -0.5px;
     padding-left: 2px;
 }
+.list .item.item-accordion {
+    line-height: 38px;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+    line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+    display: block !important;
+}
+.arrow{
+    height: 25px; 
+    right: 0; 
+    bottom: 0; 
+    width:25px; 
+    position: absolute;
+}
 .box_m img {
     height: 12px;
     border-radius: 50%;

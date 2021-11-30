@@ -11,7 +11,7 @@ export class SquadListPage implements OnInit {
 
   userDetails: any = [];
   mysquads: any = [];
-
+  show: false;
   constructor(
     public storageservice: StorageService,
     private common: CommonService,
@@ -60,7 +60,12 @@ export class SquadListPage implements OnInit {
 
   ngOnInit() {
   }
-
+  toggleSquad(squad) {
+    squad.show = !squad.show;
+  };
+  isSquadShown(squad) {
+    return squad.show;
+  };
   ToUserSearch() {
     this.common.router.navigate(['/squad-search']);
   }
