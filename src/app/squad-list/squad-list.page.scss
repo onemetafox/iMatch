@@ -44,7 +44,7 @@
 }
 
 .box_div_session {
-    display: flex;
+    // display: flex;
     background-color: #ffffff;
     padding: 8px;
     position: relative;
@@ -65,7 +65,7 @@
 }
 .image-div_first {
     height: 75px;
-    max-width: 50%;
+    max-width: 100%;
 }
 .image-div_first img {
     height: 100%;
@@ -79,10 +79,10 @@
     padding-left: 2px;
 }
 .list .item.item-accordion {
-    line-height: 38px;
+    // line-height: 38px;
     padding-top: 0;
     padding-bottom: 0;
-    transition: 0.09s all linear;
+    // transition: 0.09s all linear;
 }
 .list .item.item-accordion.ng-hide {
     line-height: 0px;
@@ -106,22 +106,6 @@
     margin-left: 2px;
     font-size: 9px;
     font-weight: 600;
-}
-.image-div {
-    height: 75px;
-    max-width: 33.3%;
-}
-.image-div img {
-    width: 100%;
-    height: 100%;
-}
-.image-div_first {
-    height: 75px;
-    max-width: 50%;
-}
-.image-div_first img {
-    height: 100%;
-    width: 100%;
 }
 .image-div-object {
     height: 140px;

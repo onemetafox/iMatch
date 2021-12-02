@@ -4,107 +4,76 @@
       <ion-back-button style="color: white" icon="chevron-back"></ion-back-button>
     </ion-buttons>
   <div class="tabone_header"  *ngIf="userDetails">
-
     <div class="chat_top-header">
-
         <h3>SQUAD LIST</h3>
       <p *ngIf="mysquads">{{this.mysquads.length}}</p>
     </div>
-    <div style="position: absolute; padding: 10px; top: 5px;">
-
-    </div>
-
+    <div style="position: absolute; padding: 10px; top: 5px;"></div>
     <div style="position: absolute; float: left; top: 5px; right: 0px; padding: 0px 13px 0px 10px;">
       <img *ngIf="userDetails.profile_pic == '' || userDetails.profile_pic == null || userDetails.profile_pic == undefined" src="../../assets/icon/squadlist/user.png" alt="" style="border-radius: 50%; border: 1px solid white; height: 45px; width: 45px; padding: 5px;">
       <img *ngIf="userDetails.profile_pic != '' || userDetails.profile_pic != null || userDetails.profile_pic != undefined" [src]="userDetails.profile_pic" alt="" style="border-radius: 50%; border: 1px solid white; height: 45px; width: 45px; padding: 1px;">
-
       <ion-icon name="caret-down" style="color: white; position: relative; bottom: 12px; left: 3px;"></ion-icon>
     </div>
-
   </div>
 </ion-toolbar>
 </ion-header>
-
 <!-- PAGE CONTENT SECTION  -->
-<ion-content [fullscreen]="true">
+<ion-content>
   <div style="display: flex; align-items: center; justify-content: center; padding: 7px;">
     <img src="../../assets/icon/squadlist/heart.png" alt="" style="height: 20px; width: 20px; position: relative; left: 25px;">
-    <p style="font-size: 12px;
-    font-weight: 600;
-    position: relative;
-    left: 35px;">0</p>
-
-      <ion-chip slot="end" style="background-color: #706f73;
-      height: 30px;
-      position: relative;
-      left: 30%;" (click)="ToUserSearch()">
-      <ion-icon name="add-circle" style="font-size: 1.7rem;
-      position: relative;
-      right: 5px;
-      color: #4a494a;
-      margin-right: 1px;"></ion-icon>
-        <!-- <img src="../../assets/icon/squadlist/add.png" alt=""> -->
-        <ion-label style="color: white;
-        font-size: 11px;
-        font-weight: 900;">ADD</ion-label>
-      </ion-chip>
+    <p style="font-size: 12px; font-weight: 600; position: relative; left: 35px;">0</p>
+    <ion-chip slot="end" style="background-color: #706f73; height: 30px; position: relative; left: 30%;" (click)="ToUserSearch()">
+      <ion-icon name="add-circle" style="font-size: 1.7rem; position: relative; right: 5px; color: #4a494a;  margin-right: 1px;"></ion-icon>
+      <!-- <img src="../../assets/icon/squadlist/add.png" alt=""> -->
+      <ion-label style="color: white; font-size: 11px; font-weight: 900;">ADD</ion-label>
+    </ion-chip>
   </div>
-
   <div class="main-div">
     <img src="../../assets/icon/squadlist/img.JPEG" alt="">
     <ion-list>
-        <div class="box_div_session , animate__animated animate__fadeIn" *ngFor="let squad of mysquads; let i = index">
-          <ion-item class="item-stable"  ng-class="{active: isSquadShown(squad)}">
-            <div style="background-color: #707072; padding: 10px; padding-bottom: 0; text-align: center; color: #ffffff; border-radius: 5px;">
-              <img src="../../assets/icon/squadlist/box.png" alt="" style="height: 25px;">
-              <h5 style="line-height: 5px; font-size: 16px; margin-top: 10px;">{{squad.match_count}}</h5>
-              <h6 style="line-height: 5px; font-size: 12px;">MATCHES</h6>
-            </div>
-            <div style="padding-left: 10px;">
-              <h1 style="font-size: 16px; font-weight: 600; margin-top: 5px;">{{squad.name | uppercase}}</h1>
-              <span style="line-height: 0; font-size: 14px;">{{squad.name}} accept your request for squad</span>
-            </div>
-            <img class="arrow" (click)="toggleSquad(squad)" src="{{isSquadShown(squad) ? '../../assets/icon/squadlist/btn.png' : '../../assets/icon/squadlist/btn2.png'}}" >
-          </ion-item>
-          <ion-item class="item-accordion" *ngFor="let item of squad.compare_data; let k = index" ng-show="show">
-            <div *ngIf="k == 0; then temp1 else temp2"></div>
-            <ng-template #temp1>
-              <div class="image-div_first">
-                <img *ngIf="item[0][0].media_type==='image'" [src]="item[0][0].file_path" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[0][0].media_type==='video'" [src]="item[0][0].file_path" alt="" onerror="this.src='../../assets/icon/video1.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[0][0].media_type==='audio'" style="object-fit: contain;" [src]="item[0][0].file_path" alt="" onerror="this.src='../../assets/icon/audio.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[0][0].media_type==='text'" style="object-fit: cover;" [src]="item[0][0].file_path" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[0][0].media_type==='link'" style="object-fit: cover;" [src]="item[0][0].file_path" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+      <div class="box_div_session , animate__animated animate__fadeIn" *ngFor="let squad of mysquads; let i = index">
+        <ion-item class="item-stable"  ng-class="{active: isSquadShown(squad)}">
+          <div style="background-color: #707072; padding: 10px; padding-bottom: 0; text-align: center; color: #ffffff; border-radius: 5px;">
+            <img src="../../assets/icon/squadlist/box.png" alt="" style="height: 25px;">
+            <h5 style="line-height: 5px; font-size: 16px; margin-top: 10px;">{{squad.match_count}}</h5>
+            <h6 style="line-height: 5px; font-size: 12px;">MATCHES</h6>
+          </div>
+          <div style="padding-left: 10px;">
+            <h1 style="font-size: 16px; font-weight: 600; margin-top: 5px;">{{squad.name | uppercase}}</h1>
+            <span style="line-height: 0; font-size: 14px;">{{squad.name}} accept your request for squad</span>
+          </div>
+          <img class="arrow" (click)="toggleSquad(squad)" src="{{isSquadShown(squad) ? '../../assets/icon/squadlist/btn.png' : '../../assets/icon/squadlist/btn2.png'}}" >
+        </ion-item>
+        <div class="row" style="display: flex; flex-wrap: wrap;" *ngIf="isSquadShown(squad)">
+          <div *ngFor="let items of squad.compare_data;" style="margin-top:5px;padding: 5px; margin-left:3px; flex-grow: 1 ;display: flex;" >
+            <div *ngFor="let item of items; let k = index" >
+              <div *ngIf="k == 0; then temp1 else temp2"></div>
+              <ng-template #temp1>
+                <div class="image-div_first">
+                  <img *ngIf="item[0].media_type==='image'" [src]="item[0].file_path" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[0].media_type==='video'" [src]="item[0].file_path" alt="" onerror="this.src='../../assets/icon/video1.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[0].media_type==='audio'" style="object-fit: contain;" [src]="item[0].file_path" alt="" onerror="this.src='../../assets/icon/audio.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[0].media_type==='text'" style="object-fit: cover;" [src]="item[0].file_path" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[0].media_type==='link'" style="object-fit: cover;" [src]="item[0].file_path" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                </div>
+              </ng-template>
+              <ng-template #temp2>
+                <div class="image-div_first" style="margin-left: 3px;">
+                  <img *ngIf="item[1].media_type==='image'" [src]="item[1].file_path" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[1].media_type==='video'" [src]="item[1].file_path" alt="" onerror="this.src='../../assets/icon/video1.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[1].media_type==='audio'" style="object-fit: contain;" [src]="item[1].file_path" alt="" onerror="this.src='../../assets/icon/audio.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[1].media_type==='text'" style="object-fit: cover;" [src]="item[1].file_path" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                  <img *ngIf="item[1].media_type==='link'" style="object-fit: cover;" [src]="item[1].file_path" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
+                </div>
+              </ng-template>
+              <div *ngIf="k !=0 " style="position: relative;z-index: 100;margin-top: -40px;margin-left: -13px;">
+                  <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
               </div>
-            </ng-template>
-            <ng-template #temp2>
-              <div class="image-div_first" style="margin-left: 3px;">
-                <img *ngIf="item[1][0].media_type==='image'" [src]="item[1][0].file_path" alt="" onerror="this.src='../../assets/icon/mixed-icons.jpg';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[1][0].media_type==='video'" [src]="item[1][0].file_path" alt="" onerror="this.src='../../assets/icon/video1.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[1][0].media_type==='audio'" style="object-fit: contain;" [src]="item[1][0].file_path" alt="" onerror="this.src='../../assets/icon/audio.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[1][0].media_type==='text'" style="object-fit: cover;" [src]="item[1][0].file_path" alt="" onerror="this.src='../../assets/icon/word-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-                <img *ngIf="item[1][0].media_type==='link'" style="object-fit: cover;" [src]="item[1][0].file_path" alt="" onerror="this.src='../../assets/icon/link-icon.png';" class="animate__animated animate__fadeIn animate__delay-0.5s" style="border-radius: 5px;">
-              </div>
-            </ng-template>
-            <div *ngIf="k !=0 " style="position: relative;z-index: 100;margin-top: -40px;margin-left: -13px;">
-                <img src="../../assets/icon/activity/vs.png" alt="" style="width: 25px; height: 25px;">
             </div>
-          </ion-item>
+          </div>
         </div>
-      </ion-list>
-    <!-- FIRST BOX DIV SECTION  -->
-    <!-- <div class="box_div_session , animate__animated animate__fadeIn" *ngFor="let squad of mysquads; let i = index">
-      <div style="background-color: #707072; padding: 10px; padding-bottom: 0; text-align: center; color: #ffffff; border-radius: 5px;">
-        <img src="../../assets/icon/squadlist/box.png" alt="" style="height: 25px;">
-        <h5 style="line-height: 5px; font-size: 16px; margin-top: 10px;">{{squad.match_count}}</h5>
-        <h6 style="line-height: 5px; font-size: 12px;">MATCHES</h6>
       </div>
-      <div style="padding-left: 10px;">
-        <h1 style="font-size: 16px; font-weight: 600; margin-top: 5px;">{{squad.name | uppercase}}</h1>
-        <span style="line-height: 0; font-size: 14px;">{{squad.name}} accept your request for squad</span>
-      </div>
-      <img src="{{this.arrow_icon}}" alt="" id="arrow-{{}}" style="height: 25px; right: 0; bottom: 0; width:25px; position: absolute;">
-    </div> -->
+    </ion-list>
   </div>
 
 
