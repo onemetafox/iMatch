@@ -68,10 +68,10 @@ export class BestiesCommentPage implements OnInit {
   ToAddComment () {
 
     if (this.userComment!="" && this.userComment!=undefined) {
-
+      console.log(this.BestiesDetails);
       let params = {
         userid : this.userDetails.userid,
-        bestieid : this.BestiesDetails.userid,
+        bestieid : this.BestiesDetails.tableid,
         comment : this.userComment,
         commentid : ''
       }

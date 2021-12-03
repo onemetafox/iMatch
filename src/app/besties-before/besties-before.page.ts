@@ -41,7 +41,7 @@ export class BestiesBeforePage implements OnInit {
       id : this.userDetails.userid
     }
     await this.common.showLoader();
-    this.common.postMethod('Listbesties',params).then((res:any) => {
+    this.common.postMethod('getBestieList',params).then((res:any) => {
      this.common.hideLoader();
 
      this.mybesties = res.details.besties;
