@@ -28,7 +28,7 @@ export class VisitorsBestiesViewPage implements OnInit {
         id: this.UserInfo.userid,
       }
       this.common.presentLoading();
-      this.common.postMethod('Listbesties',params).then((res:any) => {
+      this.common.postMethod('getBestieList',params).then((res:any) => {
         this.mybesties = res.details.besties;
       }, (err) => {
         console.log('Error:',err);

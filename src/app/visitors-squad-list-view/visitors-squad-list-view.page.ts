@@ -27,7 +27,7 @@ export class VisitorsSquadListViewPage implements OnInit {
         id: this.UserInfo.userid,
       }
       this.common.presentLoading();
-      this.common.postMethod('Listbesties',params).then((res:any) => {
+      this.common.postMethod('getBestieList',params).then((res:any) => {
         this.mysquads = res.details.squad;
       }, (err) => {
         console.log('Error:',err);

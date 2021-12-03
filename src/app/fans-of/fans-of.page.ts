@@ -44,7 +44,7 @@ export class FansOfPage implements OnInit {
         }
 
         // this.common.presentLoading();
-        this.common.postMethod('Listbesties',params).then((res:any) => {
+        this.common.postMethod('getBestieList',params).then((res:any) => {
 
          this.myfanof = res.details.fan_of;
 

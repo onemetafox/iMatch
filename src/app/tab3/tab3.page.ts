@@ -216,7 +216,7 @@ export class Tab3Page implements OnInit {
     let params = {
       id : this.userDetails.userid
     }
-    this.common.postMethod('Listbesties',params).then((res:any) => {
+    this.common.postMethod('getBestieList',params).then((res:any) => {
       if (res.status == true) {
         this.BestiesList = res.details.besties;
         this.SquadList = res.details.squad;

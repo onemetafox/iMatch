@@ -71,7 +71,7 @@ export class BestiesCommentPage implements OnInit {
       console.log(this.BestiesDetails);
       let params = {
         userid : this.userDetails.userid,
-        bestieid : this.BestiesDetails.bestie_id,
+        bestie_id : this.BestiesDetails.bestie_id,
         comment : this.userComment,
         commentid : ''
       }

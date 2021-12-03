@@ -27,7 +27,7 @@ export class VisitorsFansViewPage implements OnInit {
         id: this.UserInfo.userid,
       }
       this.common.presentLoading();
-      this.common.postMethod('Listbesties',params).then((res:any) => {
+      this.common.postMethod('getBestieList',params).then((res:any) => {
         this.myfans = res.details.fan;
       }, (err) => {
         console.log('Error:',err);

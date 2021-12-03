@@ -45,7 +45,7 @@ export class FansPage implements OnInit {
         }
 
         // this.common.presentLoading();
-        this.common.postMethod('Listbesties',params).then((res:any) => {
+        this.common.postMethod('getBestieList',params).then((res:any) => {
 
           this.myfans = res.details.fan;
           this.common.hideLoader();
