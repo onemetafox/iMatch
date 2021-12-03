@@ -61,7 +61,7 @@
       <ion-card style="background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;" *ngIf="ourStory">
         <ion-card-header style="color: white;">OUR STORY</ion-card-header>
         <img src="../../assets/icon/besties/edit.png" alt="" class="near-card-header-img" (click)="gotoOurStory()">
-        <ion-card-content style="color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;" auto-grow="true"> {{ourStory[0]?.text}}
+        <ion-card-content style="color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;" auto-grow="true"> {{ourStory.story?.text}}
         </ion-card-content>
       </ion-card>
     </div>
@@ -141,8 +141,10 @@
 </div>
 
     <div style="display: flex; justify-content: flex-end; margin: 15px 0px 15px;">
-      <img *ngIf="CountDetails" src="../../assets/icon/blog/heart.png" alt="" style="height: 20px; margin-right: 5px; position: relative; top: 7px;"  (click)="ToLikeBesties()"> <span style="margin-right: 10px; position: relative; top: 7px; font-size: 12px;"> {{CountDetails.like_count}} </span>
-      <img *ngIf="CountDetails" src="../../assets/icon/com.png" alt="" style="height: 20px; margin-right: 5px; position: relative; top: 7px;" (click)="GoToBestiesComment()"> <span style="margin-right: 10px; position: relative; top: 7px; font-size: 12px;"> {{CountDetails.comment_count}} </span>
+      <img *ngIf="CountDetails" src="../../assets/icon/blog/heart.png" alt="" style="height: 20px; margin-right: 5px; position: relative; top: 7px;"  (click)="ToLikeBesties()"> 
+      <span style="margin-right: 10px; position: relative; top: 7px; font-size: 12px;"> {{bestieDetails.like_count}} </span>
+      <img *ngIf="CountDetails" src="../../assets/icon/com.png" alt="" style="height: 20px; margin-right: 5px; position: relative; top: 7px;" (click)="GoToBestiesComment()"> 
+      <span style="margin-right: 10px; position: relative; top: 7px; font-size: 12px;"> {{bestieDetails.comment_count}} </span>
       <ion-button *ngIf="isDisable==true" style="text-transform: none; margin-right: 10px;" size="small" shape="round" (click)="ToDisableComment($event, 'disable')">Disable Comment</ion-button>
       <ion-button *ngIf="isDisable==false" style="text-transform: none; margin-right: 10px; --background: #707072; color: black;" size="small" shape="round" (click)="ToDisableComment($event, 'enable')">Enable Comment</ion-button>
     </div>

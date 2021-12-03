@@ -58,7 +58,7 @@
         <ion-card style="background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;" *ngIf="ourStory">
           <ion-card-header style="color: white; margin-bottom: 10px;">OUR STORY</ion-card-header>
           <!-- <img src="../../assets/icon/besties/edit.png" alt="" class="near-card-header-img" (click)="gotoOurStory()"> -->
-          <ion-card-content style="color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;" auto-grow="true"> {{ourStory[0]?.text}}
+          <ion-card-content style="color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;" auto-grow="true"> {{ourStory.story?.text}}
           </ion-card-content>
         </ion-card>
       </div>
