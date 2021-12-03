@@ -53,7 +53,7 @@ export class BestiesCommentPage implements OnInit {
 
   GetBestiesComments () {
     let params = {
-      bestieid : this.BestiesDetails.userid
+      bestie_id : this.BestiesDetails.bestie_id
     }
     this.common.postMethod('GetBestieComment',params).then((res:any) => {
       this.commentDetails = res.details;
@@ -71,7 +71,7 @@ export class BestiesCommentPage implements OnInit {
       console.log(this.BestiesDetails);
       let params = {
         userid : this.userDetails.userid,
-        bestieid : this.BestiesDetails.tableid,
+        bestieid : this.BestiesDetails.bestie_id,
         comment : this.userComment,
         commentid : ''
       }
