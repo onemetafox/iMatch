@@ -45,19 +45,7 @@
       </div>
 
     </ion-row>
-
-    <!-- <ion-row> -->
-
-      <!-- <div>
-        <div *ngIf="ourStory">
-          <h1>OUR STORY</h1>
-          <div>
-            <ion-textarea auto-grow="true">{{ourStory.text}}</ion-textarea>
-          </div>
-        </div>
-      </div> -->
-
-      <div>
+    <div>
       <ion-card style="background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;" *ngIf="ourStory">
         <ion-card-header style="color: white;">OUR STORY</ion-card-header>
         <img src="../../assets/icon/besties/edit.png" alt="" class="near-card-header-img" (click)="gotoOurStory()">
@@ -85,60 +73,37 @@
     </ion-row>
 
     <div style="display: flex; padding: 7px;">
-
-    <!-- <ion-row> -->
-
-      <!-- <ion-col> -->
-
-        <div style="text-align: center;">
-          <ion-card class="bottom-card">
-            <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
-              <img *ngIf="MediaFiles"  [src]="MediaFiles[0]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
-            </div>
-            <!-- <img src="../../assets/icon/besties/{{userDetails.profile_pic}}.png" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img"> -->
-
+      <div style="text-align: center;">
+        <ion-card class="bottom-card">
+          <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
+            <img *ngIf="MediaFiles"  [src]="MediaFiles[0]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
+          </div>
+          <img src="../../assets/icon/besties/upload.png" alt="" class="inside-card-upload-img" (click)="PresentActionSheet()">
+          <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
+          <p class="text-below-card-header">IMAGE/VIDEO</p>
+        </ion-card>
+      </div>
+      <div style="text-align: center;">
+        <ion-card class="bottom-card">
+          <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
+            <img *ngIf="MediaFiles"  [src]="MediaFiles[1]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
+          </div>
+          <img src="../../assets/icon/besties/upload.png" alt="" class="inside-card-upload-img" (click)="PresentActionSheet()">
+          <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
+          <p class="text-below-card-header">IMAGE/VIDEO</p>
+        </ion-card>
+      </div>
+      <div style="text-align: center;">
+        <ion-card class="bottom-card">
+          <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
+            <img *ngIf="MediaFiles"  [src]="MediaFiles[2]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
+          </div>           
             <img src="../../assets/icon/besties/upload.png" alt="" class="inside-card-upload-img" (click)="PresentActionSheet()">
-            <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
-            <p class="text-below-card-header">IMAGE/VIDEO</p>
-          </ion-card>
-        </div>
-
-      <!-- </ion-col> -->
-
-      <!-- <ion-col> -->
-
-        <div style="text-align: center;">
-          <ion-card class="bottom-card">
-            <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
-              <img *ngIf="MediaFiles"  [src]="MediaFiles[1]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
-            </div>
-            <img src="../../assets/icon/besties/upload.png" alt="" class="inside-card-upload-img" (click)="PresentActionSheet()">
-            <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
-            <p class="text-below-card-header">IMAGE/VIDEO</p>
-          </ion-card>
-        </div>
-
-      <!-- </ion-col> -->
-
-      <!-- <ion-col> -->
-
-        <div style="text-align: center;">
-          <ion-card class="bottom-card">
-            <div style="background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;">
-              <img *ngIf="MediaFiles"  [src]="MediaFiles[2]?.file_link" onerror="this.src='../../assets/icon/besties/707072.png';" alt="" class="bottom-card-small-img">
-            </div>           
-             <img src="../../assets/icon/besties/upload.png" alt="" class="inside-card-upload-img" (click)="PresentActionSheet()">
-            <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
-            <p class="text-below-card-header">IMAGE/VIDEO</p>
-          </ion-card>
-        </div>
-
-      <!-- </ion-col> -->
-
-    <!-- </ion-row> -->
-
-  <!-- </ion-grid> -->
-</div>
+          <ion-card-header class="card-header-text">UPLOAD</ion-card-header>
+          <p class="text-below-card-header">IMAGE/VIDEO</p>
+        </ion-card>
+      </div>
+    </div>
 
     <div style="display: flex; justify-content: flex-end; margin: 15px 0px 15px;">
       <img *ngIf="CountDetails" src="../../assets/icon/blog/heart.png" alt="" style="height: 20px; margin-right: 5px; position: relative; top: 7px;"  (click)="ToLikeBesties()"> 
