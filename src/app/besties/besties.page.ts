@@ -133,7 +133,6 @@ export class BestiesPage implements OnInit {
         this.common.presentToast(
           "⏳ Please wait . we are fetching your updates"
         );
-
         let params = {
           userid: this.userDetails.userid,
           senderid: this.bestieDetails.userid,

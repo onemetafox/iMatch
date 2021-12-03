@@ -28,7 +28,7 @@
   <div  *ngFor=" let bestie of mybesties; let i = index;">
     <ion-item lines="none" class="item-styles , animate__animated animate__fadeIn">
       <ion-avatar style="height: 50px; width: 50px;"   (click)="goToBestiesDetails($event, bestie)">
-        <img [src]="bestie.profile_pic" alt="">
+        <img [src]="bestie.pic" alt="">
 
       </ion-avatar>
       <ion-label class="name-text">{{bestie.name}}</ion-label>
@@ -37,12 +37,12 @@
         <ion-row>
           <ion-col>
             <img src="../../assets/icon/besties/heart.png" alt="" style="height: 15px; width: 15px;">
-            <span class="text-near-icons">{{bestie.likes}}</span>
+            <span class="text-near-icons">{{bestie.like_count}}</span>
           </ion-col>
   
           <ion-col>
             <img src="../../assets/icon/besties/comment.png" alt="" style="height: 15px; width: 18px;">
-            <span class="text-near-icons">{{bestie.comments}}</span>
+            <span class="text-near-icons">{{bestie.comment_count}}</span>
           </ion-col>
         </ion-row>
       </div>

@@ -44,7 +44,7 @@ export class BestiesBeforePage implements OnInit {
     this.common.postMethod('getBestieList',params).then((res:any) => {
      this.common.hideLoader();
 
-     this.mybesties = res.details.besties;
+     this.mybesties = res.details;
 
      if (this.mybesties.length==0) {
        this.common.presentToast('You are having no `Besties` to show');
