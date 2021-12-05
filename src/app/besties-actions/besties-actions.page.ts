@@ -33,12 +33,12 @@ export class BestiesActionsPage implements OnInit {
       if (this.userDetails.userid != '') {
 
         let params = {
-          userid : this.userDetails.userid
+          req_from : this.userDetails.userid,
+          category: "bestie" 
         }
 
         this.common.postMethod('BestieAction',params).then((res:any) => {
-         this.BestiesAction = res.details;
-
+          this.BestiesAction = res.details;
         });
 
       }
