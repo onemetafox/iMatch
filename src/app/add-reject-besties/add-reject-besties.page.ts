@@ -7,7 +7,7 @@ import { StorageService } from "./../services/storage.service";
   styleUrls: ["./add-reject-besties.page.scss"],
 })
 export class AddRejectBestiesPage implements OnInit {
-  BestiesInvitaion: any = [];
+  BestiesInvitation: any = [];
   userDetails: any = [];
 
   constructor(
@@ -19,33 +19,6 @@ export class AddRejectBestiesPage implements OnInit {
 
   ionViewWillEnter() {
     this.GetStoredUserDetails();
-
-    this.BestiesInvitaion = [
-      {
-        name: "Ravi",
-      },
-      {
-        name: "Balu",
-      },
-      {
-        name: "Ravi",
-      },
-      {
-        name: "Balu",
-      },
-      {
-        name: "Ravi",
-      },
-      {
-        name: "Balu",
-      },
-      {
-        name: "Ravi",
-      },
-      {
-        name: "Balu",
-      },
-    ];
   }
 
   GetStoredUserDetails() {
@@ -57,22 +30,13 @@ export class AddRejectBestiesPage implements OnInit {
 
   GetBestieInvitations() {
     let params = {
-      userid: this.userDetails.userid,
+      receiver_id: this.userDetails.userid,
+      notification_status: 'Add_bestie',
+      read_status: '1'
     };
-    this.common.postMethod("abc", params).then(
-      (res: any) => {},
-      (err) => {
-        console.log("Error:", err);
-      }
-    );
-  }
-
-  ViewUserProfile(e, invitaion, i) {
-    let params = {
-      userid: this.userDetails.userid,
-    };
-    this.common.postMethod("abc", params).then(
+    this.common.postMethod("getNotifications", params).then(
       (res: any) => {
+        this.BestiesInvitation = res.details;
       },
       (err) => {
         console.log("Error:", err);
@@ -80,29 +44,15 @@ export class AddRejectBestiesPage implements OnInit {
     );
   }
 
-  AddAsBestie(e, invitaion, i) {
+  updateInvitation(e, invitation, status) {
     let params = {
-      request_id: '',
-      status : 'accept'
+      request_id: invitation.request_id,
+      read_status : "1",
+      req_status : status,
+      not_id : invitation.not_id,
+      type: invitation.notification_status
     };
-    this.common.postMethod("accept_or_reject", params).then(
-      (res: any) => {
-        if (res.status === true) {
-          this.GetBestieInvitations();
-        }
-      },
-      (err) => {
-        console.log("Error:", err);
-      }
-    );
-  }
-
-  RejectBestieInvitation(e, invitaion, i) {
-    let params = {
-      request_id: '',
-      status : 'reject'
-    };
-    this.common.postMethod("accept_or_reject", params).then(
+    this.common.postMethod("setNotificationRead", params).then(
       (res: any) => {
         if (res.status === true) {
           this.GetBestieInvitations();

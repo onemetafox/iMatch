@@ -84,6 +84,7 @@ export class BestiesPage implements OnInit {
   GetStorageDetails() {
     this.storageservice.storage.get("userDetails").then((val) => {
       this.userDetails = val;
+      console.log(val);
       this.GetPageContent();
     });
   }

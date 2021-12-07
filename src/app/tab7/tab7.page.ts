@@ -21,7 +21,6 @@ export class Tab7Page implements OnInit {
 
   ionViewWillEnter(){
    this.storageservice.storage.get('userDetails').then((val) => {
-    console.log(val);
     this.userDetails = val;
   });
   
