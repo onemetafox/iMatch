@@ -235,7 +235,6 @@
           this.UserInfo = [];
           this.common.route.queryParams.subscribe(function (resp) {
             _this.UserInfo = resp;
-            console.log('matchDetails for comment page:', _this.UserInfo);
           });
         }
 
@@ -247,17 +246,13 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into visitors personal match view page');
             var params = {
               userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('PersonalMatch', params).then(function (res) {
-              console.log('res:', res);
               _this2.PersonalMatch = res.details.image;
             }, function (err) {
               console.log('Error:', err);
-              console.log('Error headers:', err.headers);
             });
           }
         }, {

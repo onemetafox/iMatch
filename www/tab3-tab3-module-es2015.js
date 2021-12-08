@@ -50,7 +50,6 @@ let Tab3Page = class Tab3Page {
         this.FansOf = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
@@ -68,17 +67,11 @@ let Tab3Page = class Tab3Page {
     }
     ionViewWillEnter() {
         this.selectUsers = [];
-        console.log(this.selectUsers);
-        console.log('in ionViewWillEnter');
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
             if (this.userDetails.userid != undefined) {
                 this.listAllUsers();
                 this.toGetUsersCategory();
-            }
-            else {
-                console.log('*** UserId undefined ***');
             }
         });
         // this.presentPopover();
@@ -87,17 +80,13 @@ let Tab3Page = class Tab3Page {
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('userid:', params);
         this.common.listUsers('Listusers', params).subscribe((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
         });
     }
     onSearchInput(e) {
         this.searching = true;
         this.showCategory = false;
-        console.log('E:', e);
         this.setFilteredItems();
     }
     setFilteredItems() {
@@ -112,7 +101,6 @@ let Tab3Page = class Tab3Page {
         }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });
@@ -137,14 +125,11 @@ let Tab3Page = class Tab3Page {
         }
     }
     toListCategory(val) {
-        console.log('To List Specific Category Clicked');
         this.ShowFooter = false;
-        console.log('Value:', val);
         if (val == 'bestie') {
             if (this.BestiesList.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.BestiesList;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast('Your Bestie List is Successfully Fetched ...');
             }
             else {
@@ -156,7 +141,6 @@ let Tab3Page = class Tab3Page {
             if (this.SquadList.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.SquadList;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Squad List is Successfully Fetched ... ');
             }
             else {
@@ -168,7 +152,6 @@ let Tab3Page = class Tab3Page {
             if (this.Fans.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.Fans;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Fan List is Successfully Fetched ... ');
             }
             else {
@@ -180,7 +163,6 @@ let Tab3Page = class Tab3Page {
             if (this.FansOf.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.FansOf;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Fan Of List is Successfully Fetched ... ');
             }
             else {
@@ -194,13 +176,10 @@ let Tab3Page = class Tab3Page {
         }
     }
     toGetUsersCategory() {
-        console.log('To Get User Category Wise Working');
         let params = {
             id: this.userDetails.userid
         };
-        console.log('params:', params);
-        this.common.postMethod('Listbesties', params).then((res) => {
-            console.log('res:', res);
+        this.common.postMethod('getBestieList', params).then((res) => {
             if (res.status == true) {
                 this.BestiesList = res.details.besties;
                 this.SquadList = res.details.squad;
@@ -248,9 +227,7 @@ let PopoverComponent = class PopoverComponent {
         this.userDetails = [];
     }
     ionViewWillEnter() {
-        console.log('Entered Into Popover Page');
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
         setTimeout(() => {

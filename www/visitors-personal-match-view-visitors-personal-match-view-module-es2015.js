@@ -126,23 +126,18 @@ let VisitorsPersonalMatchViewPage = class VisitorsPersonalMatchViewPage {
         this.UserInfo = [];
         this.common.route.queryParams.subscribe(resp => {
             this.UserInfo = resp;
-            console.log('matchDetails for comment page:', this.UserInfo);
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into visitors personal match view page');
         let params = {
             userid: this.UserInfo.userid
         };
-        console.log('params:', params);
         this.common.postMethod('PersonalMatch', params).then((res) => {
-            console.log('res:', res);
             this.PersonalMatch = res.details.image;
         }, (err) => {
             console.log('Error:', err);
-            console.log('Error headers:', err.headers);
         });
     }
     gotoPersonalMatchComments(e, m) {

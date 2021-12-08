@@ -202,12 +202,10 @@
           });
           this.comment = this.OpenMatchCommentForm.controls['comment'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.MatchDetails = resp;
-            console.log('MatchDetails:', _this.MatchDetails);
           });
         }
 
@@ -219,19 +217,13 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Open Match Comment Page');
             var params = {
               userid: 0,
               matchid: this.MatchDetails.match_id
             };
-            console.log('params:', params);
             this.common.postMethod('GetComment', params).then(function (res) {
-              console.log('res:', res);
               _this2.CommentDetails = res.details;
             }, function (err) {
-              console.log('Error:', err);
-              console.log(err.headers);
-
               _this2.ionViewWillEnter();
             });
           }
@@ -240,23 +232,18 @@
           value: function toAddComment() {
             var _this3 = this;
 
-            console.log('Send Open Match Comment Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               matchid: this.MatchDetails.match_id,
               comment: this.userComment.comment,
               contestentid: ''
             };
-            console.log('params:', params);
             this.common.postMethod('Comment', params).then(function (res) {
-              console.log('res:', res);
-
               _this3.OpenMatchCommentForm.reset();
 
               _this3.ionViewWillEnter();
             }, function (err) {
               console.log('Error:', err);
-              console.log(err.headers);
             });
           }
         }]);

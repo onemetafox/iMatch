@@ -81,14 +81,9 @@
           this.searching = false;
           this.userDetails = [];
           this.allUsers = [];
-          this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"](); // this.storageservice.storage.get('userDetails').then((val) => {
-          //   console.log('Storage Value of userDetails:', val);
-          //   this.userDetails = val;
-          // });
-
+          this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"]();
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
-            console.log('userDetails:', _this.userDetails);
           });
         }
 
@@ -117,61 +112,31 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log('in ionViewWillEnter');
-                      _context.next = 3;
+                      _context.next = 2;
                       return this.common.showLoader();
 
-                    case 3:
+                    case 2:
                       params = {
                         userid: this.userDetails.userid
                       };
-                      console.log('params:', params);
                       this.common.listUsers('Listusers', params).subscribe(function (res) {
-                        console.log('res:', res);
                         _this3.allUsers = res.details.name;
-                        console.log('allUsers:', _this3.allUsers);
 
                         _this3.common.hideLoader();
                       }, function (err) {
                         _this3.common.hideLoader();
 
                         console.log('err:', err);
-                      }); //  this.listAllUsers();
+                      });
 
-                    case 6:
+                    case 4:
                     case "end":
                       return _context.stop();
                   }
                 }
               }, _callee, this);
             }));
-          } // async storage() {
-          //   // this.storageservice.storage.get('userDetails').then((val) => {
-          //     // console.log('Storage Value of userDetails:', val);
-          //     // this.userDetails = val;
-          //     // console.log('userid:',this.userDetails.userid);
-          //     if(this.userDetails.userid!=''){
-          //       this.common.presentLoading();
-          //        this.listAllUsers();
-          //       } else{
-          //         ////
-          //       }
-          //   // });  
-          // }
-          // listAllUsers() {
-          //   // console.log(this.userDetails);  
-          //   // var userid = this.userDetails["userid"];
-          //   let params = {
-          //     userid : this.userDetails.userid
-          //   }
-          //   console.log('params:',params);  
-          //   this.common.listUsers('Listusers',params).subscribe((res:any) => {
-          //     console.log('res:',res);
-          //     this.allUsers = res.details.name;
-          //     console.log('allUsers:',this.allUsers);
-          //   });
-          // }
-
+          }
         }, {
           key: "onSearchInput",
           value: function onSearchInput() {
@@ -185,7 +150,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });
@@ -193,8 +157,6 @@
         }, {
           key: "gotoVisitorsActivity",
           value: function gotoVisitorsActivity(event, user) {
-            console.log('Entered Into Visitors Activity Page');
-            console.log('user:', user);
             this.common.navCtrl.navigateForward(['/visitors-view-activity'], {
               queryParams: user
             });

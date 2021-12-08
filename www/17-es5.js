@@ -109,6 +109,7 @@
           this.labelColorStyles = {};
           this.itemStyles = new Map();
           this.multipleInputs = false;
+          this.focusable = true;
           /**
            * If `true`, a button tag will be rendered and the item will be tappable.
            */
@@ -212,7 +213,9 @@
             var _this2 = this;
 
             Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_2__["r"])(function () {
-              return _this2.setMultipleInputs();
+              _this2.setMultipleInputs();
+
+              _this2.focusable = _this2.isFocusable();
             });
           } // If the item contains multiple clickable elements and/or inputs, then the item
           // should not have a clickable input cover over the entire item to prevent
@@ -254,6 +257,12 @@
           key: "canActivate",
           value: function canActivate() {
             return this.isClickable() || this.hasCover();
+          }
+        }, {
+          key: "isFocusable",
+          value: function isFocusable() {
+            var focusableChild = this.el.querySelector('.ion-focusable');
+            return this.canActivate() || focusableChild !== null;
           }
         }, {
           key: "getFirstInput",
@@ -333,7 +342,7 @@
               "aria-disabled": ariaDisabled,
               "class": Object.assign(Object.assign(Object.assign({}, childStyles), labelColorStyles), Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_3__["c"])(this.color, (_Object = {
                 'item': true
-              }, _defineProperty(_Object, mode, true), _defineProperty(_Object, "item-lines-".concat(lines), lines !== undefined), _defineProperty(_Object, 'item-disabled', disabled), _defineProperty(_Object, 'in-list', Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_3__["h"])('ion-list', this.el)), _defineProperty(_Object, 'item-multiple-inputs', this.multipleInputs), _defineProperty(_Object, 'ion-activatable', canActivate), _defineProperty(_Object, 'ion-focusable', true), _Object)))
+              }, _defineProperty(_Object, mode, true), _defineProperty(_Object, "item-lines-".concat(lines), lines !== undefined), _defineProperty(_Object, 'item-disabled', disabled), _defineProperty(_Object, 'in-list', Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_3__["h"])('ion-list', this.el)), _defineProperty(_Object, 'item-multiple-inputs', this.multipleInputs), _defineProperty(_Object, 'ion-activatable', canActivate), _defineProperty(_Object, 'ion-focusable', this.focusable), _Object)))
             }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(TagType, Object.assign({}, attrs, {
               "class": "item-native",
               part: "native",

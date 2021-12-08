@@ -150,7 +150,6 @@ let SearchFansPage = class SearchFansPage {
         // });
         this.common.route.queryParams.subscribe(resp => {
             this.userDetails = resp;
-            console.log('userDetails:', this.userDetails);
         });
     }
     ngOnInit() {
@@ -165,17 +164,13 @@ let SearchFansPage = class SearchFansPage {
         });
     }
     ionViewWillEnter() {
-        console.log('in ionViewWillEnter');
         //  this.listAllUsers();
         this.common.showLoader();
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.listUsers('Listusers', params).subscribe((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
             this.common.hideLoader();
         }, err => {
             console.log('err:', err);
@@ -216,12 +211,11 @@ let SearchFansPage = class SearchFansPage {
     addToList(event, name, user) {
         if (user.userid != '') {
             let params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'fan'
             };
             this.common.postMethod('add_fan', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.common.presentToast(name + ' is successfully added to your fans list ...');
                     // this.common.router.navigate(['/fans']);
@@ -232,12 +226,8 @@ let SearchFansPage = class SearchFansPage {
                 }
             });
         }
-        else {
-            /////
-        }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });

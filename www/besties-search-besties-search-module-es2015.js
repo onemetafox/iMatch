@@ -113,17 +113,14 @@ let BestiesSearchPage = class BestiesSearchPage {
         this.allUsers = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
     ionViewWillEnter() {
-        console.log('in ionViewWillEnter');
         this.listAllUsers();
     }
     ionViewDidEnter() {
         this.storageservice.storage.get('bestieDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.bestieDetails = val;
         });
     }
@@ -141,9 +138,7 @@ let BestiesSearchPage = class BestiesSearchPage {
     storage() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.storageservice.storage.get('userDetails').then((val) => {
-                console.log('Storage Value of userDetails:', val);
                 this.userDetails = val;
-                console.log('userid:', this.userDetails.userid);
                 // this.user_id = this.userDetails.userid;
                 if (this.userDetails) {
                     this.common.presentLoading();
@@ -156,16 +151,12 @@ let BestiesSearchPage = class BestiesSearchPage {
         });
     }
     listAllUsers() {
-        console.log(this.userDetails);
         var userid = this.userDetails["userid"];
         let params = {
             userid: userid
         };
-        console.log('userid:', params);
         this.common.postMethod('Listusers', params).then((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
         });
     }
     onSearchInput(e) {
@@ -177,12 +168,11 @@ let BestiesSearchPage = class BestiesSearchPage {
     addToList(event, name, user) {
         if (user.userid != '') {
             let params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'bestie'
             };
             this.common.postMethod('add_bestie', params).then((res) => {
-                console.log('res:', res);
                 if (res.message == "Successfully added as Bestie") {
                     this.common.presentToast(name + ' is successfully added to your besties list ...');
                     this.common.navCtrl.navigateForward(['besties'], { queryParams: user });
@@ -197,7 +187,6 @@ let BestiesSearchPage = class BestiesSearchPage {
         }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });
@@ -219,26 +208,19 @@ BestiesSearchPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 let PopoverComponent = class PopoverComponent {
     constructor(popoverController, common, navParams) {
-        // this.storageservice.storage.get('userDetails').then((val) => {
-        // console.log('Storage Value of userDetails:', val);
-        // this.userDetails = val;
         this.popoverController = popoverController;
         this.common = common;
         this.navParams = navParams;
         this.User = [];
         this.userdetails = [];
-        console.log(this.navParams.get('key'));
-        console.log('my userid:', this.navParams.get('id'));
         this.userdetails = this.navParams.get('key');
         this.User = this.navParams.get('key');
-        console.log('users in popover:', this.User);
     }
     onDismiss(value) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             try {
                 this.popoverController.dismiss(value);
                 if (value == 'bestie') {
-                    console.log('Bestie Clicked');
                     let params = {
                         // from : userdetails.userid,
                         // to : ,
@@ -247,19 +229,15 @@ let PopoverComponent = class PopoverComponent {
                     // this.common.router.navigate(['/profile']); 
                 }
                 else if (value == 'squad') {
-                    console.log('Squad Clicked');
                     // this.common.router.navigate(['/besties']); 
                 }
                 else if (value == 'fan') {
-                    console.log('Fan Clicked');
                     // this.common.router.navigate(['/squad-list']);
                 }
                 else if (value == '') {
-                    console.log('Fans Of Clicked');
                     // this.common.router.navigate(['/fans-of']);
                 }
                 else if (value == 'match') {
-                    console.log('Match Clicked');
                     // this.common.navCtrl.navigateForward(['/tabs/tab1']);
                 }
             }

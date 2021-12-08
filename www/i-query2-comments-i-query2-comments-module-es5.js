@@ -262,12 +262,10 @@
           });
           this.comment = this.iQueryCommentForm.controls['comment'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.QueryDetails = resp;
-            console.log('QueryDetails for comment page:', _this.QueryDetails);
           });
         }
 
@@ -279,13 +277,10 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into iQuery Comment Page');
             var params = {
               queryid: this.QueryDetails.queryid
             };
-            console.log('params:', params);
             this.common.postMethod('GetMyiQueryComment', params).then(function (res) {
-              console.log('res:', res);
               _this2.commentDetails = res.details.query2;
             });
           }
@@ -294,17 +289,13 @@
           value: function toAddComment() {
             var _this3 = this;
 
-            console.log('Send iQuery Comment Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               queryid: this.QueryDetails.queryid,
               querynum: 'query2',
               comment: this.userComment.comment
             };
-            console.log('params:', params);
             this.common.postMethod('Iquerycomment', params).then(function (res) {
-              console.log('res:', res);
-
               _this3.ionViewWillEnter();
             });
           }

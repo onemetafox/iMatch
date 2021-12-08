@@ -124,22 +124,16 @@ let VisitorsBestiesViewPage = class VisitorsBestiesViewPage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered Into Visitors Besties View Page');
         this.common.route.queryParams.subscribe(resp => {
             this.UserInfo = resp;
-            console.log('UserInfo:', this.UserInfo);
             let params = {
                 id: this.UserInfo.userid,
             };
-            console.log('params:', params);
             this.common.presentLoading();
-            this.common.postMethod('Listbesties', params).then((res) => {
-                console.log('res:', res);
+            this.common.postMethod('getBestieList', params).then((res) => {
                 this.mybesties = res.details.besties;
-                console.log('mybesties:', this.mybesties);
             }, (err) => {
                 console.log('Error:', err);
-                console.log(err.headers);
             });
         });
     }

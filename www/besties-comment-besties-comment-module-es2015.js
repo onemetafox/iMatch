@@ -38,7 +38,6 @@ let BestiesCommentPage = class BestiesCommentPage {
         this.doEditReplyComment = {};
         this.common.route.queryParams.subscribe((resp) => {
             this.BestiesDetails = resp;
-            console.log('BestiesDetails:', this.BestiesDetails);
         });
     }
     ngOnInit() {
@@ -56,11 +55,9 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     GetBestiesComments() {
         let params = {
-            bestieid: this.BestiesDetails.userid
+            bestie_id: this.BestiesDetails.bestie_id
         };
-        console.log('params:', params);
         this.common.postMethod('GetBestieComment', params).then((res) => {
-            console.log('res:', res.details);
             this.commentDetails = res.details;
             for (let i = 0; i < this.commentDetails.length; i++) {
                 this.doEditComment[i] = false;
@@ -71,15 +68,14 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToAddComment() {
         if (this.userComment != "" && this.userComment != undefined) {
+            console.log(this.BestiesDetails);
             let params = {
                 userid: this.userDetails.userid,
-                bestieid: this.BestiesDetails.userid,
+                bestie_id: this.BestiesDetails.bestie_id,
                 comment: this.userComment,
                 commentid: ''
             };
-            console.log('params:', params);
             this.common.postMethod('BestieComment', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.GetBestiesComments();
                     this.userComment = '';
@@ -98,7 +94,6 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToSaveEdit(e, comment, i, Type) {
         this.Comment = comment;
-        console.log(comment);
         if (Type === "COMMENT") {
             if (this.userEditedComment != "" && this.userEditedComment != undefined) {
                 this.doEditComment[i] = false;
@@ -106,9 +101,7 @@ let BestiesCommentPage = class BestiesCommentPage {
                     commentid: this.Comment.id,
                     comment: this.userEditedComment
                 };
-                console.log('params:', params);
                 this.common.postMethod('UpdateBestieComment', params).then((res) => {
-                    console.log('res:', res);
                     if (res.status == true) {
                         this.common.showAlertSuccess('Your edited comment saved successfully');
                         this.GetBestiesComments();
@@ -133,10 +126,7 @@ let BestiesCommentPage = class BestiesCommentPage {
         let params = {
             commentid: comment.id,
         };
-        console.log('comment', comment.id);
-        console.log('params:', params);
         this.common.postMethod('DeleteBestieComment', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.GetBestiesComments();
             }
@@ -150,9 +140,7 @@ let BestiesCommentPage = class BestiesCommentPage {
             commentid: this.Comment.id,
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.postMethod('BestieCommentLike', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.GetBestiesComments();
             }
@@ -162,7 +150,6 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToAddReply(e, comment) {
         this.doReply = true;
-        console.log('comment:', comment);
         comment.commentType = 'COMMENT';
         this.ReplyUserDetails = comment;
     }
@@ -175,9 +162,7 @@ let BestiesCommentPage = class BestiesCommentPage {
                     comment: this.userReply,
                     commentid: this.ReplyUserDetails.id
                 };
-                console.log('params:', params);
                 this.common.postMethod('BestieComment', params).then((res) => {
-                    console.log('res:', res);
                     if (res.status == true) {
                         this.GetBestiesComments();
                         this.userReply = '';
@@ -195,7 +180,6 @@ let BestiesCommentPage = class BestiesCommentPage {
         }
     }
     ToViewReplyComments(e, comment, i) {
-        console.log('comment:', comment, i);
         this.Comment = comment;
         if (this.Comment.replied_comments.length !== 0) {
             this.isReplyComments = {} = {};
@@ -208,14 +192,11 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToLikeReplyComment(e, reply, i) {
         this.Comment = reply;
-        console.log('reply:', reply);
         let params = {
             commentid: this.Comment.id,
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.postMethod('BestieCommentLike', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.GetBestiesComments();
             }
@@ -225,7 +206,6 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToReplyToReplyComment(e, reply, i) {
         this.doReply = true;
-        console.log('reply:', reply);
         reply.commentType = 'REPLY';
         this.ReplyUserDetails = reply;
     }
@@ -237,9 +217,7 @@ let BestiesCommentPage = class BestiesCommentPage {
                 comment: 'Replied to ' + this.ReplyUserDetails.commented_username + '`s comment 👉 ' + this.userReply,
                 commentid: this.ReplyUserDetails.id
             };
-            console.log('params:', params);
             this.common.postMethod('BestieComment', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.GetBestiesComments();
                     this.userReply = '';
@@ -254,20 +232,16 @@ let BestiesCommentPage = class BestiesCommentPage {
     }
     ToEditReplyComment(e, reply, i) {
         this.doEditReplyComment[i] = true;
-        console.log('rep:', reply);
         this.CommentReply = reply;
         this.userEditedComment = reply.comment;
     }
     ToSaveReplyComment(e, reply, i, Type) {
-        console.log(reply);
         if (this.userEditedComment != "" && this.userEditedComment != undefined) {
             let params = {
                 commentid: this.CommentReply.id,
                 comment: this.userEditedComment
             };
-            console.log('params:', params);
             this.common.postMethod('UpdateBestieComment', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.userEditedComment = '';
                     this.doEditReplyComment[i] = false;
@@ -290,10 +264,7 @@ let BestiesCommentPage = class BestiesCommentPage {
         let params = {
             commentid: this.Comment.id,
         };
-        console.log('comment', this.Comment.id);
-        console.log('params:', params);
         this.common.postMethod('DeleteBestieComment', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.GetBestiesComments();
             }

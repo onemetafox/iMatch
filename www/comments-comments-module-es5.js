@@ -253,12 +253,10 @@
           this.comment = this.OpenMatchCommentForm.controls['comment'];
           this.reply = this.ReplyCommentForm.controls['reply'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.matchDetails = resp;
-            console.log('matchDetails for comment page:', _this.matchDetails);
           });
         }
 
@@ -275,9 +273,7 @@
                 userid: '0',
                 matchid: this.matchDetails.match_id
               };
-              console.log('params:', params);
               this.common.postMethod('GetComment', params).then(function (res) {
-                console.log('res:', res);
                 _this2.commentDetails = res.details;
                 _this2.ReplyComments = res.reply_comment;
               }, function (err) {
@@ -292,10 +288,8 @@
                     userid: _this2.userDetails.userid,
                     matchid: _this2.matchDetails.match_id
                   };
-                  console.log('params:', _params);
 
                   _this2.common.postMethod('GetComment', _params).then(function (res) {
-                    console.log('res:', res);
                     _this2.commentDetails = res.details;
                     _this2.ReplyComments = res.reply_comment; // if (this.commentDetails.replied_comment != "0") {
                     //   this.ReplyComments = res.details;
@@ -313,8 +307,6 @@
           value: function toAddComment() {
             var _this3 = this;
 
-            console.log('Add Comment Button Clicked');
-
             if (this.OpenMatchCommentForm.valid && this.matchDetails.match_status == '1') {
               var params = {
                 userid: this.userDetails.userid,
@@ -322,10 +314,7 @@
                 comment: this.userComment.comment,
                 contestentid: '0'
               };
-              console.log('params:', params);
               this.common.postMethod('Comment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this3.OpenMatchCommentForm.reset();
 
@@ -348,24 +337,17 @@
           value: function toLikeComment(e, comment) {
             var _this4 = this;
 
-            console.log('Comment Like Button clicked');
-            console.log('comment:', comment);
             var params = {
               commentid: comment.id,
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('MatchCommentLike', params).then(function (res) {
-              console.log('res', res);
-
               if (res.status == true) {
                 _this4.ionViewWillEnter();
               } else {
                 _this4.common.presentToast(' 🛑 Something went wrong !!! ');
               }
             }, function (err) {
-              console.log('Error', err);
-
               _this4.common.presentToast(' 🛑 A Network error occured ...');
             });
           }
@@ -374,16 +356,11 @@
           value: function toLikeReplyComment(e, comment) {
             var _this5 = this;
 
-            console.log('Reply Comment Like Button Clicked');
-            console.log('comment:', comment);
             var params = {
               commentid: comment.id,
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('MatchCommentLike', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this5.ionViewWillEnter();
               } else {
@@ -396,8 +373,6 @@
         }, {
           key: "toShowReplyField",
           value: function toShowReplyField(e, comment) {
-            console.log('e:', e);
-            console.log('comment:', comment);
             this.doReply = true;
             this.ReplyArray = comment;
           }
@@ -405,9 +380,6 @@
           key: "toAddReply",
           value: function toAddReply(e, ReplyArray) {
             var _this6 = this;
-
-            console.log('Send Reply Button clicked');
-            console.log('ReplyArray:', ReplyArray);
 
             if (this.ReplyCommentForm.valid) {
               var params = {
@@ -417,10 +389,7 @@
                 contestentid: '0',
                 replied_commentid: ReplyArray.id
               };
-              console.log('params:', params);
               this.common.postMethod('ReplyComment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this6.OpenMatchCommentForm.reset();
 
@@ -430,9 +399,7 @@
                 } else {
                   _this6.common.presentToast(' 🛑 Something went wrong !!! ');
                 }
-              }, function (err) {
-                console.log('Error', err);
-              });
+              }, function (err) {});
             } else {
               this.common.presentToast('Cannot Send Empty Messages ...');
             }
@@ -442,28 +409,21 @@
           value: function toShowReplyComment(e, comment, i) {
             var _a;
 
-            console.log('To Show Reply Comment Clicked', i);
             this.ReplyCommentArray = [];
-            console.log('comment:', comment, 'id:', comment.id);
             this.commentId = comment.id;
             this.showReplyComment[i] = true;
-            console.log('ReplyComments:', this.ReplyComments);
 
             if (((_a = this.ReplyComments) === null || _a === void 0 ? void 0 : _a.length) != 0) {
               for (var _i = 0; _i < this.ReplyComments.length; _i++) {
                 var includesCommentId = this.ReplyComments[_i].replied_comment.includes(this.commentId);
 
-                console.log('includesCommentId:', includesCommentId);
-
                 if (includesCommentId === true) {
                   this.ReplyCommentArray.push(this.ReplyComments[_i]);
-                  console.log('ReplyCommentArray:', this.ReplyCommentArray);
                 } else {
                   this.showReplyComment[_i] = false;
                 }
               }
             } else {
-              console.log('ReplyComments empty');
               this.showReplyComment[i] = false;
               this.common.presentToast(comment.commented_username + ' comment have no reply comments to display');
             }
@@ -471,7 +431,6 @@
         }, {
           key: "toHideReplyComment",
           value: function toHideReplyComment(e, comment, i) {
-            console.log('comment:', comment, i);
             this.showReplyComment[i] = false;
           }
         }]);

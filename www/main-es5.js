@@ -81,10 +81,7 @@
 
         _createClass(ModalPage, [{
           key: "ngOnInit",
-          value: function ngOnInit() {
-            console.log('Modal Heading:', this.heading);
-            console.log('Modal Contents:', this.content);
-          }
+          value: function ngOnInit() {}
         }, {
           key: "dismissModal",
           value: function dismissModal() {
@@ -298,29 +295,23 @@
           this.http = http;
           this.router = router;
           this.BaseUrl = 'http://192.168.107.183/iMatch/api/v1/';
-          console.log('Hello AjaxService Provider');
         }
 
         _createClass(AjaxService, [{
           key: "initPush",
           value: function initPush() {
             if (_capacitor_core__WEBPACK_IMPORTED_MODULE_5__["Capacitor"].platform == 'web') {
-              console.log('This is a Web Browser View');
               this.toGetUserLocation(); // this.toGetNetworkInfo();
             } else if (_capacitor_core__WEBPACK_IMPORTED_MODULE_5__["Capacitor"].platform == 'android') {
               this.registerPush(); // this.toGetNetworkInfo();
 
               this.ToGetDeviceInfo(); // this.toGetUserLocation();
               //   this.filePermission();
-
-              console.log('This is an Android Platform');
             } else if (_capacitor_core__WEBPACK_IMPORTED_MODULE_5__["Capacitor"].platform == 'ios') {
               this.registerPush(); // this.toGetNetworkInfo();
 
               this.ToGetDeviceInfo(); // this.toGetUserLocation();
               //   this.filePermission();
-
-              console.log('This is an ios Platform');
             }
           } // async filePermission() {
           //   this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(
@@ -339,13 +330,11 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log('To Get Device Information');
-                      _context.next = 3;
+                      _context.next = 2;
                       return Device.getInfo();
 
-                    case 3:
+                    case 2:
                       DeviceInfo = _context.sent;
-                      console.log('DeviceInfo:', DeviceInfo);
                       this.storageservice.setStorage('DeviceInfo', DeviceInfo); // const BatteryInfo = await Device.getBatteryInfo();
                       // console.log('BatteryInfo:',BatteryInfo);
                       // this.storageservice.setStorage('BatteryInfo',BatteryInfo);
@@ -353,7 +342,7 @@
                       // console.log('LanguageCode:',LanguageCode);
                       // this.storageservice.setStorage('LanguageCode',LanguageCode);
 
-                    case 6:
+                    case 4:
                     case "end":
                       return _context.stop();
                   }
@@ -386,16 +375,14 @@
                 while (1) {
                   switch (_context2.prev = _context2.next) {
                     case 0:
-                      console.log('To Get User Location');
-                      this.geolocation.getCurrentPosition().then(function (resp) {
-                        console.log('resp:', resp); // this.storageservice.setStorage('UserLocation',resp);
+                      this.geolocation.getCurrentPosition().then(function (resp) {// this.storageservice.setStorage('UserLocation',resp);
                         // resp.coords.latitude
                         // resp.coords.longitude
                       })["catch"](function (error) {
                         console.log('Error getting location', error);
                       });
 
-                    case 2:
+                    case 1:
                     case "end":
                       return _context2.stop();
                   }
@@ -416,8 +403,6 @@
               }
             });
             PushNotifications.addListener('registration', function (token) {
-              console.log('My token: ' + JSON.stringify(token));
-
               _this.storageservice.setStorage('DeviceToken', token);
             });
             PushNotifications.addListener('registrationError', function (error) {
@@ -447,13 +432,12 @@
                     switch (_context4.prev = _context4.next) {
                       case 0:
                         data = notification.notification.data;
-                        console.log('Action performed: ' + JSON.stringify(notification.notification));
 
                         if (data.detailsId) {
                           this.router.navigateByUrl("/home/".concat(data.detailsId));
                         }
 
-                      case 3:
+                      case 2:
                       case "end":
                         return _context4.stop();
                     }
@@ -605,7 +589,6 @@
           this.twit = twit;
           this.screenOrientation = screenOrientation;
           this.menu = menu;
-          console.log('Hello Common Service Provider');
         } // --- Alert to show failed message ---
 
 
@@ -729,9 +712,8 @@
                       _yield$loading$onDidD = _context8.sent;
                       role = _yield$loading$onDidD.role;
                       data = _yield$loading$onDidD.data;
-                      console.log('Loading dismissed!');
 
-                    case 11:
+                    case 10:
                     case "end":
                       return _context8.stop();
                   }
@@ -789,7 +771,6 @@
         }, {
           key: "register",
           value: function register(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]().append("name", params.name).append("phone", params.phone).append("email", params.email).append("password", params.password).append("university", params.university);
             var config = {
               headers: {
@@ -801,7 +782,6 @@
         }, {
           key: "login",
           value: function login(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]().append("email", params.email).append("password", params.password);
             var config = {
               headers: {
@@ -813,7 +793,6 @@
         }, {
           key: "forgotpassword",
           value: function forgotpassword(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]().append("email", params.email);
             var config = {
               headers: {
@@ -825,7 +804,6 @@
         }, {
           key: "profileupdate",
           value: function profileupdate(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]().append("name", params.name).append("email", params.email).append("bio", params.bio).append("phone", params.phone).append("gender", params.gender).append("university", params.university).append("code", params.code).append("userid", params.userid);
             var config = {
               headers: {
@@ -837,7 +815,6 @@
         }, {
           key: "profilepic",
           value: function profilepic(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
             var config = {
               headers: {
@@ -860,7 +837,6 @@
         }, {
           key: "listUsers",
           value: function listUsers(path, params) {
-            console.log(params);
             var httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]().append("userid", params.userid);
             var config = {
               headers: {
@@ -907,10 +883,8 @@
               }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_12__["map"])(function (res) {
                 return res;
               })).subscribe(function (res) {
-                console.log("POST call successful value returned in body", res);
                 resolve(res);
               }, function (err) {
-                console.log("POST call in error", err);
                 reject(err);
               }, function () {
                 console.log("The POST observable is now completed.");
@@ -920,8 +894,6 @@
         }, {
           key: "PostData",
           value: function PostData(path, params) {
-            console.log('path:', path);
-            console.log('Params:', params);
             var config = {
               headers: {
                 'Content-Type': 'application/json'
@@ -1063,9 +1035,7 @@
           value: function ionViewWillEnter() {
             var _this3 = this;
 
-            console.log('Entered into Logout Popover Page');
             this.storageservice.storage.get('userDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this3.userDetails = val;
             });
           }
@@ -1106,7 +1076,6 @@
         }, {
           key: "toCancel",
           value: function toCancel(e) {
-            console.log('Cancel button clicked:', e);
             this.popoverController.dismiss();
           }
         }, {
@@ -1114,35 +1083,22 @@
           value: function toOkay(e) {
             var _this4 = this;
 
-            console.log('Okay Button clicked:', e);
-
             if (e.type == 'click') {
               var params = {
                 status: '1',
                 userid: this.userDetails.userid
               };
-              console.log('params:', params);
               this.common.postMethod('Online_Offline_status', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true && _this4.common.platform.is("capacitor" || false)) {
                   _this4.storageservice.storage.remove('userDetails');
 
                   _this4.popoverController.dismiss();
 
-                  console.log('User Details Cleared');
-
                   _this4.common.fb.logout();
-
-                  console.log('Facebook Logged out');
 
                   _this4.common.google.logout();
 
-                  console.log('Google Logged out');
-
                   _this4.common.twit.logout();
-
-                  console.log('Twitter Logged out');
 
                   _this4.common.presentToast('You are successfully Logged out from the iMatch');
 
@@ -1153,8 +1109,6 @@
                   _this4.storageservice.storage.remove('userDetails');
 
                   _this4.popoverController.dismiss();
-
-                  console.log('User Details Cleared');
 
                   _this4.common.router.navigate(['/landing']);
 
@@ -1362,11 +1316,8 @@
                 _this5.splashScreen.hide();
 
                 _this5.common.screenOrientation.lock(_this5.common.screenOrientation.ORIENTATIONS.PORTRAIT);
-
-                console.log(_this5.common.screenOrientation.type);
               }); // this.AjxService.initPush();
             } else {
-              console.log('This is a browser view');
               this.platform.ready().then(function () {
                 _this5.checkUserDetails();
               });
@@ -1377,9 +1328,7 @@
           value: function checkUserDetails() {
             var _this6 = this;
 
-            console.log('Checking User Details ....');
             this.storage.get('userDetails').then(function (val) {
-              console.log('userDetails:', val);
               _this6.userDetails = val;
 
               if (val) {
@@ -2390,7 +2339,7 @@
         loadChildren: function loadChildren() {
           return Promise.all(
           /*! import() | ongoing-match-detail-ongoing-match-detail-module */
-          [__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-match-personal-match-module"), __webpack_require__.e("ongoing-match-detail-ongoing-match-detail-module")]).then(__webpack_require__.bind(null,
+          [__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("ongoing-match-detail-ongoing-match-detail-module")]).then(__webpack_require__.bind(null,
           /*! ./ongoing-match-detail/ongoing-match-detail.module */
           "PW8U")).then(function (m) {
             return m.OnGoingMatchDetailPageModule;
@@ -2852,9 +2801,20 @@
         loadChildren: function loadChildren() {
           return Promise.all(
           /*! import() | personal-match-personal-match-module */
-          [__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-match-personal-match-module"), __webpack_require__.e("common"), __webpack_require__.e("personal-match-personal-match-module")]).then(__webpack_require__.bind(null,
+          [__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("common"), __webpack_require__.e("personal-match-personal-match-module")]).then(__webpack_require__.bind(null,
           /*! ./personal-match/personal-match.module */
           "OEWt")).then(function (m) {
+            return m.PersonalMatchPageModule;
+          });
+        }
+      }, {
+        path: 'personal-item-slider',
+        loadChildren: function loadChildren() {
+          return Promise.all(
+          /*! import() | personal-item-slider-personal-item-slider-module */
+          [__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("personal-item-slider-personal-item-slider-module")]).then(__webpack_require__.bind(null,
+          /*! ./personal-item-slider/personal-item-slider.module */
+          "9kIE")).then(function (m) {
             return m.PersonalMatchPageModule;
           });
         }

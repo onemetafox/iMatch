@@ -35,13 +35,8 @@ let SearchUsersPage = class SearchUsersPage {
         this.userDetails = [];
         this.allUsers = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"]();
-        // this.storageservice.storage.get('userDetails').then((val) => {
-        //   console.log('Storage Value of userDetails:', val);
-        //   this.userDetails = val;
-        // });
         this.common.route.queryParams.subscribe(resp => {
             this.userDetails = resp;
-            console.log('userDetails:', this.userDetails);
         });
     }
     ngOnInit() {
@@ -57,50 +52,19 @@ let SearchUsersPage = class SearchUsersPage {
     }
     ionViewWillEnter() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('in ionViewWillEnter');
             yield this.common.showLoader();
             let params = {
                 userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.listUsers('Listusers', params).subscribe((res) => {
-                console.log('res:', res);
                 this.allUsers = res.details.name;
-                console.log('allUsers:', this.allUsers);
                 this.common.hideLoader();
             }, err => {
                 this.common.hideLoader();
                 console.log('err:', err);
             });
-            //  this.listAllUsers();
         });
     }
-    // async storage() {
-    //   // this.storageservice.storage.get('userDetails').then((val) => {
-    //     // console.log('Storage Value of userDetails:', val);
-    //     // this.userDetails = val;
-    //     // console.log('userid:',this.userDetails.userid);
-    //     if(this.userDetails.userid!=''){
-    //       this.common.presentLoading();
-    //        this.listAllUsers();
-    //       } else{
-    //         ////
-    //       }
-    //   // });  
-    // }
-    // listAllUsers() {
-    //   // console.log(this.userDetails);  
-    //   // var userid = this.userDetails["userid"];
-    //   let params = {
-    //     userid : this.userDetails.userid
-    //   }
-    //   console.log('params:',params);  
-    //   this.common.listUsers('Listusers',params).subscribe((res:any) => {
-    //     console.log('res:',res);
-    //     this.allUsers = res.details.name;
-    //     console.log('allUsers:',this.allUsers);
-    //   });
-    // }
     onSearchInput() {
         this.searching = true;
     }
@@ -108,14 +72,11 @@ let SearchUsersPage = class SearchUsersPage {
         this.allUsers = this.filterItems(this.searchTerm);
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });
     }
     gotoVisitorsActivity(event, user) {
-        console.log('Entered Into Visitors Activity Page');
-        console.log('user:', user);
         this.common.navCtrl.navigateForward(['/visitors-view-activity'], { queryParams: user });
     }
 };

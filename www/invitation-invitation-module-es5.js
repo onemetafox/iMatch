@@ -220,7 +220,7 @@
           this.anArray = [];
           this.wordArray = [];
           this.linkArray = [];
-          this.myFiles = [];
+          this.fileArray = [];
           this.userDetails = [];
           this.invitationDetails = [];
           this.invite = [];
@@ -239,13 +239,11 @@
           });
           this.link = this.LinkInputForm.controls['link'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
             _this.personalMatchSlideIndex = _this.userDetails.personalMatchSlideIndex;
-            console.log('userArray:', _this.userDetails);
           });
         }
 
@@ -257,9 +255,6 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Invitation page', 'FileTransferResponse:', this.FileTransferResponse, 'statusId:', this.statusId);
-            console.log('isImage:', this.isImage, 'isAudio:', this.isAudio, 'isVideo:', this.isVideo);
-            console.log('isLink:', this.isLink, 'hideImageSpace:', this.hideImageSpace, 'isWording:', this.isWording);
             this.common.showLoader();
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
@@ -268,7 +263,6 @@
                 var params = {
                   userid: _this2.userDetails.userid
                 };
-                console.log('params:', params);
 
                 _this2.common.postMethod('AllInvitation', params).then(function (res) {
                   return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -277,19 +271,21 @@
                       while (1) {
                         switch (_context.prev = _context.next) {
                           case 0:
-                            console.log('res:', res);
                             this.invitationDetails = res.details;
                             this.MatchFiles = res.details.files;
-                            console.log('invitationDetails:', this.invitationDetails);
 
                             for (i = 0; i < this.invitationDetails.length; i++) {
                               this.hideImageSpace[i] = true;
+                              this.anArray[i] = [];
+                              this.fileArray[i] = [];
+                              this.wordArray[i] = [];
+                              this.linkArray[i] = [];
                             }
 
-                            _context.next = 7;
+                            _context.next = 5;
                             return this.common.hideLoader();
 
-                          case 7:
+                          case 5:
                           case "end":
                             return _context.stop();
                         }
@@ -316,15 +312,13 @@
                     }, _callee2, this);
                   }));
                 });
-              } else {
-                console.log('userid empty');
-              }
+              } else {}
             });
           }
         }, {
           key: "Add",
-          value: function Add(type) {
-            if (this.anArray.length >= 4) {
+          value: function Add(type, k) {
+            if (this.anArray[k].length >= 4) {
               this.common.showAlert('Maximum is 4 items');
               return;
             }
@@ -332,13 +326,13 @@
             if (type == 'link') {
               var position = 0;
 
-              for (var i = 0; i < this.anArray.length; i++) {
-                if (this.anArray[i].type == 'link') {
+              for (var i = 0; i < this.anArray[k].length; i++) {
+                if (this.anArray[k][i].type == 'link') {
                   position++;
                 }
               }
 
-              this.anArray.push({
+              this.anArray[k].push({
                 'value': '',
                 'type': type,
                 position: position
@@ -348,13 +342,13 @@
             if (type == 'file') {
               var _position = 0;
 
-              for (var _i = 0; _i < this.anArray.length; _i++) {
-                if (this.anArray[_i].type == 'file') {
+              for (var _i = 0; _i < this.anArray[k].length; _i++) {
+                if (this.anArray[k][_i].type == 'file') {
                   _position++;
                 }
               }
 
-              this.anArray.push({
+              this.anArray[k].push({
                 'value': '',
                 'type': type,
                 position: _position
@@ -364,13 +358,13 @@
             if (type == 'text') {
               var _position2 = 0;
 
-              for (var _i2 = 0; _i2 < this.anArray.length; _i2++) {
-                if (this.anArray[_i2].type == 'text') {
+              for (var _i2 = 0; _i2 < this.anArray[k].length; _i2++) {
+                if (this.anArray[k][_i2].type == 'text') {
                   _position2++;
                 }
               }
 
-              this.anArray.push({
+              this.anArray[k].push({
                 'value': '',
                 'type': type,
                 position: _position2
@@ -381,8 +375,6 @@
           key: "openUploadSection",
           value: function openUploadSection(e, invite) {
             this.showUploadSection = !this.showUploadSection;
-            console.log('Open upload section clicked');
-            console.log(invite);
           }
         }, {
           key: "closeUploadSection",
@@ -390,17 +382,12 @@
             var _this3 = this;
 
             this.showUploadSection = false;
-            console.log('No thanks clicked');
-            console.log(invite);
             var params = {
               matchid: invite.match_id,
               status: 'reject',
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('Match_reply', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 // this.RefreshInvitaionList(i);
                 // this.common.presentToast('You had rejected ' + invite.sender_name + '`s match ');
@@ -418,7 +405,6 @@
           value: function RefreshInvitaionList(i) {
             var _this4 = this;
 
-            console.log('Refreshing Invitaion List ...');
             this.FileTransferResponse = [];
             this.hideImageSpace[i] = true;
             this.isImage[i] = false;
@@ -426,15 +412,11 @@
             this.isVideo[i] = false;
             this.isLink[i] = false;
             this.isWording[i] = false;
-            console.log('FileTransferResponse:', this.FileTransferResponse, 'statusId:', this.statusId, 'isImage:', this.isImage, 'isAudio:', this.isAudio, 'isVideo:', this.isVideo, 'isLink:', this.isLink, 'hideImageSpace:', this.hideImageSpace, 'isWording:', this.isWording);
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('AllInvitation', params).then(function (res) {
-              console.log('res:', res);
               _this4.invitationDetails = res.details;
-              console.log('invitationDetails:', _this4.invitationDetails);
             }, function (err) {
               console.log('Error:', err);
             });
@@ -444,137 +426,64 @@
           value: function acceptInvitation(e, invite, i) {
             var _this5 = this;
 
-            if (this.anArray.length > 0) {
-              console.log('Bring it on clicked');
-              console.log(invite);
+            if (this.anArray[i].length > 0) {
               this.common.showLoader();
               var formData = new FormData();
-
-              for (var _i3 = 0; _i3 < this.myFiles.length; _i3++) {
-                formData.append("filename[]", this.myFiles[_i3]);
-              }
-
               formData.append("matchid", invite.match_id);
               formData.append("userid", this.userDetails.userid);
-              formData.append("sub_caption", JSON.stringify(this.anArray));
-              formData.append("links", JSON.stringify(this.linkArray));
-              formData.append("texts", JSON.stringify(this.wordArray));
+              formData.append("sub_caption", JSON.stringify(this.anArray[i]));
+              formData.append("links", JSON.stringify(this.linkArray[i]));
+              formData.append("texts", JSON.stringify(this.wordArray[i]));
               this.http.post(_services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/acceptInvitation', formData).subscribe(function (res) {
-                console.log(res);
+                console.dir("---------------------------------", res);
+                var matchid = res['matchid'];
 
-                if (res['message'] === 'Successfully uploaded') {
-                  // this.common.presentToast('File Uploaded Successful');
-                  _this5.common.router.navigate(['tabs/tab6']);
+                _this5.fileArray[i].forEach(function (item) {
+                  var fileTransfer = _this5.transfer.create();
 
-                  _this5.common.hideLoader();
-                } else {
-                  _this5.common.router.navigate(['tabs/tab6']);
+                  fileTransfer.onProgress(function (e) {
+                    var prg = e.lengthComputable ? Math.round(e.loaded / e.total * 100) : -1;
 
-                  _this5.common.hideLoader();
-                }
+                    _this5.common.presentToast('Uploaded ' + prg + '% of file');
+                  });
+                  var options = {
+                    fileKey: 'matchfile',
+                    fileName: item.name,
+                    httpMethod: 'POST',
+                    mimeType: 'multipart/form-data',
+                    chunkedMode: false,
+                    params: {
+                      match_id: matchid,
+                      userid: _this5.userDetails.userid
+                    },
+                    headers: {
+                      Connection: 'close'
+                    }
+                  };
+                  fileTransfer.upload(item.filePath, _services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/MatchFileUpload', options).then(function (data) {
+                    console.dir('*****************' + data);
+                  }, function (err) {
+                    console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+                  });
+                });
+
+                _this5.common.presentToast('File Uploaded Successful');
+
+                _this5.common.router.navigate(['tabs/tab6']);
+
+                _this5.common.hideLoader();
               }, function (err) {
+                console.dir('**********************************', JSON.stringify(err));
+
                 _this5.common.hideLoader();
 
                 _this5.common.router.navigate(['tabs/tab6']);
 
                 console.log('err', err);
-                console.log(err.headers);
               });
             } else {
               this.common.showAlert('You must select file or word or link');
-            } // if (this.isLink[i]==true) {
-            //   if (this.LinkInputForm.valid) {
-            //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-            //     if (this.userLink.link.match(regex)!=null) {
-            //       console.log('Matching link');
-            //         this.userLink.link = this.userLink.link;
-            //           console.log('link1',this.userLink.link);
-            //     } else {
-            //       console.log('No Match');
-            //         this.userLink.link = 'https://'+this.userLink.link;
-            //           console.log('link1',this.userLink.link);
-            //     }
-            //     let params = {
-            //       text : this.userLink.link,
-            //       filetype : 'link',
-            //       userid : this.userDetails.userid,
-            //       matchid : this.invite.match_id,
-            //     }
-            //     console.log('params:',params);
-            //     this.common.postMethod('MatchUpload',params).then((res:any) => {
-            //       console.log('res:',res);
-            //       this.statusId = res.details.uploaded_id;
-            //       if (res.status===true) {
-            //         this.BringItOn();
-            //         console.log('BringItOn function working ...');
-            //       } else {
-            //         console.log('Else part working ....');
-            //       }
-            //     }, err => {
-            //       console.log('Error:',err);
-            //     });
-            //   } else {
-            //     this.common.showAlert('Please enter any link for Link Match');
-            //   }
-            // } else if (this.isWording[i]==true) {
-            //   if (this.InvitationWording!=undefined) {
-            //     let params = {
-            //       text : this.InvitationWording,
-            //       filetype : 'text',
-            //       userid : this.userDetails.userid,
-            //       matchid : this.invite.match_id,
-            //     }
-            //     console.log('params:',params);
-            //     this.common.postMethod('MatchUpload',params).then((res:any) => {
-            //       console.log('res:',res);
-            //       this.statusId = res.details.uploaded_id;
-            //       if (res.status===true) {
-            //         this.BringItOn();
-            //         console.log('BringItOn function working ...');
-            //       } else {
-            //         console.log('Else part working ....');
-            //       }
-            //     }, err => {
-            //       console.log('Error:',err);
-            //     });
-            //   } else {
-            //     this.common.showAlert('Please enter any content for Wording Match');
-            //   }
-            // } else if (this.hideImageSpace[i]==true) {
-            //     this.BringItOn();
-            // }
-            // if (this.LinkInputForm.valid) {
-            //   this.toSubmitLinkField();
-            // } else {
-            //   console.log('isLink is false');
-            // }
-            // if (this.isWording[i]===true) {
-            //   this.toSubmitWordingField();
-            // } else  {
-            //   console.log('isWording is false');
-            // }
-            // if (this.LinkInputForm.valid || this.ImageDetails!='') {
-            //   let params = {
-            //     request_id : invite.match_id,
-            //     status : 'accept'
-            //   }
-            //   console.log('params:',params);
-            //   this.common.postMethod('Match_reply',params).then((res:any) => {
-            //     console.log('res:',res);
-            //     if (res.status == true) {
-            //       this.ionViewWillEnter();
-            //       this.common.router.navigate(['/tabs/tab2']);
-            //       this.common.presentToast('You had successfully accepted ' + invite.sender_name + '`s match ');
-            //     } else {
-            //       this.common.presentToast('You had already replied to '+ invite.sender_name + '`s invitation ');
-            //     }
-            //   }, err => {
-            //     console.log('Error:',err);
-            //   });
-            // } else {
-            //   this.common.presentToast('You must need to upload a media to accept a match invitation');
-            // }
-
+            }
           }
         }, {
           key: "presentActionSheet",
@@ -587,10 +496,8 @@
                 while (1) {
                   switch (_context3.prev = _context3.next) {
                     case 0:
-                      console.log('invite:', invite);
-                      console.log('1:', i);
                       this.invite = invite;
-                      _context3.next = 5;
+                      _context3.next = 3;
                       return this.actionSheetController.create({
                         cssClass: 'my-custom-class',
                         header: ' File format must be MP4, AAC, Mp3, PNG, JPG ',
@@ -599,73 +506,63 @@
                           icon: 'text',
                           handler: function handler() {
                             // this.SendWordings(i);
-                            // console.log('Wording clicked');
-                            _this6.wordArray.push({
+                            _this6.wordArray[i].push({
                               value: ''
                             });
 
-                            _this6.Add('text');
+                            _this6.Add('text', i);
                           }
                         }, {
                           text: 'Share Links',
                           icon: 'link',
                           handler: function handler() {
                             // this.pickLinks(i);
-                            // console.log('Folder clicked');
-                            _this6.linkArray.push({
+                            _this6.linkArray[i].push({
                               value: 'http://'
                             });
 
-                            _this6.Add('link');
+                            console.log(_this6.linkArray);
+
+                            _this6.Add('link', i);
                           }
                         }, {
                           text: 'Capture Image',
                           icon: 'camera',
                           handler: function handler() {
                             _this6.CaptureImage(i);
-
-                            console.log('Camera clicked');
                           }
                         }, {
                           text: 'Capture Video',
                           icon: 'videocam',
                           handler: function handler() {
                             _this6.CaptureVideo(i);
-
-                            console.log("Gallery clicked");
                           }
                         }, {
                           text: 'Capture Audio',
                           icon: 'mic-circle',
                           handler: function handler() {
                             _this6.CaptureAudio(i);
-
-                            console.log("Audio clicked");
                           }
                         }, {
                           text: 'Other Files',
                           icon: 'folder-open',
                           handler: function handler() {
                             _this6.PickDocuments(i);
-
-                            console.log('Folder clicked');
                           }
                         }, {
                           text: 'Cancel',
                           icon: 'close',
                           role: 'cancel',
-                          handler: function handler() {
-                            console.log('Cancel clicked');
-                          }
+                          handler: function handler() {}
                         }]
                       });
 
-                    case 5:
+                    case 3:
                       actionSheet = _context3.sent;
-                      _context3.next = 8;
+                      _context3.next = 6;
                       return actionSheet.present();
 
-                    case 8:
+                    case 6:
                     case "end":
                       return _context3.stop();
                   }
@@ -680,17 +577,12 @@
 
             var _a;
 
-            console.log('Bring it on function');
-
             if (((_a = this.FileTransferResponse) === null || _a === void 0 ? void 0 : _a.length) != 0 || this.statusId != undefined) {
               var params = {
                 request_id: this.invite.match_id,
                 status: 'accept'
               };
-              console.log('params:', params);
               this.common.postMethod('Match_reply', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this7.ionViewWillEnter();
 
@@ -715,16 +607,11 @@
                 while (1) {
                   switch (_context4.prev = _context4.next) {
                     case 0:
-                      console.log('Pick Links Button Pressed');
                       this.isLink[i] = true;
-                      console.log('i:', i);
-                      console.log('isLink:', this.isLink[i]);
                       this.hideImageSpace[i] = false;
-                      console.log('hideImageSpace:', this.hideImageSpace[i]);
                       this.isWording[i] = false;
-                      console.log('isWording:', this.isWording[i]);
 
-                    case 8:
+                    case 3:
                     case "end":
                       return _context4.stop();
                   }
@@ -735,57 +622,26 @@
         }, {
           key: "SendWordings",
           value: function SendWordings(i) {
-            console.log('Wording');
             this.isLink[i] = false;
-            console.log('i:', i);
-            console.log('isLink:', this.isLink[i]);
             this.hideImageSpace[i] = false;
-            console.log('hideImageSpace:', this.hideImageSpace[i]);
             this.isWording[i] = true;
-            console.log('isWording:', this.isWording[i]);
           }
         }, {
           key: "CaptureImage",
           value: function CaptureImage(i) {
             var _this8 = this;
 
-            this.hideImageSpace[i] = true;
-            this.isWording[i] = false;
-            this.isLink[i] = false;
-            console.log('CaptureImage', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]); // this.isCaptureImage = true;
-
             var options = {
               limit: 1
             };
             this.mediaCapture.captureImage(options).then(function (data) {
-              console.log('data[0]:', data[0]);
-              _this8.isImage[i] = true;
+              _this8.Add('file', i);
 
-              _this8.uploadFile2(data[0], 'image', i);
-            }, function (err) {
-              return console.error(err);
-            });
-          }
-        }, {
-          key: "CaptureAudio",
-          value: function CaptureAudio(i) {
-            var _this9 = this;
-
-            this.hideImageSpace[i] = true;
-            this.isWording[i] = false;
-            this.isLink[i] = false;
-            console.log('CaptureAudio', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-            var options = {
-              limit: 1,
-              duration: 2
-            };
-            this.mediaCapture.captureAudio(options).then(function (data) {
-              console.log('data[0]:', data[0]);
-              _this9.isAudio[i] = true;
-
-              _this9.uploadFile2(data[0], 'audio', i);
-
-              console.log('Data:', data[0]);
+              _this8.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'jpg'
+              });
             }, function (err) {
               return console.error(err);
             });
@@ -793,22 +649,41 @@
         }, {
           key: "CaptureVideo",
           value: function CaptureVideo(i) {
-            var _this10 = this;
+            var _this9 = this;
 
-            this.hideImageSpace[i] = true;
-            this.isWording[i] = false;
-            this.isLink[i] = false;
-            console.log('CaptureVideo', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
             var options = {
               limit: 1,
-              duration: 2,
+              duration: 120,
               quality: 80
             };
             this.mediaCapture.captureVideo(options).then(function (data) {
-              console.log(data[0]);
-              _this10.isVideo[i] = true;
+              _this9.Add('file', i);
 
-              _this10.uploadFile2(data[0], 'video', i);
+              _this9.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'mp4'
+              });
+            }, function (err) {
+              return console.error(err);
+            });
+          }
+        }, {
+          key: "CaptureAudio",
+          value: function CaptureAudio(i) {
+            var _this10 = this;
+
+            var options = {
+              limit: 1
+            };
+            this.mediaCapture.captureAudio(options).then(function (data) {
+              _this10.Add('file', i);
+
+              _this10.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'mp3'
+              });
             }, function (err) {
               return console.error(err);
             });
@@ -816,113 +691,44 @@
         }, {
           key: "PickDocuments",
           value: function PickDocuments(i) {
-            var _this11 = this;
+            return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+              var _this11 = this;
 
-            this.hideImageSpace[i] = true;
-            this.isWording[i] = false;
-            this.isLink[i] = false;
-            console.log('PickDocuments', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-            var file;
-            this.fileChooser.open().then(function (uri) {
-              console.log('uri:', uri);
+              return regeneratorRuntime.wrap(function _callee5$(_context5) {
+                while (1) {
+                  switch (_context5.prev = _context5.next) {
+                    case 0:
+                      _context5.next = 2;
+                      return this.fileChooser.open().then(function (uri) {
+                        _this11.filePath.resolveNativePath(uri).then(function (filePath) {
+                          _this11.filesPath = filePath;
+                          _this11.filesName = _this11.filesPath.substring(_this11.filesPath.lastIndexOf("/") + 1);
+                          _this11.filesType = _this11.filesName.substring(_this11.filesName.lastIndexOf(".") + 1);
 
-              _this11.filePath.resolveNativePath(uri).then(function (filePath) {
-                console.log('filePath:', filePath);
-                var fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-                console.log('fileNameFromPath:', fileNameFromPath);
-                file = {
-                  name: fileNameFromPath,
-                  fullPath: filePath
-                };
-                _this11.isImage[i] = true;
+                          _this11.Add('file', i);
 
-                _this11.uploadFile2(file, 'file', i);
-              })["catch"](function (err) {
-                return console.log(err);
-              });
-            })["catch"](function (e) {
-              return console.log(e);
-            });
-          }
-        }, {
-          key: "uploadFile2",
-          value: function uploadFile2(file, type, i) {
-            var _this12 = this;
+                          _this11.fileArray[i].push({
+                            name: _this11.filesName,
+                            type: _this11.filesType,
+                            uri: uri,
+                            filePath: filePath
+                          });
+                        }, function (err) {
+                          console.log(err);
+                          throw err;
+                        });
+                      }, function (err) {
+                        console.log(err);
+                        throw err;
+                      });
 
-            var options;
-            options = {
-              fileKey: "matchfile",
-              fileName: file.name,
-              httpMethod: 'POST',
-              mimeType: 'multipart/form-data',
-              chunkedMode: false,
-              params: {
-                matchid: this.invite.match_id,
-                userid: this.userDetails.userid,
-                upload_id: 0
-              },
-              headers: {
-                Connection: 'close'
-              }
-            };
-            console.log('options:', options);
-            var filePath;
-
-            if (type !== 'audio') {
-              filePath = encodeURI(file.fullPath);
-            } else {
-              filePath = file.fullPath;
-            }
-
-            this.common.showLoader();
-            var fileTransfer = this.transfer.create();
-            var fileUplaodUrl = 'http://192.168.107.183/iMatch/api/v1/MatchFileUpload';
-            fileTransfer.onProgress(function (e) {
-              var prg = e.lengthComputable ? Math.round(e.loaded / e.total * 100) : -1;
-              console.log("progress:" + prg);
-
-              _this12.common.presentToast('Uploaded ' + prg + '% of file');
-            });
-            fileTransfer.upload(filePath, fileUplaodUrl, options).then(function (data) {
-              console.log('File Transfer Success:', data);
-              console.log(JSON.parse(data.response));
-              var res = JSON.parse(data.response);
-              console.log('res:', res);
-
-              if (res.file_extension === 'mp4') {
-                console.log('This is a video file');
-                _this12.isVideo[i] = true; // this.isDummyImage = false;
-              } else if (res.file_extension === 'aac') {
-                console.log(' This is a audio file ');
-                _this12.isAudio[i] = true; // this.isDummyImage = false;
-              } else if (res.file_extension === 'png') {
-                console.log(' This is a image file ');
-                _this12.isImage[i] = true; // this.isDummyImage = false;
-              } else if (res.file_extension === 'jpg') {
-                console.log(' This is a image file ');
-                _this12.isImage[i] = true; // this.isDummyImage = false;
-              } else if (res.file_extension === 'mp3') {
-                console.log(' This is a audio file ');
-                _this12.isAudio[i] = true; // this.isDummyImage = false;
-              }
-
-              if (res.status == true) {
-                _this12.common.showAlertSuccess('Match File Upload Successful');
-
-                _this12.FileTransferResponse = res.upload_details;
-                console.log('File Transfer Success:', _this12.FileTransferResponse);
-
-                _this12.common.hideLoader();
-              } else {
-                _this12.common.presentToast('File upload Failed');
-
-                console.log('File Transfer Error');
-              }
-
-              _this12.common.hideLoader();
-            }, function (err) {
-              console.log('File Transfer Error:', err);
-            });
+                    case 2:
+                    case "end":
+                      return _context5.stop();
+                  }
+                }
+              }, _callee5, this);
+            }));
           }
         }]);
 
@@ -1035,7 +841,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<ion-header>\r\n    <ion-toolbar>\r\n        <ion-buttons slot=\"start\">\r\n            <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n        </ion-buttons>\r\n        <ion-title style=\"position: relative;right: 25px;\">INVITATION</ion-title>\r\n    </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content *ngIf=\"invitationDetails\">\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div style=\"text-align: center; margin-top: 15vh;\" *ngIf=\"invitationDetails==''\">\r\n\r\n        <div>\r\n            <img src=\"../../assets/icon/download.jpeg\" alt=\"\" style=\"border: 15px solid #9E9E9E; border-radius: 50%; height: 300px; width: 300px;\">\r\n        </div>\r\n\r\n        <div>\r\n            <h4 style=\"background: #9E9E9E; padding: 10px; border-radius: 35px;\">Currently you are having no invitations</h4>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div class=\"box , animate__animated animate__fadeIn\" *ngFor=\"let invite of invitationDetails; let i=index\">\r\n        <div class=\"inner-box\">\r\n            <div>\r\n                <ion-img src=\"../../assets/icon/help-invitation-terms/bar.png\"></ion-img>\r\n                <ion-thumbnail slot=\"end\">\r\n                    <img [src]=\"invite.user_profile\">\r\n                </ion-thumbnail>\r\n                <span>{{invite.sender_name}}</span>\r\n\r\n            </div>\r\n            <div style=\"font-size: 13px; text-align: center; margin-left: 5%; margin-top: 15%; margin-right: 5%; color: #fcfcfc;\">\r\n                {{invite.caption}}\r\n            </div>\r\n\r\n            <div *ngFor=\"let att of this.anArray; let idx = index\">\r\n                <div *ngIf=\"att.type=='text'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='link'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <ion-input type=\"text\" placeholder=\"Enter sub caption\" [(ngModel)]=\"anArray[idx].value\" class=\"input-field\"></ion-input>\r\n            </div>\r\n\r\n\r\n            <div style=\"background-color: #444446; margin-top: 15%; padding: 8px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n                <div>\r\n                    <div style=\"font-size: 13px; color: #fcfcfc; text-align: center; margin-left: 11px; margin-right: 11px; margin-top: 11px;\">{{invite.description}}</div>\r\n\r\n                    <div style=\"margin-top: 20px; margin-bottom: 20px; display: flex;\" *ngIf=\"hideImageSpace[i]==true\">\r\n\r\n                        <img style=\"width: 42%; height: 160px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\">\r\n\r\n                        <img *ngIf=\"FileTransferResponse?.length!=0 && isImage[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\">\r\n                        <img *ngIf=\"FileTransferResponse?.length===0\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" src=\"../../assets/icon/bg2new.png\" (click)=\"presentActionSheet($event, invite, i)\">\r\n                        <video *ngIf=\"FileTransferResponse?.length!=0 && isVideo[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></video>\r\n                        <audio *ngIf=\"FileTransferResponse?.length!=0 && isAudio[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></audio>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isLink[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <form [formGroup]=\"LinkInputForm\">\r\n                            <ion-textarea formControlName=\"link\" [(ngModel)]=\"userLink.link\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\"></ion-textarea>\r\n                        </form>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isWording[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <!-- <form [formGroup]=\"LinkInputForm\"> -->\r\n                        <ion-textarea [(ngModel)]=\"InvitationWording\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n                        <!-- </form> -->\r\n                    </div>\r\n\r\n                </div>\r\n                <ion-button color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px;\" (click)=\"acceptInvitation($event, invite, i)\">BRING IT ON!</ion-button>\r\n                <ion-button (click)=\"closeUploadSection($event, invite, i)\" color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px; margin-left: 18px;\">NO THANKS</ion-button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n\r\n    <!-- </ion-slide> -->\r\n\r\n    <!-- </ion-slides> -->\r\n\r\n</ion-content>";
+      __webpack_exports__["default"] = "<ion-header>\r\n    <ion-toolbar>\r\n        <ion-buttons slot=\"start\">\r\n            <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n        </ion-buttons>\r\n        <ion-title style=\"position: relative;right: 25px;\">INVITATION</ion-title>\r\n    </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content *ngIf=\"invitationDetails\">\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div style=\"text-align: center; margin-top: 15vh;\" *ngIf=\"invitationDetails==''\">\r\n\r\n        <div>\r\n            <img src=\"../../assets/icon/download.jpeg\" alt=\"\" style=\"border: 15px solid #9E9E9E; border-radius: 50%; height: 300px; width: 300px;\">\r\n        </div>\r\n\r\n        <div>\r\n            <h4 style=\"background: #9E9E9E; padding: 10px; border-radius: 35px;\">Currently you are having no invitations</h4>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div class=\"box , animate__animated animate__fadeIn\" *ngFor=\"let invite of invitationDetails; let i=index\">\r\n        <div class=\"inner-box\">\r\n            <div>\r\n                <ion-img src=\"../../assets/icon/help-invitation-terms/bar.png\"></ion-img>\r\n                <ion-thumbnail slot=\"end\">\r\n                    <img [src]=\"invite.user_profile\">\r\n                </ion-thumbnail>\r\n                <span>{{invite.sender_name}}</span>\r\n\r\n            </div>\r\n            <div style=\"font-size: 13px; text-align: center; margin-left: 5%; margin-top: 15%; margin-right: 5%; color: #fcfcfc;\">\r\n                {{invite.caption}}\r\n            </div>\r\n\r\n            <div *ngFor=\"let att of this.anArray[i]; let idx = index\">\r\n                <div *ngIf=\"att.type=='text'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[i][att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='link'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[i][att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='file'\">\r\n                    <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{this.fileArray[i][att.position].name}} </p>\r\n                </div>\r\n            </div>\r\n\r\n\r\n            <div style=\"background-color: #444446; margin-top: 15%; padding: 8px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n                <div>\r\n                    <div style=\"font-size: 13px; color: #fcfcfc; text-align: center; margin-left: 11px; margin-right: 11px; margin-top: 11px;\">{{invite.description}}</div>\r\n\r\n                    <div style=\"margin-top: 20px; margin-bottom: 20px; display: flex;\" *ngIf=\"hideImageSpace[i]==true\">\r\n\r\n                        <img style=\"width: 42%; height: 160px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\">\r\n\r\n                        <img *ngIf=\"FileTransferResponse?.length!=0 && isImage[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\">\r\n                        <img *ngIf=\"FileTransferResponse?.length===0\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" src=\"../../assets/icon/bg2new.png\" (click)=\"presentActionSheet($event, invite, i)\">\r\n                        <video *ngIf=\"FileTransferResponse?.length!=0 && isVideo[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></video>\r\n                        <audio *ngIf=\"FileTransferResponse?.length!=0 && isAudio[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></audio>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isLink[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <form [formGroup]=\"LinkInputForm\">\r\n                            <ion-textarea formControlName=\"link\" [(ngModel)]=\"userLink.link\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\"></ion-textarea>\r\n                        </form>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isWording[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <!-- <form [formGroup]=\"LinkInputForm\"> -->\r\n                        <ion-textarea [(ngModel)]=\"InvitationWording\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n                        <!-- </form> -->\r\n                    </div>\r\n\r\n                </div>\r\n                <ion-button color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px;\" (click)=\"acceptInvitation($event, invite, i)\">BRING IT ON!</ion-button>\r\n                <ion-button (click)=\"closeUploadSection($event, invite, i)\" color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px; margin-left: 18px;\">NO THANKS</ion-button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n\r\n    <!-- </ion-slide> -->\r\n\r\n    <!-- </ion-slides> -->\r\n\r\n</ion-content>";
       /***/
     },
 

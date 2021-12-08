@@ -41,44 +41,35 @@ let PersonalMatchCommentsPage = class PersonalMatchCommentsPage {
         });
         this.comment = this.PersonalMatchCommentForm.controls['comment'];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
         this.common.route.queryParams.subscribe(resp => {
             this.MatchDetails = resp;
-            console.log('MatchDetails:', this.MatchDetails);
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Personal Match Comment Page');
         let params = {
             userid: 0,
             matchid: this.MatchDetails.match_id,
         };
-        console.log('params:', params);
         this.common.postMethod('GetComment', params).then((res) => {
-            console.log('res:', res);
             this.CommentDetails = res.details;
         });
     }
     toAddComment() {
-        console.log('Send Personal Match Comment Button Clicked');
         let params = {
             userid: this.userDetails.userid,
             matchid: this.MatchDetails.match_id,
             comment: this.userComment.comment,
             contestentid: ''
         };
-        console.log('params:', params);
         this.common.postMethod('Comment', params).then((res) => {
-            console.log('res:', res);
             this.PersonalMatchCommentForm.reset();
             this.ionViewWillEnter();
         }, (err) => {
             console.log('Error:', err);
-            console.log(err.headers);
         });
     }
 };

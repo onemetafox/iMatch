@@ -36,10 +36,7 @@ let ModalPage = class ModalPage {
     constructor(common) {
         this.common = common;
     }
-    ngOnInit() {
-        console.log('Modal Heading:', this.heading);
-        console.log('Modal Contents:', this.content);
-    }
+    ngOnInit() { }
     dismissModal() {
         this.common.modalController.dismiss({
             dismissed: true
@@ -167,11 +164,9 @@ let AjaxService = class AjaxService {
         this.http = http;
         this.router = router;
         this.BaseUrl = 'http://192.168.107.183/iMatch/api/v1/';
-        console.log('Hello AjaxService Provider');
     }
     initPush() {
         if (_capacitor_core__WEBPACK_IMPORTED_MODULE_5__["Capacitor"].platform == 'web') {
-            console.log('This is a Web Browser View');
             this.toGetUserLocation();
             // this.toGetNetworkInfo();
         }
@@ -181,7 +176,6 @@ let AjaxService = class AjaxService {
             this.ToGetDeviceInfo();
             // this.toGetUserLocation();
             //   this.filePermission();
-            console.log('This is an Android Platform');
         }
         else if (_capacitor_core__WEBPACK_IMPORTED_MODULE_5__["Capacitor"].platform == 'ios') {
             this.registerPush();
@@ -189,7 +183,6 @@ let AjaxService = class AjaxService {
             this.ToGetDeviceInfo();
             // this.toGetUserLocation();
             //   this.filePermission();
-            console.log('This is an ios Platform');
         }
     }
     // async filePermission() {
@@ -201,9 +194,7 @@ let AjaxService = class AjaxService {
     // }
     ToGetDeviceInfo() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('To Get Device Information');
             const DeviceInfo = yield Device.getInfo();
-            console.log('DeviceInfo:', DeviceInfo);
             this.storageservice.setStorage('DeviceInfo', DeviceInfo);
             // const BatteryInfo = await Device.getBatteryInfo();
             // console.log('BatteryInfo:',BatteryInfo);
@@ -232,9 +223,7 @@ let AjaxService = class AjaxService {
     // }
     toGetUserLocation() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('To Get User Location');
             this.geolocation.getCurrentPosition().then((resp) => {
-                console.log('resp:', resp);
                 // this.storageservice.setStorage('UserLocation',resp);
                 // resp.coords.latitude
                 // resp.coords.longitude
@@ -254,7 +243,6 @@ let AjaxService = class AjaxService {
             }
         });
         PushNotifications.addListener('registration', (token) => {
-            console.log('My token: ' + JSON.stringify(token));
             this.storageservice.setStorage('DeviceToken', token);
         });
         PushNotifications.addListener('registrationError', (error) => {
@@ -265,7 +253,6 @@ let AjaxService = class AjaxService {
         }));
         PushNotifications.addListener('pushNotificationActionPerformed', (notification) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             const data = notification.notification.data;
-            console.log('Action performed: ' + JSON.stringify(notification.notification));
             if (data.detailsId) {
                 this.router.navigateByUrl(`/home/${data.detailsId}`);
             }
@@ -345,7 +332,6 @@ let CommonService = class CommonService {
         this.twit = twit;
         this.screenOrientation = screenOrientation;
         this.menu = menu;
-        console.log('Hello Common Service Provider');
     }
     // --- Alert to show failed message ---
     showAlert(msg) {
@@ -391,7 +377,6 @@ let CommonService = class CommonService {
             });
             yield loading.present();
             const { role, data } = yield loading.onDidDismiss();
-            console.log('Loading dismissed!');
         });
     }
     showLoader() {
@@ -410,7 +395,6 @@ let CommonService = class CommonService {
         });
     }
     register(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]()
             .append("name", params.name)
             .append("phone", params.phone)
@@ -422,7 +406,6 @@ let CommonService = class CommonService {
             .post(this.ajx.BaseUrl + path, httpParams, config);
     }
     login(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]()
             .append("email", params.email)
             .append("password", params.password);
@@ -431,7 +414,6 @@ let CommonService = class CommonService {
             .post(this.ajx.BaseUrl + path, httpParams, config);
     }
     forgotpassword(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]()
             .append("email", params.email);
         var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
@@ -439,7 +421,6 @@ let CommonService = class CommonService {
             .post(this.ajx.BaseUrl + path, httpParams, config);
     }
     profileupdate(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]()
             .append("name", params.name)
             .append("email", params.email)
@@ -454,7 +435,6 @@ let CommonService = class CommonService {
             .post(this.ajx.BaseUrl + path, httpParams, config);
     }
     profilepic(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
         var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
         return this.http
@@ -467,7 +447,6 @@ let CommonService = class CommonService {
             .get(this.ajx.BaseUrl + path, config);
     }
     listUsers(path, params) {
-        console.log(params);
         let httpParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]()
             .append("userid", params.userid);
         var config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, };
@@ -496,10 +475,8 @@ let CommonService = class CommonService {
             this.http.post(this.ajx.BaseUrl + path, body, { headers: headers })
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_12__["map"])((res) => res))
                 .subscribe((res) => {
-                console.log("POST call successful value returned in body", res);
                 resolve(res);
             }, (err) => {
-                console.log("POST call in error", err);
                 reject(err);
             }, () => {
                 console.log("The POST observable is now completed.");
@@ -507,8 +484,6 @@ let CommonService = class CommonService {
         });
     }
     PostData(path, params) {
-        console.log('path:', path);
-        console.log('Params:', params);
         const config = { headers: { 'Content-Type': 'application/json' } };
         return this.http
             .post(this.ajx.BaseUrl + path, params, config)
@@ -579,9 +554,7 @@ let LogoutPopoverPage = LogoutPopoverPage_1 = class LogoutPopoverPage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Logout Popover Page');
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
@@ -598,29 +571,21 @@ let LogoutPopoverPage = LogoutPopoverPage_1 = class LogoutPopoverPage {
         });
     }
     toCancel(e) {
-        console.log('Cancel button clicked:', e);
         this.popoverController.dismiss();
     }
     toOkay(e) {
-        console.log('Okay Button clicked:', e);
         if (e.type == 'click') {
             let params = {
                 status: '1',
                 userid: this.userDetails.userid,
             };
-            console.log('params:', params);
             this.common.postMethod('Online_Offline_status', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true && this.common.platform.is("capacitor" || false)) {
                     this.storageservice.storage.remove('userDetails');
                     this.popoverController.dismiss();
-                    console.log('User Details Cleared');
                     this.common.fb.logout();
-                    console.log('Facebook Logged out');
                     this.common.google.logout();
-                    console.log('Google Logged out');
                     this.common.twit.logout();
-                    console.log('Twitter Logged out');
                     this.common.presentToast('You are successfully Logged out from the iMatch');
                     this.common.router.navigate(['/login']);
                     // navigator['app'].exitApp();
@@ -629,7 +594,6 @@ let LogoutPopoverPage = LogoutPopoverPage_1 = class LogoutPopoverPage {
                 else {
                     this.storageservice.storage.remove('userDetails');
                     this.popoverController.dismiss();
-                    console.log('User Details Cleared');
                     this.common.router.navigate(['/landing']);
                     this.common.presentToast('You are successfully Logged out from the iMatch');
                 }
@@ -775,21 +739,17 @@ let AppComponent = class AppComponent {
                 this.checkUserDetails();
                 this.splashScreen.hide();
                 this.common.screenOrientation.lock(this.common.screenOrientation.ORIENTATIONS.PORTRAIT);
-                console.log(this.common.screenOrientation.type);
             });
             // this.AjxService.initPush();
         }
         else {
-            console.log('This is a browser view');
             this.platform.ready().then(() => {
                 this.checkUserDetails();
             });
         }
     }
     checkUserDetails() {
-        console.log('Checking User Details ....');
         this.storage.get('userDetails').then((val) => {
-            console.log('userDetails:', val);
             this.userDetails = val;
             if (val) {
                 this.common.statusBar.backgroundColorByHexString('#707072');
@@ -1562,7 +1522,7 @@ const routes = [
     },
     {
         path: 'ongoing-match-detail',
-        loadChildren: () => Promise.all(/*! import() | ongoing-match-detail-ongoing-match-detail-module */[__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-match-personal-match-module"), __webpack_require__.e("ongoing-match-detail-ongoing-match-detail-module")]).then(__webpack_require__.bind(null, /*! ./ongoing-match-detail/ongoing-match-detail.module */ "PW8U")).then(m => m.OnGoingMatchDetailPageModule)
+        loadChildren: () => Promise.all(/*! import() | ongoing-match-detail-ongoing-match-detail-module */[__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("ongoing-match-detail-ongoing-match-detail-module")]).then(__webpack_require__.bind(null, /*! ./ongoing-match-detail/ongoing-match-detail.module */ "PW8U")).then(m => m.OnGoingMatchDetailPageModule)
     },
     {
         path: 'group-members',
@@ -1730,7 +1690,11 @@ const routes = [
     },
     {
         path: 'personal-match',
-        loadChildren: () => Promise.all(/*! import() | personal-match-personal-match-module */[__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-match-personal-match-module"), __webpack_require__.e("common"), __webpack_require__.e("personal-match-personal-match-module")]).then(__webpack_require__.bind(null, /*! ./personal-match/personal-match.module */ "OEWt")).then(m => m.PersonalMatchPageModule)
+        loadChildren: () => Promise.all(/*! import() | personal-match-personal-match-module */[__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("common"), __webpack_require__.e("personal-match-personal-match-module")]).then(__webpack_require__.bind(null, /*! ./personal-match/personal-match.module */ "OEWt")).then(m => m.PersonalMatchPageModule)
+    },
+    {
+        path: 'personal-item-slider',
+        loadChildren: () => Promise.all(/*! import() | personal-item-slider-personal-item-slider-module */[__webpack_require__.e("default~ongoing-match-detail-ongoing-match-detail-module~personal-item-slider-personal-item-slider-m~66b73717"), __webpack_require__.e("personal-item-slider-personal-item-slider-module")]).then(__webpack_require__.bind(null, /*! ./personal-item-slider/personal-item-slider.module */ "9kIE")).then(m => m.PersonalMatchPageModule)
     },
     {
         path: 'visitors-personal-match-view',

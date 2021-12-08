@@ -261,9 +261,7 @@
           this.allUsers = [];
           this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
-            console.log('userid:', _this.userDetails.userid);
             _this.user_id = _this.userDetails.userid;
           });
         }
@@ -298,9 +296,7 @@
                   switch (_context.prev = _context.next) {
                     case 0:
                       this.storageservice.storage.get('userDetails').then(function (val) {
-                        console.log('Storage Value of userDetails:', val);
                         _this3.userDetails = val;
-                        console.log('userid:', _this3.userDetails.userid);
                         _this3.user_id = _this3.userDetails.userid;
 
                         if (_this3.userDetails) {
@@ -324,16 +320,12 @@
           value: function listAllUsers() {
             var _this4 = this;
 
-            console.log(this.userDetails);
             var userid = this.userDetails["userid"];
             var params = {
               userid: userid
             };
-            console.log('userid:', params);
             this.common.listUsers('Listusers', params).subscribe(function (res) {
-              console.log('res:', res);
               _this4.allUsers = res.details.name;
-              console.log('allUsers:', _this4.allUsers);
             });
           }
         }, {
@@ -351,27 +343,20 @@
           value: function addToList(event, name, user) {
             var _this5 = this;
 
-            console.log('Clicked add button');
-            console.log('name:', name);
-            console.log('My userid:', this.userDetails.userid);
-            console.log('Besty userid:', user.userid);
-            console.log(user); // this.common.presentToast(name +' is added to your besties list ...');
-
+            // this.common.presentToast(name +' is added to your besties list ...');
             if (user.userid != '') {
               var params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'squad'
               };
               this.common.postMethod('add_bestie', params).then(function (res) {
-                console.log('res:', res);
-
-                if (res.message == "Successfully added to squadlist") {
+                if (res.status) {
                   _this5.common.router.navigate(['/squad-list']);
 
-                  _this5.common.presentToast(name + ' is successfully added to your squad list ...');
-                } else if (res.message == "Already added ") {
-                  _this5.common.presentToast(name + ' is already in your squad list ...');
+                  _this5.common.presentToast(res.message);
+                } else {
+                  _this5.common.presentToast(res.message);
                 }
               });
             } else {}
@@ -379,7 +364,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });

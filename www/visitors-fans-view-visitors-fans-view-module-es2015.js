@@ -51,7 +51,7 @@ VisitorsFansViewPageModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decora
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative; right: 20px;\">FANS</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"UserInfo\">\r\n      <ion-avatar style=\"height: 57px; width: 57px;border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"UserInfo.user_profilepic\" alt=\"\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px;\"> {{UserInfo.username}} </ion-label>\r\n      <p class=\"be-a-fan-text\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 190px;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p>FANS {{this.myfans.length}} </p>\r\n  </div>\r\n\r\n  <ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\"let fan of myfans\">\r\n    <ion-avatar style=\"height: 50px; width: 50px;\">\r\n      <img [src]=\"fan.profile_pic\" alt=\"\">\r\n    </ion-avatar>\r\n    <ion-label style=\"margin-left: 15px; position: relative; bottom: 10px;\"> {{fan.name}} </ion-label>\r\n    <p style=\"position: absolute; top: 25px; left: 64px; color: grey; font-size: 12px;\"> {{fan.email}} </p>\r\n    <!-- <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\"> -->\r\n  </ion-item>\r\n\r\n</ion-content>\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative; right: 20px;\">FANS</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"UserInfo\">\r\n      <ion-avatar style=\"height: 57px; width: 57px;border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"UserInfo.user_profilepic\" alt=\"\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px;\"> {{UserInfo.username}} </ion-label>\r\n      <p class=\"be-a-fan-text\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 190px;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p>FANS {{this.myfans.length}} </p>\r\n  </div>\r\n\r\n  <ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\"let fan of myfans\">\r\n    <ion-avatar style=\"height: 50px; width: 50px;\">\r\n      <img [src]=\"fan.pic\" alt=\"\">\r\n    </ion-avatar>\r\n    <ion-label style=\"margin-left: 15px; position: relative; bottom: 10px;\"> {{fan.name}} </ion-label>\r\n    <p style=\"position: absolute; top: 25px; left: 64px; color: grey; font-size: 12px;\"> {{fan.email}} </p>\r\n    <!-- <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\"> -->\r\n  </ion-item>\r\n\r\n</ion-content>\r\n");
 
 /***/ }),
 
@@ -137,22 +137,16 @@ let VisitorsFansViewPage = class VisitorsFansViewPage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered Into Visitors Fans View Page');
         this.common.route.queryParams.subscribe(resp => {
             this.UserInfo = resp;
-            console.log('UserInfo:', this.UserInfo);
             let params = {
                 id: this.UserInfo.userid,
             };
-            console.log('params:', params);
             this.common.presentLoading();
-            this.common.postMethod('Listbesties', params).then((res) => {
-                console.log('res:', res);
+            this.common.postMethod('getBestieList', params).then((res) => {
                 this.myfans = res.details.fan;
-                console.log('myfans:', this.myfans);
             }, (err) => {
                 console.log('Error:', err);
-                console.log(err.headers);
             });
         });
     }

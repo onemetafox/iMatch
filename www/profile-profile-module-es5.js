@@ -195,7 +195,6 @@
           this.gender = this.formgroup.controls['gender']; // this.university = this.formgroup.controls['university'];
 
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -222,8 +221,6 @@
             var _this3 = this;
 
             this.FormSubmit = true;
-            console.log('FormSubmit:', this.FormSubmit);
-            console.log('formgroup:', this.formgroup.value);
 
             if (this.formgroup.valid) {
               this.common.presentLoading();
@@ -236,19 +233,13 @@
                 // university: this.userData.university
                 university: ''
               };
-              console.log('params:', params);
               this.common.postMethod('profile', this.formgroup.value).then(function (res) {
-                console.log('res:', res);
-
                 if (res.message == 'success') {
                   _this3.common.presentToast('Profile details updated successful');
 
                   _this3.responseData = res.details[0];
-                  console.log('response:', res.details[0]);
 
                   _this3.storageservice.setStorage('userDetails', res.details[0]);
-
-                  console.log('Profile updated details successfully stored');
                 } else {
                   _this3.common.presentToast('Profile details update failed !');
                 }
@@ -277,24 +268,18 @@
                           icon: 'images',
                           handler: function handler() {
                             _this4.pickImageGallery();
-
-                            console.log('Gallery clicked');
                           }
                         }, {
                           text: 'Capture Image',
                           icon: 'camera',
                           handler: function handler() {
                             _this4.pickImage(_capacitor_core__WEBPACK_IMPORTED_MODULE_8__["CameraSource"].Camera);
-
-                            console.log('Camera clicked');
                           }
                         }, {
                           text: 'Cancel',
                           icon: 'close',
                           role: 'cancel',
-                          handler: function handler() {
-                            console.log('Cancel clicked');
-                          }
+                          handler: function handler() {}
                         }]
                       });
 
@@ -335,11 +320,8 @@
 
                     case 2:
                       image = _context2.sent;
-                      console.log('image:', image);
                       blobData = this.b64toBlob(image.base64String, "image/".concat(image.format));
                       this.uploadImage(blobData, image.format).subscribe(function (newImage) {
-                        console.log('newImage:', newImage);
-
                         _this5.common.presentLoading();
 
                         _this5.getProfileImg();
@@ -351,7 +333,7 @@
                         _this5.common.presentToast('Profile Image Uploading Failed !!!');
                       });
 
-                    case 6:
+                    case 5:
                     case "end":
                       return _context2.stop();
                   }
@@ -383,11 +365,8 @@
 
                     case 2:
                       image = _context3.sent;
-                      console.log('image:', image);
                       blobData = this.b64toBlob(image.base64String, "image/".concat(image.format));
                       this.uploadImage(blobData, image.format).subscribe(function (newImage) {
-                        console.log('newImage:', newImage);
-
                         _this6.common.presentLoading();
 
                         _this6.getProfileImg();
@@ -399,7 +378,7 @@
                         _this6.common.presentToast('Profile Image Uploading Failed !!!');
                       });
 
-                    case 6:
+                    case 5:
                     case "end":
                       return _context3.stop();
                   }
@@ -447,14 +426,10 @@
             var _this7 = this;
 
             this.isLoading = true;
-            console.log('getProfileImg');
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.profilepicget('get_profile_pic/' + params.userid).subscribe(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this7.userDetails = res.details[0];
 
@@ -463,7 +438,6 @@
                 _this7.storageservice.setStorage('userDetails', res.details[0]);
 
                 _this7.isLoading = false;
-                console.log('userDetails:', _this7.userDetails);
               } else {
                 _this7.common.presentToast(' 🛑 Something went wrong !!!');
               }

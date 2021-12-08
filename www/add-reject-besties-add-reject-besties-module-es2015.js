@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button defaultHref=\"/tabs/tab6\" style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n\r\n    <ion-title style=\"position: relative; right: 25px;\">BESTIES INVITATIONS</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div>\r\n\r\n    <div style=\"padding: 10px;\" *ngFor=\"let invitaion of BestiesInvitaion; let i = index;\">\r\n      <div\r\n        style=\"border-top: 30px solid #f21908; border-radius: 13px 13px 5px 5px; box-shadow: 1px 1px 5px 1px grey; background-color: #f21908;\">\r\n\r\n        <div style=\"padding: 15px; border-radius: 13px 13px 5px 5px; background-color: white;\">\r\n          <div style=\"display: flex; justify-content: space-between;\">\r\n\r\n            <div>\r\n              <h5 style=\"font-weight: 600;\">Hai ! Layla</h5>\r\n              <span>You have a bestie invitaion with </span>\r\n              <p style=\"margin: 0px; font-weight: 600; font-size: 13px;\">2 mutual besties</p>\r\n            </div>\r\n            <div style=\"text-align: center;\">\r\n              <img src=\"../../assets/icon/profile/user.png\" alt=\"\"\r\n                style=\"height: 55px; width: 55px; border-radius: 50%; border: 1px solid #707070\">\r\n              <p style=\"margin: 0px; font-weight: 600; font-size: 13px;\">User Name</p>\r\n            </div>\r\n          </div>\r\n\r\n          <div style=\"margin-top: 15px;\">\r\n            <!-- <ion-button shape=\"round\" size=\"small\" style=\"text-transform: none; --background: #344fa1db; color: white; font-weight: 600;\"\r\n            (click)=\"ViewUserProfile($event, invitaion, i)\">\r\n            View Profile</ion-button> -->\r\n            <ion-button shape=\"round\" size=\"small\" style=\"text-transform: none; --background: #ffc107; color: black;\"\r\n              (click)=\"AddAsBestie($event, invitaion, i)\">\r\n              Add As Bestie</ion-button>\r\n            <ion-button shape=\"round\" size=\"small\" style=\"text-transform: none; --background: #707072; color: black;\"\r\n              (click)=\"RejectBestieInvitation($event, invitaion, i)\">\r\n              Reject Invitaion</ion-button>\r\n            <ion-button shape=\"round\" size=\"small\" fill=\"outline\" style=\"text-transform: none; color: black;\"\r\n              (click)=\"BlockTheUser($event, invitaion, i)\">Block This user\r\n            </ion-button>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button defaultHref=\"/tabs/tab6\" style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative; right: 25px;\">BESTIES INVITATIONS</ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n<ion-content>\r\n  <div>\r\n    <div style=\"padding: 10px;\" *ngFor=\"let invitation of BestiesInvitation; let i = index;\">\r\n      <div style=\"border-top: 30px solid #f21908; border-radius: 13px 13px 5px 5px; box-shadow: 1px 1px 5px 1px grey; background-color: #f21908;\">\r\n        <div style=\"padding: 15px; border-radius: 13px 13px 5px 5px; background-color: white;\">\r\n          <div style=\"display: flex; justify-content: space-between;\">\r\n            <div>\r\n              <h5 style=\"font-weight: 600;\">Hi! {{this.userDetails.name}}</h5>\r\n              <span>{{invitation.message}} </span>\r\n            </div>\r\n            <div style=\"text-align: center;\">\r\n              <img src=\"{{invitation.pic}}\" alt=\"\" style=\"height: 55px; width: 55px; border-radius: 50%; border: 1px solid #707070\">\r\n              <p style=\"margin: 0px; font-weight: 600; font-size: 13px;\">{{invitation.name}}</p>\r\n            </div>\r\n          </div>\r\n\r\n          <div style=\"margin-top: 15px;\">\r\n            <ion-button shape=\"round\" size=\"small\" style=\"text-transform: none; --background: #ffc107; color: black;\"\r\n              (click)=\"updateInvitation($event, invitation, '1')\">\r\n              Add As Bestie</ion-button>\r\n            <ion-button shape=\"round\" size=\"small\" style=\"text-transform: none; --background: #707072; color: black;\"\r\n              (click)=\"updateInvitation($event, invitation, '2')\">\r\n              Reject Invitation</ion-button>\r\n            <!-- <ion-button shape=\"round\" size=\"small\" fill=\"outline\" style=\"text-transform: none; color: black;\"\r\n              (click)=\"BlockTheUser($event, invitation, i)\">Block This user\r\n            </ion-button> -->\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</ion-content>");
 
 /***/ }),
 
@@ -39,91 +39,40 @@ let AddRejectBestiesPage = class AddRejectBestiesPage {
     constructor(storageservice, common) {
         this.storageservice = storageservice;
         this.common = common;
-        this.BestiesInvitaion = [];
+        this.BestiesInvitation = [];
         this.userDetails = [];
     }
     ngOnInit() { }
     ionViewWillEnter() {
         this.GetStoredUserDetails();
-        this.BestiesInvitaion = [
-            {
-                name: "Ravi",
-            },
-            {
-                name: "Balu",
-            },
-            {
-                name: "Ravi",
-            },
-            {
-                name: "Balu",
-            },
-            {
-                name: "Ravi",
-            },
-            {
-                name: "Balu",
-            },
-            {
-                name: "Ravi",
-            },
-            {
-                name: "Balu",
-            },
-        ];
     }
     GetStoredUserDetails() {
         this.storageservice.storage.get("userDetails").then((val) => {
-            console.log("Storage Value of userDetails:", val);
             this.userDetails = val;
             this.GetBestieInvitations();
         });
     }
     GetBestieInvitations() {
         let params = {
-            userid: this.userDetails.userid,
+            receiver_id: this.userDetails.userid,
+            notification_status: 'Add_bestie',
+            read_status: '1'
         };
-        console.log("params:", params);
-        this.common.postMethod("abc", params).then((res) => {
-            console.log("res:", res);
+        this.common.postMethod("getNotifications", params).then((res) => {
+            this.BestiesInvitation = res.details;
         }, (err) => {
             console.log("Error:", err);
         });
     }
-    ViewUserProfile(e, invitaion, i) {
+    updateInvitation(e, invitation, status) {
         let params = {
-            userid: this.userDetails.userid,
+            request_id: invitation.request_id,
+            read_status: "1",
+            req_status: status,
+            not_id: invitation.not_id,
+            type: invitation.notification_status
         };
-        console.log("params:", params);
-        this.common.postMethod("abc", params).then((res) => {
-            console.log("res:", res);
-        }, (err) => {
-            console.log("Error:", err);
-        });
-    }
-    AddAsBestie(e, invitaion, i) {
-        let params = {
-            request_id: '',
-            status: 'accept'
-        };
-        console.log("params:", params);
-        this.common.postMethod("accept_or_reject", params).then((res) => {
-            console.log("res:", res);
-            if (res.status === true) {
-                this.GetBestieInvitations();
-            }
-        }, (err) => {
-            console.log("Error:", err);
-        });
-    }
-    RejectBestieInvitation(e, invitaion, i) {
-        let params = {
-            request_id: '',
-            status: 'reject'
-        };
-        console.log("params:", params);
-        this.common.postMethod("accept_or_reject", params).then((res) => {
-            console.log("res:", res);
+        this.common.postMethod("setNotificationRead", params).then((res) => {
             if (res.status === true) {
                 this.GetBestieInvitations();
             }
@@ -136,9 +85,7 @@ let AddRejectBestiesPage = class AddRejectBestiesPage {
             request_id: '',
             status: 'block'
         };
-        console.log("params:", params);
         this.common.postMethod("abc", params).then((res) => {
-            console.log("res:", res);
             if (res.status === true) {
                 this.GetBestieInvitations();
             }

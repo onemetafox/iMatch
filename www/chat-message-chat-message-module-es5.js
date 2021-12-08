@@ -221,12 +221,10 @@
           });
           this.message = this.MessageForm.controls['message'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.chatDetails = resp;
-            console.log('chatDetails:', _this.chatDetails);
           }); // this.interval = setInterval(() => {
           //   this.ionViewWillEnter();
           // },1000);
@@ -244,14 +242,11 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Chat Message Page');
             var params = {
               loggeduserid: this.chatDetails.OpponentId,
               chatuserid: this.chatDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('GetDetailChat', params).then(function (res) {
-              console.log('res:', res);
               _this2.chatMessage = res.details;
 
               if (res.details > res.details[5]) {
@@ -266,7 +261,6 @@
           key: "ionViewWillLeave",
           value: function ionViewWillLeave() {
             clearInterval(this.interval);
-            console.log('Chat Message Page Leaved');
           }
         }, {
           key: "ChattedUsers",
@@ -276,18 +270,13 @@
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('GetChat', params).then(function (res) {
-              console.log('res:', res);
               _this3.ChattedUser = res.details;
             });
           }
         }, {
           key: "toViewNextChat",
           value: function toViewNextChat(event, ChattedUser) {
-            console.log('Next User Clicked');
-            console.log('ChattedUser:', ChattedUser);
-
             if (ChattedUser != undefined) {
               this.common.navCtrl.navigateForward(['chat-message'], {
                 queryParams: ChattedUser
@@ -303,8 +292,7 @@
           }
         }, {
           key: "onChange",
-          value: function onChange(e) {
-            console.log('onChange:', e); // if (e.key=='Backspace') {
+          value: function onChange(e) {// if (e.key=='Backspace') {
             //   this.isTyping = false;
             // } else {
             //   this.isTyping = true;
@@ -315,17 +303,13 @@
           value: function chatSubmit() {
             var _this4 = this;
 
-            console.log('Chat Submit Button Clicked');
             this.FormSubmit = true;
             var params = {
               userid_from: this.userDetails.userid,
               userid_to: this.chatDetails.userid,
               message: this.userMessage.message
             };
-            console.log('params', params);
             this.common.postMethod('Chat', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 setTimeout(function () {
                   _this4.content.scrollToBottom(1500);
@@ -339,7 +323,6 @@
         }, {
           key: "ClickedOnImage",
           value: function ClickedOnImage(e, message, i) {
-            console.log('Image:', message, message.filename, i, this.chatDetails.name);
             this.photoView.show(message.filename, this.chatDetails.name, {
               share: false
             });
@@ -348,29 +331,17 @@
           key: "showEnlargedView",
           value: function showEnlargedView() {
             this.showPlusView = !this.showPlusView;
-            console.log('showPlusView:', this.showPlusView);
-          }
-        }, {
-          key: "toShareFile",
-          value: function toShareFile() {
-            console.log('toShareFile clicked');
           }
         }, {
           key: "toShareAttachment",
           value: function toShareAttachment() {
             var _this5 = this;
 
-            console.log('toShareAttachment clicked');
             var file;
             this.fileChooser.open().then(function (uri) {
-              console.log('uri:', uri);
-
               _this5.filePath.resolveNativePath(uri).then(function (filePath) {
-                console.log('filePath:', filePath);
                 var fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
                 var currentName = uri.substring(uri.lastIndexOf('/') + 1, uri.lastIndexOf('?'));
-                console.log('currentName:', currentName);
-                console.log('fileNameFromPath:', fileNameFromPath);
                 file = {
                   name: fileNameFromPath,
                   fullPath: filePath
@@ -389,13 +360,10 @@
           value: function toShareImage() {
             var _this6 = this;
 
-            console.log('toShareImage clicked');
             var options = {
               limit: 1
             };
             this.mediaCapture.captureImage(options).then(function (data) {
-              console.log('data[0]:', data[0]);
-
               _this6.uploadFile(data[0], 'image');
             }, function (err) {
               return console.error(err);
@@ -406,22 +374,14 @@
           value: function toShareAudio() {
             var _this7 = this;
 
-            console.log('toShareAudio clicked');
             var options = {
               limit: 1
             };
             this.mediaCapture.captureAudio(options).then(function (data) {
-              console.log('data[0]:', data[0]);
-
               _this7.uploadFile(data[0], 'audio');
             }, function (err) {
               return console.error(err);
             });
-          }
-        }, {
-          key: "toShareContact",
-          value: function toShareContact() {
-            console.log('toShareContact clicked');
           }
         }, {
           key: "uploadFile",
@@ -441,7 +401,6 @@
                 Connection: 'close'
               }
             };
-            console.log('options:', options);
             var filePath;
 
             if (type !== 'audio') {
@@ -454,16 +413,8 @@
             var fileUplaodUrl = _services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/UploadChatFile';
             fileTransfer.onProgress(function (e) {
               var prg = e.lengthComputable ? Math.round(e.loaded / e.total * 100) : -1;
-              console.log("progress:" + prg + '%');
-
-              if (prg === 100) {
-                console.log('Upload completed');
-              } else {
-                console.log('file is uploading');
-              }
             });
-            fileTransfer.upload(filePath, fileUplaodUrl, options).then(function (data) {
-              console.log('File Transfer Success:', data); // this.FileTransferResponse = data;
+            fileTransfer.upload(filePath, fileUplaodUrl, options).then(function (data) {// this.FileTransferResponse = data;
             }, function (err) {
               console.log('File Transfer Error:', err);
             });

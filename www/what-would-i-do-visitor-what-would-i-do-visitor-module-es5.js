@@ -240,7 +240,6 @@
           this.showCommentBox = false;
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userArray = resp;
-            console.log('userArray:', _this.userArray);
           });
         }
 
@@ -252,24 +251,18 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into What Would I Do If Visitors page');
             var params = {
               userid: this.userArray.userid
             };
-            console.log('params:', params);
             this.common.postMethod('GetAdminMessage', params).then(function (res) {
-              console.log('res:', res);
               _this2.message = res.details.adminmessage;
               _this2.answers = res.details.answers;
               _this2.MyiQuery = res.details.MyiQuery;
-              console.log('MyiQuery:', _this2.MyiQuery);
             });
           }
         }, {
           key: "toCommentiQuery1",
           value: function toCommentiQuery1(event, Query) {
-            console.log('Comment iQuery 1 Clicked');
-            console.log('Query:', Query);
             this.common.navCtrl.navigateForward(['/i-query-comments'], {
               queryParams: Query
             });
@@ -277,8 +270,6 @@
         }, {
           key: "toCommentiQuery2",
           value: function toCommentiQuery2(event, Query) {
-            console.log('Comment iQuery 2 Clicked');
-            console.log('Query:', Query);
             this.common.navCtrl.navigateForward(['/i-query2-comments'], {
               queryParams: Query
             });
@@ -288,18 +279,13 @@
           value: function toLikeiQuery1(event, Query) {
             var _this3 = this;
 
-            console.log('Like iQuery 1 Clicked');
             var params = {
               userid: this.userArray.userid,
               queryid: Query.queryid,
               querynum: 'query1',
               status: 'like'
             };
-            console.log('params:', params);
-            console.log('Query:', Query);
             this.common.postMethod('Myiquerylike', params).then(function (res) {
-              console.log('res:', res);
-
               _this3.ionViewWillEnter();
             });
           }
@@ -308,18 +294,13 @@
           value: function toLikeiQuery2(event, Query) {
             var _this4 = this;
 
-            console.log('Like iQuery 2 Clicked');
             var params = {
               userid: this.userArray.userid,
               queryid: Query.queryid,
               querynum: 'query2',
               status: 'like'
             };
-            console.log('params:', params);
-            console.log('Query:', Query);
             this.common.postMethod('Myiquerylike', params).then(function (res) {
-              console.log('res:', res);
-
               _this4.ionViewWillEnter();
             });
           }

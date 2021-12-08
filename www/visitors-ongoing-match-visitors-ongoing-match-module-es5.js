@@ -161,12 +161,10 @@
           this.showPersonalScores = false;
           this.hideValue = true;
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userArray = resp;
-            console.log('userArray:', _this.userArray);
           });
         }
 
@@ -180,19 +178,13 @@
 
             this.common.presentLoading();
             this.ongoingDetails = [];
-            console.log('Entered into Visitors Ongoing Contest page');
             var params = {
               userid: this.userArray.userid,
               visitorid: this.userArray.visitor_id
             };
-            console.log('params:', params);
             this.common.postMethod('OngoingMatch', params).then(function (res) {
               if (res.status == true) {
                 _this2.ongoingDetails = res.details;
-                console.log('ongoingDetails:', _this2.ongoingDetails);
-              } else {
-                console.log('ongoingDetails:', _this2.ongoingDetails);
-                console.log('currently you are having no ongoing matches');
               }
             }, function (err) {
               console.log('Error:', err);
@@ -201,23 +193,14 @@
         }, {
           key: "Timer",
           value: function Timer() {
-            var _a, _b, _c, _d, _e, _f;
-
-            console.log('Timer is running');
+            var _a, _b, _c;
 
             if (this.ongoingDetails !== undefined || this.ongoingDetails.length != 0) {
               for (var i = 0; i < this.ongoingDetails.length; i++) {
-                console.log('Match End Time:', (_a = this.ongoingDetails[i]) === null || _a === void 0 ? void 0 : _a.match_end);
-                console.log('Match Start Time:', (_b = this.ongoingDetails[i]) === null || _b === void 0 ? void 0 : _b.match_start);
-                console.log('Time Duration:', (_c = this.ongoingDetails[i]) === null || _c === void 0 ? void 0 : _c.time_duration);
-                var StartTime = new Date((_d = this.ongoingDetails[i]) === null || _d === void 0 ? void 0 : _d.match_start).getTime();
-                console.log('countDownDate:', StartTime);
-                var EndTime = new Date((_e = this.ongoingDetails[i]) === null || _e === void 0 ? void 0 : _e.match_end).getTime();
-                console.log('now:', EndTime);
-                var LeftTime = new Date((_f = this.ongoingDetails[i]) === null || _f === void 0 ? void 0 : _f.remaining_time).getTime();
-                console.log('now:', LeftTime);
+                var StartTime = new Date((_a = this.ongoingDetails[i]) === null || _a === void 0 ? void 0 : _a.match_start).getTime();
+                var EndTime = new Date((_b = this.ongoingDetails[i]) === null || _b === void 0 ? void 0 : _b.match_end).getTime();
+                var LeftTime = new Date((_c = this.ongoingDetails[i]) === null || _c === void 0 ? void 0 : _c.remaining_time).getTime();
                 var CurrentTime = new Date().getTime();
-                console.log('CurrentTime:', CurrentTime);
                 var difference = LeftTime - CurrentTime;
                 var daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
                 difference -= daysDifference * 1000 * 60 * 60 * 24;
@@ -226,102 +209,7 @@
                 var minutesDifference = Math.floor(difference / 1000 / 60);
                 difference -= minutesDifference * 1000 * 60;
                 var secondsDifference = Math.floor(difference / 1000);
-                console.log('difference = ' + daysDifference + ' day/s ' + hoursDifference + ' hour/s ' + minutesDifference + ' minute/s ' + secondsDifference + ' second/s '); // var difference = this.ongoingDetails[i]?.match_end - this.ongoingDetails[i]?.match_start;
-                // var daysDifference = Math.floor(difference/1000/60/60/24);
-                // this.RemainingTime = difference;
-                // return daysDifference;
-                // if (this.ongoingDetails[i]?.time_duration ==='1 hour') {
-                //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-                //   console.log('countDownDate:',StartTime);
-                //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-                //   console.log('now:',EndTime);
-                //   if (StartTime>EndTime) {
-                //     let RemainingDuration = StartTime - EndTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   } else {
-                //     let RemainingDuration = EndTime - StartTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   }
-                // } else if (this.ongoingDetails[i]?.time_duration ==='2 hour') {
-                //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-                //   console.log('countDownDate:',StartTime);
-                //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-                //   console.log('now:',EndTime);
-                //   if (StartTime>EndTime) {
-                //     let RemainingDuration = StartTime - EndTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   } else {
-                //     let RemainingDuration = EndTime - StartTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   }
-                // } else if (this.ongoingDetails[i]?.time_duration ==='3 hour') {
-                //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-                //   console.log('countDownDate:',StartTime);
-                //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-                //   console.log('now:',EndTime);
-                //   if (StartTime>EndTime) {
-                //     let RemainingDuration = StartTime - EndTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   } else {
-                //     let RemainingDuration = EndTime - StartTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   }
-                // } else if (this.ongoingDetails[i]?.time_duration ==='4 hour') {
-                //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-                //   console.log('countDownDate:',StartTime);
-                //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-                //   console.log('now:',EndTime);
-                //   if (StartTime>EndTime) {
-                //     let RemainingDuration = StartTime - EndTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   } else {
-                //     let RemainingDuration = EndTime - StartTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                //   }
-                // } else if (this.ongoingDetails[i]?.time_duration ==='5 hour') {
-                //   console.log('Five hours match');
-                //   let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-                //   console.log('countDownDate:',StartTime);
-                //   let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-                //   console.log('now:',EndTime);
-                //     let RemainingDuration = EndTime - StartTime;
-                //     this.RemainingTime = RemainingDuration;
-                //     console.log('TotalRemaining:',RemainingDuration);
-                // if (StartTime>EndTime) {
-                //   let RemainingDuration = StartTime - EndTime;
-                //   this.RemainingTime = RemainingDuration;
-                //   console.log('TotalRemaining:',RemainingDuration);
-                // } else {
-                //   let RemainingDuration = EndTime - StartTime;
-                //   this.RemainingTime = RemainingDuration;
-                //   console.log('TotalRemaining:',RemainingDuration);
-                // }
-              } // let StartTime = new Date(this.ongoingDetails[i]?.match_start).getTime();
-              // console.log('countDownDate:',StartTime);
-              // let EndTime = new Date(this.ongoingDetails[i]?.match_end).getTime();
-              // console.log('now:',EndTime);
-              // let CurrentTime = new Date().getTime();
-              // console.log('CurrentTime:',CurrentTime);
-              // let TotalRemaining = EndTime - StartTime ;
-              // this.RemainingTime = TotalRemaining;
-              // console.log('TotalRemaining:', TotalRemaining, 'RemainingTime:', this.RemainingTime);
-              // let LeftTime = TotalRemaining - CurrentTime;
-              // this.RemainingTime = LeftTime;
-              // console.log('left:',LeftTime ,'RemainingTime:',this.RemainingTime);
-              // let TimeAgo = CurrentTime - StartTime;
-              // console.log('TimeAgo:',TimeAgo);
-              // this.HoursAgo = TimeAgo;
-              // console.log('HoursAgo:',this.HoursAgo);
-              //   }
-
+              }
             }
           }
         }, {
@@ -329,8 +217,7 @@
           value: function toLikeForReceiver(e, details, i) {
             var _this3 = this;
 
-            console.log('Receiver side post Liked:', i); // i = this.personalMatchSlideIndex;
-
+            // i = this.personalMatchSlideIndex;
             this.slides.slideTo(this.personalMatchSlideIndex);
             var params = {
               userid: this.userDetails.userid,
@@ -338,11 +225,7 @@
               contestentid: details.receiverid,
               status: 'like'
             };
-            console.log('details:', details);
-            console.log('params:', params);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 // this.slides.slideTo(this.personalMatchSlideIndex);
                 _this3.ionViewWillEnter();
@@ -350,8 +233,6 @@
                 _this3.common.presentToast('You had already liked this Ongoing Match');
               }
             }, function (err) {
-              console.log('Error:', err);
-
               _this3.common.presentLoading();
 
               _this3.ionViewWillEnter(); // this.common.presentToast(' A Network Error Occured... Please Try Once Again');
@@ -363,8 +244,7 @@
           value: function toLikeForSender(e, details, i) {
             var _this4 = this;
 
-            console.log('Sender side post liked:', i); // i = this.personalMatchSlideIndex;
-
+            // i = this.personalMatchSlideIndex;
             this.slides.slideTo(this.personalMatchSlideIndex);
             var params = {
               userid: this.userDetails.userid,
@@ -372,11 +252,7 @@
               contestentid: details.senderid,
               status: 'like'
             };
-            console.log('details:', details);
-            console.log('params:', params);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 // this.slides.slideTo(this.personalMatchSlideIndex);
                 _this4.ionViewWillEnter();
@@ -395,8 +271,7 @@
         }, {
           key: "openComments",
           value: function openComments(e, details) {
-            console.log('match details:', details); // this.common.router.navigate(['/comments'], {queryParams : details});
-
+            // this.common.router.navigate(['/comments'], {queryParams : details});
             details.matchType = 'ONGOING';
             this.common.navCtrl.navigateForward(['comments'], {
               queryParams: details
@@ -405,21 +280,17 @@
         }, {
           key: "toshowPersonalScores",
           value: function toshowPersonalScores(e, details) {
-            console.log('details:', details);
             this.showPersonalScores = !this.showPersonalScores;
           }
         }, {
           key: "toHidePopover",
           value: function toHidePopover() {
-            console.log('To Hide Popover Clicked');
             this.showPersonalScores = false;
           }
         }, {
           key: "gotoImageIcon",
           value: function gotoImageIcon(icon) {
             var _this5 = this;
-
-            console.log('Icon:', icon);
 
             if (this.userArray.userStatus === 'VISITOR') {
               if (icon == 'image') {
@@ -428,17 +299,12 @@
                   userid: '',
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', params);
                 this.common.postMethod('OngoingMatch', params).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.image.length != 0) {
                     _this5.ongoingDetails = res.details.image;
 
                     _this5.common.presentToast('Ongoing Image Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Image Matches');
                   }
@@ -451,17 +317,12 @@
                   userid: '',
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params);
                 this.common.postMethod('OngoingMatch', _params).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.video.length != 0) {
                     _this5.ongoingDetails = res.details.video;
 
                     _this5.common.presentToast('Ongoing Video Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Video Matches');
                   }
@@ -474,17 +335,12 @@
                   userid: '',
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params2);
                 this.common.postMethod('OngoingMatch', _params2).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.audio.length != 0) {
                     _this5.ongoingDetails = res.details.audio;
 
                     _this5.common.presentToast('Ongoing Audio Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Audio Matches');
                   }
@@ -497,17 +353,12 @@
                   userid: '',
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params3);
                 this.common.postMethod('OngoingMatch', _params3).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.text.length != 0) {
                     _this5.ongoingDetails = res.details.text;
 
                     _this5.common.presentToast('Ongoing Text Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Text Matches');
                   }
@@ -520,17 +371,12 @@
                   userid: '',
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params4);
                 this.common.postMethod('OngoingMatch', _params4).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.link.length != 0) {
                     _this5.ongoingDetails = res.details.link;
 
                     _this5.common.presentToast('Ongoing Link Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Link Matches');
                   }
@@ -545,17 +391,12 @@
                   userid: this.userArray.userid,
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params5);
                 this.common.postMethod('OngoingMatch', _params5).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.image.length != 0) {
                     _this5.ongoingDetails = res.details.image;
 
                     _this5.common.presentToast('Ongoing Image Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Image Matches');
                   }
@@ -568,17 +409,12 @@
                   userid: this.userArray.userid,
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params6);
                 this.common.postMethod('OngoingMatch', _params6).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.video.length != 0) {
                     _this5.ongoingDetails = res.details.video;
 
                     _this5.common.presentToast('Ongoing Video Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Video Matches');
                   }
@@ -591,17 +427,12 @@
                   userid: this.userArray.userid,
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params7);
                 this.common.postMethod('OngoingMatch', _params7).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.audio.length != 0) {
                     _this5.ongoingDetails = res.details.audio;
 
                     _this5.common.presentToast('Ongoing Audio Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Audio Matches');
                   }
@@ -614,17 +445,12 @@
                   userid: this.userArray.userid,
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params8);
                 this.common.postMethod('OngoingMatch', _params8).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.text.length != 0) {
                     _this5.ongoingDetails = res.details.text;
 
                     _this5.common.presentToast('Ongoing Text Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Text Matches');
                   }
@@ -637,17 +463,12 @@
                   userid: this.userArray.userid,
                   visitorid: this.userArray.visitor_id
                 };
-                console.log('params:', _params9);
                 this.common.postMethod('OngoingMatch', _params9).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.details.link.length != 0) {
                     _this5.ongoingDetails = res.details.link;
 
                     _this5.common.presentToast('Ongoing Link Match is Successfully Displayed'); // this.slides.slideTo(this.personalMatchSlideIndex);
 
-
-                    console.log('OngoingMatch:', _this5.ongoingDetails);
                   } else {
                     _this5.common.presentToast('Currently You Are Having No Ongoing Link Matches');
                   } // this.ongoingDetails = res.details.link;

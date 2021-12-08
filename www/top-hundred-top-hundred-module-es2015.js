@@ -41,20 +41,16 @@ let TopHundredPage = class TopHundredPage {
         this.common = common;
         this.userDetails = [];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Top Hundred Page');
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.postMethod('Top100', params).then((res) => {
-            console.log('res:', res);
             this.TopHundred = res.details;
         });
     }

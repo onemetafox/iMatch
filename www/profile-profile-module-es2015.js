@@ -104,7 +104,6 @@ let ProfilePage = class ProfilePage {
         this.gender = this.formgroup.controls['gender'];
         // this.university = this.formgroup.controls['university'];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
@@ -122,8 +121,6 @@ let ProfilePage = class ProfilePage {
     }
     onSubmit() {
         this.FormSubmit = true;
-        console.log('FormSubmit:', this.FormSubmit);
-        console.log('formgroup:', this.formgroup.value);
         if (this.formgroup.valid) {
             this.common.presentLoading();
             let params = {
@@ -135,15 +132,11 @@ let ProfilePage = class ProfilePage {
                 // university: this.userData.university
                 university: ''
             };
-            console.log('params:', params);
             this.common.postMethod('profile', this.formgroup.value).then((res) => {
-                console.log('res:', res);
                 if (res.message == 'success') {
                     this.common.presentToast('Profile details updated successful');
                     this.responseData = res.details[0];
-                    console.log('response:', res.details[0]);
                     this.storageservice.setStorage('userDetails', res.details[0]);
-                    console.log('Profile updated details successfully stored');
                 }
                 else {
                     this.common.presentToast('Profile details update failed !');
@@ -164,7 +157,6 @@ let ProfilePage = class ProfilePage {
                         icon: 'images',
                         handler: () => {
                             this.pickImageGallery();
-                            console.log('Gallery clicked');
                         }
                     },
                     {
@@ -172,7 +164,6 @@ let ProfilePage = class ProfilePage {
                         icon: 'camera',
                         handler: () => {
                             this.pickImage(_capacitor_core__WEBPACK_IMPORTED_MODULE_8__["CameraSource"].Camera);
-                            console.log('Camera clicked');
                         }
                     },
                     {
@@ -180,7 +171,6 @@ let ProfilePage = class ProfilePage {
                         icon: 'close',
                         role: 'cancel',
                         handler: () => {
-                            console.log('Cancel clicked');
                         }
                     }]
             });
@@ -198,10 +188,8 @@ let ProfilePage = class ProfilePage {
                 saveToGallery: true,
                 resultType: _capacitor_core__WEBPACK_IMPORTED_MODULE_8__["CameraResultType"].Base64,
             });
-            console.log('image:', image);
             const blobData = this.b64toBlob(image.base64String, `image/${image.format}`);
             this.uploadImage(blobData, image.format).subscribe((newImage) => {
-                console.log('newImage:', newImage);
                 this.common.presentLoading();
                 this.getProfileImg();
             }, err => {
@@ -222,10 +210,8 @@ let ProfilePage = class ProfilePage {
                 source: _capacitor_core__WEBPACK_IMPORTED_MODULE_8__["CameraSource"].Photos,
                 resultType: _capacitor_core__WEBPACK_IMPORTED_MODULE_8__["CameraResultType"].Base64,
             });
-            console.log('image:', image);
             const blobData = this.b64toBlob(image.base64String, `image/${image.format}`);
             this.uploadImage(blobData, image.format).subscribe((newImage) => {
-                console.log('newImage:', newImage);
                 this.common.presentLoading();
                 this.getProfileImg();
             }, err => {
@@ -259,19 +245,15 @@ let ProfilePage = class ProfilePage {
     }
     getProfileImg() {
         this.isLoading = true;
-        console.log('getProfileImg');
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.profilepicget('get_profile_pic/' + params.userid).subscribe((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.userDetails = res.details[0];
                 this.common.presentToast('Profile image loaded successfully...');
                 this.storageservice.setStorage('userDetails', res.details[0]);
                 this.isLoading = false;
-                console.log('userDetails:', this.userDetails);
             }
             else {
                 this.common.presentToast(' 🛑 Something went wrong !!!');

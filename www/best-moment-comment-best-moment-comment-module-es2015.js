@@ -93,37 +93,29 @@ let BestMomentCommentPage = class BestMomentCommentPage {
     }
     ngOnInit() {
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
         this.common.route.queryParams.subscribe((resp) => {
             this.MomentDetails = resp;
-            console.log('MomentDetails:', this.MomentDetails);
         });
     }
     ionViewWillEnter() {
-        console.log(' Entered Into Best Moment Visitors Comment Page ');
         let params = {
             momentid: this.MomentDetails.momentid
         };
-        console.log('params:', params);
         this.common.postMethod('GetMomentComment', params).then((res) => {
-            console.log('res:', res);
             this.commentDetails = res.details;
         }, (err) => {
             console.log('Error:', err);
         });
     }
     toAddComment() {
-        console.log('Send Best Moment Comment Button Clicked');
         let params = {
             userid: this.userDetails.userid,
             momentid: this.MomentDetails.momentid,
             comment: this.userComment.comment
         };
-        console.log('params:', params);
         this.common.postMethod('MomentComment', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.BestMomentCommentForm.reset();
                 this.ionViewWillEnter();

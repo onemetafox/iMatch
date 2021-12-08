@@ -173,8 +173,6 @@
             if (_this.common.router.getCurrentNavigation().extras.state) {
               _this.data = _this.common.router.getCurrentNavigation().extras.state.data;
               _this.type = _this.common.router.getCurrentNavigation().extras.state.type;
-              console.log('Data:', _this.data);
-              console.log('Data type:', _this.type);
             }
           });
         }

@@ -264,7 +264,6 @@
 
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
-            console.log('userDetails:', _this.userDetails);
           });
         }
 
@@ -287,17 +286,13 @@
           value: function ionViewWillEnter() {
             var _this3 = this;
 
-            console.log('in ionViewWillEnter'); //  this.listAllUsers();
-
+            //  this.listAllUsers();
             this.common.showLoader();
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.listUsers('Listusers', params).subscribe(function (res) {
-              console.log('res:', res);
               _this3.allUsers = res.details.name;
-              console.log('allUsers:', _this3.allUsers);
 
               _this3.common.hideLoader();
             }, function (err) {
@@ -347,13 +342,11 @@
 
             if (user.userid != '') {
               var params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'fan'
               };
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this4.common.presentToast(name + ' is successfully added to your fans list ...'); // this.common.router.navigate(['/fans']);
 
@@ -365,13 +358,11 @@
                   _this4.common.presentToast(name + ' is already added to your fans list ...');
                 }
               });
-            } else {/////
             }
           }
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });

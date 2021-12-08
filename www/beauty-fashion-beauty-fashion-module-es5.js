@@ -226,7 +226,6 @@
           this.userDetails = [];
           this.BeautyFashionDetails = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
 
             if (_this.userDetails.userid != '') {
@@ -243,14 +242,11 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered Into Funny Posts Page');
             var params = {
               userid: this.userDetails.userid,
               category: 'beauty'
             };
-            console.log('params:', params);
             this.common.postMethod('BannerSearch', params).then(function (res) {
-              console.log('res:', res);
               _this2.BeautyFashionDetails = res.details;
             });
           }

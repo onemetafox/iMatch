@@ -79,17 +79,14 @@ let SearchChatUserPage = class SearchChatUserPage {
         this.allUsers = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
     ionViewWillEnter() {
-        console.log('in ionViewWillEnter');
         this.listAllUsers();
     }
     ionViewDidEnter() {
         this.storageservice.storage.get('bestieDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.bestieDetails = val;
         });
     }
@@ -107,9 +104,7 @@ let SearchChatUserPage = class SearchChatUserPage {
     storage() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.storageservice.storage.get('userDetails').then((val) => {
-                console.log('Storage Value of userDetails:', val);
                 this.userDetails = val;
-                console.log('userid:', this.userDetails.userid);
                 // this.user_id = this.userDetails.userid;
                 if (this.userDetails) {
                     this.common.presentLoading();
@@ -122,16 +117,12 @@ let SearchChatUserPage = class SearchChatUserPage {
         });
     }
     listAllUsers() {
-        console.log(this.userDetails);
         var userid = this.userDetails["userid"];
         let params = {
             userid: userid
         };
-        console.log('userid:', params);
         this.common.listUsers('Listusers', params).subscribe((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
         });
     }
     onSearchInput() {
@@ -142,7 +133,6 @@ let SearchChatUserPage = class SearchChatUserPage {
     }
     addToChatRoom(event, name, user) {
         if (user != undefined) {
-            console.log('user:', user);
             this.common.presentToast(name + ' is successfully added to your Chat list ...');
             this.common.router.navigate(['/chat-message'], { queryParams: user });
         }
@@ -151,7 +141,6 @@ let SearchChatUserPage = class SearchChatUserPage {
         }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });

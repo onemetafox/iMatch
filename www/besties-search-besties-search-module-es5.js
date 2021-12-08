@@ -221,7 +221,6 @@
           this.allUsers = [];
           this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -229,7 +228,6 @@
         _createClass(BestiesSearchPage, [{
           key: "ionViewWillEnter",
           value: function ionViewWillEnter() {
-            console.log('in ionViewWillEnter');
             this.listAllUsers();
           }
         }, {
@@ -238,7 +236,6 @@
             var _this2 = this;
 
             this.storageservice.storage.get('bestieDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this2.bestieDetails = val;
             });
           }
@@ -267,9 +264,7 @@
                   switch (_context.prev = _context.next) {
                     case 0:
                       this.storageservice.storage.get('userDetails').then(function (val) {
-                        console.log('Storage Value of userDetails:', val);
-                        _this4.userDetails = val;
-                        console.log('userid:', _this4.userDetails.userid); // this.user_id = this.userDetails.userid;
+                        _this4.userDetails = val; // this.user_id = this.userDetails.userid;
 
                         if (_this4.userDetails) {
                           _this4.common.presentLoading();
@@ -292,16 +287,12 @@
           value: function listAllUsers() {
             var _this5 = this;
 
-            console.log(this.userDetails);
             var userid = this.userDetails["userid"];
             var params = {
               userid: userid
             };
-            console.log('userid:', params);
             this.common.postMethod('Listusers', params).then(function (res) {
-              console.log('res:', res);
               _this5.allUsers = res.details.name;
-              console.log('allUsers:', _this5.allUsers);
             });
           }
         }, {
@@ -321,13 +312,11 @@
 
             if (user.userid != '') {
               var params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'bestie'
               };
               this.common.postMethod('add_bestie', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.message == "Successfully added as Bestie") {
                   _this6.common.presentToast(name + ' is successfully added to your besties list ...');
 
@@ -344,7 +333,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });
@@ -376,19 +364,13 @@
         function PopoverComponent(popoverController, common, navParams) {
           _classCallCheck(this, PopoverComponent);
 
-          // this.storageservice.storage.get('userDetails').then((val) => {
-          // console.log('Storage Value of userDetails:', val);
-          // this.userDetails = val;
           this.popoverController = popoverController;
           this.common = common;
           this.navParams = navParams;
           this.User = [];
           this.userdetails = [];
-          console.log(this.navParams.get('key'));
-          console.log('my userid:', this.navParams.get('id'));
           this.userdetails = this.navParams.get('key');
           this.User = this.navParams.get('key');
-          console.log('users in popover:', this.User);
         }
 
         _createClass(PopoverComponent, [{
@@ -404,20 +386,15 @@
                         this.popoverController.dismiss(value);
 
                         if (value == 'bestie') {
-                          console.log('Bestie Clicked');
                           params = {
                             // from : userdetails.userid,
                             // to : ,
                             category: 'bestie'
                           }; // this.common.router.navigate(['/profile']); 
-                        } else if (value == 'squad') {
-                          console.log('Squad Clicked'); // this.common.router.navigate(['/besties']); 
-                        } else if (value == 'fan') {
-                          console.log('Fan Clicked'); // this.common.router.navigate(['/squad-list']);
-                        } else if (value == '') {
-                          console.log('Fans Of Clicked'); // this.common.router.navigate(['/fans-of']);
-                        } else if (value == 'match') {
-                          console.log('Match Clicked'); // this.common.navCtrl.navigateForward(['/tabs/tab1']);
+                        } else if (value == 'squad') {// this.common.router.navigate(['/besties']); 
+                        } else if (value == 'fan') {// this.common.router.navigate(['/squad-list']);
+                        } else if (value == '') {// this.common.router.navigate(['/fans-of']);
+                        } else if (value == 'match') {// this.common.navCtrl.navigateForward(['/tabs/tab1']);
                         }
                       } catch (e) {
                         console.log(e); //click more than one time popover throws error, so ignore...

@@ -292,17 +292,13 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('in ionViewWillEnter');
             this.storageservice.storage.get('userDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this2.userDetails = val;
 
               if (_this2.userDetails.userid != undefined) {
                 _this2.listAllUsers();
 
                 _this2.toGetUsersCategory();
-              } else {
-                console.log('*** UserId undefined ***');
               }
             });
           }
@@ -314,18 +310,14 @@
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('userid:', params);
             this.common.listUsers('Listusers', params).subscribe(function (res) {
-              console.log('res:', res);
               _this3.allUsers = res.details.name;
-              console.log('allUsers:', _this3.allUsers);
             });
           }
         }, {
           key: "onSearchInput",
           value: function onSearchInput(e) {
             this.searching = true;
-            console.log('E:', e);
             this.setFilteredItems();
             this.listAllUsers();
           }
@@ -337,7 +329,6 @@
         }, {
           key: "addToMatch",
           value: function addToMatch(event, user) {
-            console.log('user:', user);
             this.common.navCtrl.navigateForward(['/before-match-invitation'], {
               queryParams: user
             });
@@ -345,7 +336,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });
@@ -353,28 +343,21 @@
         }, {
           key: "toListCategory",
           value: function toListCategory(val) {
-            console.log('To List Specific Category Clicked');
-            console.log('Value:', val);
-
             if (val == 'bestie') {
               this.common.presentLoading();
               this.allUsers = this.BestiesList;
-              console.log('allUsers:', this.allUsers);
               this.common.presentToast('Your Bestie List is Successfully Fetched ...');
             } else if (val == 'squad') {
               this.common.presentLoading();
               this.allUsers = this.SquadList;
-              console.log('allUsers:', this.allUsers);
               this.common.presentToast('Your Squad List is Successfully Fetched ...');
             } else if (val == 'fan') {
               this.common.presentLoading();
               this.allUsers = this.Fans;
-              console.log('allUsers:', this.allUsers);
               this.common.presentToast('Your Fan List is Successfully Fetched ...');
             } else if (val == 'fan-of') {
               this.common.presentLoading();
               this.allUsers = this.FansOf;
-              console.log('allUsers:', this.allUsers);
               this.common.presentToast('Your Fan Of List is Successfully Fetched ...');
             } else if (val == 'invite') {
               this.toShare();
@@ -388,14 +371,10 @@
           value: function toGetUsersCategory() {
             var _this4 = this;
 
-            console.log('To Get User Category Wise Working');
             var params = {
               id: this.userDetails.userid
             };
-            console.log('params:', params);
-            this.common.postMethod('Listbesties', params).then(function (res) {
-              console.log('res:', res);
-
+            this.common.postMethod('getBestieList', params).then(function (res) {
               if (res.status == true) {
                 _this4.BestiesList = res.details.besties;
                 _this4.SquadList = res.details.squad;
@@ -412,9 +391,7 @@
           key: "toShare",
           value: function toShare() {
             var msg = 'Share iMatch with your friends:';
-            this.socialSharing.share(msg).then(function () {// Success!
-            })["catch"](function () {// Error!
-            });
+            this.socialSharing.share(msg).then(function () {})["catch"](function () {});
           }
         }]);
 

@@ -147,7 +147,6 @@
           this.bestieDetails = [];
           this.common.route.queryParams.subscribe(function (resp) {
             _this.bestieDetails = resp;
-            console.log("BestiesDetails:", _this.bestieDetails);
           });
         }
 
@@ -165,7 +164,6 @@
             var _this2 = this;
 
             this.storageservice.storage.get("userDetails").then(function (val) {
-              console.log("Storage Value of userDetails:", val);
               _this2.userDetails = val;
 
               _this2.GetUserSlogan();
@@ -180,11 +178,9 @@
               userid: this.userDetails.userid,
               senderid: this.bestieDetails.userid
             };
-            console.log("params:", params);
             this.common.postMethod("GetStatus", params).then(function (res) {
               var _a;
 
-              console.log("res:", res);
               _this3.userSlogan = (_a = res.details.slogan[0]) === null || _a === void 0 ? void 0 : _a.text;
             }, function (err) {
               console.log("Error:", err);
@@ -202,10 +198,7 @@
                 text: this.userSlogan,
                 send_to: this.bestieDetails.userid
               };
-              console.log("params:", params);
               this.common.postMethod("statusbar", params).then(function (res) {
-                console.log("res:", res);
-
                 if (res.status == true) {
                   _this4.userSlogan = "";
 

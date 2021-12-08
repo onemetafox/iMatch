@@ -94,7 +94,6 @@
           this.BestMoments = [];
           this.BestMomentsImages = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -107,18 +106,15 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Best Moments Page'); //  this.common.showLoader();
-
+            //  this.common.showLoader();
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
               var params = {
                 userid: _this2.userDetails.userid
               };
-              console.log('params:', params);
 
               _this2.common.postMethod('GetBestMoment', params).then(function (res) {
-                console.log('res:', res); // this.common.presentToast
-
+                // this.common.presentToast
                 _this2.common.presentLoading();
 
                 _this2.BestMoments = res.details.moments;
@@ -141,7 +137,6 @@
         }, {
           key: "toAddMedia",
           value: function toAddMedia(event, moments) {
-            console.log('moments:', moments);
             this.common.navCtrl.navigateForward(['/best-moments-add'], {
               queryParams: moments
             });
@@ -149,7 +144,6 @@
         }, {
           key: "gotoBestMomentComments",
           value: function gotoBestMomentComments(e, moments) {
-            console.log('moments:', moments);
             this.common.navCtrl.navigateForward(['/best-moment-comment'], {
               queryParams: moments
             });
@@ -159,15 +153,11 @@
           value: function ToLikeBestMoment(e, moments) {
             var _this3 = this;
 
-            console.log('moments:', moments);
             var params = {
               userid: this.userDetails.userid,
               momentid: moments.momentid
             };
-            console.log('params:', params);
             this.common.postMethod('MomentLike', params).then(function (res) {
-              console.log('res:', res.details);
-
               if (res.status == true) {
                 _this3.ionViewWillEnter();
               }

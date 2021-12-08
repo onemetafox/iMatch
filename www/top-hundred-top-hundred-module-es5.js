@@ -92,7 +92,6 @@
           this.common = common;
           this.userDetails = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -105,13 +104,10 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Top Hundred Page');
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('Top100', params).then(function (res) {
-              console.log('res:', res);
               _this2.TopHundred = res.details;
             });
           }

@@ -81,7 +81,6 @@
           this.common.route.queryParams.subscribe(function (resp) {
             _this.UserInfo = resp;
             _this.personalMatchSlideIndex = _this.UserInfo.personalMatchSlideIndex;
-            console.log('UserInfo:', _this.UserInfo);
           });
         }
 
@@ -93,20 +92,16 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Open Match page');
             var params = {
               userid: this.UserInfo.userid
             };
             this.common.showLoader();
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then(function (res) {
-              console.log('res:', res); //  this.slides.slideTo(this.personalMatchSlideIndex);
-
+              //  this.slides.slideTo(this.personalMatchSlideIndex);
               _this2.openMatches = res.details.images;
 
-              _this2.slides.slideTo(_this2.personalMatchSlideIndex);
+              _this2.slides.slideTo(_this2.personalMatchSlideIndex); //  this.slides.slideTo(this.personalMatchSlideIndex);
 
-              console.log('openMatches:', _this2.openMatches); //  this.slides.slideTo(this.personalMatchSlideIndex);
 
               _this2.common.hideLoader();
             }, function (err) {
@@ -116,8 +111,6 @@
         }, {
           key: "gotoOpenMatchComments",
           value: function gotoOpenMatchComments(event, match) {
-            console.log('Comment View Page Clicked');
-            console.log('match:', match);
             this.common.navCtrl.navigateForward(['/comments'], {
               queryParams: match
             });
@@ -127,18 +120,13 @@
           value: function toLikeOpenMatch(event, match) {
             var _this3 = this;
 
-            console.log('Like Open Match Button Clicked');
             var params = {
               userid: this.UserInfo.userid,
               matchid: match.match_id,
               contestentid: '',
               status: 'like'
             };
-            console.log('params:', params);
-            console.log('match:', match);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               _this3.ionViewWillEnter();
             });
           }
@@ -147,25 +135,19 @@
           value: function toDisLikeOpenMatch(event, match) {
             var _this4 = this;
 
-            console.log('Dislike Open Match Button Clicked');
             var params = {
               userid: this.UserInfo.userid,
               matchid: match.match_id,
               contestentid: '',
               status: 'dislike'
             };
-            console.log('params:', params);
-            console.log('match:', match);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               _this4.ionViewWillEnter();
             });
           }
         }, {
           key: "toCommentOpenMatch",
           value: function toCommentOpenMatch(event, match) {
-            console.log('Comment Open Match Button Clicked');
             this.common.navCtrl.navigateForward(['/open-match-comments'], {
               queryParams: match
             });
@@ -175,16 +157,12 @@
           value: function GetIconSearch(icon) {
             var _this5 = this;
 
-            console.log('Icon clicked:', icon);
-
             if (icon === 'image') {
               this.common.showLoader();
               var params = {
                 userid: this.UserInfo.userid
               };
-              console.log('params:', params);
               this.common.postMethod('OpenMatch', params).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details;
               }, function (err) {
                 console.log('err:', err);
@@ -195,9 +173,7 @@
               var _params = {
                 userid: this.UserInfo.userid
               };
-              console.log('params:', _params);
               this.common.postMethod('OpenMatch', _params).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details;
               }, function (err) {
                 console.log('err:', err);
@@ -207,9 +183,7 @@
               var _params2 = {
                 userid: this.UserInfo.userid
               };
-              console.log('params:', _params2);
               this.common.postMethod('OpenMatch', _params2).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details;
               }, function (err) {
                 console.log('err:', err);
@@ -219,9 +193,7 @@
               var _params3 = {
                 userid: this.UserInfo.userid
               };
-              console.log('params:', _params3);
               this.common.postMethod('OpenMatch', _params3).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details;
               }, function (err) {
                 console.log('err:', err);
@@ -231,9 +203,7 @@
               var _params4 = {
                 userid: this.UserInfo.userid
               };
-              console.log('params:', _params4);
               this.common.postMethod('OpenMatch', _params4).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details;
               }, function (err) {
                 console.log('err:', err);
@@ -249,8 +219,7 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log('Show Match History Button Clicked');
-                      _context.next = 3;
+                      _context.next = 2;
                       return this.popoverController.create({
                         component: PopoverComponent,
                         cssClass: 'my-custom-class',
@@ -262,15 +231,15 @@
                         animated: false
                       });
 
-                    case 3:
+                    case 2:
                       popover = _context.sent;
-                      _context.next = 6;
+                      _context.next = 5;
                       return popover.present();
 
-                    case 6:
+                    case 5:
                       return _context.abrupt("return", _context.sent);
 
-                    case 7:
+                    case 6:
                     case "end":
                       return _context.stop();
                   }
@@ -313,16 +282,12 @@
           this.common = common;
           this.navParams = navParams;
           this.Match = [];
-          console.log(this.navParams.get('key'));
           this.Match = this.navParams.get('key');
-          console.log('users in popover:', this.Match);
         }
 
         _createClass(PopoverComponent, [{
           key: "ionViewWillEnter",
-          value: function ionViewWillEnter() {
-            console.log('ionViewWillEnter:', this.Match);
-          }
+          value: function ionViewWillEnter() {}
         }]);
 
         return PopoverComponent;

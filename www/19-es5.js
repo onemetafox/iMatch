@@ -104,9 +104,12 @@
       var mdEasing = 'cubic-bezier(0.0,0.0,0.2,1)';
       var iosEasingReverse = 'cubic-bezier(1, 0, 0.68, 0.28)';
       var mdEasingReverse = 'cubic-bezier(0.4, 0, 0.6, 1)';
+      var focusableQueryString = '[tabindex]:not([tabindex^="-"]), input:not([type=hidden]):not([tabindex^="-"]), textarea:not([tabindex^="-"]), button:not([tabindex^="-"]), select:not([tabindex^="-"]), .ion-focusable:not([tabindex^="-"])';
 
       var Menu = /*#__PURE__*/function () {
         function Menu(hostRef) {
+          var _this = this;
+
           _classCallCheck(this, Menu);
 
           Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["r"])(this, hostRef);
@@ -121,6 +124,12 @@
           });
           this.isAnimating = false;
           this._isOpen = false;
+          this.inheritedAttributes = {};
+
+          this.handleFocus = function (ev) {
+            return _this.trapKeyboardFocus(ev, document);
+          };
+
           this.isPaneVisible = false;
           this.isEndSide = false;
           /**
@@ -190,7 +199,7 @@
           key: "connectedCallback",
           value: function () {
             var _connectedCallback = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-              var _this = this;
+              var _this2 = this;
 
               var el, parent, content;
               return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -241,19 +250,19 @@
                         threshold: 10,
                         blurOnStart: true,
                         canStart: function canStart(ev) {
-                          return _this.canStart(ev);
+                          return _this2.canStart(ev);
                         },
                         onWillStart: function onWillStart() {
-                          return _this.onWillStart();
+                          return _this2.onWillStart();
                         },
                         onStart: function onStart() {
-                          return _this.onStart();
+                          return _this2.onStart();
                         },
                         onMove: function onMove(ev) {
-                          return _this.onMove(ev);
+                          return _this2.onMove(ev);
                         },
                         onEnd: function onEnd(ev) {
-                          return _this.onEnd(ev);
+                          return _this2.onEnd(ev);
                         }
                       });
                       this.updateState();
@@ -272,6 +281,11 @@
 
             return connectedCallback;
           }()
+        }, {
+          key: "componentWillLoad",
+          value: function componentWillLoad() {
+            this.inheritedAttributes = Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_4__["i"])(this.el, ['aria-label']);
+          }
         }, {
           key: "componentDidLoad",
           value: function () {
@@ -338,6 +352,13 @@
               }
             }
           }
+        }, {
+          key: "onKeydown",
+          value: function onKeydown(ev) {
+            if (ev.key === 'Escape') {
+              this.close();
+            }
+          }
           /**
            * Returns `true` is the menu is open.
            */
@@ -402,6 +423,72 @@
           value: function setOpen(shouldOpen) {
             var animated = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
             return _index_0d58a5bf_js__WEBPACK_IMPORTED_MODULE_5__["m"]._setOpen(this, shouldOpen, animated);
+          }
+        }, {
+          key: "focusFirstDescendant",
+          value: function focusFirstDescendant() {
+            var el = this.el;
+            var firstInput = el.querySelector(focusableQueryString);
+
+            if (firstInput) {
+              firstInput.focus();
+            } else {
+              el.focus();
+            }
+          }
+        }, {
+          key: "focusLastDescendant",
+          value: function focusLastDescendant() {
+            var el = this.el;
+            var inputs = Array.from(el.querySelectorAll(focusableQueryString));
+            var lastInput = inputs.length > 0 ? inputs[inputs.length - 1] : null;
+
+            if (lastInput) {
+              lastInput.focus();
+            } else {
+              el.focus();
+            }
+          }
+        }, {
+          key: "trapKeyboardFocus",
+          value: function trapKeyboardFocus(ev, doc) {
+            var target = ev.target;
+
+            if (!target) {
+              return;
+            }
+            /**
+             * If the target is inside the menu contents, let the browser
+             * focus as normal and keep a log of the last focused element.
+             */
+
+
+            if (this.el.contains(target)) {
+              this.lastFocus = target;
+            } else {
+              /**
+               * Otherwise, we are about to have focus go out of the menu.
+               * Wrap the focus to either the first or last element.
+               */
+
+              /**
+               * Once we call `focusFirstDescendant`, another focus event
+               * will fire, which will cause `lastFocus` to be updated
+               * before we can run the code after that. We cache the value
+               * here to avoid that.
+               */
+              this.focusFirstDescendant();
+              /**
+               * If the cached last focused element is the same as the now-
+               * active element, that means the user was on the first element
+               * already and pressed Shift + Tab, so we need to wrap to the
+               * last descendant.
+               */
+
+              if (this.lastFocus === doc.activeElement) {
+                this.focusLastDescendant();
+              }
+            }
           }
         }, {
           key: "_setOpen",
@@ -614,7 +701,7 @@
         }, {
           key: "onEnd",
           value: function onEnd(detail) {
-            var _this2 = this;
+            var _this3 = this;
 
             if (!this.isAnimating || !this.animation) {
               Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_4__["l"])(false, 'isAnimating has to be true');
@@ -660,7 +747,7 @@
             newStepValue += Object(_cubic_bezier_eea9a7a9_js__WEBPACK_IMPORTED_MODULE_2__["g"])([0, 0], [0.4, 0], [0.6, 1], [1, 1], Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_4__["j"])(0, adjustedStepValue, 0.9999))[0] || 0;
             var playTo = this._isOpen ? !shouldComplete : shouldComplete;
             this.animation.easing('cubic-bezier(0.4, 0.0, 0.6, 1)').onFinish(function () {
-              return _this2.afterAnimation(shouldOpen);
+              return _this3.afterAnimation(shouldOpen);
             }, {
               oneTimeCallback: true
             }).progressEnd(playTo ? 1 : 0, this._isOpen ? 1 - newStepValue : newStepValue, 300);
@@ -672,6 +759,16 @@
             // this css class doesn't actually kick off any animations
 
             this.el.classList.add(SHOW_MENU);
+            /**
+             * We add a tabindex here so that focus trapping
+             * still works even if the menu does not have
+             * any focusable elements slotted inside. The
+             * focus trapping utility will fallback to focusing
+             * the menu so focus does not leave when the menu
+             * is open.
+             */
+
+            this.el.setAttribute('tabindex', '0');
 
             if (this.backdropEl) {
               this.backdropEl.classList.add(SHOW_BACKDROP);
@@ -702,19 +799,49 @@
             }
 
             if (isOpen) {
-              // add css class
+              // add css class and hide content behind menu from screen readers
               if (this.contentEl) {
                 this.contentEl.classList.add(MENU_CONTENT_OPEN);
+                /**
+                 * When the menu is open and overlaying the main
+                 * content, the main content should not be announced
+                 * by the screenreader as the menu is the main
+                 * focus. This is useful with screenreaders that have
+                 * "read from top" gestures that read the entire
+                 * page from top to bottom when activated.
+                 */
+
+                this.contentEl.setAttribute('aria-hidden', 'true');
               } // emit open event
 
 
-              this.ionDidOpen.emit();
+              this.ionDidOpen.emit(); // focus menu content for screen readers
+
+              if (this.menuInnerEl) {
+                this.focusFirstDescendant();
+              } // setup focus trapping
+
+
+              document.addEventListener('focus', this.handleFocus, true);
             } else {
-              // remove css classes
+              // remove css classes and unhide content from screen readers
               this.el.classList.remove(SHOW_MENU);
+              /**
+               * Remove tabindex from the menu component
+               * so that is cannot be tabbed to.
+               */
+
+              this.el.removeAttribute('tabindex');
 
               if (this.contentEl) {
                 this.contentEl.classList.remove(MENU_CONTENT_OPEN);
+                /**
+                 * Remove aria-hidden so screen readers
+                 * can announce the main content again
+                 * now that the menu is not the main focus.
+                 */
+
+                this.contentEl.removeAttribute('aria-hidden');
               }
 
               if (this.backdropEl) {
@@ -726,7 +853,9 @@
               } // emit close event
 
 
-              this.ionDidClose.emit();
+              this.ionDidClose.emit(); // undo focus trapping so multiple menus don't collide
+
+              document.removeEventListener('focus', this.handleFocus, true);
             }
           }
         }, {
@@ -765,25 +894,27 @@
           key: "render",
           value: function render() {
             var _class,
-                _this3 = this;
+                _this4 = this;
 
             var isEndSide = this.isEndSide,
                 type = this.type,
                 disabled = this.disabled,
-                isPaneVisible = this.isPaneVisible;
+                isPaneVisible = this.isPaneVisible,
+                inheritedAttributes = this.inheritedAttributes;
             var mode = Object(_ionic_global_63a97a32_js__WEBPACK_IMPORTED_MODULE_1__["b"])(this);
             return Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["H"], {
               role: "navigation",
+              "aria-label": inheritedAttributes['aria-label'] || 'menu',
               "class": (_class = {}, _defineProperty(_class, mode, true), _defineProperty(_class, "menu-type-".concat(type), true), _defineProperty(_class, 'menu-enabled', !disabled), _defineProperty(_class, 'menu-side-end', isEndSide), _defineProperty(_class, 'menu-side-start', !isEndSide), _defineProperty(_class, 'menu-pane-visible', isPaneVisible), _class)
             }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", {
               "class": "menu-inner",
               part: "container",
               ref: function ref(el) {
-                return _this3.menuInnerEl = el;
+                return _this4.menuInnerEl = el;
               }
             }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("slot", null)), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("ion-backdrop", {
               ref: function ref(el) {
-                return _this3.backdropEl = el;
+                return _this4.backdropEl = el;
               },
               "class": "menu-backdrop",
               tappable: false,
@@ -877,7 +1008,7 @@
 
       var MenuButton = /*#__PURE__*/function () {
         function MenuButton(hostRef) {
-          var _this4 = this;
+          var _this5 = this;
 
           _classCallCheck(this, MenuButton);
 
@@ -904,7 +1035,7 @@
               while (1) {
                 switch (_context7.prev = _context7.next) {
                   case 0:
-                    return _context7.abrupt("return", _index_0d58a5bf_js__WEBPACK_IMPORTED_MODULE_5__["m"].toggle(_this4.menu));
+                    return _context7.abrupt("return", _index_0d58a5bf_js__WEBPACK_IMPORTED_MODULE_5__["m"].toggle(_this5.menu));
 
                   case 1:
                   case "end":
@@ -1010,7 +1141,7 @@
 
       var MenuToggle = /*#__PURE__*/function () {
         function MenuToggle(hostRef) {
-          var _this5 = this;
+          var _this6 = this;
 
           _classCallCheck(this, MenuToggle);
 
@@ -1026,7 +1157,7 @@
           this.autoHide = true;
 
           this.onClick = function () {
-            return _index_0d58a5bf_js__WEBPACK_IMPORTED_MODULE_5__["m"].toggle(_this5.menu);
+            return _index_0d58a5bf_js__WEBPACK_IMPORTED_MODULE_5__["m"].toggle(_this6.menu);
           };
         }
 

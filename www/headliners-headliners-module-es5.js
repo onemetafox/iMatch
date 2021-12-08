@@ -143,7 +143,6 @@
           }];
           this.userDetails = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -158,13 +157,10 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Headliners Page');
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('Headline', params).then(function (res) {
-              console.log('res:', res);
               _this2.FirstHeadliner = res.details.first_headline;
               _this2.SecondHeadliner = res.details.second_headline;
               _this2.ThirdHeadliner = res.details.Third_headline;
@@ -178,19 +174,13 @@
           value: function toAddFirstUserasFan(event, FirstHeadliner) {
             var _this3 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('FirstHeadliner:', FirstHeadliner);
-
             if (FirstHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: FirstHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this3.common.presentToast(FirstHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {
@@ -207,19 +197,13 @@
           value: function toAddSecondUserasFan(event, SecondHeadliner) {
             var _this4 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('SecondHeadliner:', SecondHeadliner);
-
             if (SecondHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: SecondHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this4.common.presentToast(SecondHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {
@@ -236,19 +220,13 @@
           value: function toAddThirdUserasFan(event, ThirdHeadliner) {
             var _this5 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('ThirdHeadliner:', ThirdHeadliner);
-
             if (ThirdHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: ThirdHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this5.common.presentToast(ThirdHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {
@@ -265,19 +243,13 @@
           value: function toAddFourthUserasFan(event, FourthHeadliner) {
             var _this6 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('FourthHeadliner:', FourthHeadliner);
-
             if (FourthHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: FourthHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this6.common.presentToast(FourthHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {
@@ -294,19 +266,13 @@
           value: function toAddFifthUserasFan(event, FifthHeadliner) {
             var _this7 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('FifthHeadliner:', FifthHeadliner);
-
             if (FifthHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: FifthHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this7.common.presentToast(FifthHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {
@@ -323,19 +289,13 @@
           value: function toAddSixthUserasFan(event, SixthHeadliner) {
             var _this8 = this;
 
-            console.log('Add User As Fan Button Clicked');
-            console.log('SixthHeadliner:', SixthHeadliner);
-
             if (SixthHeadliner.userid != '') {
               var params = {
                 from: this.userDetails.userid,
                 to: SixthHeadliner.userid,
                 category: 'fan'
               };
-              console.log('params:', params);
               this.common.postMethod('add_fan', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this8.common.presentToast(SixthHeadliner.name + ' is added to your fan list');
                 } else if (res.message == "Already added ") {

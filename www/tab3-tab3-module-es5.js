@@ -115,7 +115,6 @@
           this.FansOf = [];
           this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -141,18 +140,13 @@
             var _this3 = this;
 
             this.selectUsers = [];
-            console.log(this.selectUsers);
-            console.log('in ionViewWillEnter');
             this.storageservice.storage.get('userDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this3.userDetails = val;
 
               if (_this3.userDetails.userid != undefined) {
                 _this3.listAllUsers();
 
                 _this3.toGetUsersCategory();
-              } else {
-                console.log('*** UserId undefined ***');
               }
             }); // this.presentPopover();
           }
@@ -164,11 +158,8 @@
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('userid:', params);
             this.common.listUsers('Listusers', params).subscribe(function (res) {
-              console.log('res:', res);
               _this4.allUsers = res.details.name;
-              console.log('allUsers:', _this4.allUsers);
             });
           }
         }, {
@@ -176,7 +167,6 @@
           value: function onSearchInput(e) {
             this.searching = true;
             this.showCategory = false;
-            console.log('E:', e);
             this.setFilteredItems();
           }
         }, {
@@ -200,7 +190,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });
@@ -230,15 +219,12 @@
         }, {
           key: "toListCategory",
           value: function toListCategory(val) {
-            console.log('To List Specific Category Clicked');
             this.ShowFooter = false;
-            console.log('Value:', val);
 
             if (val == 'bestie') {
               if (this.BestiesList.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.BestiesList;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast('Your Bestie List is Successfully Fetched ...');
               } else {
                 this.allUsers = this.BestiesList;
@@ -248,7 +234,6 @@
               if (this.SquadList.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.SquadList;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Squad List is Successfully Fetched ... ');
               } else {
                 this.allUsers = this.SquadList;
@@ -258,7 +243,6 @@
               if (this.Fans.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.Fans;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Fan List is Successfully Fetched ... ');
               } else {
                 this.allUsers = this.Fans;
@@ -268,7 +252,6 @@
               if (this.FansOf.length != 0) {
                 this.common.presentLoading();
                 this.allUsers = this.FansOf;
-                console.log('allUsers:', this.allUsers);
                 this.common.presentToast(' Your Fan Of List is Successfully Fetched ... ');
               } else {
                 this.allUsers = this.FansOf;
@@ -284,14 +267,10 @@
           value: function toGetUsersCategory() {
             var _this5 = this;
 
-            console.log('To Get User Category Wise Working');
             var params = {
               id: this.userDetails.userid
             };
-            console.log('params:', params);
-            this.common.postMethod('Listbesties', params).then(function (res) {
-              console.log('res:', res);
-
+            this.common.postMethod('getBestieList', params).then(function (res) {
               if (res.status == true) {
                 _this5.BestiesList = res.details.besties;
                 _this5.SquadList = res.details.squad;
@@ -375,9 +354,7 @@
           value: function ionViewWillEnter() {
             var _this6 = this;
 
-            console.log('Entered Into Popover Page');
             this.storageservice.storage.get('userDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this6.userDetails = val;
             });
             setTimeout(function () {

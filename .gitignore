@@ -105,4 +105,4 @@ dist
 platforms/*
 resources/*
 plugins/*
-www/
+www/*

@@ -142,9 +142,7 @@ let SquadSearchPage = class SquadSearchPage {
         this.allUsers = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
-            console.log('userid:', this.userDetails.userid);
             this.user_id = this.userDetails.userid;
         });
     }
@@ -165,9 +163,7 @@ let SquadSearchPage = class SquadSearchPage {
     storage() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.storageservice.storage.get('userDetails').then((val) => {
-                console.log('Storage Value of userDetails:', val);
                 this.userDetails = val;
-                console.log('userid:', this.userDetails.userid);
                 this.user_id = this.userDetails.userid;
                 if (this.userDetails) {
                     this.common.presentLoading();
@@ -180,16 +176,12 @@ let SquadSearchPage = class SquadSearchPage {
         });
     }
     listAllUsers() {
-        console.log(this.userDetails);
         var userid = this.userDetails["userid"];
         let params = {
             userid: userid
         };
-        console.log('userid:', params);
         this.common.listUsers('Listusers', params).subscribe((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
         });
     }
     onSearchInput() {
@@ -199,26 +191,20 @@ let SquadSearchPage = class SquadSearchPage {
         this.allUsers = this.filterItems(this.searchTerm);
     }
     addToList(event, name, user) {
-        console.log('Clicked add button');
-        console.log('name:', name);
-        console.log('My userid:', this.userDetails.userid);
-        console.log('Besty userid:', user.userid);
-        console.log(user);
         // this.common.presentToast(name +' is added to your besties list ...');
         if (user.userid != '') {
             let params = {
-                from: this.userDetails.userid,
-                to: user.userid,
+                req_from: this.userDetails.userid,
+                req_to: user.userid,
                 category: 'squad'
             };
             this.common.postMethod('add_bestie', params).then((res) => {
-                console.log('res:', res);
-                if (res.message == "Successfully added to squadlist") {
+                if (res.status) {
                     this.common.router.navigate(['/squad-list']);
-                    this.common.presentToast(name + ' is successfully added to your squad list ...');
+                    this.common.presentToast(res.message);
                 }
-                else if (res.message == "Already added ") {
-                    this.common.presentToast(name + ' is already in your squad list ...');
+                else {
+                    this.common.presentToast(res.message);
                 }
             });
         }
@@ -226,7 +212,6 @@ let SquadSearchPage = class SquadSearchPage {
         }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });

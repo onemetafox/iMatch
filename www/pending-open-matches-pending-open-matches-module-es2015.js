@@ -85,12 +85,10 @@ let PendingOpenMatchesPage = class PendingOpenMatchesPage {
         this.userDetails = [];
         this.pendingMatches = [];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
             const Api = 'get_pending_match/';
             this.common.http.get(this.common.ajx.BaseUrl + Api + this.userDetails.userid).subscribe((res) => {
                 this.pendingMatches = res.details;
-                console.log(this.pendingMatches);
             }, err => {
                 console.log('err:', err);
             });
@@ -98,19 +96,7 @@ let PendingOpenMatchesPage = class PendingOpenMatchesPage {
     }
     ngOnInit() {
     }
-    ionViewWillEnter() {
-        console.log('in ionViewWillEnter');
-        // this.storageservice.storage.get('userDetails').then((val) => {
-        //   console.log('Storage Value of userDetails:', val);
-        //   this.userDetails = val;
-        //   if (this.userDetails.userid!=undefined) {
-        //     this.listAllUsers();
-        //     this.toGetUsersCategory();
-        //   } else {
-        //     console.log('*** UserId undefined ***');
-        //   }
-        // });
-    }
+    ionViewWillEnter() { }
     togoBack() {
         this.common.router.navigate(['tabs/tab5']);
     }

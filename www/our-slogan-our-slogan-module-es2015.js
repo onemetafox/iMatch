@@ -73,7 +73,6 @@ let OurSloganPage = class OurSloganPage {
         this.bestieDetails = [];
         this.common.route.queryParams.subscribe((resp) => {
             this.bestieDetails = resp;
-            console.log("BestiesDetails:", this.bestieDetails);
         });
     }
     ngOnInit() { }
@@ -82,7 +81,6 @@ let OurSloganPage = class OurSloganPage {
     }
     GetStoredUserDetails() {
         this.storageservice.storage.get("userDetails").then((val) => {
-            console.log("Storage Value of userDetails:", val);
             this.userDetails = val;
             this.GetUserSlogan();
         });
@@ -92,10 +90,8 @@ let OurSloganPage = class OurSloganPage {
             userid: this.userDetails.userid,
             senderid: this.bestieDetails.userid,
         };
-        console.log("params:", params);
         this.common.postMethod("GetStatus", params).then((res) => {
             var _a;
-            console.log("res:", res);
             this.userSlogan = (_a = res.details.slogan[0]) === null || _a === void 0 ? void 0 : _a.text;
         }, (err) => {
             console.log("Error:", err);
@@ -109,9 +105,7 @@ let OurSloganPage = class OurSloganPage {
                 text: this.userSlogan,
                 send_to: this.bestieDetails.userid,
             };
-            console.log("params:", params);
             this.common.postMethod("statusbar", params).then((res) => {
-                console.log("res:", res);
                 if (res.status == true) {
                     this.userSlogan = "";
                     this.common.presentToast(" ✅  Your Our Slogan Content Updated Successfully ...");

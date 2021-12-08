@@ -36,6 +36,7 @@ const Item = class {
     this.labelColorStyles = {};
     this.itemStyles = new Map();
     this.multipleInputs = false;
+    this.focusable = true;
     /**
      * If `true`, a button tag will be rendered and the item will be tappable.
      */
@@ -109,7 +110,10 @@ const Item = class {
     }
   }
   componentDidLoad() {
-    Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_2__["r"])(() => this.setMultipleInputs());
+    Object(_helpers_dd7e4b7b_js__WEBPACK_IMPORTED_MODULE_2__["r"])(() => {
+      this.setMultipleInputs();
+      this.focusable = this.isFocusable();
+    });
   }
   // If the item contains multiple clickable elements and/or inputs, then the item
   // should not have a clickable input cover over the entire item to prevent
@@ -144,6 +148,10 @@ const Item = class {
   }
   canActivate() {
     return (this.isClickable() || this.hasCover());
+  }
+  isFocusable() {
+    const focusableChild = this.el.querySelector('.ion-focusable');
+    return (this.canActivate() || focusableChild !== null);
   }
   getFirstInput() {
     const inputs = this.el.querySelectorAll('ion-input, ion-textarea');
@@ -206,7 +214,7 @@ const Item = class {
         'in-list': Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_3__["h"])('ion-list', this.el),
         'item-multiple-inputs': this.multipleInputs,
         'ion-activatable': canActivate,
-        'ion-focusable': true,
+        'ion-focusable': this.focusable
       })) }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(TagType, Object.assign({}, attrs, { class: "item-native", part: "native", disabled: disabled }, clickFn), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("slot", { name: "start" }), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", { class: "item-inner" }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", { class: "input-wrapper" }, Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("slot", null)), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("slot", { name: "end" }), showDetail && Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("ion-icon", { icon: detailIcon, lazy: false, class: "item-detail-icon", part: "detail-icon", "aria-hidden": "true" }), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", { class: "item-inner-highlight" })), canActivate && mode === 'md' && Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("ion-ripple-effect", null)), Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", { class: "item-highlight" })));
   }
   static get delegatesFocus() { return true; }

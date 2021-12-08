@@ -162,7 +162,6 @@
           this.allUsers = [];
           this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormControl"]();
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -170,7 +169,6 @@
         _createClass(SearchChatUserPage, [{
           key: "ionViewWillEnter",
           value: function ionViewWillEnter() {
-            console.log('in ionViewWillEnter');
             this.listAllUsers();
           }
         }, {
@@ -179,7 +177,6 @@
             var _this2 = this;
 
             this.storageservice.storage.get('bestieDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this2.bestieDetails = val;
             });
           }
@@ -208,9 +205,7 @@
                   switch (_context.prev = _context.next) {
                     case 0:
                       this.storageservice.storage.get('userDetails').then(function (val) {
-                        console.log('Storage Value of userDetails:', val);
-                        _this4.userDetails = val;
-                        console.log('userid:', _this4.userDetails.userid); // this.user_id = this.userDetails.userid;
+                        _this4.userDetails = val; // this.user_id = this.userDetails.userid;
 
                         if (_this4.userDetails) {
                           _this4.common.presentLoading();
@@ -233,16 +228,12 @@
           value: function listAllUsers() {
             var _this5 = this;
 
-            console.log(this.userDetails);
             var userid = this.userDetails["userid"];
             var params = {
               userid: userid
             };
-            console.log('userid:', params);
             this.common.listUsers('Listusers', params).subscribe(function (res) {
-              console.log('res:', res);
               _this5.allUsers = res.details.name;
-              console.log('allUsers:', _this5.allUsers);
             });
           }
         }, {
@@ -259,7 +250,6 @@
           key: "addToChatRoom",
           value: function addToChatRoom(event, name, user) {
             if (user != undefined) {
-              console.log('user:', user);
               this.common.presentToast(name + ' is successfully added to your Chat list ...');
               this.common.router.navigate(['/chat-message'], {
                 queryParams: user
@@ -271,7 +261,6 @@
         }, {
           key: "filterItems",
           value: function filterItems(searchTerm) {
-            console.log(searchTerm);
             return this.allUsers.filter(function (user) {
               return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
             });

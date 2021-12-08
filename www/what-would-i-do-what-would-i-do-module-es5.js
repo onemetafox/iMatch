@@ -191,7 +191,6 @@
           this.iQuery1 = this.iQueryForm.controls['iQuery1'];
           this.iQuery2 = this.iQueryForm.controls['iQuery2'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -204,7 +203,6 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into What Would I Do page');
             this.iQueryForm.reset();
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
@@ -213,14 +211,10 @@
                 var params = {
                   userid: _this2.userDetails.userid
                 };
-                console.log('params:', params);
 
                 _this2.common.postMethod('GetAdminMessage', params).then(function (res) {
-                  console.log('res:', res);
                   _this2.AdminQuestions = res.details.adminmessage;
-                  console.log('AdminQuestions:', _this2.AdminQuestions);
                   _this2.Answers = res.details.answers;
-                  console.log('Answers:', _this2.Answers);
                   _this2.MyiQuery = res.details.MyiQuery;
                   _this2.Like1 = res.details.Like[0];
                   _this2.Like2 = res.details.Like[1];
@@ -233,20 +227,12 @@
           value: function toSendComment(event, messages) {
             var _this3 = this;
 
-            console.log('Send Button Clicked');
             this.FormSubmit = true;
-            console.log('message', messages);
-            console.log('FormSubmit:', this.FormSubmit);
-            console.log('Value:', this.commentForm.value);
-            console.log(this.commentForm.controls['comment']);
             var params = {
               userid: this.userDetails.userid,
               comment: this.userComment.comment
             };
-            console.log('params:', params);
             this.common.postMethod('CommentAnswer', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this3.commentForm.reset();
 
@@ -263,22 +249,14 @@
           value: function toSendAnswer(event, AdminQuestions) {
             var _this4 = this;
 
-            console.log('Answer 1 Done Button Clicked');
             this.FormSubmit = true;
-            console.log('AdminQuestions:', AdminQuestions);
-            console.log('FormSubmit:', this.FormSubmit);
-            console.log('Value:', this.answerForm.value);
-            console.log(this.answerForm.controls['answer1']);
             var params = {
               userid: this.userDetails.userid,
               answer1: this.userAnswer.answer1,
               answer2: this.userAnswer.answer2,
               questionnum: AdminQuestions.id
             };
-            console.log('params:', params);
             this.common.postMethod('AnswerMessage', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this4.ionViewWillEnter();
 
@@ -293,18 +271,13 @@
           value: function toLikeAnswer1(event, AdminQuestions) {
             var _this5 = this;
 
-            console.log('Like 1 Clicked');
-            console.log('AdminQuestions:', AdminQuestions);
             var params = {
               userid: this.userDetails.userid,
               questionid: this.AdminQuestions.id,
               answerid: 'answer1',
               status: 'like'
             };
-            console.log('params:', params);
             this.common.postMethod('CommentLike', params).then(function (res) {
-              console.log('res:', res);
-
               _this5.ionViewWillEnter();
             });
           }
@@ -313,18 +286,13 @@
           value: function toLikeAnswer2(event, AdminQuestions) {
             var _this6 = this;
 
-            console.log('Like 2 Clicked');
-            console.log('AdminQuestions:', AdminQuestions);
             var params = {
               userid: this.userDetails.userid,
               questionid: this.AdminQuestions.id,
               answerid: 'answer2',
               status: 'like'
             };
-            console.log('params:', params);
             this.common.postMethod('CommentLike', params).then(function (res) {
-              console.log('res:', res);
-
               _this6.ionViewWillEnter();
             });
           }
@@ -333,13 +301,8 @@
           value: function toSendiQuery(event, messages) {
             var _this7 = this;
 
-            console.log('iQuery 1 Text Area Clicked');
             this.FormSubmit = true;
             this.showTextArea = false;
-            console.log('message', messages);
-            console.log('FormSubmit:', this.FormSubmit);
-            console.log('Value:', this.iQueryForm.value);
-            console.log(this.iQueryForm.controls['iQuery1']);
 
             if (this.MyiQuery.length != 7 && this.MyiQuery.length > 7) {
               var params = {
@@ -348,10 +311,7 @@
                 query2: this.useriQuery.iQuery2,
                 queryid: ''
               };
-              console.log('params:', params);
               this.common.postMethod('MyiQuery', params).then(function (res) {
-                console.log('res', res);
-
                 if (res.status == true) {
                   _this7.common.presentToast(' ✅ Your new iQuery successfully added ');
                 } else {
@@ -368,15 +328,10 @@
           value: function toRemoveiQuery(event, iQuery) {
             var _this8 = this;
 
-            console.log('Remove iQuery button clicked');
             var params = {
               queryid: iQuery.queryid
             };
-            console.log('params:', params);
-            console.log('iQuery:', iQuery);
             this.common.postMethod('RemoveiQuery', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this8.ionViewWillEnter();
 
@@ -389,9 +344,7 @@
         }, {
           key: "toEditiQuery",
           value: function toEditiQuery(event, iQuery) {
-            console.log('Edit iQuery Button Clicked');
             this.showEditArea = true;
-            console.log('iQuery:', iQuery);
             this.SingleQuery = iQuery;
           }
         }, {
@@ -399,17 +352,13 @@
           value: function toSendEditediQuery(event, SingleQuery) {
             var _this9 = this;
 
-            console.log('Send Edited iQuery Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               queryid: SingleQuery.queryid,
               query1: this.useriQuery.iQuery1,
               query2: this.useriQuery.iQuery2
             };
-            console.log('params:', params);
             this.common.postMethod('MyiQuery', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this9.ionViewWillEnter();
 

@@ -36,7 +36,7 @@
         "@ionic-native/file-path": "^5.31.1",
         "@ionic-native/file-picker": "^5.31.1",
         "@ionic-native/file-transfer": "^5.31.1",
-        "@ionic-native/geolocation": "^5.31.1",
+        "@ionic-native/geolocation": "^4.20.0",
         "@ionic-native/google-plus": "^5.27.0",
         "@ionic-native/ionic-webview": "^5.28.0",
         "@ionic-native/media-capture": "^5.36.0",
@@ -80,6 +80,7 @@
         "ngx-ionic-image-viewer": "^0.7.4",
         "node-ipinfo": "^2.0.1",
         "rxjs": "~6.5.1",
+        "rxjs-compat": "^6.6.7",
         "tslib": "^1.10.0",
         "twitter-connect-plugin": "^0.6.0",
         "uk.co.workingedge.cordova.plugin.sqliteporter": "^1.1.1",
@@ -139,7 +140,8 @@
             "cordova-plugin-filepath": {},
             "cordova-plugin-file": {},
             "cordova-plugin-file-transfer": {},
-            "cordova-plugin-media-capture": {}
+            "cordova-plugin-media-capture": {},
+            "cordova-plugin-geolocation": {}
         },
         "platforms": [
             "ios",

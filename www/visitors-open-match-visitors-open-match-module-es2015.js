@@ -33,24 +33,19 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
         this.common.route.queryParams.subscribe((resp) => {
             this.UserInfo = resp;
             this.personalMatchSlideIndex = this.UserInfo.personalMatchSlideIndex;
-            console.log('UserInfo:', this.UserInfo);
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Open Match page');
         let params = {
             userid: this.UserInfo.userid
         };
         this.common.showLoader();
-        console.log('params:', params);
         this.common.postMethod('OpenMatch', params).then((res) => {
-            console.log('res:', res);
             //  this.slides.slideTo(this.personalMatchSlideIndex);
             this.openMatches = res.details.images;
             this.slides.slideTo(this.personalMatchSlideIndex);
-            console.log('openMatches:', this.openMatches);
             //  this.slides.slideTo(this.personalMatchSlideIndex);
             this.common.hideLoader();
         }, err => {
@@ -58,54 +53,40 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
         });
     }
     gotoOpenMatchComments(event, match) {
-        console.log('Comment View Page Clicked');
-        console.log('match:', match);
         this.common.navCtrl.navigateForward(['/comments'], { queryParams: match });
     }
     toLikeOpenMatch(event, match) {
-        console.log('Like Open Match Button Clicked');
         let params = {
             userid: this.UserInfo.userid,
             matchid: match.match_id,
             contestentid: '',
             status: 'like'
         };
-        console.log('params:', params);
-        console.log('match:', match);
         this.common.postMethod('Like', params).then((res) => {
-            console.log('res:', res);
             this.ionViewWillEnter();
         });
     }
     toDisLikeOpenMatch(event, match) {
-        console.log('Dislike Open Match Button Clicked');
         let params = {
             userid: this.UserInfo.userid,
             matchid: match.match_id,
             contestentid: '',
             status: 'dislike'
         };
-        console.log('params:', params);
-        console.log('match:', match);
         this.common.postMethod('Like', params).then((res) => {
-            console.log('res:', res);
             this.ionViewWillEnter();
         });
     }
     toCommentOpenMatch(event, match) {
-        console.log('Comment Open Match Button Clicked');
         this.common.navCtrl.navigateForward(['/open-match-comments'], { queryParams: match });
     }
     GetIconSearch(icon) {
-        console.log('Icon clicked:', icon);
         if (icon === 'image') {
             this.common.showLoader();
             let params = {
                 userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then((res) => {
-                console.log('res:', res);
                 this.openMatches = res.details;
             }, err => {
                 console.log('err:', err);
@@ -117,9 +98,7 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
             let params = {
                 userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then((res) => {
-                console.log('res:', res);
                 this.openMatches = res.details;
             }, err => {
                 console.log('err:', err);
@@ -131,9 +110,7 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
             let params = {
                 userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then((res) => {
-                console.log('res:', res);
                 this.openMatches = res.details;
             }, err => {
                 console.log('err:', err);
@@ -145,9 +122,7 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
             let params = {
                 userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then((res) => {
-                console.log('res:', res);
                 this.openMatches = res.details;
             }, err => {
                 console.log('err:', err);
@@ -159,9 +134,7 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
             let params = {
                 userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('OpenMatch', params).then((res) => {
-                console.log('res:', res);
                 this.openMatches = res.details;
             }, err => {
                 console.log('err:', err);
@@ -171,7 +144,6 @@ let VisitorsOpenMatchPage = class VisitorsOpenMatchPage {
     }
     toShowMatchHistory(ev, match) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('Show Match History Button Clicked');
             const popover = yield this.popoverController.create({
                 component: PopoverComponent,
                 cssClass: 'my-custom-class',
@@ -205,13 +177,9 @@ let PopoverComponent = class PopoverComponent {
         this.common = common;
         this.navParams = navParams;
         this.Match = [];
-        console.log(this.navParams.get('key'));
         this.Match = this.navParams.get('key');
-        console.log('users in popover:', this.Match);
     }
-    ionViewWillEnter() {
-        console.log('ionViewWillEnter:', this.Match);
-    }
+    ionViewWillEnter() { }
 };
 PopoverComponent.ctorParameters = () => [
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["PopoverController"] },

@@ -86,21 +86,15 @@ let LoginPage = class LoginPage {
         this.LoginForm.reset();
         this.common.menu.swipeGesture(false);
         if (this.common.platform.is("capacitor" || false)) {
-            console.log('This is a device view:');
         }
         else {
-            console.log('This is a web view');
             this.DeviceInfo.platform = 'web';
             this.DeviceToken.value = 'APA91pqyLyAWB1R0foRUbhT9AxRWzu3KsufESyMFEOS0RqKLLenr7ivZWmx9zw_hvRv7Oe9JDchpqTkaP5al7ECa_iJw0D58PBy_XDZx3FPX15z32nmulG9Sfk7xwGI078CQllfc8FiuQH9VKGuGhEP8sHNEvt1qZPPUwKKJ79lHpH1zafORb2L';
-            console.log('Platform:', this.DeviceInfo.platform);
-            console.log('Device Token', this.DeviceToken.value);
         }
         ;
     }
     ionViewWillEnter() {
-        console.log('RememberMe:', this.rememberMe);
         this.storageservice.storage.get('LoginDetails').then((val) => {
-            console.log('Stored Login Details:', val);
             if (val == null) {
                 this.LoginForm.reset();
             }
@@ -115,34 +109,23 @@ let LoginPage = class LoginPage {
             //  }
         });
         this.storageservice.storage.get('DeviceToken').then((val) => {
-            console.log('Stored Device Token:', val);
             this.DeviceToken = val;
         });
         this.storageservice.storage.get('DeviceInfo').then((val) => {
-            console.log('Stored Device Information:', val);
             this.DeviceInfo = val;
         });
         this.storageservice.storage.get('UserLocation').then((val) => {
-            console.log('Stored User Location:', val);
             this.UserLocation = val;
         });
     }
     onPasswordToggle() {
         this.showPassword = !this.showPassword;
-        console.log('showPassword:', this.showPassword);
     }
     onMyBooleanChange(event) {
-        console.log('event:', event);
         if (this.LoginForm.valid) {
             if (event.detail.checked == true && this.LoginForm.valid) {
-                console.log('LoginForm Value:', this.LoginForm.value);
-                console.log('Remember Me is checked');
                 this.storageservice.setStorage('LoginDetails', this.LoginForm.value);
-                console.log('Login Details is Successfully stored ...');
                 this.common.presentToast('Your Email and Password is Successfully stored ...');
-            }
-            else {
-                console.log('Remember Me is unchecked');
             }
         }
         else {
@@ -157,18 +140,15 @@ let LoginPage = class LoginPage {
     // ---- Facebook Login Functionality ----
     FacebookLogin() {
         this.common.presentLoading();
-        console.log('Trying to Login to facebook .....');
         this.fb.login(['public_profile', 'user_friends', 'email'])
             .then(res => {
             if (res.status === 'connected') {
                 this.isLoggedIn = true;
-                console.log('isLoggedIn:', this.isLoggedIn);
                 this.common.presentToast('Your Facebook Account is already connected with iMatch App ... So please wait while we fetch your details');
                 this.getUserDetail(res.authResponse.userID);
             }
             else {
                 this.isLoggedIn = false;
-                console.log('isLoggedIn:', this.isLoggedIn);
             }
         })
             .catch(e => console.log('Error logging into Facebook', e));
@@ -176,7 +156,6 @@ let LoginPage = class LoginPage {
     getUserDetail(userid) {
         this.fb.api('/' + userid + '/?fields=id,email,name,picture', ['public_profile'])
             .then(res => {
-            console.log('Facebook Response:', res);
             this.FacebookLoginDetails = res;
             this.storageservice.setStorage('FacebookLoginDetails', this.FacebookLoginDetails);
             let params = {
@@ -184,9 +163,7 @@ let LoginPage = class LoginPage {
                 email: this.FacebookLoginDetails.email,
                 profile_pic: this.FacebookLoginDetails.picture.data.url,
             };
-            console.log('params:', params);
             this.common.postMethod('register', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.common.presentLoading();
                     this.userDetails = res.details[0];
@@ -200,9 +177,7 @@ let LoginPage = class LoginPage {
                     let params = {
                         email: this.FacebookLoginDetails.email,
                     };
-                    console.log('params:', params);
                     this.common.postMethod('GetUserdetails', params).then((res) => {
-                        console.log('res:', res);
                         if (res.status == true) {
                             this.common.presentLoading();
                             this.userDetails = res.details[0];
@@ -234,10 +209,8 @@ let LoginPage = class LoginPage {
     // ---- Google Login Functionality ----
     GoogleLogin() {
         this.common.presentLoading();
-        console.log('Trying to Login to Google Login .....');
         this.google.login({})
             .then(res => {
-            console.log('Google Response:', res);
             this.GoogleLoginDetails = res;
             this.storageservice.setStorage('GoogleLoginDetails', this.GoogleLoginDetails);
             let params = {
@@ -245,9 +218,7 @@ let LoginPage = class LoginPage {
                 email: this.GoogleLoginDetails.email,
                 profile_pic: this.GoogleLoginDetails.imageUrl,
             };
-            console.log('params:', params);
             this.common.postMethod('register', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.common.presentLoading();
                     this.userDetails = res.details[0];
@@ -261,9 +232,7 @@ let LoginPage = class LoginPage {
                     let params = {
                         email: this.GoogleLoginDetails.email,
                     };
-                    console.log('params:', params);
                     this.common.postMethod('GetUserdetails', params).then((res) => {
-                        console.log('res:', res);
                         if (res.status == true) {
                             this.common.presentLoading();
                             this.userDetails = res.details[0];
@@ -307,7 +276,6 @@ let LoginPage = class LoginPage {
                     console.log(err);
                     // default twitter image is too small https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
                     var profile_image = err.profile_image_url_https.replace('_normal', '');
-                    console.log('profile_image:', profile_image);
                     // this.storageservice.setStorage('twitter_user', {
                     //   name: err.name,
                     //   userName: err.screen_name,
@@ -320,14 +288,11 @@ let LoginPage = class LoginPage {
                     //   console.log(error);
                     // })
                 });
-                console.log('res:', res);
             }, err => {
                 this.twit.login()
                     .then((res) => {
-                    console.log('res:', res);
                     this.twit.showUser()
                         .then(user => {
-                        console.log('user:', user);
                     }, err => {
                         console.log('Error:', err);
                     });
@@ -350,9 +315,6 @@ let LoginPage = class LoginPage {
     // }
     signIn() {
         this.FormSubmit = true;
-        console.log('email:', this.LoginForm.controls['email'].valid);
-        console.log('password:', this.LoginForm.controls['password'].valid);
-        console.log('LoginForm:', this.LoginForm.valid);
         let params = {
             email: this.userData.email,
             password: this.userData.password,
@@ -360,15 +322,11 @@ let LoginPage = class LoginPage {
             // device_type : this.DeviceInfo.platform,
             device_type: '',
         };
-        console.log('params:', params);
         this.common.postMethod('login', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.common.presentLoading();
                 this.userDetails = res.details[0];
-                console.log('userDetails:', this.userDetails);
                 this.storageservice.setStorage('userDetails', this.userDetails);
-                console.log('UserDetails Stored In Device Successfully');
                 this.common.navCtrl.navigateRoot(['/tabs/tab6'], { queryParams: this.userDetails });
                 this.common.presentToast('Successfully Logged into your profile');
             }
@@ -380,7 +338,6 @@ let LoginPage = class LoginPage {
             }
         }, (err) => {
             console.log('Error:', err);
-            console.log(err.headers);
         });
     }
     gotoForgotPassword() {
@@ -434,15 +391,10 @@ let PopoverComponent = class PopoverComponent {
                 ])]
         });
         this.email = this.formgroup.controls['email'];
-        console.log(this.formgroup.controls);
-        console.log(this.formgroup.controls['email']);
     }
-    ngOnInit() {
-        console.log('hai');
-    }
+    ngOnInit() { }
     CheckEmail(email) {
         var reg = /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/;
-        console.log(reg.test(email));
         if (reg.test(email)) {
             return false;
         }
@@ -451,11 +403,9 @@ let PopoverComponent = class PopoverComponent {
         }
     }
     toClose() {
-        console.log('Close button clicked');
         this.popoverController.dismiss();
     }
     toCancel() {
-        console.log('cancel button clicked');
         this.popoverController.dismiss();
     }
     onDismiss(val) {
@@ -481,24 +431,11 @@ let PopoverComponent = class PopoverComponent {
     }
     forgot() {
         this.FormSubmit = true;
-        console.log(this.formgroup.controls);
-        console.log(this.formgroup.dirty);
-        console.log(this.formgroup.controls['email']);
-        console.log(this.formgroup.controls['email'].value);
-        console.log(this.FormSubmit);
-        console.log(this.formgroup.value);
-        console.log(this.formgroup.valid);
         if (this.formgroup.valid) {
             this.common.showAlert('Password reset email sending failed !');
             this.common.forgotpassword('forgotpassword', this.userData).subscribe((res) => {
-                console.log('res');
-                console.log(res);
                 this.responseData = res;
-                console.log('responseData');
-                console.log(this.responseData);
-                if (this.responseData.userData) {
-                    console.log(this.responseData);
-                }
+                if (this.responseData.userData) { }
             });
         }
         else {

@@ -42,7 +42,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative; right: 35px;\">FAN OF</ion-title>\r\n    <ion-icon name=\"search\" class=\"top-search-icon\" slot=\"end\" (click)=\"gotoSearchFansOf()\"></ion-icon>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  \r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"userDetails\" >\r\n      <ion-avatar style=\"height: 57px; width: 57px; border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"userDetails.profile_pic\" alt=\"\" (click)=\"gotoProfile()\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px;\">{{userDetails.name}}</ion-label>\r\n      <p class=\"be-a-fan-text\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 120px;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p *ngIf=\"myfanof\">FANS OF {{this.myfanof.length}} </p>\r\n  </div>\r\n\r\n<ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\" let fan of myfanof\">\r\n  <ion-avatar style=\"height: 50px; width: 50px;\">\r\n    <img [src]=\"fan.profile_pic\" alt=\"\">\r\n  </ion-avatar>\r\n  <ion-label style=\"margin-left: 15px;\">{{fan.name}}</ion-label>\r\n  <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\" (click)=\"toRemoveFansOf($event,fan)\">\r\n</ion-item>\r\n\r\n</ion-content>\r\n";
+      __webpack_exports__["default"] = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title style=\"position: relative; right: 35px;\">FAN OF</ion-title>\r\n    <ion-icon name=\"search\" class=\"top-search-icon\" slot=\"end\" (click)=\"gotoSearchFansOf()\"></ion-icon>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  \r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"userDetails\" >\r\n      <ion-avatar style=\"height: 57px; width: 57px; border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"userDetails.profile_pic\" alt=\"\" (click)=\"gotoProfile()\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px;\">{{userDetails.name}}</ion-label>\r\n      <p class=\"be-a-fan-text\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 120px;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p *ngIf=\"myfanof\">FANS OF {{this.myfanof.length}} </p>\r\n  </div>\r\n\r\n<ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\" let fan of myfanof\">\r\n  <ion-avatar style=\"height: 50px; width: 50px;\">\r\n    <img [src]=\"fan.pic\" alt=\"\">\r\n  </ion-avatar>\r\n  <ion-label style=\"margin-left: 15px;\">{{fan.name}}</ion-label>\r\n  <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\" (click)=\"toRemoveFansOf($event,fan)\">\r\n</ion-item>\r\n\r\n</ion-content>\r\n";
       /***/
     },
 
@@ -246,12 +246,10 @@
           this.userDetails = [];
           this.myfanof = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
-            console.log('userDetails:', _this.userDetails);
           });
         }
 
@@ -263,20 +261,16 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Fans Of Page');
             this.common.showLoader(); // this.storageservice.storage.get('userDetails').then((val) => {
             //   this.userDetails = val;
             //   if (this.userDetails.userid != '') {
 
             var params = {
               id: this.userDetails.userid
-            };
-            console.log('params:', params); // this.common.presentLoading();
+            }; // this.common.presentLoading();
 
-            this.common.postMethod('Listbesties', params).then(function (res) {
-              console.log('res:', res);
+            this.common.postMethod('getBestieList', params).then(function (res) {
               _this2.myfanof = res.details.fan_of;
-              console.log('myfanof:', _this2.myfanof);
 
               if (_this2.myfanof.length == 0) {
                 _this2.common.presentToast('You are having no `Fan Of` to show');
@@ -297,7 +291,6 @@
         }, {
           key: "gotoSearchFansOf",
           value: function gotoSearchFansOf() {
-            console.log('Fans Of Search Icon Clicked');
             this.common.navCtrl.navigateForward(['/search-fans-of'], {
               queryParams: this.userDetails
             });
@@ -314,21 +307,15 @@
           value: function toRemoveFansOf(event, fan) {
             var _this3 = this;
 
-            console.log('Fans Of Remove Button Clicked');
-            console.log('fans of:', fan);
             var params = {
               fanid: fan.tableid
             };
-            console.log('params', params);
             this.common.postMethod('RemoveFans', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this3.common.presentToast(fan.name + 'is successfully removed from your Fan Of list');
 
                 _this3.ionViewWillEnter();
-              } else {/////
-              }
+              } else {}
             }, function (err) {
               console.log('E:', err);
             });

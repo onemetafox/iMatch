@@ -51,7 +51,7 @@ BestiesBeforePageModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\r\n  <ion-toolbar>\r\n\r\n    <ion-buttons slot=\"start\">\r\n    <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n\r\n    <ion-title mode=\"ios\" style=\"color: white; font-size: 15px;\" *ngIf=\"userDetails\">\r\n    <span class=\"top-number\">{{this.mybesties.length}}</span>\r\n      BESTIES\r\n      <!-- <img *ngIf=\"userDetails.profile_pic == '' && userDetails.profile_pic == null && userDetails.profile_pic == undefined\" src=\"../../assets/icon/besties/add.png\" alt=\"\" class=\"top-profile-pic\"> -->\r\n      <img *ngIf=\"userDetails.profile_pic\" [src]=\"userDetails.profile_pic\" alt=\"\" class=\"top-profile-pic\" onerror=\"this.src='../../assets/icon/profile/user.png'\" (click)=\"gotoProfile()\">\r\n      <!-- <ion-icon name=\"caret-down-outline\" class=\"top-drop-icon\"></ion-icon> -->\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div style=\"text-align: end; background: #9e9e9e59; padding: 6px;\" *ngIf=\"mybesties.length==0\">\r\n    <ion-chip slot=\"end\" class=\"top-chip-styles\" (click)=\"addMoreBesties()\">\r\n      <!-- <img src=\"../../assets/icon/add.png\" alt=\"\" class=\"add-more-icon\"> -->\r\n      <ion-icon name=\"add-circle\" class=\"add-more-icon\"></ion-icon>\r\n      <ion-label class=\"chip-label-text\">ADD MORE BESTIE</ion-label>\r\n    </ion-chip>\r\n  </div>\r\n\r\n  <div  *ngFor=\" let bestie of mybesties; let i = index;\">\r\n    <ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\">\r\n      <ion-avatar style=\"height: 50px; width: 50px;\"   (click)=\"goToBestiesDetails($event, bestie)\">\r\n        <img [src]=\"bestie.profile_pic\" alt=\"\">\r\n\r\n      </ion-avatar>\r\n      <ion-label class=\"name-text\">{{bestie.name}}</ion-label>\r\n  \r\n      <div class=\"container-inside-item\" (click)=\"goToBestiesDetails($event, bestie)\">\r\n        <ion-row>\r\n          <ion-col>\r\n            <img src=\"../../assets/icon/besties/heart.png\" alt=\"\" style=\"height: 15px; width: 15px;\">\r\n            <span class=\"text-near-icons\">{{bestie.likes}}</span>\r\n          </ion-col>\r\n  \r\n          <ion-col>\r\n            <img src=\"../../assets/icon/besties/comment.png\" alt=\"\" style=\"height: 15px; width: 18px;\">\r\n            <span class=\"text-near-icons\">{{bestie.comments}}</span>\r\n          </ion-col>\r\n        </ion-row>\r\n      </div>\r\n  \r\n      <img src=\"../../assets/icon/cls.png\" alt=\"\" class=\"add-img\" (click)=\"ToRemoveBestie($event, bestie)\">\r\n          <img *ngIf=\"!showContent[i]\" src=\"../../assets/icon/besties/drop.png\" alt=\"\" class=\"last-drop-img\" (click)=\"ToViewBestiesContent($event, bestie, i, 'show')\">\r\n          <img *ngIf=\"showContent[i]\" src=\"../../assets/icon/besties/drop.png\" alt=\"\" class=\"last-drop-img\" style=\"transform: rotate(180deg); border-bottom-right-radius: 30px;\" (click)=\"ToViewBestiesContent($event, bestie, i, 'hide')\">\r\n    </ion-item>\r\n\r\n    <div *ngIf=\"showContent[i]==true\" class=\"animate__animated animate__fadeIn animate__delay-0.5s\">\r\n\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourStory\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">OUR STORY</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurStory()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourStory[0]?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #0a0700 , #595d5e); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourSlogan\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">OUR FAVOURITE WORD / SLOGAN</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurSlogan()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourSlogan[0]?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #e39b09 , #787570); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourLetter\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">A LETTER TO MY BEST FRIEND</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoLetter()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourLetter[0]?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n  \r\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header [translucent]=\"true\">\r\n  <ion-toolbar>\r\n\r\n    <ion-buttons slot=\"start\">\r\n    <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n\r\n    <ion-title mode=\"ios\" style=\"color: white; font-size: 15px;\" *ngIf=\"userDetails\">\r\n    <span class=\"top-number\">{{this.mybesties.length}}</span>\r\n      BESTIES\r\n      <!-- <img *ngIf=\"userDetails.profile_pic == '' && userDetails.profile_pic == null && userDetails.profile_pic == undefined\" src=\"../../assets/icon/besties/add.png\" alt=\"\" class=\"top-profile-pic\"> -->\r\n      <img *ngIf=\"userDetails.profile_pic\" [src]=\"userDetails.profile_pic\" alt=\"\" class=\"top-profile-pic\" onerror=\"this.src='../../assets/icon/profile/user.png'\" (click)=\"gotoProfile()\">\r\n      <!-- <ion-icon name=\"caret-down-outline\" class=\"top-drop-icon\"></ion-icon> -->\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n\r\n  <div style=\"text-align: end; background: #9e9e9e59; padding: 6px;\" *ngIf=\"mybesties.length==0\">\r\n    <ion-chip slot=\"end\" class=\"top-chip-styles\" (click)=\"addMoreBesties()\">\r\n      <!-- <img src=\"../../assets/icon/add.png\" alt=\"\" class=\"add-more-icon\"> -->\r\n      <ion-icon name=\"add-circle\" class=\"add-more-icon\"></ion-icon>\r\n      <ion-label class=\"chip-label-text\">ADD MORE BESTIE</ion-label>\r\n    </ion-chip>\r\n  </div>\r\n\r\n  <div  *ngFor=\" let bestie of mybesties; let i = index;\">\r\n    <ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\">\r\n      <ion-avatar style=\"height: 50px; width: 50px;\"   (click)=\"goToBestiesDetails($event, bestie)\">\r\n        <img [src]=\"bestie.pic\" alt=\"\">\r\n\r\n      </ion-avatar>\r\n      <ion-label class=\"name-text\">{{bestie.name}}</ion-label>\r\n  \r\n      <div class=\"container-inside-item\" (click)=\"goToBestiesDetails($event, bestie)\">\r\n        <ion-row>\r\n          <ion-col>\r\n            <img src=\"../../assets/icon/besties/heart.png\" alt=\"\" style=\"height: 15px; width: 15px;\">\r\n            <span class=\"text-near-icons\">{{bestie.like_count}}</span>\r\n          </ion-col>\r\n          <ion-col>\r\n            <img src=\"../../assets/icon/besties/comment.png\" alt=\"\" style=\"height: 15px; width: 18px;\">\r\n            <span class=\"text-near-icons\">{{bestie.comment_count}}</span>\r\n          </ion-col>\r\n        </ion-row>\r\n      </div>\r\n      <img src=\"../../assets/icon/cls.png\" alt=\"\" class=\"add-img\" (click)=\"ToRemoveBestie($event, bestie)\">\r\n      <img *ngIf=\"!showContent[i]\" src=\"../../assets/icon/besties/drop.png\" alt=\"\" class=\"last-drop-img\" (click)=\"ToViewBestiesContent($event, bestie, i, 'show')\">\r\n      <img *ngIf=\"showContent[i]\" src=\"../../assets/icon/besties/drop.png\" alt=\"\" class=\"last-drop-img\" style=\"transform: rotate(180deg); border-bottom-right-radius: 30px;\" (click)=\"ToViewBestiesContent($event, bestie, i, 'hide')\">\r\n    </ion-item>\r\n    <div *ngIf=\"showContent[i]==true\" class=\"animate__animated animate__fadeIn animate__delay-0.5s\">\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourStory\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">OUR STORY</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurStory()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourStory.story?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #0a0700 , #595d5e); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourSlogan\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">OUR FAVOURITE WORD / SLOGAN</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurSlogan()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourSlogan[0]?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n      <div>\r\n        <ion-card style=\"background-image: linear-gradient(to right, #e39b09 , #787570); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourLetter\">\r\n          <ion-card-header style=\"color: white; margin-bottom: 10px;\">A LETTER TO MY BEST FRIEND</ion-card-header>\r\n          <!-- <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoLetter()\"> -->\r\n          <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourLetter[0]?.text}}\r\n          </ion-card-content>\r\n        </ion-card>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</ion-content>");
 
 /***/ }),
 
@@ -96,7 +96,6 @@ let BestiesBeforePage = class BestiesBeforePage {
     }
     GetStoredUserDetails() {
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Stored details of userDetails:', val);
             this.userDetails = val;
             this.GetBestiesList();
         });
@@ -107,19 +106,13 @@ let BestiesBeforePage = class BestiesBeforePage {
                 id: this.userDetails.userid
             };
             yield this.common.showLoader();
-            console.log('params:', params);
-            this.common.postMethod('Listbesties', params).then((res) => {
-                console.log('res:', res);
+            this.common.postMethod('getBestieList', params).then((res) => {
                 this.common.hideLoader();
-                this.mybesties = res.details.besties;
-                console.log('mybesties', this.mybesties);
+                this.mybesties = res.details;
                 if (this.mybesties.length == 0) {
                     this.common.presentToast('You are having no `Besties` to show');
                     return;
                 }
-                // else {
-                //    this.common.presentToast('You are having '+ res.details.besties.length + ' bestie list members to show');
-                //  }
             }, err => {
                 console.log('Error:', err);
             });
@@ -131,14 +124,11 @@ let BestiesBeforePage = class BestiesBeforePage {
         this.ourStory = [];
     }
     ToRemoveBestie(e, bestie) {
-        console.log('Bestie:', bestie);
         let params = {
             userid: this.userDetails.userid,
             besiteid: bestie.tableid
         };
-        console.log('params:', params);
         this.common.postMethod('RemoveBesties', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 this.GetBestiesList();
                 this.common.presentToast(bestie.name + 'is successfully removed from your besties list');
@@ -163,23 +153,19 @@ let BestiesBeforePage = class BestiesBeforePage {
             userid: this.userDetails.userid,
             senderid: bestie.userid
         };
-        console.log('params', params);
         this.common.postMethod('GetStatus', params).then((res) => {
-            console.log('res:', res);
             this.ourStory = res.details.story;
             this.ourSlogan = res.details.slogan;
             this.ourLetter = res.details.letter;
         });
     }
     goToBestiesDetails(event, bestie) {
-        console.log(bestie);
         this.common.navCtrl.navigateForward(['besties'], { queryParams: bestie });
     }
     gotoProfile() {
         this.common.router.navigate(['tabs/tab7']);
     }
     addMoreBesties() {
-        console.log('Besties Search page clicked ');
         this.common.navCtrl.navigateForward(['besties-search']);
     }
 };

@@ -108,12 +108,10 @@ let ChatMessagePage = class ChatMessagePage {
         });
         this.message = this.MessageForm.controls['message'];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
         this.common.route.queryParams.subscribe(resp => {
             this.chatDetails = resp;
-            console.log('chatDetails:', this.chatDetails);
         });
         // this.interval = setInterval(() => {
         //   this.ionViewWillEnter();
@@ -125,14 +123,11 @@ let ChatMessagePage = class ChatMessagePage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Chat Message Page');
         let params = {
             loggeduserid: this.chatDetails.OpponentId,
             chatuserid: this.chatDetails.userid,
         };
-        console.log('params:', params);
         this.common.postMethod('GetDetailChat', params).then((res) => {
-            console.log('res:', res);
             this.chatMessage = res.details;
             if (res.details > res.details[5]) {
                 this.content.scrollToBottom(1500);
@@ -145,21 +140,16 @@ let ChatMessagePage = class ChatMessagePage {
     }
     ionViewWillLeave() {
         clearInterval(this.interval);
-        console.log('Chat Message Page Leaved');
     }
     ChattedUsers() {
         let params = {
             userid: this.userDetails.userid,
         };
-        console.log('params:', params);
         this.common.postMethod('GetChat', params).then((res) => {
-            console.log('res:', res);
             this.ChattedUser = res.details;
         });
     }
     toViewNextChat(event, ChattedUser) {
-        console.log('Next User Clicked');
-        console.log('ChattedUser:', ChattedUser);
         if (ChattedUser != undefined) {
             this.common.navCtrl.navigateForward(['chat-message'], { queryParams: ChattedUser });
         }
@@ -171,7 +161,6 @@ let ChatMessagePage = class ChatMessagePage {
         this.common.router.navigate(['settings']);
     }
     onChange(e) {
-        console.log('onChange:', e);
         // if (e.key=='Backspace') {
         //   this.isTyping = false;
         // } else {
@@ -179,16 +168,13 @@ let ChatMessagePage = class ChatMessagePage {
         // }
     }
     chatSubmit() {
-        console.log('Chat Submit Button Clicked');
         this.FormSubmit = true;
         let params = {
             userid_from: this.userDetails.userid,
             userid_to: this.chatDetails.userid,
             message: this.userMessage.message,
         };
-        console.log('params', params);
         this.common.postMethod('Chat', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 setTimeout(() => {
                     this.content.scrollToBottom(1500);
@@ -201,29 +187,19 @@ let ChatMessagePage = class ChatMessagePage {
         });
     }
     ClickedOnImage(e, message, i) {
-        console.log('Image:', message, message.filename, i, this.chatDetails.name);
         this.photoView.show(message.filename, this.chatDetails.name, { share: false });
     }
     showEnlargedView() {
         this.showPlusView = !this.showPlusView;
-        console.log('showPlusView:', this.showPlusView);
-    }
-    toShareFile() {
-        console.log('toShareFile clicked');
     }
     toShareAttachment() {
-        console.log('toShareAttachment clicked');
         let file;
         this.fileChooser.open()
             .then(uri => {
-            console.log('uri:', uri);
             this.filePath.resolveNativePath(uri)
                 .then(filePath => {
-                console.log('filePath:', filePath);
                 let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
                 let currentName = uri.substring(uri.lastIndexOf('/') + 1, uri.lastIndexOf('?'));
-                console.log('currentName:', currentName);
-                console.log('fileNameFromPath:', fileNameFromPath);
                 file = {
                     name: fileNameFromPath,
                     fullPath: filePath
@@ -235,25 +211,18 @@ let ChatMessagePage = class ChatMessagePage {
             .catch(e => console.log(e));
     }
     toShareImage() {
-        console.log('toShareImage clicked');
         const options = { limit: 1 };
         this.mediaCapture.captureImage(options)
             .then((data) => {
-            console.log('data[0]:', data[0]);
             this.uploadFile(data[0], 'image');
         }, (err) => console.error(err));
     }
     toShareAudio() {
-        console.log('toShareAudio clicked');
         const options = { limit: 1 };
         this.mediaCapture.captureAudio(options)
             .then((data) => {
-            console.log('data[0]:', data[0]);
             this.uploadFile(data[0], 'audio');
         }, (err) => console.error(err));
-    }
-    toShareContact() {
-        console.log('toShareContact clicked');
     }
     uploadFile(file, type) {
         let options;
@@ -271,7 +240,6 @@ let ChatMessagePage = class ChatMessagePage {
                 Connection: 'close'
             }
         };
-        console.log('options:', options);
         let filePath;
         if (type !== 'audio') {
             filePath = encodeURI(file.fullPath);
@@ -283,17 +251,9 @@ let ChatMessagePage = class ChatMessagePage {
         const fileUplaodUrl = _services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/UploadChatFile';
         fileTransfer.onProgress((e) => {
             let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
-            console.log("progress:" + prg + '%');
-            if (prg === 100) {
-                console.log('Upload completed');
-            }
-            else {
-                console.log('file is uploading');
-            }
         });
         fileTransfer.upload(filePath, fileUplaodUrl, options)
             .then((data) => {
-            console.log('File Transfer Success:', data);
             // this.FileTransferResponse = data;
         }, (err) => {
             console.log('File Transfer Error:', err);

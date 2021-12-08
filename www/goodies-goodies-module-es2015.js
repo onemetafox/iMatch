@@ -58,23 +58,19 @@ let GoodiesPage = class GoodiesPage {
             },
         ];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered Into Goodies Of The Moment Page');
         this.storageservice.storage.get('userDetails').then((val) => {
             this.userDetails = val;
         });
         let params = {
             userid: this.userDetails.userid,
         };
-        console.log('params:', params);
         this.common.postMethod('winners_of_the_moment', params).then((res) => {
-            console.log('res:', res);
             this.WinnerDetails = res.details;
         });
     }

@@ -30,7 +30,6 @@ let OurStoryPage = class OurStoryPage {
         this.bestieDetails = [];
         this.common.route.queryParams.subscribe((resp) => {
             this.bestieDetails = resp;
-            console.log("BestiesDetails:", this.bestieDetails);
         });
     }
     ngOnInit() { }
@@ -39,7 +38,6 @@ let OurStoryPage = class OurStoryPage {
     }
     GetStoredUserDetails() {
         this.storageservice.storage.get("userDetails").then((val) => {
-            console.log("Storage Value of userDetails:", val);
             this.userDetails = val;
             this.GetUserStory();
         });
@@ -49,9 +47,7 @@ let OurStoryPage = class OurStoryPage {
             userid: this.userDetails.userid,
             senderid: this.bestieDetails.userid,
         };
-        console.log("params:", params);
         this.common.postMethod("GetStatus", params).then((res) => {
-            console.log("res:", res);
             this.userStory = res.details.story[0].text;
         }, (err) => {
             console.log("Error:", err);
@@ -65,9 +61,7 @@ let OurStoryPage = class OurStoryPage {
                 text: this.userStory,
                 send_to: this.bestieDetails.userid,
             };
-            console.log("params:", params);
             this.common.postMethod("statusbar", params).then((res) => {
-                console.log("res:", res);
                 if (res.status == true) {
                     this.userStory = "";
                     this.common.presentToast(" ✅  Your Our Story Content Updated Successfully ...");

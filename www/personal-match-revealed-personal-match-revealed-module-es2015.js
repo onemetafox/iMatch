@@ -113,8 +113,6 @@ let PersonalMatchRevealedPage = class PersonalMatchRevealedPage {
             if (this.common.router.getCurrentNavigation().extras.state) {
                 this.data = this.common.router.getCurrentNavigation().extras.state.data;
                 this.type = this.common.router.getCurrentNavigation().extras.state.type;
-                console.log('Data:', this.data);
-                console.log('Data type:', this.type);
             }
         });
     }

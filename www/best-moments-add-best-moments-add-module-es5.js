@@ -183,12 +183,10 @@
           });
           this.caption = this.BestMomentForm.controls['caption'];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.BestMomentDetails = resp;
-            console.log('BestMomentDetails for Best Moment page:', _this.BestMomentDetails);
           });
         }
 
@@ -200,19 +198,16 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered Into Best Moment Add Page');
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
             });
             this.momentid = this.BestMomentDetails.momentid;
-            console.log('momentid:', this.momentid);
           }
         }, {
           key: "toAddCaption",
           value: function toAddCaption() {
             var _this3 = this;
 
-            console.log('Add Caption Button Clicked');
             this.FormSubmit = true;
 
             if (this.BestMomentForm.valid) {
@@ -220,14 +215,9 @@
                 userid: this.userDetails.userid,
                 Caption: this.userCaption.caption
               };
-              console.log('params:', params);
               this.common.postMethod('BestMoment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
-                  console.log('MomentId:', res.moment_id);
                   _this3.momentid = res.moment_id;
-                  console.log('momentid:', _this3.momentid);
 
                   _this3.common.presentToast(' ✅  Best Moment Caption Added Successfully');
                 } else {
@@ -250,7 +240,7 @@
                   switch (_context.prev = _context.next) {
                     case 0:
                       if (!this.BestMomentForm.valid) {
-                        _context.next = 9;
+                        _context.next = 8;
                         break;
                       }
 
@@ -267,26 +257,23 @@
 
                     case 3:
                       image = _context.sent;
-                      console.log('image:', image);
                       blobData = this.b64toBlob(image.base64String, "image/".concat(image.format));
                       this.uploadImage(blobData, image.format).subscribe(function (newImage) {
-                        console.log('newImage:', newImage);
-
                         _this4.common.router.navigate(['/best-moments']);
                       }, function (err) {
                         console.log(err);
                       });
-                      _context.next = 10;
+                      _context.next = 9;
                       break;
 
-                    case 9:
+                    case 8:
                       this.common.showAlert('Please upload a caption for your <strong> Best Moments </strong>'); // this.common.alertCtrl.create({
                       //   header: 'Message',
                       //   message: 'Please upload a caption for your <strong> Best Moments </strong>',
                       //   buttons: ['OK']
                       // });
 
-                    case 10:
+                    case 9:
                     case "end":
                       return _context.stop();
                   }
@@ -306,7 +293,7 @@
                   switch (_context2.prev = _context2.next) {
                     case 0:
                       if (!this.BestMomentForm.valid) {
-                        _context2.next = 9;
+                        _context2.next = 8;
                         break;
                       }
 
@@ -324,26 +311,23 @@
 
                     case 3:
                       image = _context2.sent;
-                      console.log('image:', image);
                       blobData = this.b64toBlob(image.base64String, "image/".concat(image.format));
                       this.uploadImage(blobData, image.format).subscribe(function (newImage) {
-                        console.log('newImage:', newImage);
-
                         _this5.common.router.navigate(['/best-moments']);
                       }, function (err) {
                         console.log(err);
                       });
-                      _context2.next = 10;
+                      _context2.next = 9;
                       break;
 
-                    case 9:
+                    case 8:
                       this.common.showAlert('Please upload a caption for your <strong> Best Moments </strong>'); // this.common.alertCtrl.create({
                       //   header: 'Alert',
                       //   message: 'Please upload a caption for your <strong> Best Moments </strong>',
                       //   buttons: ['OK']
                       // });
 
-                    case 10:
+                    case 9:
                     case "end":
                       return _context2.stop();
                   }
@@ -388,9 +372,7 @@
         }, {
           key: "toShowButtons",
           value: function toShowButtons() {
-            console.log('To Show Buttons Clicked');
             this.ShowButtons = !this.ShowButtons;
-            console.log('toShowButtons:', this.ShowButtons);
           }
         }]);
 

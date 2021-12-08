@@ -104,7 +104,6 @@
             name: 'Layla'
           }];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -117,16 +116,13 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered Into Goodies Of The Moment Page');
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
             });
             var params = {
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('winners_of_the_moment', params).then(function (res) {
-              console.log('res:', res);
               _this2.WinnerDetails = res.details;
             });
           }

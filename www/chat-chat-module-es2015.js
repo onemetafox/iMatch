@@ -131,34 +131,25 @@ let ChatPage = class ChatPage {
         ];
         this.chatList = [];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
     }
-    ngOnInit() {
-        console.log('Colors:', this.ChatEndColors);
-    }
+    ngOnInit() { }
     gotoProfile() {
-        console.log('Profile Clicked');
         this.common.navCtrl.navigateForward(['tabs/tab7'], { queryParams: this.userDetails });
     }
     openMessage(event, chat, i) {
-        console.log('chat:', chat);
-        console.log('i:', i);
         chat.OpponentId = this.userDetails.userid;
         this.common.router.navigate(['/chat-message'], { queryParams: chat });
     }
     ionViewWillEnter() {
-        console.log('Entered into Chat page');
         this.storageservice.storage.get('userDetails').then((val) => {
             this.userDetails = val;
             if (this.userDetails.userid != '') {
                 let params = {
                     userid: this.userDetails.userid,
                 };
-                console.log('params:', params);
                 this.common.postMethod('GetChat', params).then((res) => {
-                    console.log('res:', res);
                     this.chatList = res.details;
                     // var chatA = new Date(this.chatList[0].send_at);
                     // var chatB = new Date(this.chatList[5].send_at);
@@ -168,7 +159,6 @@ let ChatPage = class ChatPage {
                 });
             }
             else {
-                /////////////////////////
             }
         });
     }

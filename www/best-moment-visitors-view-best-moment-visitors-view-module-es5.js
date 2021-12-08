@@ -75,12 +75,10 @@
           this.userDetails = [];
           this.UserInfo = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
           this.common.route.queryParams.subscribe(function (resp) {
             _this.UserInfo = resp;
-            console.log('UserInfo:', _this.UserInfo);
           });
         }
 
@@ -92,14 +90,10 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Best Moment Visitors View page');
             var params = {
               userid: this.UserInfo.userid
             };
-            console.log('params:', params);
             this.common.postMethod('GetBestMoment', params).then(function (res) {
-              console.log('res:', res);
-
               _this2.common.presentLoading();
 
               _this2.BestMoments = res.details.moments;
@@ -113,16 +107,11 @@
           value: function toLike(e, moments) {
             var _this3 = this;
 
-            console.log(' Best Moment Like Button Clicked ');
-            console.log('Moments:', moments);
             var params = {
               userid: this.userDetails.userid,
               momentid: moments.momentid
             };
-            console.log('Params:', params);
             this.common.postMethod('MomentLike', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this3.ionViewWillEnter();
               } else {
@@ -135,8 +124,6 @@
         }, {
           key: "gotoComment",
           value: function gotoComment(e, moments) {
-            console.log(' Best Moment Comment Button Clicked ');
-            console.log('Moments:', moments);
             this.common.navCtrl.navigateForward(['/best-moment-visitors-comment'], {
               queryParams: moments
             });

@@ -94,12 +94,10 @@
             var _this = this;
 
             this.storageservice.storage.get('userDetails').then(function (val) {
-              console.log('Storage Value of userDetails:', val);
               _this.userDetails = val;
             });
             this.common.route.queryParams.subscribe(function (resp) {
               _this.MomentDetails = resp;
-              console.log('MomentDetails:', _this.MomentDetails);
             });
           }
         }, {
@@ -107,13 +105,10 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log(' Entered Into Best Moment Visitors Comment Page ');
             var params = {
               momentid: this.MomentDetails.momentid
             };
-            console.log('params:', params);
             this.common.postMethod('GetMomentComment', params).then(function (res) {
-              console.log('res:', res);
               _this2.commentDetails = res.details;
             }, function (err) {
               console.log('Error:', err);
@@ -124,16 +119,12 @@
           value: function toAddComment() {
             var _this3 = this;
 
-            console.log('Send Best Moment Comment Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               momentid: this.MomentDetails.momentid,
               comment: this.userComment.comment
             };
-            console.log('params:', params);
             this.common.postMethod('MomentComment', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this3.BestMomentCommentForm.reset();
 

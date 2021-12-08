@@ -232,20 +232,16 @@
           }];
           this.chatList = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
 
         _createClass(ChatPage, [{
           key: "ngOnInit",
-          value: function ngOnInit() {
-            console.log('Colors:', this.ChatEndColors);
-          }
+          value: function ngOnInit() {}
         }, {
           key: "gotoProfile",
           value: function gotoProfile() {
-            console.log('Profile Clicked');
             this.common.navCtrl.navigateForward(['tabs/tab7'], {
               queryParams: this.userDetails
             });
@@ -253,8 +249,6 @@
         }, {
           key: "openMessage",
           value: function openMessage(event, chat, i) {
-            console.log('chat:', chat);
-            console.log('i:', i);
             chat.OpponentId = this.userDetails.userid;
             this.common.router.navigate(['/chat-message'], {
               queryParams: chat
@@ -265,7 +259,6 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Chat page');
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
 
@@ -273,18 +266,15 @@
                 var params = {
                   userid: _this2.userDetails.userid
                 };
-                console.log('params:', params);
 
                 _this2.common.postMethod('GetChat', params).then(function (res) {
-                  console.log('res:', res);
                   _this2.chatList = res.details; // var chatA = new Date(this.chatList[0].send_at);
                   // var chatB = new Date(this.chatList[5].send_at);
                   // this.chatList = this.chatList.sort((chatA, chatB) => {
                   //   return chatB.send_at - chatA.send_at;
                   // });
                 });
-              } else {/////////////////////////
-              }
+              } else {}
             });
           }
         }, {

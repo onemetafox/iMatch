@@ -84,7 +84,6 @@
           this.doEditReplyComment = {};
           this.common.route.queryParams.subscribe(function (resp) {
             _this.BestiesDetails = resp;
-            console.log('BestiesDetails:', _this.BestiesDetails);
           });
         }
 
@@ -114,11 +113,9 @@
             var _this3 = this;
 
             var params = {
-              bestieid: this.BestiesDetails.userid
+              bestie_id: this.BestiesDetails.bestie_id
             };
-            console.log('params:', params);
             this.common.postMethod('GetBestieComment', params).then(function (res) {
-              console.log('res:', res.details);
               _this3.commentDetails = res.details;
 
               for (var i = 0; i < _this3.commentDetails.length; i++) {
@@ -134,16 +131,14 @@
             var _this4 = this;
 
             if (this.userComment != "" && this.userComment != undefined) {
+              console.log(this.BestiesDetails);
               var params = {
                 userid: this.userDetails.userid,
-                bestieid: this.BestiesDetails.userid,
+                bestie_id: this.BestiesDetails.bestie_id,
                 comment: this.userComment,
                 commentid: ''
               };
-              console.log('params:', params);
               this.common.postMethod('BestieComment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this4.GetBestiesComments();
 
@@ -168,7 +163,6 @@
             var _this5 = this;
 
             this.Comment = comment;
-            console.log(comment);
 
             if (Type === "COMMENT") {
               if (this.userEditedComment != "" && this.userEditedComment != undefined) {
@@ -177,10 +171,7 @@
                   commentid: this.Comment.id,
                   comment: this.userEditedComment
                 };
-                console.log('params:', params);
                 this.common.postMethod('UpdateBestieComment', params).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.status == true) {
                     _this5.common.showAlertSuccess('Your edited comment saved successfully');
 
@@ -210,11 +201,7 @@
             var params = {
               commentid: comment.id
             };
-            console.log('comment', comment.id);
-            console.log('params:', params);
             this.common.postMethod('DeleteBestieComment', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this6.GetBestiesComments();
               }
@@ -232,10 +219,7 @@
               commentid: this.Comment.id,
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('BestieCommentLike', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this7.GetBestiesComments();
               }
@@ -247,7 +231,6 @@
           key: "ToAddReply",
           value: function ToAddReply(e, comment) {
             this.doReply = true;
-            console.log('comment:', comment);
             comment.commentType = 'COMMENT';
             this.ReplyUserDetails = comment;
           }
@@ -264,10 +247,7 @@
                   comment: this.userReply,
                   commentid: this.ReplyUserDetails.id
                 };
-                console.log('params:', params);
                 this.common.postMethod('BestieComment', params).then(function (res) {
-                  console.log('res:', res);
-
                   if (res.status == true) {
                     _this8.GetBestiesComments();
 
@@ -286,7 +266,6 @@
         }, {
           key: "ToViewReplyComments",
           value: function ToViewReplyComments(e, comment, i) {
-            console.log('comment:', comment, i);
             this.Comment = comment;
 
             if (this.Comment.replied_comments.length !== 0) {
@@ -305,15 +284,11 @@
             var _this9 = this;
 
             this.Comment = reply;
-            console.log('reply:', reply);
             var params = {
               commentid: this.Comment.id,
               userid: this.userDetails.userid
             };
-            console.log('params:', params);
             this.common.postMethod('BestieCommentLike', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this9.GetBestiesComments();
               }
@@ -325,7 +300,6 @@
           key: "ToReplyToReplyComment",
           value: function ToReplyToReplyComment(e, reply, i) {
             this.doReply = true;
-            console.log('reply:', reply);
             reply.commentType = 'REPLY';
             this.ReplyUserDetails = reply;
           }
@@ -341,10 +315,7 @@
                 comment: 'Replied to ' + this.ReplyUserDetails.commented_username + '`s comment 👉 ' + this.userReply,
                 commentid: this.ReplyUserDetails.id
               };
-              console.log('params:', params);
               this.common.postMethod('BestieComment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this10.GetBestiesComments();
 
@@ -361,7 +332,6 @@
           key: "ToEditReplyComment",
           value: function ToEditReplyComment(e, reply, i) {
             this.doEditReplyComment[i] = true;
-            console.log('rep:', reply);
             this.CommentReply = reply;
             this.userEditedComment = reply.comment;
           }
@@ -370,17 +340,12 @@
           value: function ToSaveReplyComment(e, reply, i, Type) {
             var _this11 = this;
 
-            console.log(reply);
-
             if (this.userEditedComment != "" && this.userEditedComment != undefined) {
               var params = {
                 commentid: this.CommentReply.id,
                 comment: this.userEditedComment
               };
-              console.log('params:', params);
               this.common.postMethod('UpdateBestieComment', params).then(function (res) {
-                console.log('res:', res);
-
                 if (res.status == true) {
                   _this11.userEditedComment = '';
                   _this11.doEditReplyComment[i] = false;
@@ -410,11 +375,7 @@
             var params = {
               commentid: this.Comment.id
             };
-            console.log('comment', this.Comment.id);
-            console.log('params:', params);
             this.common.postMethod('DeleteBestieComment', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this12.GetBestiesComments();
               }

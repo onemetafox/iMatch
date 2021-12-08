@@ -708,7 +708,9 @@ const Header = class {
     const { translucent, inheritedAttributes } = this;
     const mode = Object(_ionic_global_63a97a32_js__WEBPACK_IMPORTED_MODULE_1__["b"])(this);
     const collapse = this.collapse || 'none';
-    return (Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["H"], Object.assign({ role: "banner", class: {
+    // banner role must be at top level, so remove role if inside a menu
+    const roleType = Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_2__["h"])('ion-menu', this.el) ? 'none' : 'banner';
+    return (Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["H"], Object.assign({ role: roleType, class: {
         [mode]: true,
         // Used internally for styling
         [`header-${mode}`]: true,

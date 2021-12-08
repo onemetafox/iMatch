@@ -107,7 +107,7 @@ let InvitationPage = class InvitationPage {
         this.anArray = [];
         this.wordArray = [];
         this.linkArray = [];
-        this.myFiles = [];
+        this.fileArray = [];
         this.userDetails = [];
         this.invitationDetails = [];
         this.invite = [];
@@ -130,21 +130,16 @@ let InvitationPage = class InvitationPage {
         });
         this.link = this.LinkInputForm.controls['link'];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
         });
         this.common.route.queryParams.subscribe((resp) => {
             this.userDetails = resp;
             this.personalMatchSlideIndex = this.userDetails.personalMatchSlideIndex;
-            console.log('userArray:', this.userDetails);
         });
     }
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered into Invitation page', 'FileTransferResponse:', this.FileTransferResponse, 'statusId:', this.statusId);
-        console.log('isImage:', this.isImage, 'isAudio:', this.isAudio, 'isVideo:', this.isVideo);
-        console.log('isLink:', this.isLink, 'hideImageSpace:', this.hideImageSpace, 'isWording:', this.isWording);
         this.common.showLoader();
         this.storageservice.storage.get('userDetails').then((val) => {
             this.userDetails = val;
@@ -152,14 +147,15 @@ let InvitationPage = class InvitationPage {
                 const params = {
                     userid: this.userDetails.userid
                 };
-                console.log('params:', params);
                 this.common.postMethod('AllInvitation', params).then((res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-                    console.log('res:', res);
                     this.invitationDetails = res.details;
                     this.MatchFiles = res.details.files;
-                    console.log('invitationDetails:', this.invitationDetails);
                     for (let i = 0; i < this.invitationDetails.length; i++) {
                         this.hideImageSpace[i] = true;
+                        this.anArray[i] = [];
+                        this.fileArray[i] = [];
+                        this.wordArray[i] = [];
+                        this.linkArray[i] = [];
                     }
                     yield this.common.hideLoader();
                 }), (err) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
@@ -168,60 +164,53 @@ let InvitationPage = class InvitationPage {
                 }));
             }
             else {
-                console.log('userid empty');
             }
         });
     }
-    Add(type) {
-        if (this.anArray.length >= 4) {
+    Add(type, k) {
+        if (this.anArray[k].length >= 4) {
             this.common.showAlert('Maximum is 4 items');
             return;
         }
         if (type == 'link') {
             let position = 0;
-            for (let i = 0; i < this.anArray.length; i++) {
-                if (this.anArray[i].type == 'link') {
+            for (let i = 0; i < this.anArray[k].length; i++) {
+                if (this.anArray[k][i].type == 'link') {
                     position++;
                 }
             }
-            this.anArray.push({ 'value': '', 'type': type, position: position });
+            this.anArray[k].push({ 'value': '', 'type': type, position: position });
         }
         if (type == 'file') {
             let position = 0;
-            for (let i = 0; i < this.anArray.length; i++) {
-                if (this.anArray[i].type == 'file') {
+            for (let i = 0; i < this.anArray[k].length; i++) {
+                if (this.anArray[k][i].type == 'file') {
                     position++;
                 }
             }
-            this.anArray.push({ 'value': '', 'type': type, position: position });
+            this.anArray[k].push({ 'value': '', 'type': type, position: position });
         }
         if (type == 'text') {
             let position = 0;
-            for (let i = 0; i < this.anArray.length; i++) {
-                if (this.anArray[i].type == 'text') {
+            for (let i = 0; i < this.anArray[k].length; i++) {
+                if (this.anArray[k][i].type == 'text') {
                     position++;
                 }
             }
-            this.anArray.push({ 'value': '', 'type': type, position: position });
+            this.anArray[k].push({ 'value': '', 'type': type, position: position });
         }
     }
     openUploadSection(e, invite) {
         this.showUploadSection = !this.showUploadSection;
-        console.log('Open upload section clicked');
-        console.log(invite);
     }
     closeUploadSection(e, invite, i) {
         this.showUploadSection = false;
-        console.log('No thanks clicked');
-        console.log(invite);
         let params = {
             matchid: invite.match_id,
             status: 'reject',
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.postMethod('Match_reply', params).then((res) => {
-            console.log('res:', res);
             if (res.status == true) {
                 // this.RefreshInvitaionList(i);
                 // this.common.presentToast('You had rejected ' + invite.sender_name + '`s match ');
@@ -235,7 +224,6 @@ let InvitationPage = class InvitationPage {
         });
     }
     RefreshInvitaionList(i) {
-        console.log('Refreshing Invitaion List ...');
         this.FileTransferResponse = [];
         this.hideImageSpace[i] = true;
         this.isImage[i] = false;
@@ -243,151 +231,70 @@ let InvitationPage = class InvitationPage {
         this.isVideo[i] = false;
         this.isLink[i] = false;
         this.isWording[i] = false;
-        console.log('FileTransferResponse:', this.FileTransferResponse, 'statusId:', this.statusId, 'isImage:', this.isImage, 'isAudio:', this.isAudio, 'isVideo:', this.isVideo, 'isLink:', this.isLink, 'hideImageSpace:', this.hideImageSpace, 'isWording:', this.isWording);
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.postMethod('AllInvitation', params).then((res) => {
-            console.log('res:', res);
             this.invitationDetails = res.details;
-            console.log('invitationDetails:', this.invitationDetails);
         }, err => {
             console.log('Error:', err);
         });
     }
     acceptInvitation(e, invite, i) {
-        if (this.anArray.length > 0) {
-            console.log('Bring it on clicked');
-            console.log(invite);
+        if (this.anArray[i].length > 0) {
             this.common.showLoader();
             const formData = new FormData();
-            for (let i = 0; i < this.myFiles.length; i++) {
-                formData.append("filename[]", this.myFiles[i]);
-            }
             formData.append("matchid", invite.match_id);
             formData.append("userid", this.userDetails.userid);
-            formData.append("sub_caption", JSON.stringify(this.anArray));
-            formData.append("links", JSON.stringify(this.linkArray));
-            formData.append("texts", JSON.stringify(this.wordArray));
+            formData.append("sub_caption", JSON.stringify(this.anArray[i]));
+            formData.append("links", JSON.stringify(this.linkArray[i]));
+            formData.append("texts", JSON.stringify(this.wordArray[i]));
             this.http.post(_services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/acceptInvitation', formData).subscribe((res) => {
-                console.log(res);
-                if (res['message'] === 'Successfully uploaded') {
-                    // this.common.presentToast('File Uploaded Successful');
-                    this.common.router.navigate(['tabs/tab6']);
-                    this.common.hideLoader();
-                }
-                else {
-                    this.common.router.navigate(['tabs/tab6']);
-                    this.common.hideLoader();
-                }
+                console.dir("---------------------------------", res);
+                var matchid = res['matchid'];
+                this.fileArray[i].forEach(item => {
+                    const fileTransfer = this.transfer.create();
+                    fileTransfer.onProgress((e) => {
+                        let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
+                        this.common.presentToast('Uploaded ' + prg + '% of file');
+                    });
+                    let options = {
+                        fileKey: 'matchfile',
+                        fileName: item.name,
+                        httpMethod: 'POST',
+                        mimeType: 'multipart/form-data',
+                        chunkedMode: false,
+                        params: {
+                            match_id: matchid,
+                            userid: this.userDetails.userid
+                        },
+                        headers: {
+                            Connection: 'close'
+                        }
+                    };
+                    fileTransfer.upload(item.filePath, _services_config__WEBPACK_IMPORTED_MODULE_14__["baseUrl"] + 'iMatch/api/v1/MatchFileUpload', options)
+                        .then((data) => {
+                        console.dir('*****************' + data);
+                    }, (err) => {
+                        console.dir("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + JSON.stringify(err));
+                    });
+                });
+                this.common.presentToast('File Uploaded Successful');
+                this.common.router.navigate(['tabs/tab6']);
+                this.common.hideLoader();
             }, err => {
+                console.dir('**********************************', JSON.stringify(err));
                 this.common.hideLoader();
                 this.common.router.navigate(['tabs/tab6']);
                 console.log('err', err);
-                console.log(err.headers);
             });
         }
         else {
             this.common.showAlert('You must select file or word or link');
         }
-        // if (this.isLink[i]==true) {
-        //   if (this.LinkInputForm.valid) {
-        //     const regex  = '((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)';
-        //     if (this.userLink.link.match(regex)!=null) {
-        //       console.log('Matching link');
-        //         this.userLink.link = this.userLink.link;
-        //           console.log('link1',this.userLink.link);
-        //     } else {
-        //       console.log('No Match');
-        //         this.userLink.link = 'https://'+this.userLink.link;
-        //           console.log('link1',this.userLink.link);
-        //     }
-        //     let params = {
-        //       text : this.userLink.link,
-        //       filetype : 'link',
-        //       userid : this.userDetails.userid,
-        //       matchid : this.invite.match_id,
-        //     }
-        //     console.log('params:',params);
-        //     this.common.postMethod('MatchUpload',params).then((res:any) => {
-        //       console.log('res:',res);
-        //       this.statusId = res.details.uploaded_id;
-        //       if (res.status===true) {
-        //         this.BringItOn();
-        //         console.log('BringItOn function working ...');
-        //       } else {
-        //         console.log('Else part working ....');
-        //       }
-        //     }, err => {
-        //       console.log('Error:',err);
-        //     });
-        //   } else {
-        //     this.common.showAlert('Please enter any link for Link Match');
-        //   }
-        // } else if (this.isWording[i]==true) {
-        //   if (this.InvitationWording!=undefined) {
-        //     let params = {
-        //       text : this.InvitationWording,
-        //       filetype : 'text',
-        //       userid : this.userDetails.userid,
-        //       matchid : this.invite.match_id,
-        //     }
-        //     console.log('params:',params);
-        //     this.common.postMethod('MatchUpload',params).then((res:any) => {
-        //       console.log('res:',res);
-        //       this.statusId = res.details.uploaded_id;
-        //       if (res.status===true) {
-        //         this.BringItOn();
-        //         console.log('BringItOn function working ...');
-        //       } else {
-        //         console.log('Else part working ....');
-        //       }
-        //     }, err => {
-        //       console.log('Error:',err);
-        //     });
-        //   } else {
-        //     this.common.showAlert('Please enter any content for Wording Match');
-        //   }
-        // } else if (this.hideImageSpace[i]==true) {
-        //     this.BringItOn();
-        // }
-        // if (this.LinkInputForm.valid) {
-        //   this.toSubmitLinkField();
-        // } else {
-        //   console.log('isLink is false');
-        // }
-        // if (this.isWording[i]===true) {
-        //   this.toSubmitWordingField();
-        // } else  {
-        //   console.log('isWording is false');
-        // }
-        // if (this.LinkInputForm.valid || this.ImageDetails!='') {
-        //   let params = {
-        //     request_id : invite.match_id,
-        //     status : 'accept'
-        //   }
-        //   console.log('params:',params);
-        //   this.common.postMethod('Match_reply',params).then((res:any) => {
-        //     console.log('res:',res);
-        //     if (res.status == true) {
-        //       this.ionViewWillEnter();
-        //       this.common.router.navigate(['/tabs/tab2']);
-        //       this.common.presentToast('You had successfully accepted ' + invite.sender_name + '`s match ');
-        //     } else {
-        //       this.common.presentToast('You had already replied to '+ invite.sender_name + '`s invitation ');
-        //     }
-        //   }, err => {
-        //     console.log('Error:',err);
-        //   });
-        // } else {
-        //   this.common.presentToast('You must need to upload a media to accept a match invitation');
-        // }
     }
     presentActionSheet(e, invite, i) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('invite:', invite);
-            console.log('1:', i);
             this.invite = invite;
             const actionSheet = yield this.actionSheetController.create({
                 cssClass: 'my-custom-class',
@@ -398,9 +305,8 @@ let InvitationPage = class InvitationPage {
                         icon: 'text',
                         handler: () => {
                             // this.SendWordings(i);
-                            // console.log('Wording clicked');
-                            this.wordArray.push({ value: '' });
-                            this.Add('text');
+                            this.wordArray[i].push({ value: '' });
+                            this.Add('text', i);
                         }
                     },
                     {
@@ -408,9 +314,9 @@ let InvitationPage = class InvitationPage {
                         icon: 'link',
                         handler: () => {
                             // this.pickLinks(i);
-                            // console.log('Folder clicked');
-                            this.linkArray.push({ value: 'http://' });
-                            this.Add('link');
+                            this.linkArray[i].push({ value: 'http://' });
+                            console.log(this.linkArray);
+                            this.Add('link', i);
                         }
                     },
                     {
@@ -418,7 +324,6 @@ let InvitationPage = class InvitationPage {
                         icon: 'camera',
                         handler: () => {
                             this.CaptureImage(i);
-                            console.log('Camera clicked');
                         }
                     },
                     {
@@ -426,7 +331,6 @@ let InvitationPage = class InvitationPage {
                         icon: 'videocam',
                         handler: () => {
                             this.CaptureVideo(i);
-                            console.log("Gallery clicked");
                         }
                     },
                     {
@@ -434,7 +338,6 @@ let InvitationPage = class InvitationPage {
                         icon: 'mic-circle',
                         handler: () => {
                             this.CaptureAudio(i);
-                            console.log("Audio clicked");
                         }
                     },
                     {
@@ -442,7 +345,6 @@ let InvitationPage = class InvitationPage {
                         icon: 'folder-open',
                         handler: () => {
                             this.PickDocuments(i);
-                            console.log('Folder clicked');
                         }
                     },
                     {
@@ -450,7 +352,6 @@ let InvitationPage = class InvitationPage {
                         icon: 'close',
                         role: 'cancel',
                         handler: () => {
-                            console.log('Cancel clicked');
                         }
                     }
                 ]
@@ -460,15 +361,12 @@ let InvitationPage = class InvitationPage {
     }
     BringItOn() {
         var _a;
-        console.log('Bring it on function');
         if (((_a = this.FileTransferResponse) === null || _a === void 0 ? void 0 : _a.length) != 0 || this.statusId != undefined) {
             let params = {
                 request_id: this.invite.match_id,
                 status: 'accept'
             };
-            console.log('params:', params);
             this.common.postMethod('Match_reply', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.ionViewWillEnter();
                     this.common.router.navigate(['/tabs/tab8']);
@@ -487,169 +385,74 @@ let InvitationPage = class InvitationPage {
     }
     pickLinks(i) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            console.log('Pick Links Button Pressed');
             this.isLink[i] = true;
-            console.log('i:', i);
-            console.log('isLink:', this.isLink[i]);
             this.hideImageSpace[i] = false;
-            console.log('hideImageSpace:', this.hideImageSpace[i]);
             this.isWording[i] = false;
-            console.log('isWording:', this.isWording[i]);
         });
     }
     SendWordings(i) {
-        console.log('Wording');
         this.isLink[i] = false;
-        console.log('i:', i);
-        console.log('isLink:', this.isLink[i]);
         this.hideImageSpace[i] = false;
-        console.log('hideImageSpace:', this.hideImageSpace[i]);
         this.isWording[i] = true;
-        console.log('isWording:', this.isWording[i]);
     }
     CaptureImage(i) {
-        this.hideImageSpace[i] = true;
-        this.isWording[i] = false;
-        this.isLink[i] = false;
-        console.log('CaptureImage', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-        // this.isCaptureImage = true;
         const options = { limit: 1 };
         this.mediaCapture.captureImage(options)
             .then((data) => {
-            console.log('data[0]:', data[0]);
-            this.isImage[i] = true;
-            this.uploadFile2(data[0], 'image', i);
-        }, (err) => console.error(err));
-    }
-    CaptureAudio(i) {
-        this.hideImageSpace[i] = true;
-        this.isWording[i] = false;
-        this.isLink[i] = false;
-        console.log('CaptureAudio', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-        const options = { limit: 1, duration: 2 };
-        this.mediaCapture.captureAudio(options)
-            .then((data) => {
-            console.log('data[0]:', data[0]);
-            this.isAudio[i] = true;
-            this.uploadFile2(data[0], 'audio', i);
-            console.log('Data:', data[0]);
+            this.Add('file', i);
+            this.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'jpg'
+            });
         }, (err) => console.error(err));
     }
     CaptureVideo(i) {
-        this.hideImageSpace[i] = true;
-        this.isWording[i] = false;
-        this.isLink[i] = false;
-        console.log('CaptureVideo', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-        const options = { limit: 1, duration: 2, quality: 80 };
+        const options = { limit: 1, duration: 120, quality: 80 };
         this.mediaCapture.captureVideo(options)
             .then((data) => {
-            console.log(data[0]);
-            this.isVideo[i] = true;
-            this.uploadFile2(data[0], 'video', i);
+            this.Add('file', i);
+            this.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'mp4'
+            });
+        }, (err) => console.error(err));
+    }
+    CaptureAudio(i) {
+        const options = { limit: 1 };
+        this.mediaCapture.captureAudio(options)
+            .then((data) => {
+            this.Add('file', i);
+            this.fileArray[i].push({
+                name: data[0].name,
+                filePath: data[0].fullPath,
+                fileType: 'mp3'
+            });
         }, (err) => console.error(err));
     }
     PickDocuments(i) {
-        this.hideImageSpace[i] = true;
-        this.isWording[i] = false;
-        this.isLink[i] = false;
-        console.log('PickDocuments', this.hideImageSpace[i], 'isWording:', this.isWording[i], 'isLink:', this.isLink[i]);
-        let file;
-        this.fileChooser.open()
-            .then(uri => {
-            console.log('uri:', uri);
-            this.filePath.resolveNativePath(uri)
-                .then(filePath => {
-                console.log('filePath:', filePath);
-                let fileNameFromPath = filePath.substring(filePath.lastIndexOf('/') + 1);
-                console.log('fileNameFromPath:', fileNameFromPath);
-                file = {
-                    name: fileNameFromPath,
-                    fullPath: filePath
-                };
-                this.isImage[i] = true;
-                this.uploadFile2(file, 'file', i);
-            })
-                .catch(err => console.log(err));
-        })
-            .catch(e => console.log(e));
-    }
-    uploadFile2(file, type, i) {
-        let options;
-        options = {
-            fileKey: "matchfile",
-            fileName: file.name,
-            httpMethod: 'POST',
-            mimeType: 'multipart/form-data',
-            chunkedMode: false,
-            params: {
-                matchid: this.invite.match_id,
-                userid: this.userDetails.userid,
-                upload_id: 0
-            },
-            headers: {
-                Connection: 'close'
-            }
-        };
-        console.log('options:', options);
-        let filePath;
-        if (type !== 'audio') {
-            filePath = encodeURI(file.fullPath);
-        }
-        else {
-            filePath = file.fullPath;
-        }
-        this.common.showLoader();
-        const fileTransfer = this.transfer.create();
-        const fileUplaodUrl = 'http://192.168.107.183/iMatch/api/v1/MatchFileUpload';
-        fileTransfer.onProgress((e) => {
-            let prg = (e.lengthComputable) ? Math.round(e.loaded / e.total * 100) : -1;
-            console.log("progress:" + prg);
-            this.common.presentToast('Uploaded ' + prg + '% of file');
-        });
-        fileTransfer.upload(filePath, fileUplaodUrl, options)
-            .then((data) => {
-            console.log('File Transfer Success:', data);
-            console.log(JSON.parse(data.response));
-            let res = JSON.parse(data.response);
-            console.log('res:', res);
-            if (res.file_extension === 'mp4') {
-                console.log('This is a video file');
-                this.isVideo[i] = true;
-                // this.isDummyImage = false;
-            }
-            else if (res.file_extension === 'aac') {
-                console.log(' This is a audio file ');
-                this.isAudio[i] = true;
-                // this.isDummyImage = false;
-            }
-            else if (res.file_extension === 'png') {
-                console.log(' This is a image file ');
-                this.isImage[i] = true;
-                // this.isDummyImage = false;
-            }
-            else if (res.file_extension === 'jpg') {
-                console.log(' This is a image file ');
-                this.isImage[i] = true;
-                // this.isDummyImage = false;
-            }
-            else if (res.file_extension === 'mp3') {
-                console.log(' This is a audio file ');
-                this.isAudio[i] = true;
-                // this.isDummyImage = false;
-            }
-            if (res.status == true) {
-                this.common.showAlertSuccess('Match File Upload Successful');
-                this.FileTransferResponse = res.upload_details;
-                console.log('File Transfer Success:', this.FileTransferResponse);
-                this.common.hideLoader();
-            }
-            else {
-                this.common.presentToast('File upload Failed');
-                console.log('File Transfer Error');
-            }
-            this.common.hideLoader();
-        }, (err) => {
-            console.log('File Transfer Error:', err);
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            yield this.fileChooser.open().then(uri => {
+                this.filePath.resolveNativePath(uri).then(filePath => {
+                    this.filesPath = filePath;
+                    this.filesName = this.filesPath.substring(this.filesPath.lastIndexOf("/") + 1);
+                    this.filesType = this.filesName.substring(this.filesName.lastIndexOf(".") + 1);
+                    this.Add('file', i);
+                    this.fileArray[i].push({
+                        name: this.filesName,
+                        type: this.filesType,
+                        uri: uri,
+                        filePath: filePath
+                    });
+                }, err => {
+                    console.log(err);
+                    throw err;
+                });
+            }, err => {
+                console.log(err);
+                throw err;
+            });
         });
     }
 };
@@ -722,7 +525,7 @@ InvitationPageRoutingModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decor
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n    <ion-toolbar>\r\n        <ion-buttons slot=\"start\">\r\n            <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n        </ion-buttons>\r\n        <ion-title style=\"position: relative;right: 25px;\">INVITATION</ion-title>\r\n    </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content *ngIf=\"invitationDetails\">\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div style=\"text-align: center; margin-top: 15vh;\" *ngIf=\"invitationDetails==''\">\r\n\r\n        <div>\r\n            <img src=\"../../assets/icon/download.jpeg\" alt=\"\" style=\"border: 15px solid #9E9E9E; border-radius: 50%; height: 300px; width: 300px;\">\r\n        </div>\r\n\r\n        <div>\r\n            <h4 style=\"background: #9E9E9E; padding: 10px; border-radius: 35px;\">Currently you are having no invitations</h4>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div class=\"box , animate__animated animate__fadeIn\" *ngFor=\"let invite of invitationDetails; let i=index\">\r\n        <div class=\"inner-box\">\r\n            <div>\r\n                <ion-img src=\"../../assets/icon/help-invitation-terms/bar.png\"></ion-img>\r\n                <ion-thumbnail slot=\"end\">\r\n                    <img [src]=\"invite.user_profile\">\r\n                </ion-thumbnail>\r\n                <span>{{invite.sender_name}}</span>\r\n\r\n            </div>\r\n            <div style=\"font-size: 13px; text-align: center; margin-left: 5%; margin-top: 15%; margin-right: 5%; color: #fcfcfc;\">\r\n                {{invite.caption}}\r\n            </div>\r\n\r\n            <div *ngFor=\"let att of this.anArray; let idx = index\">\r\n                <div *ngIf=\"att.type=='text'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='link'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <ion-input type=\"text\" placeholder=\"Enter sub caption\" [(ngModel)]=\"anArray[idx].value\" class=\"input-field\"></ion-input>\r\n            </div>\r\n\r\n\r\n            <div style=\"background-color: #444446; margin-top: 15%; padding: 8px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n                <div>\r\n                    <div style=\"font-size: 13px; color: #fcfcfc; text-align: center; margin-left: 11px; margin-right: 11px; margin-top: 11px;\">{{invite.description}}</div>\r\n\r\n                    <div style=\"margin-top: 20px; margin-bottom: 20px; display: flex;\" *ngIf=\"hideImageSpace[i]==true\">\r\n\r\n                        <img style=\"width: 42%; height: 160px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\">\r\n\r\n                        <img *ngIf=\"FileTransferResponse?.length!=0 && isImage[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\">\r\n                        <img *ngIf=\"FileTransferResponse?.length===0\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" src=\"../../assets/icon/bg2new.png\" (click)=\"presentActionSheet($event, invite, i)\">\r\n                        <video *ngIf=\"FileTransferResponse?.length!=0 && isVideo[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></video>\r\n                        <audio *ngIf=\"FileTransferResponse?.length!=0 && isAudio[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></audio>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isLink[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <form [formGroup]=\"LinkInputForm\">\r\n                            <ion-textarea formControlName=\"link\" [(ngModel)]=\"userLink.link\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\"></ion-textarea>\r\n                        </form>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isWording[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <!-- <form [formGroup]=\"LinkInputForm\"> -->\r\n                        <ion-textarea [(ngModel)]=\"InvitationWording\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n                        <!-- </form> -->\r\n                    </div>\r\n\r\n                </div>\r\n                <ion-button color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px;\" (click)=\"acceptInvitation($event, invite, i)\">BRING IT ON!</ion-button>\r\n                <ion-button (click)=\"closeUploadSection($event, invite, i)\" color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px; margin-left: 18px;\">NO THANKS</ion-button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n\r\n    <!-- </ion-slide> -->\r\n\r\n    <!-- </ion-slides> -->\r\n\r\n</ion-content>");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-header>\r\n    <ion-toolbar>\r\n        <ion-buttons slot=\"start\">\r\n            <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n        </ion-buttons>\r\n        <ion-title style=\"position: relative;right: 25px;\">INVITATION</ion-title>\r\n    </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content *ngIf=\"invitationDetails\">\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div style=\"text-align: center; margin-top: 15vh;\" *ngIf=\"invitationDetails==''\">\r\n\r\n        <div>\r\n            <img src=\"../../assets/icon/download.jpeg\" alt=\"\" style=\"border: 15px solid #9E9E9E; border-radius: 50%; height: 300px; width: 300px;\">\r\n        </div>\r\n\r\n        <div>\r\n            <h4 style=\"background: #9E9E9E; padding: 10px; border-radius: 35px;\">Currently you are having no invitations</h4>\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <!-- <ion-slides pager=\"true\"> -->\r\n\r\n    <!-- <ion-slide> -->\r\n\r\n    <div class=\"box , animate__animated animate__fadeIn\" *ngFor=\"let invite of invitationDetails; let i=index\">\r\n        <div class=\"inner-box\">\r\n            <div>\r\n                <ion-img src=\"../../assets/icon/help-invitation-terms/bar.png\"></ion-img>\r\n                <ion-thumbnail slot=\"end\">\r\n                    <img [src]=\"invite.user_profile\">\r\n                </ion-thumbnail>\r\n                <span>{{invite.sender_name}}</span>\r\n\r\n            </div>\r\n            <div style=\"font-size: 13px; text-align: center; margin-left: 5%; margin-top: 15%; margin-right: 5%; color: #fcfcfc;\">\r\n                {{invite.caption}}\r\n            </div>\r\n\r\n            <div *ngFor=\"let att of this.anArray[i]; let idx = index\">\r\n                <div *ngIf=\"att.type=='text'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"wordArray[i][att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='link'\">\r\n                    <ion-input type=\"text\" placeholder=\"\" [(ngModel)]=\"linkArray[i][att.position].value\" class=\"input-field\"></ion-input>\r\n                </div>\r\n                <div *ngIf=\"att.type=='file'\">\r\n                    <p style=\"font-size: 10px; color: white; background-color: #5e5e5f; border-radius: 5px; padding: 5px; width: 130px;\"> {{this.fileArray[i][att.position].name}} </p>\r\n                </div>\r\n            </div>\r\n\r\n\r\n            <div style=\"background-color: #444446; margin-top: 15%; padding: 8px; border-right: 1px solid #e0e0e0; text-align: center;\">\r\n                <div>\r\n                    <div style=\"font-size: 13px; color: #fcfcfc; text-align: center; margin-left: 11px; margin-right: 11px; margin-top: 11px;\">{{invite.description}}</div>\r\n\r\n                    <div style=\"margin-top: 20px; margin-bottom: 20px; display: flex;\" *ngIf=\"hideImageSpace[i]==true\">\r\n\r\n                        <img style=\"width: 42%; height: 160px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\">\r\n\r\n                        <img *ngIf=\"FileTransferResponse?.length!=0 && isImage[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\">\r\n                        <img *ngIf=\"FileTransferResponse?.length===0\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" src=\"../../assets/icon/bg2new.png\" (click)=\"presentActionSheet($event, invite, i)\">\r\n                        <video *ngIf=\"FileTransferResponse?.length!=0 && isVideo[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; height: 160px;\" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></video>\r\n                        <audio *ngIf=\"FileTransferResponse?.length!=0 && isAudio[i]==true\" style=\"right: 10px; position: absolute; top: 0px; width: 42%; \" [src]=\"FileTransferResponse.filename\" controls controlsList=\"nodownload\" onerror=\"this.onerror=null;this.src='../../assets/icon/loader.gif';\"></audio>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isLink[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <form [formGroup]=\"LinkInputForm\">\r\n                            <ion-textarea formControlName=\"link\" [(ngModel)]=\"userLink.link\" placeholder=\"Enter Your Link\" class=\"input-field\" auto-grow=\"true\" type=\"url\"></ion-textarea>\r\n                        </form>\r\n                    </div>\r\n\r\n                    <div *ngIf=\"isWording[i]==true\" class=\"animate__animated animate__fadeIn\">\r\n\r\n                        <div style=\"margin: 15px; text-align: -webkit-center;\">\r\n                            <img style=\"width: 140px; height: 145px; margin-left: 10px; filter: blur(8px);\" [src]=\"invite.receiver_image\" onerror=\"this.onerror=null;this.src='../../assets/icon/no_media.png'\" (click)=\"presentActionSheet($event,invite,i)\">\r\n                        </div>\r\n\r\n                        <!-- <form [formGroup]=\"LinkInputForm\"> -->\r\n                        <ion-textarea [(ngModel)]=\"InvitationWording\" placeholder=\"Enter Your Wording\" class=\"input-field\" auto-grow=\"true\" type=\"text\"></ion-textarea>\r\n                        <!-- </form> -->\r\n                    </div>\r\n\r\n                </div>\r\n                <ion-button color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px;\" (click)=\"acceptInvitation($event, invite, i)\">BRING IT ON!</ion-button>\r\n                <ion-button (click)=\"closeUploadSection($event, invite, i)\" color=\"warning\" style=\"font-family: OpenSansBold; font-size: 12px; width: 120px; height: 34px; margin-left: 18px;\">NO THANKS</ion-button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n\r\n    <!-- </ion-slide> -->\r\n\r\n    <!-- </ion-slides> -->\r\n\r\n</ion-content>");
 
 /***/ }),
 

@@ -246,7 +246,6 @@
           this.userDetails = [];
           this.FunnyDetails = [];
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -259,7 +258,6 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered Into Funny Posts Page');
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
             });
@@ -267,13 +265,10 @@
               userid: this.userDetails.userid,
               category: 'funny'
             };
-            console.log('params:', params);
             this.common.postMethod('BannerSearch', params).then(function (res) {
-              console.log('res:', res);
               _this2.FunnyDetails = res.details;
             }, function (err) {
               console.log('Error:', err);
-              console.log(err.headers);
             });
           }
         }]);

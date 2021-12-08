@@ -38,17 +38,11 @@ let SearchFansOfPage = class SearchFansOfPage {
         this.userDetails = [];
         this.allUsers = [];
         this.searchControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"]();
-        // this.storageservice.storage.get('userDetails').then((val) => {
-        //   console.log('Storage Value of userDetails:', val);
-        //   this.userDetails = val;
-        // });
         this.common.route.queryParams.subscribe(resp => {
             this.userDetails = resp;
-            console.log('userDetails:', this.userDetails);
         });
     }
     ngOnInit() {
-        // this.storage();
         this.setFilteredItems();
         this.searchControl.valueChanges
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["debounceTime"])(700), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["distinctUntilChanged"])())
@@ -59,48 +53,16 @@ let SearchFansOfPage = class SearchFansOfPage {
         });
     }
     ionViewWillEnter() {
-        console.log('in ionViewWillEnter');
-        //  this.listAllUsers();
         this.common.showLoader();
         let params = {
             userid: this.userDetails.userid
         };
-        console.log('params:', params);
         this.common.listUsers('Listusers', params).subscribe((res) => {
-            console.log('res:', res);
             this.allUsers = res.details.name;
-            console.log('allUsers:', this.allUsers);
             this.common.hideLoader();
         }, err => {
-            console.log('err:', err);
         });
     }
-    // async storage() {
-    //   this.storageservice.storage.get('userDetails').then((val) => {
-    //     console.log('Storage Value of userDetails:', val);
-    //     this.userDetails = val;
-    //     console.log('userid:',this.userDetails.userid);
-    //     if(this.userDetails){
-    //       this.common.presentLoading();
-    //        this.listAllUsers();
-    //       } else{
-    //         ////
-    //       }
-    //   });  
-    // }
-    // listAllUsers() {
-    //   console.log(this.userDetails);  
-    //   var userid = this.userDetails["userid"];
-    //   let params = {
-    //     userid : userid
-    //   }
-    //   console.log('userid:',params);  
-    //   this.common.listUsers('Listusers',params).subscribe((res:any) => {
-    //     console.log('res:',res);
-    //     this.allUsers = res.details.name;
-    //     console.log('allUsers:',this.allUsers);
-    //   });
-    // }
     onSearchInput() {
         this.searching = true;
     }
@@ -115,7 +77,6 @@ let SearchFansOfPage = class SearchFansOfPage {
                 category: 'fan_of'
             };
             this.common.postMethod('add_fan', params).then((res) => {
-                console.log('res:', res);
                 if (res.status == true) {
                     this.common.presentToast(name + ' is successfully added to your fans of list ...');
                     this.common.navCtrl.navigateForward(['fans-of'], { queryParams: this.userDetails });
@@ -130,7 +91,6 @@ let SearchFansOfPage = class SearchFansOfPage {
         }
     }
     filterItems(searchTerm) {
-        console.log(searchTerm);
         return this.allUsers.filter(user => {
             return user.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
         });

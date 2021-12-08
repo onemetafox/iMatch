@@ -1202,9 +1202,11 @@
             var translucent = this.translucent,
                 inheritedAttributes = this.inheritedAttributes;
             var mode = Object(_ionic_global_63a97a32_js__WEBPACK_IMPORTED_MODULE_1__["b"])(this);
-            var collapse = this.collapse || 'none';
+            var collapse = this.collapse || 'none'; // banner role must be at top level, so remove role if inside a menu
+
+            var roleType = Object(_theme_ff3fc52f_js__WEBPACK_IMPORTED_MODULE_2__["h"])('ion-menu', this.el) ? 'none' : 'banner';
             return Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["H"], Object.assign({
-              role: "banner",
+              role: roleType,
               "class": (_class4 = {}, _defineProperty(_class4, mode, true), _defineProperty(_class4, "header-".concat(mode), true), _defineProperty(_class4, "header-translucent", this.translucent), _defineProperty(_class4, "header-collapse-".concat(collapse), true), _defineProperty(_class4, "header-translucent-".concat(mode), this.translucent), _class4)
             }, inheritedAttributes), mode === 'ios' && translucent && Object(_index_7a8b7a1c_js__WEBPACK_IMPORTED_MODULE_0__["h"])("div", {
               "class": "header-background"

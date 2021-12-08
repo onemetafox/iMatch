@@ -121,7 +121,6 @@ let BeautyFashionPage = class BeautyFashionPage {
         this.userDetails = [];
         this.BeautyFashionDetails = [];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
             if (this.userDetails.userid != '') {
                 this.ionViewWillEnter();
@@ -131,14 +130,11 @@ let BeautyFashionPage = class BeautyFashionPage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered Into Funny Posts Page');
         let params = {
             userid: this.userDetails.userid,
             category: 'beauty',
         };
-        console.log('params:', params);
         this.common.postMethod('BannerSearch', params).then((res) => {
-            console.log('res:', res);
             this.BeautyFashionDetails = res.details;
         });
     }

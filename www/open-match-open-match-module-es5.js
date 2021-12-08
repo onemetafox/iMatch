@@ -156,10 +156,8 @@
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
             _this.personalMatchSlideIndex = _this.userDetails.personalMatchSlideIndex;
-            console.log('userArray:', _this.userDetails);
           });
           this.storageservice.storage.get('userDetails').then(function (val) {
-            console.log('Storage Value of userDetails:', val);
             _this.userDetails = val;
           });
         }
@@ -172,7 +170,6 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Open Match page');
             this.storageservice.storage.get('userDetails').then(function (val) {
               _this2.userDetails = val;
 
@@ -180,11 +177,9 @@
                 var params = {
                   userid: _this2.userDetails.userid
                 };
-                console.log('params:', params);
 
                 _this2.common.postMethod('OpenMatch', params).then(function (res) {
-                  console.log('openMatches:', res); //  this.openMatches = res.details.image;
-
+                  //  this.openMatches = res.details.image;
                   _this2.OpenMatchImage = res.details.image;
                   _this2.OpenMatchAudio = res.details.audio;
                   _this2.OpenMatchVideo = res.details.video;
@@ -193,46 +188,34 @@
 
                   _this2.slides.slideTo(_this2.personalMatchSlideIndex);
 
-                  console.log('openMatches:', _this2.openMatches);
-
                   if (_this2.OpenMatchAudio != null && _this2.OpenMatchAudio.length !== 0) {
                     for (var i = 0; i < _this2.OpenMatchAudio.length; i++) {
                       _this2.openMatches.push(_this2.OpenMatchAudio[i]);
                     }
-
-                    console.log('OpenMatch:', _this2.openMatches);
                   }
 
                   if (_this2.OpenMatchImage != null && _this2.OpenMatchImage.length !== 0) {
                     for (var _i = 0; _i < _this2.OpenMatchImage.length; _i++) {
                       _this2.openMatches.push(_this2.OpenMatchImage[_i]);
                     }
-
-                    console.log('OpenMatch:', _this2.openMatches);
                   }
 
                   if (_this2.OpenMatchLink != null && _this2.OpenMatchLink.length !== 0) {
                     for (var _i2 = 0; _i2 < _this2.OpenMatchLink.length; _i2++) {
                       _this2.openMatches.push(_this2.OpenMatchLink[_i2]);
                     }
-
-                    console.log('OpenMatch:', _this2.openMatches);
                   }
 
                   if (_this2.OpenMatchText != null && _this2.OpenMatchText.length !== 0) {
                     for (var _i3 = 0; _i3 < _this2.OpenMatchText.length; _i3++) {
                       _this2.openMatches.push(_this2.OpenMatchText[_i3]);
                     }
-
-                    console.log('OpenMatch:', _this2.openMatches);
                   }
 
                   if (_this2.OpenMatchVideo != null && _this2.OpenMatchVideo.length !== 0) {
                     for (var _i4 = 0; _i4 < _this2.OpenMatchVideo.length; _i4++) {
                       _this2.openMatches.push(_this2.OpenMatchVideo[_i4]);
                     }
-
-                    console.log('OpenMatch:', _this2.openMatches);
                   }
                 });
               }
@@ -241,8 +224,6 @@
         }, {
           key: "gotoOpenMatchComments",
           value: function gotoOpenMatchComments(event, match) {
-            console.log('Comment View Page Clicked');
-            console.log('match:', match);
             this.common.navCtrl.navigateForward(['/comments'], {
               queryParams: match
             });
@@ -252,18 +233,13 @@
           value: function toLikeOpenMatch(event, match) {
             var _this3 = this;
 
-            console.log('Like Open Match Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               matchid: match.match_id,
               contestentid: '',
               status: 'like'
             };
-            console.log('params:', params);
-            console.log('match:', match);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               _this3.ionViewWillEnter();
             });
           }
@@ -272,25 +248,19 @@
           value: function toDisLikeOpenMatch(event, match) {
             var _this4 = this;
 
-            console.log('Dislike Open Match Button Clicked');
             var params = {
               userid: this.userDetails.userid,
               matchid: match.match_id,
               contestentid: '',
               status: 'dislike'
             };
-            console.log('params:', params);
-            console.log('match:', match);
             this.common.postMethod('Like', params).then(function (res) {
-              console.log('res:', res);
-
               _this4.ionViewWillEnter();
             });
           }
         }, {
           key: "toCommentOpenMatch",
           value: function toCommentOpenMatch(event, match) {
-            console.log('Comment Open Match Button Clicked');
             this.common.navCtrl.navigateForward(['/open-match-comments'], {
               queryParams: match
             });
@@ -300,16 +270,12 @@
           value: function GetIconSearch(icon) {
             var _this5 = this;
 
-            console.log('Icon clicked:', icon);
-
             if (icon === 'image') {
               // await this.common.showLoader();
               var params = {
                 userid: this.userDetails.userid
               };
-              console.log('params:', params);
               this.common.postMethod('OpenMatch', params).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details.image;
 
                 if (_this5.openMatches.length === 0) {
@@ -317,8 +283,6 @@
                 } else {
                   _this5.common.presentToast('You are having ' + _this5.openMatches.length + ' image Open Matches');
                 }
-
-                console.log('openMatches:', _this5.openMatches);
               }, function (err) {
                 console.log('err:', err);
               }); // this.common.hideLoader();
@@ -327,9 +291,7 @@
               var _params = {
                 userid: this.userDetails.userid
               };
-              console.log('params:', _params);
               this.common.postMethod('OpenMatch', _params).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details.video;
 
                 if (_this5.openMatches.length === 0) {
@@ -337,8 +299,6 @@
                 } else {
                   _this5.common.presentToast('You are having ' + _this5.openMatches.length + ' video Open Matches');
                 }
-
-                console.log('openMatches:', _this5.openMatches);
               }, function (err) {
                 console.log('err:', err);
               }); // this.common.hideLoader();
@@ -347,9 +307,7 @@
               var _params2 = {
                 userid: this.userDetails.userid
               };
-              console.log('params:', _params2);
               this.common.postMethod('OpenMatch', _params2).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details.audio;
 
                 if (_this5.openMatches.length === 0) {
@@ -357,8 +315,6 @@
                 } else {
                   _this5.common.presentToast('You are having ' + _this5.openMatches.length + ' audio Open Matches');
                 }
-
-                console.log('openMatches:', _this5.openMatches);
               }, function (err) {
                 console.log('err:', err);
               }); // this.common.hideLoader();
@@ -367,9 +323,7 @@
               var _params3 = {
                 userid: this.userDetails.userid
               };
-              console.log('params:', _params3);
               this.common.postMethod('OpenMatch', _params3).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details.text;
 
                 if (_this5.openMatches.length === 0) {
@@ -377,8 +331,6 @@
                 } else {
                   _this5.common.presentToast('You are having ' + _this5.openMatches.length + ' text Open Matches');
                 }
-
-                console.log('openMatches:', _this5.openMatches);
               }, function (err) {
                 console.log('err:', err);
               }); // this.common.hideLoader();
@@ -387,9 +339,7 @@
               var _params4 = {
                 userid: this.userDetails.userid
               };
-              console.log('params:', _params4);
               this.common.postMethod('OpenMatch', _params4).then(function (res) {
-                console.log('res:', res);
                 _this5.openMatches = res.details.link;
 
                 if (_this5.openMatches.length === 0) {
@@ -397,8 +347,6 @@
                 } else {
                   _this5.common.presentToast('You are having ' + _this5.openMatches.length + ' link Open Matches');
                 }
-
-                console.log('openMatches:', _this5.openMatches);
               }, function (err) {
                 console.log('err:', err);
               }); // this.common.hideLoader();
@@ -413,8 +361,7 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log('Show Match History Button Clicked');
-                      _context.next = 3;
+                      _context.next = 2;
                       return this.popoverController.create({
                         component: PopoverComponent,
                         cssClass: 'my-custom-class',
@@ -426,15 +373,15 @@
                         animated: false
                       });
 
-                    case 3:
+                    case 2:
                       popover = _context.sent;
-                      _context.next = 6;
+                      _context.next = 5;
                       return popover.present();
 
-                    case 6:
+                    case 5:
                       return _context.abrupt("return", _context.sent);
 
-                    case 7:
+                    case 6:
                     case "end":
                       return _context.stop();
                   }
@@ -479,16 +426,12 @@
           this.common = common;
           this.navParams = navParams;
           this.Match = [];
-          console.log(this.navParams.get('key'));
           this.Match = this.navParams.get('key');
-          console.log('users in popover:', this.Match);
         }
 
         _createClass(PopoverComponent, [{
           key: "ionViewWillEnter",
-          value: function ionViewWillEnter() {
-            console.log('ionViewWillEnter:', this.Match);
-          }
+          value: function ionViewWillEnter() {}
         }]);
 
         return PopoverComponent;

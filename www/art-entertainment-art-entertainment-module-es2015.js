@@ -84,7 +84,6 @@ let ArtEntertainmentPage = class ArtEntertainmentPage {
         this.userDetails = [];
         this.ArtEntertainmentDetails = [];
         this.storageservice.storage.get('userDetails').then((val) => {
-            console.log('Storage Value of userDetails:', val);
             this.userDetails = val;
             if (this.userDetails.userid != '') {
                 this.ionViewWillEnter();
@@ -94,14 +93,11 @@ let ArtEntertainmentPage = class ArtEntertainmentPage {
     ngOnInit() {
     }
     ionViewWillEnter() {
-        console.log('Entered Into Funny Posts Page');
         let params = {
             userid: this.userDetails.userid,
             category: 'art',
         };
-        console.log('params:', params);
         this.common.postMethod('BannerSearch', params).then((res) => {
-            console.log('res:', res);
             this.ArtEntertainmentDetails = res.details;
         });
     }

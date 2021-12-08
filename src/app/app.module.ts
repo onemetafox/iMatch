@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TwitterConnect } from '@ionic-native/twitter-connect/ngx';
 import { StorageService } from './services/storage.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@ionic-native/geolocation';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
 import { HttpClientModule } from '@angular/common/http';

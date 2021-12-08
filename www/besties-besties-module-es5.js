@@ -95,7 +95,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<!-- -- besties page design -- -->\r\n\r\n<ion-header [translucent]=\"true\">\r\n  <ion-toolbar style=\"--background: #707072;\">\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button defaultHref=\"/tabs/tab6\" style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title mode=\"ios\" style=\"color: white;\r\n    font-size: 15px;\" *ngIf=\"userDetails\">\r\n    <div  class=\"top-number\">\r\n      <span>{{userDetails.bestie_count}}</span>\r\n    </div>\r\n      BESTIES\r\n\r\n      <img *ngIf=\"userDetails.profile_pic != '' || userDetails.profile_pic != null || userDetails.profile_pic != undefined\" [src]=userDetails.profile_pic alt=\"\" class=\"top-profile-pic\" style=\"background-color: white;\" (click)=\"gotoProfile()\">\r\n\r\n      <!-- <ion-icon name=\"caret-down-outline\" class=\"top-drop-icon\"></ion-icon> -->\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content [fullscreen]=\"true\">\r\n\r\n  <!-- <ion-grid> -->\r\n    <ion-row *ngIf=\"bestieDetails\">\r\n\r\n      <div class=\"top-container-style\">\r\n\r\n        <ion-item lines=\"none\">\r\n          <ion-avatar class=\"person-profile-img\">\r\n            <img *ngIf=\"bestieDetails.profile_pic != '' || bestieDetails.profile_pic != null || bestieDetails.profile_pic != undefined\" [src]=\"bestieDetails.profile_pic\" alt=\"\">\r\n          </ion-avatar>\r\n          <!-- <ion-label class=\"person-name-text\">Pritty Kavitha</ion-label> -->\r\n          <ion-label class=\"person-name-text\"> {{bestieDetails.name}} </ion-label>\r\n\r\n\r\n          <ion-chip slot=\"end\" class=\"top-chip-styles\" (click)=\"addMoreBesties()\">\r\n            <!-- <img src=\"../../assets/icon/add.png\" alt=\"\" class=\"add-more-icon\"> -->\r\n            <ion-icon name=\"add-circle\" class=\"add-more-icon\"></ion-icon>\r\n            <ion-label class=\"chip-label-text\">ADD MORE BESTIE</ion-label>\r\n          </ion-chip>\r\n\r\n        </ion-item>\r\n\r\n      </div>\r\n\r\n    </ion-row>\r\n\r\n    <!-- <ion-row> -->\r\n\r\n      <!-- <div>\r\n        <div *ngIf=\"ourStory\">\r\n          <h1>OUR STORY</h1>\r\n          <div>\r\n            <ion-textarea auto-grow=\"true\">{{ourStory.text}}</ion-textarea>\r\n          </div>\r\n        </div>\r\n      </div> -->\r\n\r\n      <div>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourStory\">\r\n        <ion-card-header style=\"color: white;\">OUR STORY</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurStory()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourStory[0]?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </div>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #0a0700 , #595d5e); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourSlogan\">\r\n        <ion-card-header style=\"color: white;\">OUR FAVOURITE WORD / SLOGAN</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurSlogan()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourSlogan[0]?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #e39b09 , #787570); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourLetter\">\r\n        <ion-card-header style=\"color: white;\">A LETTER TO MY BEST FRIEND</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoLetter()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourLetter[0]?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <div style=\"display: flex; padding: 7px;\">\r\n\r\n    <!-- <ion-row> -->\r\n\r\n      <!-- <ion-col> -->\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n            <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n              <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[0]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n            </div>\r\n            <!-- <img src=\"../../assets/icon/besties/{{userDetails.profile_pic}}.png\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\"> -->\r\n\r\n            <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n            <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n            <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n          </ion-card>\r\n        </div>\r\n\r\n      <!-- </ion-col> -->\r\n\r\n      <!-- <ion-col> -->\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n            <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n              <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[1]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n            </div>\r\n            <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n            <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n            <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n          </ion-card>\r\n        </div>\r\n\r\n      <!-- </ion-col> -->\r\n\r\n      <!-- <ion-col> -->\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n            <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n              <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[2]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n            </div>           \r\n             <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n            <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n            <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n          </ion-card>\r\n        </div>\r\n\r\n      <!-- </ion-col> -->\r\n\r\n    <!-- </ion-row> -->\r\n\r\n  <!-- </ion-grid> -->\r\n</div>\r\n\r\n    <div style=\"display: flex; justify-content: flex-end; margin: 15px 0px 15px;\">\r\n      <img *ngIf=\"CountDetails\" src=\"../../assets/icon/blog/heart.png\" alt=\"\" style=\"height: 20px; margin-right: 5px; position: relative; top: 7px;\"  (click)=\"ToLikeBesties()\"> <span style=\"margin-right: 10px; position: relative; top: 7px; font-size: 12px;\"> {{CountDetails.total_like_count}} </span>\r\n      <img *ngIf=\"CountDetails\" src=\"../../assets/icon/com.png\" alt=\"\" style=\"height: 20px; margin-right: 5px; position: relative; top: 7px;\" (click)=\"GoToBestiesComment()\"> <span style=\"margin-right: 10px; position: relative; top: 7px; font-size: 12px;\"> {{CountDetails.total_comment_count}} </span>\r\n      <ion-button *ngIf=\"isDisable==true\" style=\"text-transform: none; margin-right: 10px;\" size=\"small\" shape=\"round\" (click)=\"ToDisableComment($event, 'disable')\">Disable Comment</ion-button>\r\n      <ion-button *ngIf=\"isDisable==false\" style=\"text-transform: none; margin-right: 10px; --background: #707072; color: black;\" size=\"small\" shape=\"round\" (click)=\"ToDisableComment($event, 'enable')\">Enable Comment</ion-button>\r\n    </div>\r\n\r\n</ion-content>\r\n\r\n<!-- -- besties-user-view-page -- -->\r\n\r\n<!-- <ion-header [translucent]=\"true\">\r\n  <ion-toolbar style=\"--background: #707072;\">\r\n    <ion-title mode=\"ios\" style=\"color: white;\r\n    font-size: 15px;\">\r\n    <span class=\"top-number\">2</span>\r\n      BESTIES\r\n      <img src=\"../../assets/icon/besties/trvl4.jpg\" alt=\"\" class=\"top-profile-pic\">\r\n      <ion-icon name=\"caret-down-outline\" class=\"top-drop-icon\"></ion-icon>\r\n    </ion-title>\r\n  </ion-toolbar>m   \r\n</ion-header>\r\n\r\n<ion-content [fullscreen]=\"true\">\r\n\r\n  <ion-grid>\r\n    <ion-row>\r\n\r\n      <div class=\"top-container-style\">\r\n\r\n        <ion-item lines=\"none\">\r\n          <ion-avatar class=\"person-profile-img\">\r\n            <img src=\"../../assets/icon/besties/thanos.jpg\" alt=\"\">\r\n          </ion-avatar>\r\n          <ion-label class=\"person-name-text\">Pritty Kavitha</ion-label>\r\n\r\n            <img src=\"../../assets/icon/besties/add.png\" alt=\"\" class=\"add-more-icon\">\r\n\r\n        </ion-item>\r\n\r\n      </div>\r\n\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px;\">\r\n        <ion-card-header style=\"color: white;margin-bottom: 10px;\">OUR STORY</ion-card-header>\r\n        <ion-card-content style=\"color: white;\r\n        line-height: 14px;\r\n        font-size: 12px;\r\n        position: relative;\r\n        bottom: 20px;\">\r\n          It is a long established fact that a reader \r\n          will be distracted by the readable content \r\n          of a page when looking at its layout. The \r\n          point of using Lorem Ipsum is that it has a \r\n          more-or-less normal distribution of letters, \r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #0a0700 , #595d5e); border-radius: 10px;\">\r\n        <ion-card-header style=\"color: white;margin-bottom: 10px;\">OUR FAVOURITE WORD / SLOGAN</ion-card-header>\r\n        <ion-card-content style=\"color: white;\r\n        line-height: 14px;\r\n        font-size: 12px;\r\n        position: relative;\r\n        bottom: 20px;\">\r\n          It is a long established fact that a reader \r\n          will be distracted by the readable content \r\n          of a page when looking at its layout.\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #e39b09 , #787570); border-radius: 10px;\">\r\n        <ion-card-header style=\"color: white;margin-bottom: 10px;\">A LETTER TO MY BEST FRIEND</ion-card-header>\r\n        <ion-card-content style=\"color: white;\r\n        line-height: 14px;\r\n        font-size: 12px;\r\n        position: relative; \r\n        bottom: 20px;\">\r\n          It is a long established fact that a reader \r\n          will be distracted by the readable content \r\n          of a page when looking at its layout.\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n\r\n      <ion-col>\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n            <img src=\"../../assets/icon/besties/trvl1.jpg\" alt=\"\" class=\"bottom-card-small-img\">\r\n          </ion-card>\r\n        </div>\r\n\r\n      </ion-col>\r\n\r\n      <ion-col>\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n            <img src=\"../../assets/icon/besties/drop.png\" alt=\"\" class=\"play-button-inside-card\">\r\n            <img src=\"../../assets/icon/besties/trvl2.jpg\" alt=\"\" class=\"bottom-card-small-img\">\r\n          </ion-card>\r\n        </div>\r\n\r\n      </ion-col>\r\n\r\n      <ion-col>\r\n\r\n        <div style=\"text-align: center;\">\r\n          <ion-card class=\"bottom-card\">\r\n          </ion-card>\r\n        </div>\r\n\r\n      </ion-col>\r\n\r\n    </ion-row>\r\n\r\n    <div class=\"last-container\">\r\n      <ion-row>\r\n        <ion-col class=\"last-cols\">\r\n          <img src=\"../../assets/icon/besties/heart.png\" alt=\"\" style=\"height: 15px; width: 16px;\">\r\n          <span class=\"last-col-text\">20m</span> \r\n        </ion-col>\r\n  \r\n        <ion-col class=\"last-cols\">\r\n          <img src=\"../../assets/icon/besties/comment.png\" alt=\"\" style=\"height: 15px; width: 18px;\">\r\n          <span class=\"last-col-text\">10k</span>\r\n        </ion-col>\r\n      </ion-row>\r\n    </div>\r\n    \r\n  </ion-grid>\r\n\r\n</ion-content>\r\n -->\r\n";
+      __webpack_exports__["default"] = "<!-- -- besties page design -- -->\r\n\r\n<ion-header [translucent]=\"true\">\r\n  <ion-toolbar style=\"--background: #707072;\">\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button defaultHref=\"/tabs/tab6\" style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title mode=\"ios\" style=\"color: white;\r\n    font-size: 15px;\" *ngIf=\"userDetails\">\r\n    <div  class=\"top-number\">\r\n      <span>{{userDetails.bestie_count}}</span>\r\n    </div>\r\n      BESTIES\r\n\r\n      <img *ngIf=\"userDetails.profile_pic != '' || userDetails.profile_pic != null || userDetails.profile_pic != undefined\" [src]=userDetails.profile_pic alt=\"\" class=\"top-profile-pic\" style=\"background-color: white;\" (click)=\"gotoProfile()\">\r\n\r\n      <!-- <ion-icon name=\"caret-down-outline\" class=\"top-drop-icon\"></ion-icon> -->\r\n    </ion-title>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content [fullscreen]=\"true\">\r\n\r\n  <!-- <ion-grid> -->\r\n    <ion-row *ngIf=\"bestieDetails\">\r\n\r\n      <div class=\"top-container-style\">\r\n\r\n        <ion-item lines=\"none\">\r\n          <ion-avatar class=\"person-profile-img\">\r\n            <img *ngIf=\"bestieDetails.pic != '' || bestieDetails.pic != null || bestieDetails.pic != undefined\" [src]=\"bestieDetails.pic\" alt=\"\">\r\n          </ion-avatar>\r\n          <!-- <ion-label class=\"person-name-text\">Pritty Kavitha</ion-label> -->\r\n          <ion-label class=\"person-name-text\"> {{bestieDetails.name}} </ion-label>\r\n\r\n\r\n          <ion-chip slot=\"end\" class=\"top-chip-styles\" (click)=\"addMoreBesties()\">\r\n            <!-- <img src=\"../../assets/icon/add.png\" alt=\"\" class=\"add-more-icon\"> -->\r\n            <ion-icon name=\"add-circle\" class=\"add-more-icon\"></ion-icon>\r\n            <ion-label class=\"chip-label-text\">ADD MORE BESTIE</ion-label>\r\n          </ion-chip>\r\n\r\n        </ion-item>\r\n\r\n      </div>\r\n\r\n    </ion-row>\r\n    <div>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #ee1809 , #8a5a5a); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourStory\">\r\n        <ion-card-header style=\"color: white;\">OUR STORY</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurStory()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourStory.story?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </div>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #0a0700 , #595d5e); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourSlogan\">\r\n        <ion-card-header style=\"color: white;\">OUR FAVOURITE WORD / SLOGAN</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoOurSlogan()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourSlogan[0]?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <ion-row>\r\n      <ion-card style=\"background-image: linear-gradient(to right, #e39b09 , #787570); border-radius: 10px; width: -webkit-fill-available;\" *ngIf=\"ourLetter\">\r\n        <ion-card-header style=\"color: white;\">A LETTER TO MY BEST FRIEND</ion-card-header>\r\n        <img src=\"../../assets/icon/besties/edit.png\" alt=\"\" class=\"near-card-header-img\" (click)=\"gotoLetter()\">\r\n        <ion-card-content style=\"color: white; line-height: 14px; font-size: 12px; position: relative; bottom: 20px;\" auto-grow=\"true\"> {{ourLetter[0]?.text}}\r\n        </ion-card-content>\r\n      </ion-card>\r\n    </ion-row>\r\n\r\n    <div style=\"display: flex; padding: 7px;\">\r\n      <div style=\"text-align: center;\">\r\n        <ion-card class=\"bottom-card\">\r\n          <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n            <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[0]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n          </div>\r\n          <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n          <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n          <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n        </ion-card>\r\n      </div>\r\n      <div style=\"text-align: center;\">\r\n        <ion-card class=\"bottom-card\">\r\n          <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n            <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[1]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n          </div>\r\n          <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n          <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n          <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n        </ion-card>\r\n      </div>\r\n      <div style=\"text-align: center;\">\r\n        <ion-card class=\"bottom-card\">\r\n          <div style=\"background-color: #707072; height: 105px; width: -webkit-fill-available; border-radius: 10px;\">\r\n            <img *ngIf=\"MediaFiles\"  [src]=\"MediaFiles[2]?.file_link\" onerror=\"this.src='../../assets/icon/besties/707072.png';\" alt=\"\" class=\"bottom-card-small-img\">\r\n          </div>           \r\n            <img src=\"../../assets/icon/besties/upload.png\" alt=\"\" class=\"inside-card-upload-img\" (click)=\"PresentActionSheet()\">\r\n          <ion-card-header class=\"card-header-text\">UPLOAD</ion-card-header>\r\n          <p class=\"text-below-card-header\">IMAGE/VIDEO</p>\r\n        </ion-card>\r\n      </div>\r\n    </div>\r\n\r\n    <div style=\"display: flex; justify-content: flex-end; margin: 15px 0px 15px;\">\r\n      <img *ngIf=\"CountDetails\" src=\"../../assets/icon/blog/heart.png\" alt=\"\" style=\"height: 20px; margin-right: 5px; position: relative; top: 7px;\"  (click)=\"ToLikeBesties()\"> \r\n      <span style=\"margin-right: 10px; position: relative; top: 7px; font-size: 12px;\"> {{bestieDetails.like_count}} </span>\r\n      <img *ngIf=\"CountDetails\" src=\"../../assets/icon/com.png\" alt=\"\" style=\"height: 20px; margin-right: 5px; position: relative; top: 7px;\" (click)=\"GoToBestiesComment()\"> \r\n      <span style=\"margin-right: 10px; position: relative; top: 7px; font-size: 12px;\"> {{bestieDetails.comment_count}} </span>\r\n      <ion-button *ngIf=\"isDisable==true\" style=\"text-transform: none; margin-right: 10px;\" size=\"small\" shape=\"round\" (click)=\"ToDisableComment($event, 'disable')\">Disable Comment</ion-button>\r\n      <ion-button *ngIf=\"isDisable==false\" style=\"text-transform: none; margin-right: 10px; --background: #707072; color: black;\" size=\"small\" shape=\"round\" (click)=\"ToDisableComment($event, 'enable')\">Enable Comment</ion-button>\r\n    </div>\r\n\r\n</ion-content>\r\n";
       /***/
     },
 
@@ -313,7 +313,6 @@
           this.CommentStatus = [];
           this.common.route.queryParams.subscribe(function (resp) {
             _this.bestieDetails = resp;
-            console.log("bestieDetails:", _this.bestieDetails);
           }); // this.showTextContent();
         }
 
@@ -333,8 +332,8 @@
             var _this2 = this;
 
             this.storageservice.storage.get("userDetails").then(function (val) {
-              console.log("Stored Details of userDetails:", val);
               _this2.userDetails = val;
+              console.log(val);
 
               _this2.GetPageContent();
             });
@@ -348,10 +347,7 @@
               userid: this.userDetails.userid,
               senderid: this.bestieDetails.userid
             };
-            console.log("params:", params);
             this.common.postMethod("GetStatus", params).then(function (res) {
-              console.log("res:", res);
-
               if (res.message === "success") {
                 _this3.CountDetails = res;
                 _this3.ourStory = res.details.story;
@@ -370,7 +366,6 @@
             var _this4 = this;
 
             this.storageservice.storage.get("isDisable").then(function (val) {
-              console.log("Stored Details of Comment Status:", val);
               _this4.CommentStatus = val;
 
               if (_this4.CommentStatus == 0) {
@@ -383,24 +378,13 @@
                 return;
               }
             });
-          } // ionViewWillEnter(){
-          //  console.log('userDetails:',this.userDetails);
-          //  console.log('bestieDetails:',this.bestieDetails);
-          // this.showTextContent();
-          // }
-          // ionViewDidEnter(){
-          //   console.log('ionViewDidEnter');
-          //   this.storageservice.storage.set('bestieDetails',this.bestieDetails);
-          //   console.log('Besties Details Successfully Stored In Device , ionViewDidEnter');
-          // }
-
+          }
         }, {
           key: "showTextContent",
           value: function showTextContent() {
             var _this5 = this;
 
             this.storageservice.storage.get("userDetails").then(function (val) {
-              console.log("Storage Value of userDetails:", val);
               _this5.userDetails = val;
 
               if (_this5.userDetails.userid != "") {
@@ -410,28 +394,18 @@
                   userid: _this5.userDetails.userid,
                   senderid: _this5.bestieDetails.userid
                 };
-                console.log("params", params);
 
                 _this5.common.postMethod("GetStatus", params).then(function (res) {
-                  console.log("res:", res);
-
                   if (res.message == "success") {
                     _this5.CountDetails = res;
                     _this5.ourStory = res.details.story;
                     _this5.ourSlogan = res.details.slogan;
                     _this5.ourLetter = res.details.letter;
                     _this5.MediaFiles = res.link;
-                    console.log("ourStory:", _this5.ourStory);
-                    console.log("ourSlogan:", _this5.ourSlogan);
-                    console.log("ourLetter:", _this5.ourLetter);
                   } else if (res.message = "failed") {
-                    console.log("res:", res);
                     _this5.ourStory = res.details;
                     _this5.ourSlogan = res.details;
                     _this5.ourLetter = res.details;
-                    console.log("ourStory:", _this5.ourStory);
-                    console.log("ourSlogan:", _this5.ourSlogan);
-                    console.log("ourLetter:", _this5.ourLetter);
                   }
                 });
               } else {
@@ -448,10 +422,7 @@
               userid: this.userDetails.userid,
               bestieid: this.bestieDetails.userid
             };
-            console.log("params:", params);
             this.common.postMethod("bestielike", params).then(function (res) {
-              console.log("res:", res);
-
               if (res.status == true) {
                 _this6.GetPageContent();
               }
@@ -479,7 +450,6 @@
         }, {
           key: "addMoreBesties",
           value: function addMoreBesties() {
-            console.log("Besties Search page clicked ");
             this.common.navCtrl.navigateForward(["/besties-search"], {
               queryParams: this.bestieDetails
             });
@@ -526,8 +496,7 @@
                 while (1) {
                   switch (_context.prev = _context.next) {
                     case 0:
-                      console.log(" Action Sheet Clicked ");
-                      _context.next = 3;
+                      _context.next = 2;
                       return this.actionSheetController.create({
                         cssClass: "my-custom-class",
                         header: " File format must be MP4, PNG, JPG , JPEG",
@@ -536,8 +505,6 @@
                           icon: "folder-open",
                           handler: function handler() {
                             _this7.pickDocuments();
-
-                            console.log("Folder clicked");
                           }
                         }, {
                           text: "Capture Image",
@@ -545,9 +512,6 @@
                           handler: function handler() {
                             _this7.captureImage(); // this.isImage = true;
 
-
-                            // this.isImage = true;
-                            console.log("Camera clicked");
                           }
                         }, {
                           text: "Capture Video",
@@ -555,26 +519,21 @@
                           handler: function handler() {
                             _this7.captureVideo(); // this.isVideo = true;
 
-
-                            // this.isVideo = true;
-                            console.log("Camera clicked");
                           }
                         }, {
                           text: "Cancel",
                           icon: "close",
                           role: "cancel",
-                          handler: function handler() {
-                            console.log("Cancel clicked");
-                          }
+                          handler: function handler() {}
                         }]
                       });
 
-                    case 3:
+                    case 2:
                       actionSheet = _context.sent;
-                      _context.next = 6;
+                      _context.next = 5;
                       return actionSheet.present();
 
-                    case 6:
+                    case 5:
                     case "end":
                       return _context.stop();
                   }
@@ -592,11 +551,8 @@
               limit: 1
             };
             this.mediaCapture.captureImage(options).then(function (data) {
-              console.log(data[0]); // this.isImage = true;
-
+              // this.isImage = true;
               _this8.uploadFile2(data[0], "image");
-
-              console.log("Data:", data[0]);
             }, function (err) {
               return console.error(err);
             });
@@ -613,11 +569,8 @@
               quality: 80
             };
             this.mediaCapture.captureVideo(options).then(function (data) {
-              console.log(data[0]); // this.isVideo = true;
-
+              // this.isVideo = true;
               _this9.uploadFile2(data[0], "video");
-
-              console.log("Data:", data[0]);
             }, function (err) {
               return console.error(err);
             });
@@ -635,14 +588,9 @@
                     case 0:
                       // this.isMedia = true;
                       this.fileChooser.open().then(function (uri) {
-                        console.log("uri:", uri);
-
                         _this10.filePath.resolveNativePath(uri).then(function (filePath) {
-                          console.log("filePath:", filePath);
                           var fileNameFromPath = filePath.substring(filePath.lastIndexOf("/") + 1);
                           var currentName = uri.substring(uri.lastIndexOf("/") + 1, uri.lastIndexOf("?"));
-                          console.log("currentName:", currentName);
-                          console.log("fileNameFromPath:", fileNameFromPath);
                           file = {
                             name: fileNameFromPath,
                             fullPath: filePath
@@ -686,7 +634,6 @@
                 Connection: "close"
               }
             };
-            console.log("options:", options);
             var filePath;
 
             if (type !== "audio") {
@@ -700,50 +647,18 @@
             var fileUplaodUrl = _services_config__WEBPACK_IMPORTED_MODULE_7__["baseUrl"] + "iMatch/api/v1/MatchFileUpload";
             fileTransfer.onProgress(function (e) {
               var prg = e.lengthComputable ? Math.round(e.loaded / e.total * 100) : -1;
-              console.log("progress:" + prg + "%");
 
               _this11.common.presentToast("Uploaded " + prg + "% of file");
-
-              if (prg === 100) {
-                console.log("Upload completed");
-              } else {
-                console.log("file is uploading");
-              }
             });
             fileTransfer.upload(filePath, fileUplaodUrl, options).then(function (data) {
-              console.log("File Transfer Success:", data);
-              console.log(JSON.parse(data.response));
               var res = JSON.parse(data.response);
-              console.log("res:", res); // if (res.file_extension === 'mp4') {
-              //   console.log('This is a video file');
-              //   this.isVideo = true;
-              //   this.isDummyImage = false;
-              // } else if (res.file_extension === 'aac') {
-              //   console.log(' This is a audio file ');
-              //   this.isAudio = true;
-              //   this.isDummyImage = false;
-              // } else if (res.file_extension === 'png') {
-              //   console.log(' This is a image file ');
-              //   this.isImage = true;
-              //   this.isDummyImage = false;
-              // } else if (res.file_extension === 'jpg') {
-              //   console.log(' This is a image file ');
-              //   this.isImage = true;
-              //   this.isDummyImage = false;
-              // } else if (res.file_extension === 'mp3') {
-              //   console.log(' This is a audio file ');
-              //   this.isAudio = true;
-              //   this.isDummyImage = false;
-              // }
 
               if (res.status == true) {
                 _this11.ionViewWillEnter(); // this.FileTransferResponse = res.upload_details;
-                // console.log('File Transfer Success:', this.FileTransferResponse);
 
               } else {
                 console.log("File Transfer Error");
-              } // console.log('FileTransferResponse:',this.FileTransferResponse);
-
+              }
 
               _this11.common.hideLoader();
             }, function (err) {
@@ -761,8 +676,7 @@
                 while (1) {
                   switch (_context3.prev = _context3.next) {
                     case 0:
-                      console.log("To Upload Image");
-                      _context3.next = 3;
+                      _context3.next = 2;
                       return Camera.getPhoto({
                         quality: 60,
                         allowEditing: true,
@@ -770,19 +684,16 @@
                         source: _capacitor_core__WEBPACK_IMPORTED_MODULE_12__["CameraSource"].Photos
                       });
 
-                    case 3:
+                    case 2:
                       image = _context3.sent;
-                      console.log("image:", image);
                       blobData = this.b64toBlob(image.base64String, "image/".concat(image.format));
                       this.uploadImage(blobData, image.format).subscribe(function (newImage) {
-                        console.log("newImage:", newImage);
-
                         _this12.showTextContent();
                       }, function (err) {
                         console.log(err);
                       });
 
-                    case 7:
+                    case 5:
                     case "end":
                       return _context3.stop();
                   }

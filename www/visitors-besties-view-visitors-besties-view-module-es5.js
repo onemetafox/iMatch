@@ -233,24 +233,18 @@
           value: function ionViewWillEnter() {
             var _this = this;
 
-            console.log('Entered Into Visitors Besties View Page');
             this.common.route.queryParams.subscribe(function (resp) {
               _this.UserInfo = resp;
-              console.log('UserInfo:', _this.UserInfo);
               var params = {
                 id: _this.UserInfo.userid
               };
-              console.log('params:', params);
 
               _this.common.presentLoading();
 
-              _this.common.postMethod('Listbesties', params).then(function (res) {
-                console.log('res:', res);
+              _this.common.postMethod('getBestieList', params).then(function (res) {
                 _this.mybesties = res.details.besties;
-                console.log('mybesties:', _this.mybesties);
               }, function (err) {
                 console.log('Error:', err);
-                console.log(err.headers);
               });
             });
           }

@@ -22,7 +22,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n        <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n      </ion-buttons>\r\n    <ion-title style=\"margin-left: -60px;\">FANS</ion-title>\r\n    <ion-icon name=\"search\" class=\"top-search-icon\" slot=\"end\" (click)=\"gotoSearchFans()\"></ion-icon>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content padding>\r\n\r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"userDetails\">\r\n      <ion-avatar style=\"height: 57px; width: 57px;border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"userDetails.profile_pic\" alt=\"\" (click)=\"gotoProfile()\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px; position: relative; top: 10px;\">{{userDetails.name}}</ion-label>\r\n      <p class=\"be-a-fan-text\" *ngIf=\"userDetails.userType=='VISITOR'\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 40%;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p *ngIf=\"myfans\">FANS {{this.myfans.length}} </p>\r\n  </div>\r\n\r\n<ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\"let fan of myfans\">\r\n  <ion-avatar style=\"height: 50px; width: 50px;\">\r\n    <img [src]=\"fan.profile_pic\" alt=\"\">\r\n  </ion-avatar>\r\n  <ion-label style=\"margin-left: 15px;\">{{fan.name}}</ion-label>\r\n  <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\" (click)=\"toRemoveFan($event,fan)\">\r\n</ion-item>\r\n\r\n</ion-content>";
+      __webpack_exports__["default"] = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n        <ion-back-button style=\"color: white\" icon=\"chevron-back\"></ion-back-button>\r\n      </ion-buttons>\r\n    <ion-title style=\"margin-left: -60px;\">FANS</ion-title>\r\n    <ion-icon name=\"search\" class=\"top-search-icon\" slot=\"end\" (click)=\"gotoSearchFans()\"></ion-icon>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content padding>\r\n\r\n  <div>\r\n    <div style=\"padding: 10px; display: flex; border-bottom: 2.5px solid #808080a1;\" *ngIf=\"userDetails\">\r\n      <ion-avatar style=\"height: 57px; width: 57px;border: 1px solid; margin-left: 15px;\">\r\n        <img [src]=\"userDetails.profile_pic\" alt=\"\" (click)=\"gotoProfile()\">\r\n      </ion-avatar>\r\n      <ion-label style=\"margin-left: 15px; font-weight: 600; margin-top: 5px; position: relative; top: 10px;\">{{userDetails.name}}</ion-label>\r\n      <p class=\"be-a-fan-text\" *ngIf=\"userDetails.userType=='VISITOR'\">BE A FAN</p>\r\n      <img src=\"../../assets/icon/activity/011.png\" alt=\"\" style=\"position: relative; left: 40%;\">\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"padding-left: 25px; font-weight: 600; letter-spacing: 1px;\">\r\n    <p *ngIf=\"myfans\">FANS {{this.myfans.length}} </p>\r\n  </div>\r\n\r\n<ion-item lines=\"none\" class=\"item-styles , animate__animated animate__fadeIn\" *ngFor=\"let fan of myfans\">\r\n  <ion-avatar style=\"height: 50px; width: 50px;\">\r\n    <img [src]=\"fan.pic\" alt=\"\">\r\n  </ion-avatar>\r\n  <ion-label style=\"margin-left: 15px;\">{{fan.name}}</ion-label>\r\n  <img src=\"../../assets/icon/cls.png\" alt=\"\" style=\"height: 30px; width: 30px;\" (click)=\"toRemoveFan($event,fan)\">\r\n</ion-item>\r\n\r\n</ion-content>";
       /***/
     },
 
@@ -94,7 +94,6 @@
           this.myfans = [];
           this.common.route.queryParams.subscribe(function (resp) {
             _this.userDetails = resp;
-            console.log('userDetails:', _this.userDetails);
           }); // this.storageservice.storage.get('userDetails').then((val) => {
           //   console.log('Storage Value of userDetails:', val);
           //   this.userDetails = val;
@@ -109,20 +108,16 @@
           value: function ionViewWillEnter() {
             var _this2 = this;
 
-            console.log('Entered into Fans Page');
             this.common.showLoader(); // this.storageservice.storage.get('userDetails').then((val) => {
             //   this.userDetails = val;
             // if (this.userDetails.userid != '') {
 
             var params = {
               id: this.userDetails.userid
-            };
-            console.log('params:', params); // this.common.presentLoading();
+            }; // this.common.presentLoading();
 
-            this.common.postMethod('Listbesties', params).then(function (res) {
-              console.log('res:', res);
+            this.common.postMethod('getBestieList', params).then(function (res) {
               _this2.myfans = res.details.fan;
-              console.log('myfans:', _this2.myfans);
 
               _this2.common.hideLoader();
 
@@ -143,7 +138,6 @@
         }, {
           key: "gotoSearchFans",
           value: function gotoSearchFans() {
-            console.log('Fans Search Icon Clicked');
             this.common.navCtrl.navigateForward(['/search-fans'], {
               queryParams: this.userDetails
             });
@@ -160,15 +154,10 @@
           value: function toRemoveFan(event, fan) {
             var _this3 = this;
 
-            console.log('Remove Fan Button clicked');
-            console.log('fan:', fan);
             var params = {
               fanid: fan.tableid
             };
-            console.log('params:', params);
             this.common.postMethod('RemoveFans', params).then(function (res) {
-              console.log('res:', res);
-
               if (res.status == true) {
                 _this3.common.presentToast('✅ ' + fan.name + ' is successfully removed from your fans list ');
 
