@@ -27,6 +27,7 @@ import { IonicStorageModule } from '@ionic/storage';
 // import { AngularFireModule } from '@angular/fire';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { IOSFilePicker } from '@ionic-native/file-picker/ngx';
+import { FormsModule } from '@angular/forms';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
@@ -50,6 +51,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
+    FormsModule
     // AndroidPermissions,
     // IonicImageViewerModule,
     // AngularFireModule.initializeApp(environment.firebase),

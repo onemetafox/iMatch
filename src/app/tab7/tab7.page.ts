@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from './../services/common.service';
 import { StorageService } from './../services/storage.service';
-import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
+import { FormBuilder,	FormGroup, Validators, AbstractControl} from '@angular/forms';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
+import { MediaCapture, CaptureError, CaptureImageOptions, CaptureVideoOptions } from '@ionic-native/media-capture/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import * as BaseConfig from '../services/config';
 
@@ -16,8 +17,19 @@ import * as BaseConfig from '../services/config';
 })
 export class Tab7Page implements OnInit {
 
-  userDetails : any = [];
+  public userModel : FormGroup;
 
+  userDetails : any = [];
+  updateStatus : boolean = true;
+  userData = {
+    "name" : "",
+    "email" : "",
+    "phone" : "",
+    "password" : "",
+    "description": "",
+    "gender": "",
+    "university_name": ""
+  };
   constructor(
     public common: CommonService,
     public storageservice: StorageService,
@@ -27,14 +39,43 @@ export class Tab7Page implements OnInit {
     private transfer: FileTransfer,
     private filePath: FilePath,
     private mediaCapture: MediaCapture,
-  ) { }
+    public formbuilder: FormBuilder,
+  ) { 
+
+    this.userModel = formbuilder.group({
+      name : ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(30),
+      ])],
+      email : ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(30),
+        Validators.email
+      ])],
+      phone : ['', Validators.compose([
+        Validators.max(9000000000),
+        Validators.required
+      ])],
+    });
+  }
 
   ngOnInit() {
     if (this.common.platform.is("cordova" || "capacitor")) {
+      this.updateStatus = true;
       this.common.platform.ready().then(() => {
         this.filePermission();
       });
     }
+  }
+  editProfile(){
+    if(this.updateStatus)
+      this.updateStatus = false;
+    else
+      this.updateStatus = true;
+  }
+  saveProfile(){
+    this.updateStatus = true;
+    console.log(this.userData);
   }
 
   ionViewWillEnter(){
@@ -64,7 +105,7 @@ export class Tab7Page implements OnInit {
             this.common.presentToast('Uploaded ' + prg + '% of file');
           });
           let options: FileUploadOptions = {
-            fileKey: 'matchfile',
+            fileKey: 'avatarfile',
             fileName: data[0].name,
             httpMethod: 'POST',
             mimeType: 'multipart/form-data',
@@ -101,7 +142,7 @@ export class Tab7Page implements OnInit {
             this.common.presentToast('Uploaded ' + prg + '% of file');
           });
           let options: FileUploadOptions = {
-            fileKey: 'matchfile',
+            fileKey: 'avatarfile',
             fileName: data[0].name,
             httpMethod: 'POST',
             mimeType: 'multipart/form-data',
@@ -141,7 +182,7 @@ export class Tab7Page implements OnInit {
             this.common.presentToast('Uploaded ' + prg + '% of file');
           });
           let options: FileUploadOptions = {
-            fileKey: 'matchfile',
+            fileKey: 'avatarfile',
             fileName: filePath.substring(filePath.lastIndexOf("/") + 1),
             httpMethod: 'POST',
             mimeType: 'multipart/form-data',
@@ -175,7 +216,7 @@ export class Tab7Page implements OnInit {
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       cssClass: 'my-custom-class',
-      header: ' File format must be MP4, AAC, Mp3, PNG, JPG ',
+      header: ' File format must be MP4, JPG, JPEG ',
       buttons: [
         {
           text: 'Other Files',

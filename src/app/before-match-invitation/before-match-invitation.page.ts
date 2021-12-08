@@ -3,15 +3,12 @@ import { StorageService } from './../services/storage.service';
 import { CommonService } from './../services/common.service';
 import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
 import { FormBuilder,	FormGroup, Validators, AbstractControl} from '@angular/forms';
-// import { Plugins, CameraResultType, CameraSource, FilesystemDirectory, CameraPhoto, Capacitor, PhotosAlbumType, FilesystemEncoding } from '@capacitor/core';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions, CaptureVideoOptions, CaptureAudioOptions } from '@ionic-native/media-capture/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import * as BaseConfig from '../services/config';
-// const { Camera, Filesystem } = Plugins;
-import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 
 @Component({
   selector: 'app-before-match-invitation',
@@ -70,7 +67,6 @@ export class BeforeMatchInvitationPage implements OnInit {
   filesType: any;
 
   constructor(
-
     public common: CommonService,
     public formbuilder: FormBuilder,
     public storageservice: StorageService,
@@ -80,8 +76,6 @@ export class BeforeMatchInvitationPage implements OnInit {
     private transfer: FileTransfer,
     private filePath: FilePath,
     private mediaCapture: MediaCapture,
-    private camera: Camera,
-    private platform: Platform
   ) {
 
     this.invitation = formbuilder.group({
