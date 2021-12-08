@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { StorageService } from '../services/storage.service';
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import {
 	FormBuilder,

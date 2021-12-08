@@ -22,13 +22,14 @@
         "@angular/platform-browser": "~11.0.0",
         "@angular/platform-browser-dynamic": "~11.0.0",
         "@angular/router": "~11.0.0",
+        "@awesome-cordova-plugins/geolocation": "^5.37.1",
         "@capacitor/android": "^2.1.2",
         "@capacitor/core": "2.1.2",
         "@ionic-native/action-sheet": "^5.28.0",
         "@ionic-native/android-permissions": "^5.31.1",
         "@ionic-native/camera": "^5.36.0",
         "@ionic-native/chooser": "^5.36.0",
-        "@ionic-native/core": "^5.0.7",
+        "@ionic-native/core": "^5.36.0",
         "@ionic-native/device": "^4.20.0",
         "@ionic-native/facebook": "^5.27.0",
         "@ionic-native/file": "^5.36.0",
@@ -36,7 +37,7 @@
         "@ionic-native/file-path": "^5.31.1",
         "@ionic-native/file-picker": "^5.31.1",
         "@ionic-native/file-transfer": "^5.31.1",
-        "@ionic-native/geolocation": "^4.20.0",
+        "@ionic-native/geolocation": "^5.0.0",
         "@ionic-native/google-plus": "^5.27.0",
         "@ionic-native/ionic-webview": "^5.28.0",
         "@ionic-native/media-capture": "^5.36.0",
@@ -141,7 +142,9 @@
             "cordova-plugin-file": {},
             "cordova-plugin-file-transfer": {},
             "cordova-plugin-media-capture": {},
-            "cordova-plugin-geolocation": {}
+            "cordova-plugin-geolocation": {
+                "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
+            }
         },
         "platforms": [
             "ios",
