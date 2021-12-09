@@ -22,10 +22,10 @@ export class Tab7Page implements OnInit {
   userDetails : any = [];
   updateStatus : boolean = true;
   userData = {
+    "id": "",
     "name" : "",
     "email" : "",
     "phone" : "",
-    "password" : "",
     "description": "",
     "gender": "",
     "university_name": "",
@@ -78,7 +78,10 @@ export class Tab7Page implements OnInit {
   }
   saveProfile(){
     this.updateStatus = true;
-    console.log(this.userData);
+    this.userData.id = this.userDetails.userid;
+    this.common.postMethod('updateUser',this.userData).then((res:any) => {
+      this.common.presentToast("user information updated");
+    });
   }
 
   ionViewWillEnter(){
