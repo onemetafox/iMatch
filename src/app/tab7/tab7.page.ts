@@ -28,7 +28,7 @@ export class Tab7Page implements OnInit {
     "password" : "",
     "description": "",
     "gender": "",
-    "university_name": ""
+    "university_name": "",
   };
   constructor(
     public common: CommonService,
@@ -56,6 +56,9 @@ export class Tab7Page implements OnInit {
         Validators.max(9000000000),
         Validators.required
       ])],
+      gender : ['', Validators.required],
+      university_name : '',
+      bio : ''
     });
   }
 

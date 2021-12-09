@@ -31,32 +31,34 @@
             <p style="margin: 0px;">SQUAD</p>
             <p style="margin: 0px;">{{userDetails.squad_count}} </p>
           </div>
+
           <div style="margin: 5px; background-color: #9E9E9E; padding: 10px; border-radius: 5px; text-align: center; color: white; font-weight: 600; font-size: 11px;">
             <p style="margin: 0px;">MATCH</p>
             <p style="margin: 0px;"> {{userDetails.matches_count}} </p>
           </div>
         </div>
-        <ion-label position="fixed" class="input-field-label">User Name</ion-label>
-        <ion-input formControlName="name" [(ngModel)]="userData.name" class="input-field" value="{{userDetails.name}}">  </ion-input>
+        <form [formGroup]="userModel">
+          <ion-label position="fixed" class="input-field-label">User Name</ion-label>
+          <ion-input formControlName="name" [(ngModel)]="userData.name" class="input-field" value="{{userDetails.name}}">  </ion-input>
+    
+          <ion-label position="fixed" class="input-field-label">Bio</ion-label>
+          <ion-textarea formControlName="bio" [(ngModel)]="userData.bio" class="input-field" value="{{userDetails.bio}}" autoGrow="true">  </ion-textarea>
+    
+          <ion-label position="fixed" class="input-field-label">Phone Number</ion-label>
+          <ion-input class="input-field" formControlName="phone" [(ngModel)]="userData.phone" value="{{userDetails.phone_number}}">  </ion-input>
+    
+          <ion-label position="fixed" class="input-field-label">Email</ion-label>
+          <ion-input class="input-field"  formControlName="email" [(ngModel)]="userData.email" value="{{userDetails.email}}">  </ion-input>
 
-        <ion-label position="fixed" class="input-field-label">Bio</ion-label>
-        <ion-textarea formControlName="bio" [(ngModel)]="userData.bio" class="input-field" value="{{userDetails.bio}}" autoGrow="true">  </ion-textarea>
+          <ion-label position="fixed" class="input-field-label">Gender</ion-label>
+          <ion-select placeholder="Time" formControlName="gender" [(ngModel)]="userData.gender" value="{{userDetails.gender}}">
+            <ion-select-option value="Male">Male</ion-select-option>
+            <ion-select-option value="Female">Female</ion-select-option>
+          </ion-select>
 
-        <ion-label position="fixed" class="input-field-label">Phone Number</ion-label>
-        <ion-input class="input-field" formControlName="phone" [(ngModel)]="userData.phone" value="{{userDetails.phone_number}}">  </ion-input>
-
-        <ion-label position="fixed" class="input-field-label">Email</ion-label>
-        <ion-input class="input-field"  formControlName="email" [(ngModel)]="userData.email" value="{{userDetails.email}}">  </ion-input>
-
-        <ion-label position="fixed" class="input-field-label">Gender</ion-label>
-        <ion-select placeholder="Time" formControlName="gender" [(ngModel)]="userData.gender" value="{{userDetails.gender}}">
-          <ion-select-option value="Male">Male</ion-select-option>
-          <ion-select-option value="Female">Female</ion-select-option>
-        </ion-select>
-
-        <ion-label position="fixed" class="input-field-label">University Name</ion-label>
-        <ion-input class="input-field" formControlName="university_name" [(ngModel)]="userData.university_name" value="{{userDetails.university_name}}">  </ion-input>
-
+          <ion-label position="fixed" class="input-field-label">University Name</ion-label>
+          <ion-input class="input-field" formControlName="university_name" [(ngModel)]="userData.university_name" value="{{userDetails.university_name}}">  </ion-input>
+        </form>
         <div *ngIf="updateStatus; then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
           <ion-button color="warning" style="font-family: OpenSansBold; width: 100%;"  (click)="editProfile()">Edit Profile</ion-button>

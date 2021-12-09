@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,7 +14,8 @@ import { Tab7Page } from './tab7.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    Tab7PageRoutingModule
+    Tab7PageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [Tab7Page]
 })
