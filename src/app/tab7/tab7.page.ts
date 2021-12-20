@@ -17,6 +17,7 @@ import * as BaseConfig from '../services/config';
 })
 export class Tab7Page implements OnInit {
 
+  
   public userModel : FormGroup;
 
   userDetails : any = [];
